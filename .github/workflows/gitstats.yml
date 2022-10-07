@@ -1,0 +1,30 @@
+name: Gitstats Workflow
+on:
+  schedule:
+    # Runs “At 05:00 on Friday.” (see https://crontab.guru)
+    - cron: "0 5 * * 6"
+run-name: Updating gitstats in Canvas 🚀
+jobs:
+  Upload-Gitstats:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          path: equifood
+      - name: Checkout gitstats repo
+        uses: actions/checkout@v3
+        with:
+          repository: brandongk-ubco/gitstats
+          path: gitstats
+      - name: Install Gitstats
+        run: pip3 install ./gitstats
+      - name: Install FPDF
+        run: pip3 install fpdf
+      - name: "Upload gitstats report"
+        run: python3 ./equifood/.github/gitstats_upload.py
+        env:
+          CANVAS_TOKEN: ${{ secrets.CANVAS_TOKEN }}
+          COURSE_ID: "110967"
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: ${{ github.event.repository.name }}
