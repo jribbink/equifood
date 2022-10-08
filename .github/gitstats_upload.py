@@ -4,6 +4,7 @@ import re
 import gitstats
 import requests
 import os
+import pytz
 
 ### Environment variables
 
@@ -57,7 +58,7 @@ except:
 repository = "jribbink/equifood"
 group_name = "Equifood Group C" + (" " + week if week is not None else "")
 
-today = datetime.now()
+today = datetime.utcnow().astimezone(pytz.timezone('US/Pacific'))
 last_saturday = (today - timedelta(((today.weekday() - 5) % 7))).replace(hour=0, minute=0, second=0, microsecond=0)
 next_friday = (today + timedelta((today.weekday() - 4) % 7)).replace(hour=23, minute=59, second=59, microsecond=999)
 
