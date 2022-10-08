@@ -3,6 +3,7 @@ on:
   schedule:
     # Runs “At 05:00 on Friday.” (see https://crontab.guru)
     - cron: "0 5 * * 6"
+  workflow_dispatch:
 run-name: Updating gitstats in Canvas 🚀
 jobs:
   Upload-Gitstats:
