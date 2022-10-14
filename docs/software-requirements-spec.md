@@ -15,31 +15,33 @@
 
     Term 1
 
-        Week 7: Requirements report + project requirement presentation
-        Week 8: Decide which software we are using for the app. 
-        Week 9: Finish paper prototype and start on the app.
-        Week 10: Get the base code working to have phone compatible AR size to show.
-        Week 11: Position buttons and categories and make sure the buttons work.
+        Week 7: Requirements report + project requirement presentation.
+        Week 8: Finish paper prototype and start on the app.
+        Week 9: Get the base code working to have phone compatible AR size to show.
+        Week 10: Create customer account database and functions.
+        Week 11: Create restaurant merchant account database and functions.
         Week 12: Finish up little touches building home screen.
-        Week 13: Peer testing report I + video demo (Bug Testing)
+        Week 13: Peer testing report I + video demo (Bug Testing).
+
 
         This is the bare minimum requirement. homescreen working at the minimum.
 
     Term 2
-        Week 1: Make a template page for restaurant description / option 
-        Week 2: Start on Google Maps API to link with restaurants.
-        Week 3: Make a map tab in the app and make Google map show.
+        Week 1: Implement Add / Remove items database.
+        Week 2: implement Item history and Item inventory.
+        Week 3: Start on Google Maps API to link with restaurants.
         Week 4: Link the description page with google maps.
         Week 5: Make the restaurants list in proximity order.
-        Week 6: Make order confirmation page
-        Week 7: Remove listing upon order confirmation 
-        Week 8: Bug testing / Finishing up touches for peer testing
-        Week 9: Peer testing report II + video demo II (Bug Testing)
-        Week 10: Create settings page 
+        Week 6: Make order confirmation page.
+        Week 7: Remove listing upon order confirmation .
+        Week 8: Bug testing / Finishing up touches for peer testing.
+        Week 9: Peer testing report II + video demo II (Bug Testing).
+        Week 10: Create settings page .
         Week 11: Create account page, get dummy account working.
-        Week 12: Bug testing / Extra features
-        Week 13: Bug testing / Extra features
-        Week 14: Final Report + Final Presentation
+        Week 12: Admin tools, Daily reports.
+        Week 13: Bug testing / Extra features.
+        Week 14: Final Report + Final Presentation.
+
 
 # Software Description
 
@@ -56,7 +58,9 @@ There are three main user groups that can be identified:
 
 # Non-Functional requirements and environmental constraints
 
-    - Links to Google Maps API
-    - Javascript is the main language
-    - React Native for app making
-    - The server is run locally on the machine for the project.
+    - There might not be any restaurants that support our app around certain users.
+    - App will only support English major speaking countries with no localization to reduce development time.
+    - The app does not support deliveries which might limit some users’ experiences.
+    - User interface must be mobile friendly and support native mobile gestures.
+    - Software must be cross-platform and supported on both IOS and Android devices.
+    - Inventories must be reliable and up-to-date to prevent invalid orders.
