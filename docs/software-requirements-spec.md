@@ -49,7 +49,10 @@ A potential option is for the customers to "reserve" the food, and have it remov
 
 # User Groups
 
-There are three main user groups that can be identified. One is the "admin" class of users; the programmers, administration and similar users working on the app itself, who should have global access to the app and all the functions therein. Another is the restaurants and other businesses, who should be able to log into the app through the business view to add, edit and remove the products they have available. The third group is the public; these users can open the app through the user view, and search for specific products or browse the products available near them.
+There are three main user groups that can be identified:
+1. Admins: Programmers, administration and similar users who need global access to the app and all functions therein.
+2. Businesses: Restaurants and other food distribution businesses. This includes groups such as grocery stores, and notably, university food businesses, who may want a centralized way of advertising themselves to students and distributing food that would otherwise go to waste. In short, they should be able to log into the app through the business view to add, edit and remove the products they have available.
+3. The public; low-income families, university students, and anyone else who is looking to help reduce food waste or find savings on food. They should be able to open the app through the user view, and search for specific products or browse the products available near them, so that they can place a reservation on the product.
 
 # Non-Functional requirements and environmental constraints
 
