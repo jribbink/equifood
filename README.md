@@ -13,8 +13,8 @@ This is a capstone (COSC 499) project for the Equifood App.
 
 ### Development
 
-1. Run backend using `npm run backend`
-2. Run frontend using `npm run frontend`
+1. Run backend using `npm run start` in `backend` directory
+2. Run frontend using `npm run start` in `frontend` directory
 
 ### Testing
 
