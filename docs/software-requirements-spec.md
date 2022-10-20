@@ -1,19 +1,25 @@
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
-- [Introduction](#introduction)
-- [Schedule](#schedule)
 - [Software Description](#software-description)
+- [Schedule](#schedule)
 - [Frameworks, libraries, and database ("Tech Stack")](#frameworks-libraries-and-database-tech-stack)
   - [Client App](#client-app)
   - [Backend](#backend)
   - [Database](#database)
+- [Testing plan](#testing-plan)
+  - [Static analysis](#static-analysis)
+  - [Regression Testing](#regression-testing)
+  - [Unit testing](#unit-testing)
+  - [End-to-end testing](#end-to-end-testing)
 - [User Groups](#user-groups)
 - [Non-Functional requirements and environmental constraints](#non-functional-requirements-and-environmental-constraints)
 
-# Introduction
+# Software Description
 
-<< Insert Introduction here>>
+The EquiFood software is meant as a way to connect consumers with food distribution businesses to reduce food waste by selling food at a discounted price that would otherwise go to waste. It's not designed to sell the products on its own, but only to allow this connection. The app functions by allowing businesses to post listings of food that they want to sell at a discounted price, which should have a list of tags that can be added to allow for easy searching later. These listings should have a geolocation attached; each restaurant would have a default geolocation, but it should be editable if necessary. The consumers are then able to log into the app and search for food they're interested in -- either by browsing food that is nearest to them, or by searching for food by name or by tag.
+
+A potential option is for the customers to "reserve" the food, and have it removed from the listing so that they can be sure to pick it up. If this direction is taken, the app would notify the restaurant about the reservation, and require a specific timeline from the customer for when they will be able to pick the food up. If the customer does not follow through in that time, the reservation should be removed.
 
 # Schedule
 
@@ -44,13 +50,6 @@
         Week 12: Admin tools, Daily reports.
         Week 13: Bug testing / Extra features.
         Week 14: Final Report + Final Presentation.
-
-
-# Software Description
-
-The EquiFood software is meant as a way to connect consumers with food distribution businesses to reduce food waste by selling food at a discounted price that would otherwise go to waste. It's not designed to sell the products on its own, but only to allow this connection. The app functions by allowing businesses to post listings of food that they want to sell at a discounted price, which should have a list of tags that can be added to allow for easy searching later. These listings should have a geolocation attached; each restaurant would have a default geolocation, but it should be editable if necessary. The consumers are then able to log into the app and search for food they're interested in -- either by browsing food that is nearest to them, or by searching for food by name or by tag.
-
-A potential option is for the customers to "reserve" the food, and have it removed from the listing so that they can be sure to pick it up. If this direction is taken, the app would notify the restaurant about the reservation, and require a specific timeline from the customer for when they will be able to pick the food up. If the customer does not follow through in that time, the reservation should be removed.
 
 # Frameworks, libraries, and database ("Tech Stack")
 
@@ -84,18 +83,69 @@ However, **NestJS** is chosen due to its better support for small to mid sized p
 
 ## Database
 
-A relational database is required for this project. Becasue the data is very structured (users, orders, businesses, etc.) and requires many relationships (traditional CRUD, essentially), a relational database is the superior option.
+A relational database is required for this project. Becasue the data is very structured (users, orders, businesses, etc.) and requires many relationships, a relational database is the superior option (compared to NoSQL).
 
-For the scope of this project, there is a general indifference regarding which relational database we choose to use (dataset and number of concurrent queries will be very small).
+For the scope of this project, there is a general indifference regarding which relational database Equifood uses (dataset and number of concurrent queries will be very small).
 
 Due to this reason, the **MariaDB** will be the database of choice. It is very easy to configure and couples well with NestJS/TypeORM.
+
+# Testing plan
+
+The testing plan is a large concern of the Equifood software as it insures that developers do not create bugs (or regressions) as they augment features within the software.
+
+Another benefit is that a good suite of tests will make the functionality of the software very obvious and benefit the onboarding of new developers.
+
+Finally, automated testing pipelines will prevent the Equifood developers from having to complete manual QA tasks (or at least reduce the scope of them).
+
+## Static analysis
+
+The first line of defence against poor code/bugs in the Equifood codebase against will be **static anaylsis**.
+
+- **ESLint** will be deployed in both the frontend & backend of the equifood software. This will prevent common bugs and enforce code design rules. ESLint is well supported and has many plugins (such as those for React Native/React) so it will pair well in our project.
+- **Prettier** will be used to improv the quality of the code. While this isn't necessarily a static analysis tool, prettier will help to enforce styling consistent conventions in the codebase as well as make the code more readable => easier for other devs to understand & less prone to bugs.
+- **TypeScript** will be used universally to enforce strong types throughout the Equifood software. This is superior to vanilla JS, as it prevents the creation of type related bugs, unintended `null`/`undefined` values, is more readable (=> less bugs), and has better OOP support than JS.
+
+## Regression Testing
+
+The Equifood software will utilize **retest-all regression testing**.
+
+This means that the software will run the entire test suite again any time that changes are made to the codebase. In practice, this means there will exist a **GitHub Actions** workflow which runs on `pull_request` to `master` and `push` to `master`. This workflow will run the build scripts (i.e. `npm run build`) and the whole test suite (i.e. `npm run test`).
+
+Our automated testing CI/CD pipeline will contain both [unit tests](#unit-testing) and [E2E tests](#end-to-end-testing).
+
+## Unit testing
+
+The choice of unit testing framework for the Equifood software is [Jest](https://jestjs.io/) - which is the most widely supported and used testing framework in Javascript.
+
+Using these Unit tests, the Equifood software will test the logic of small, individual components within the software (classes, funcitons, etc.)
+
+These tests will be writen for both the [frontend](#client-app) and the [backend](#backend).
+
+## End-to-end testing
+
+For E2E tests we will use [Detox](https://github.com/wix/Detox). This choice is justified by the fact that it is built specifically for React Native and is very popular within the community.
+
+E2E tests will run the application as if it would be used by a user and simulate user interactions. These tests will test the whole system (frontend, backend, database).
+
+While E2E tests are very effective at spotting bugs, they are very expensive to develop and not as scalable as unit tests. Additionally these E2E tests will be prone to "flakiness" and unreliability.
+
+For these reasons, only core functionalities will deserve E2E tests (i.e. authentication, happy path of making order, etc.) but niche functions will not receive these tests.
 
 # User Groups
 
 There are three main user groups that can be identified:
-1. Admins: Programmers, administration and similar users who need global access to the app and all functions therein.
-2. Businesses: Restaurants and other food distribution businesses. This includes groups such as grocery stores, and notably, university food businesses, who may want a centralized way of advertising themselves to students and distributing food that would otherwise go to waste. In short, they should be able to log into the app through the business view to add, edit and remove the products they have available.
-3. The public; low-income families, university students, and anyone else who is looking to help reduce food waste or find savings on food. They should be able to open the app through the user view, and search for specific products or browse the products available near them, so that they can place a reservation on the product.
+
+1. **Administrators**
+
+   Programmers, administration and similar users who need global access to the app and all functions therein.
+
+2. **Businesses**
+
+   Restaurants and other food distribution businesses. This includes groups such as grocery stores, and notably, university food businesses, who may want a centralized way of advertising themselves to students and distributing food that would otherwise go to waste. In short, they should be able to log into the app through the business view to add, edit and remove the products they have available.
+
+3. **The public**
+
+   Low-income families, university students, and anyone else who is looking to help reduce food waste or find savings on food. They should be able to open the app through the user view, and search for specific products or browse the products available near them, so that they can place a reservation on the product.
 
 # Non-Functional requirements and environmental constraints
 
