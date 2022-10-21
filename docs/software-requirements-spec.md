@@ -26,33 +26,33 @@ A potential option is for the customers to "reserve" the food, and have it remov
 
 # Schedule
 
-    Term 1
-        Week 7: Requirements report + project requirement presentation.
-        Week 8: Finish paper prototype and start on the app.
-        Week 9: Get the base code working to have phone compatible AR size to show.
-        Week 10: Create customer account database and functions.
-        Week 11: Create restaurant merchant account database and functions.
-        Week 12: Finish up little touches building home screen.
-        Week 13: Peer testing report I + video demo (Bug Testing).
+**Term 1**
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 7: Requirements report + project requirement presentation<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 8: Create settings page<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 9: Create account/admin page, get dummy account working.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 10: Create customer account database and functions.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 11: Create restaurant merchant account database and functions.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 12: Finish up little touches building home screen.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 13: Peer testing report I + video demo (Bug Testing)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is the bare minimum requirement. homescreen working at the minimum.<br />
 
-        This is the bare minimum requirement. homescreen working at the minimum.
+**Term 2**
 
-    Term 2
-        Week 1: Implement Add / Remove items database.
-        Week 2: implement Item history and Item inventory.
-        Week 3: Start on Google Maps API to link with restaurants.
-        Week 4: Link the description page with google maps.
-        Week 5: Make the restaurants list in proximity order.
-        Week 6: Make order confirmation page.
-        Week 7: Remove listing upon order confirmation .
-        Week 8: Bug testing / Finishing up touches for peer testing.
-        Week 9: Peer testing report II + video demo II (Bug Testing).
-        Week 10: Create settings page .
-        Week 11: Create account page, get dummy account working.
-        Week 12: Admin tools, Daily reports.
-        Week 13: Bug testing / Extra features.
-        Week 14: Final Report + Final Presentation.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 1: Implement Add / Remove items database.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 2: implement Item history and Item inventory.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 3: Start on Google Maps API to link with restaurants.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 4: Link the description page with google maps.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 5: Make the restaurants list in proximity order.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 6: Make order confirmation page<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 7: Remove listing upon order confirmation <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 8: Bug testing / Finishing up touches for peer testing<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 9: Peer testing report II + video demo II (Bug Testing)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 10: Bug testing / Optional features<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 11: Bug testing / Optional features<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 12: Bug testing / Optional features<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 13: Bug testing / Optional features<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 14: Final Report + Final Presentation<br />
 
 # Frameworks, libraries, and database ("Tech Stack")
 
@@ -152,12 +152,14 @@ There are three main user groups that can be identified:
 
 # Non-Functional requirements and environmental constraints
 
-    - There might not be any restaurants that support our app around certain users.
-    - App will only support English major speaking countries with no localization to reduce development time.
-    - The app does not support deliveries which might limit some users’ experiences.
+    - Coding Languages: Javascript and Typescript
     - User interface must be mobile friendly and support native mobile gestures.
-    - Software must be cross-platform and supported on both IOS and Android devices.
     - Inventories must be reliable and up-to-date to prevent invalid orders.
+    - The homescreen should open 0 - 2 seconds.
+    - The map should open 1 - 3 seconds with all the pin points on the screen.
+    - Include loading screen as required in order to keep the app smooth.
+    - The account will require full name and phone number upon signing up, the name is never disclosed, but phone number is shared with the restaurants for quality assurance.
+    - There will not be any information stored about the user from the restaurants other than the user id for history.
 
 # Data Flow Diagrams
 
