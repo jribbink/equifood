@@ -149,9 +149,11 @@ There are three main user groups that can be identified:
 
 # Non-Functional requirements and environmental constraints
 
-    - There might not be any restaurants that support our app around certain users.
-    - App will only support English major speaking countries with no localization to reduce development time.
-    - The app does not support deliveries which might limit some users’ experiences.
+    - Coding Languages: Javascript and Typescript
     - User interface must be mobile friendly and support native mobile gestures.
-    - Software must be cross-platform and supported on both IOS and Android devices.
     - Inventories must be reliable and up-to-date to prevent invalid orders.
+    - The homescreen should open 0 - 2 seconds.
+    - The map should open 1 - 3 seconds with all the pin points on the screen.
+    - Include loading screen as required in order to keep the app smooth.
+    - The account will require full name and phone number upon signing up, the name is never disclosed, but phone number is shared with the restaurants for quality assurance.
+    - There will not be any information stored about the user from the restaurants other than the user id for history.
