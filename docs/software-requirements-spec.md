@@ -150,6 +150,19 @@ There are three main user groups that can be identified:
 
    Low-income families, university students, and anyone else who is looking to help reduce food waste or find savings on food. They should be able to open the app through the user view, and search for specific products or browse the products available near them, so that they can place a reservation on the product.
 
+# Functional requirements
+
+    - Any user should be able to identify which food and which store to choose from.
+    - The restaurant on map shows the distance between the user.
+    - The user should not be able to use the system without loggin in.
+    - The merchant account should be able to list/dispose items from the database.
+    - The database should not be accessible by users.
+    - The Google Map API should be online to use the app.
+    - The order will be automatically cancelled depending on how much time was spent. (Ex: Distance to the store * (on foot || driving) + extra time)
+    - Cooldown of approximately 4 - 5 hours on every successful claim by the user in order to prevent spam.
+    - The account will be set up with full name and phone number to limit bot accounts.
+    - The admin account should be able to ban/time out any account.
+
 # Non-Functional requirements and environmental constraints
 
     - Coding Languages: Javascript and Typescript
