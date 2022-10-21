@@ -14,6 +14,9 @@
   - [End-to-end testing](#end-to-end-testing)
 - [User Groups](#user-groups)
 - [Non-Functional requirements and environmental constraints](#non-functional-requirements-and-environmental-constraints)
+- [Data Flow Diagrams](#data-flow-diagrams)
+    - [Data Flow Diagram Level 0](#data-flow-diagram-level-0)
+    - [Data Flow Diagram Level 1](#data-flow-diagram-level-1)
 
 # Software Description
 
@@ -156,3 +159,22 @@ There are three main user groups that can be identified:
     - Include loading screen as required in order to keep the app smooth.
     - The account will require full name and phone number upon signing up, the name is never disclosed, but phone number is shared with the restaurants for quality assurance.
     - There will not be any information stored about the user from the restaurants other than the user id for history.
+
+# Data Flow Diagrams
+
+Below are the level 0 and level 1 Data Flow Diagrams for this project. The color of each arrows, proccess, and database depends on the type of information it is dealing with. For example any process that involves the daily report is in pink.
+
+## Legend
+
+![image info](./DFDs/Legend.png)
+
+# Data Flow Diagram Level 0
+![image info](./DFDs/Equifoods_DFD_0.png)
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+# Data Flow Diagram Level 1
+![image info](./DFDs/Equifoods_DFD_1.png)
