@@ -153,10 +153,9 @@ There are three main user groups that can be identified:
 # Functional requirements
 
     - Any user should be able to identify which food and which store to choose from.
-    - The restaurant on map shows the distance between the user.
-    - The user should not be able to use the system without loggin in.
-    - The merchant account should be able to list/dispose items from the database.
-    - The database should not be accessible by users.
+    - Merchants in the map view show their distance to the user.
+    - The user should not be able to use the system without logging in.
+    - Merchant accounts should be able to add, edit and remove items from the database.
     - The Google Map API should be online to use the app.
     - The order will be automatically cancelled depending on how much time was spent. (Ex: Distance to the store * (on foot || driving) + extra time)
     - Cooldown of approximately 4 - 5 hours on every successful claim by the user in order to prevent spam.
@@ -168,11 +167,13 @@ There are three main user groups that can be identified:
     - Coding Languages: Javascript and Typescript
     - User interface must be mobile friendly and support native mobile gestures.
     - Inventories must be reliable and up-to-date to prevent invalid orders.
-    - The homescreen should open 0 - 2 seconds.
-    - The map should open 1 - 3 seconds with all the pin points on the screen.
-    - Include loading screen as required in order to keep the app smooth.
+    - The database should not be directly accessible and modifiable by regular users.
+      - More broadly: all users should only have as much database access as is absolutely required. (e.g. none for regular users, access to their entries for merchants)
+    - The homescreen should open in under 2 seconds at the slowest.
+    - The map should open within 3 seconds, with all pinpoints on the map around the user..
+    - Include loading screen as required in order to keep the user experience smooth and clear.
     - The account will require full name and phone number upon signing up, the name is never disclosed, but phone number is shared with the restaurants for quality assurance.
-    - There will not be any information stored about the user from the restaurants other than the user id for history.
+    - There will not be any information stored about the user from the restaurants other than the user ID for order history purposes.
 
 # Data Flow Diagrams
 
