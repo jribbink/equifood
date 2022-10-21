@@ -115,11 +115,7 @@ Below are the level 0 and level 1 Data Flow Diagrams for this project. The color
 
 ## Legend
 
-: <span style="color:green">Items</span><br/>
-: <span style="color:yellow">Pickup orders</span><br/>
-: <span style="color:blue">Customer accounts</span><br/>
-: <span style="color:red">Restaurant accounts and applications</span><br/>
-: <span style="color:purple">Daily/Weekly reports</span><br/>
+![image info](./DFDs/Legend.png)
 
 # Data Flow Diagram Level 0
 ![image info](./DFDs/Equifoods_DFD_0.png)
