@@ -26,32 +26,33 @@ A potential option is for the customers to "reserve" the food, and have it remov
 
 # Schedule
 
-    Term 1
-	Week 7: Requirements report + project requirement presentation
-    Week 8: Create settings page
-    Week 9: Create account/admin page, get dummy account working.
-	Week 10: Create customer account database and functions.
-	Week 11: Create restaurant merchant account database and functions.
-	Week 12: Finish up little touches building home screen.
-	Week 13: Peer testing report I + video demo (Bug Testing)
-	This is the bare minimum requirement. homescreen working at the minimum.
+**Term 1**
 
-Term 2
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 7: Requirements report + project requirement presentation<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 8: Create settings page<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 9: Create account/admin page, get dummy account working.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 10: Create customer account database and functions.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 11: Create restaurant merchant account database and functions.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 12: Finish up little touches building home screen.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 13: Peer testing report I + video demo (Bug Testing)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;This is the bare minimum requirement. homescreen working at the minimum.<br />
 
-	Week 1: Implement Add / Remove items database.
-    Week 2: implement Item history and Item inventory.
-	Week 3: Start on Google Maps API to link with restaurants.
-    Week 4: Link the description page with google maps.
-    Week 5: Make the restaurants list in proximity order.
-    Week 6: Make order confirmation page
-    Week 7: Remove listing upon order confirmation 
-    Week 8: Bug testing / Finishing up touches for peer testing
-    Week 9: Peer testing report II + video demo II (Bug Testing)
-    Week 10: Bug testing / Optional features
-    Week 11: Bug testing / Optional features
-    Week 12: Bug testing / Optional features
-	Week 13: Bug testing / Optional features
-	Week 14: Final Report + Final Presentation
+**Term 2**
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 1: Implement Add / Remove items database.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 2: implement Item history and Item inventory.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 3: Start on Google Maps API to link with restaurants.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 4: Link the description page with google maps.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 5: Make the restaurants list in proximity order.<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 6: Make order confirmation page<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 7: Remove listing upon order confirmation <br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 8: Bug testing / Finishing up touches for peer testing<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 9: Peer testing report II + video demo II (Bug Testing)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 10: Bug testing / Optional features<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 11: Bug testing / Optional features<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 12: Bug testing / Optional features<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 13: Bug testing / Optional features<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 14: Final Report + Final Presentation<br />
 
 # Frameworks, libraries, and database ("Tech Stack")
 
