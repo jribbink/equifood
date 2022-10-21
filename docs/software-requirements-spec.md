@@ -10,6 +10,9 @@
   - [Database](#database)
 - [User Groups](#user-groups)
 - [Non-Functional requirements and environmental constraints](#non-functional-requirements-and-environmental-constraints)
+- [Data Flow Diagrams](#data-flow-diagrams)
+    - [Data Flow Diagram Level 0](#data-flow-diagram-level-0)
+    - [Data Flow Diagram Level 1](#data-flow-diagram-level-1)
 
 # Introduction
 
@@ -105,3 +108,26 @@ There are three main user groups that can be identified:
     - User interface must be mobile friendly and support native mobile gestures.
     - Software must be cross-platform and supported on both IOS and Android devices.
     - Inventories must be reliable and up-to-date to prevent invalid orders.
+
+# Data Flow Diagrams
+
+Below are the level 0 and level 1 Data Flow Diagrams for this project. The color of each arrows, proccess, and database depends on the type of information it is dealing with. For example any process that involves the daily report is in pink.
+
+## Legend
+
+: <span style="color:green">Items</span><br/>
+: <span style="color:yellow">Pickup orders</span><br/>
+: <span style="color:blue">Customer accounts</span><br/>
+: <span style="color:red">Restaurant accounts and applications</span><br/>
+: <span style="color:purple">Daily/Weekly reports</span><br/>
+
+# Data Flow Diagram Level 0
+![image info](./DFDs/Equifoods_DFD_0.png)
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+
+# Data Flow Diagram Level 1
+![image info](./DFDs/Equifoods_DFD_1.png)
