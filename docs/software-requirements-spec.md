@@ -1,14 +1,41 @@
 ---
-title=Software Requirements spec
+title: Software Requirements Specification
+subtitle: Equifod Group C
+author:
+  - Riley Comer
+  - Jordan Colledge
+  - Joonsik Kim
+  - Jordan Ribbink
+output: pdf_document
+header-includes: |
+  \usepackage{fancyhdr}
+  \pagestyle{fancy}
+  \fancyhead[R]{Equifood Group C}
+  \fancyhead[L]{\leftmark}
 ---
 
-<!-- This markdown document is designed for rendering via pandoc script provided (render-srs.sh) -->
+<!--
+
+This markdown document is designed for rendering via pandoc script provided (render-srs.sh)
+
+It is NOT compatible with Github-flavoured markdown.
+
+-->
+
+\newpage
 
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
 - [Software Description](#software-description)
+- [User Groups](#user-groups)
+- [Data Flow Diagrams](#data-flow-diagrams)
+  - [Legend](#legend)
+  - [DFD Level 0](#dfd-level-0)
+  - [DFD Level 1](#dfd-level-1)
 - [Schedule](#schedule)
+- [Functional requirements](#functional-requirements)
+- [Non-Functional requirements and environmental constraints](#non-functional-requirements-and-environmental-constraints)
 - [Frameworks, libraries, and database ("Tech Stack")](#frameworks-libraries-and-database-tech-stack)
   - [Client App](#client-app)
   - [Backend](#backend)
@@ -18,13 +45,8 @@ title=Software Requirements spec
   - [Regression Testing](#regression-testing)
   - [Unit testing](#unit-testing)
   - [End-to-end testing](#end-to-end-testing)
-- [User Groups](#user-groups)
-- [Functional requirements](#functional-requirements)
-- [Non-Functional requirements and environmental constraints](#non-functional-requirements-and-environmental-constraints)
-- [Data Flow Diagrams](#data-flow-diagrams)
-  - [Legend](#legend)
-  - [Data Flow Diagram Level 0](#data-flow-diagram-level-0)
-  - [Data Flow Diagram Level 1](#data-flow-diagram-level-1)
+
+\newpage
 
 # Software Description
 
@@ -32,36 +54,109 @@ The EquiFood software is meant as a way to connect consumers with food distribut
 
 A potential option is for the customers to "reserve" the food, and have it removed from the listing so that they can be sure to pick it up. If this direction is taken, the app would notify the restaurant about the reservation, and require a specific timeline from the customer for when they will be able to pick the food up. If the customer does not follow through in that time, the reservation should be removed.
 
+\newpage
+
+# User Groups
+
+There are three main user groups that can be identified:
+
+1. **Administrators**
+
+   Programmers, administration and similar users who need global access to the app and all functions therein.
+
+2. **Businesses**
+
+   Restaurants and other food distribution businesses. This includes groups such as grocery stores, and notably, university food businesses, who may want a centralized way of advertising themselves to students and distributing food that would otherwise go to waste. In short, they should be able to log into the app through the business view to add, edit and remove the products they have available.
+
+3. **The public**
+
+   Low-income families, university students, and anyone else who is looking to help reduce food waste or find savings on food. They should be able to open the app through the user view, and search for specific products or browse the products available near them, so that they can place a reservation on the product.
+
+\newpage
+
+# Data Flow Diagrams
+
+Below are the level 0 and level 1 Data Flow Diagrams for this project. The color of each arrows, proccess, and database depends on the type of information it is dealing with. For example any process that involves the daily report is in pink.
+
+## Legend
+
+- Items \textbf{\textcolor{green}{(green)}}\newline
+- Pickup orders \textbf{\textcolor{yellow}{(yellow)}}\newline
+- Customer accounts \textbf{\textcolor{blue}{(blue)}}\newline
+- Restaurant accounts and applications \textbf{\textcolor{red}{(red)}}\newline
+- Daily/weekly reports \textbf{\textcolor{violet}{(violet)}}\newline
+
+## DFD Level 0
+
+![DFD Level 0](./DFDs/Equifoods_DFD_0.png)
+
+\newpage
+
+## DFD Level 1
+
+![DFD Level 1](./DFDs/Equifoods_DFD_1.png)
+
+\newpage
+
 # Schedule
 
 **Term 1**
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 7: Requirements report + project requirement presentation<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 8: Create settings page<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 9: Create account/admin page, get dummy account working.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 10: Create customer account database and functions.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 11: Create restaurant merchant account database and functions.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 12: Finish up little touches building home screen.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 13: Peer testing report I + video demo (Bug Testing)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 7: Requirements report + project requirement presentation\newline
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 8: Create settings page\newline
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 9: Create account/admin page, get dummy account working.\newline
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 10: Create customer account database and functions.\newline
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 11: Create restaurant merchant account database and functions.\newline
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 12: Finish up little touches building home screen.\newline
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 13: Peer testing report I + video demo (Bug Testing)\newline
 
-This is the bare minimum requirement; homescreen must be working at the minimum.<br>
+This is the bare minimum requirement; homescreen must be working at the minimum.\newline
 
 **Term 2**
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 1: Implement Add / Remove items database.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 2: implement Item history and Item inventory.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 3: Start on Google Maps API to link with restaurants.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 4: Link the description page with google maps.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 5: Make the restaurants list in proximity order.<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 6: Make order confirmation page<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 7: Remove listing upon order confirmation <br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 8: Bug testing / Finishing up touches for peer testing<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 9: Peer testing report II + video demo II (Bug Testing)<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 10: Bug testing / Optional features<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 11: Bug testing / Optional features<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 12: Bug testing / Optional features<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 13: Bug testing / Optional features<br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 14: Final Report + Final Presentation<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 1: Implement Add / Remove items database.\newline
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 2: implement Item history and Item inventory.\newline
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 3: Start on Google Maps API to link with restaurants.\newline
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 4: Link the description page with google maps.\newline
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 5: Make the restaurants list in proximity order.\newline
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 6: Make order confirmation page\newline
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 7: Remove listing upon order confirmation \newline
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 8: Bug testing / Finishing up touches for peer testing\newline
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 9: Peer testing report II + video demo II (Bug Testing)\newline
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 10: Bug testing / Optional features\newline
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 11: Bug testing / Optional features\newline
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 12: Bug testing / Optional features\newline
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 13: Bug testing / Optional features\newline
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Week 14: Final Report + Final Presentation\newline
+
+\newpage
+
+# Functional requirements
+
+- Any user should be able to identify which food and which store to choose from.
+- Merchants in the map view show their distance to the user.
+- The user should not be able to use the system without logging in.
+- Merchant accounts should be able to add, edit and remove items from the database.
+- The Google Map API should be online to use the app.
+- The order will be automatically cancelled depending on how much time was spent. (Ex: `Distance to the store * (on foot || driving) + extra time`)
+- Cooldown of approximately 4 - 5 hours on every successful claim by the user in order to prevent spam.
+- The account will be set up with full name and phone number to limit bot accounts.
+- The admin account should be able to ban/time out any account.
+
+# Non-Functional requirements and environmental constraints
+
+- Programming Languages: Javascript and Typescript
+- User interface must be mobile friendly and support native mobile gestures.
+- Inventories must be reliable and up-to-date to prevent invalid orders.
+- The database should not be directly accessible and modifiable by regular users.
+- More broadly: all users should only have as much database access as is absolutely required. (e.g. none for regular users, access to their entries for merchants)
+- The homescreen should open in under 2 seconds at the slowest.
+- The map should open within 3 seconds, with all pinpoints on the map around the user.
+- Include loading screen as required in order to keep the user experience smooth and clear.
+- The account will require full name and phone number upon signing up, the name is never disclosed, but phone number is shared with the restaurants for quality assurance.
+- There will not be any information stored about the user from the restaurants other than the user ID for order history purposes.
+
+\newpage
 
 # Frameworks, libraries, and database ("Tech Stack")
 
@@ -69,11 +164,11 @@ The EquiFood software necessitates both a frontend, client-facing interface (in 
 
 ## Client App
 
-|                       | Pros                                                                                                                                                                                                                                                                                                         | Cons                                                                                                                                                  |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **React Native**      | - Very familiar language (JavaScript), very mature<br>- Up to 70% of code can be shared across platforms<br>- Can share typings with a Node.js/JS backend<br>- Business logic can be shared with JS backend<br>- Widespread adoption (~15% of top 500 US apps use RN & used by Instagram, Facebook, Walmart) | - Larger bundle size<br>- Slightly lower performance than the latter two options<br>- Bottlenecked performance between worker and UI thread           |
-| Native (Swift/Kotlin) | - Superior performance<br>- Smaller bundle size                                                                                                                                                                                                                                                              | - Not cross platform<br>- Requires knowledge of multiple less-familiar programming languages<br>- Greater learning curve than JavaScript/React Native |
-| Flutter               | - Cross-platform<br>- SDK with prebuilt widgets and components<br>- Robust community support                                                                                                                                                                                                                 | - Large bundle size<br>- Uses unfamiliar and immature programming language (Dart)<br>- Limited ecosystem compared to JavaScript                       |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Pros &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Cons &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **React Native**                                                                                       | - Very familiar language (JavaScript), very mature\newline&nbsp;- Up to 70% of code can be shared across platforms\newline- Can share typings with a Node.js/JS backend\newline- Business logic can be shared with JS backend\newline- Widespread adoption (~15% of top 500 US apps use RN & used by Instagram, Facebook, Walmart) \newline                                     | - Larger bundle size\newline- Slightly lower performance than the latter two options\newline- Bottlenecked performance between worker and UI thread \newline                                                                                                                                                   |
+| Native (Swift/Kotlin)                                                                                  | - Superior performance\newline- Smaller bundle size \newline                                                                                                                                                                                                                                                                                                                    | - Not cross platform\newline- Requires knowledge of multiple less-familiar programming languages\newline- Greater learning curve than JavaScript/React Native \newline                                                                                                                                         |
+| Flutter                                                                                                | - Cross-platform\newline- SDK with prebuilt widgets and components\newline- Robust community support                                                                                                                                                                                                                                                                            | - Large bundle size\newline- Uses unfamiliar and immature programming language (Dart)\newline- Limited ecosystem compared to JavaScript                                                                                                                                                                        |
 
 For the reasons listed above, it seems clear that React Native is the superior option. Development times will be markedly faster than those of a native solution (Swift/Kotlin) and the learning curve will be far easier than that of Flutter/Dart. JavaScript is a very familiar language with a history of several decades and React.js is extremely familiar to any frontend developer.
 
@@ -81,17 +176,23 @@ Additionally, the pairing of JavaScript/TypeScript on both the frontend and back
 
 **React Native** is the clear winner.
 
+\newpage
+
 ## Backend
 
-|            | Pros                                                                                                                                                                                                                                                                                                                                       | Cons                                                                                                                                                                                  |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **NestJS** | - Very opinionated (clear design patterns, structure)<br>- Uses MVC architecture<br>- Built-in features (users, auth, more)<br>- Single language for frontend/backend (JS)<br>- Seamless database integration<br>- Angular-like dependency injection<br>- High performance<br>- Medium learning curve<br>- TypeScript<br>- Highly scalable | - Can potentially be too opinionated<br>- Relatively new/not very mature<br>- Lots of obfuscation (not obvious what certain decorators do)                                            |
-| EspressJS  | - Easy learning curve<br>- High performance<br>- Single language for frontend/backend (JS)                                                                                                                                                                                                                                                 | - Not suitable for large projects<br>- Poor out-of-box security<br>- Limited out-of-box features<br>- No clear design patterns/too open ended and difficult to structure project well |
-| Django     | - Uses MVC architecture<br>- Many built-in features (users, auth, etc.)<br>- Built-in security features (i.e. XSS)<br>- Highly scalable                                                                                                                                                                                                    | - Not suitable for small projects<br>- Monolithic framework<br>- No conventions<br>- Steep learning curve<br>- Different language than frontend                                       |
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Pros&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   | Cons &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **NestJS**                                                                                             | - Very opinionated (clear design patterns, structure), uses MVC architecture\newline- Built-in features (users, auth, more)\newline- Single language for frontend/backend (JS)\newline- Seamless database integration\newline- Angular-like dependency injection\newline- High performance\newline- Medium learning curve\newline- TypeScript\newline- Highly scalable\newline | - Can potentially be too opinionated\newline- Relatively new/not very mature\newline- Lots of obfuscation (not obvious what certain decorators do) \newline                                                                                                                                                        |
+| EspressJS                                                                                              | - Easy learning curve\newline- High performance\newline- Single language for frontend/backend (JS) \newline                                                                                                                                                                                                                                                                    | - Not suitable for large projects\newline- Poor out-of-box security\newline- Limited out-of-box features\newline- No clear design patterns/too open ended and difficult to structure project well \newline                                                                                                         |
+| Django                                                                                                 | - Uses MVC architecture\newline- Many built-in features (users, auth, etc.)\newline- Built-in security features (i.e. XSS)\newline- Highly scalable                                                                                                                                                                                                                            | - Not suitable for small projects\newline- Monolithic framework\newline- No conventions\newline- Steep learning curve\newline- Different language than frontend                                                                                                                                                    |
 
 From the options listed Django and NestJS are likely the strongest contenders. A fully-fledged framework with built in autherntication and REST API support is required for this project. EspressJS would be far to flexibile for a project such as this and would likely lead to a bloated and hard-to-follow project strucure (meaning that if NodeJS was the desired platform, NestJS would be superior).
 
-However, **NestJS** is chosen due to its better support for small to mid sized projects as well as lower level of granulaity. This is ideal for the timeframe presented as minimizing development times is of high priority. Furthermore, while Python is very familiar, using TypeScript for both the frontend and backend is ideal and will further work to reduce development times as well as allow all developers to easily work full-stack.
+However, NestJS is chosen due to its better support for small to mid sized projects as well as lower level of granulaity. This is ideal for the timeframe presented as minimizing development times is of high priority. Furthermore, while Python is very familiar, using TypeScript for both the frontend and backend is ideal and will further work to reduce development times as well as allow all developers to easily work full-stack.
+
+Therefore, **NestJS** is the winner.
+
+\newpage
 
 ## Database
 
@@ -99,7 +200,15 @@ A relational database is required for this project. Becasue the data is very str
 
 For the scope of this project, there is a general indifference regarding which relational database Equifood uses (dataset and number of concurrent queries will be very small).
 
+Two alternatives are **MySQL** and **Postgres**.
+
+MariaDB is faster than MySQL and is open-source. However MariaDB does not support any data masking (but this is outside the scope of Equifood). Open-source is necessary for the Equifood software as it is a community service and will likely be opensource in its entirety.
+
+Postgres and MariaDB are very comparible (and to chose between them for a project of this scale would be pulling hairs), but MariaDB was the choice most familiar to us so it made the most sense to use it given the constraints of development time.
+
 Due to this reason, the **MariaDB** will be the database of choice. It is very easy to configure and couples well with NestJS/TypeORM.
+
+\newpage
 
 # Testing plan
 
@@ -143,63 +252,4 @@ While E2E tests are very effective at spotting bugs, they are very expensive to 
 
 For these reasons, only core functionalities will deserve E2E tests (i.e. authentication, happy path of making order, etc.) but niche functions will not receive these tests.
 
-# User Groups
-
-There are three main user groups that can be identified:
-
-1. **Administrators**
-
-   Programmers, administration and similar users who need global access to the app and all functions therein.
-
-2. **Businesses**
-
-   Restaurants and other food distribution businesses. This includes groups such as grocery stores, and notably, university food businesses, who may want a centralized way of advertising themselves to students and distributing food that would otherwise go to waste. In short, they should be able to log into the app through the business view to add, edit and remove the products they have available.
-
-3. **The public**
-
-   Low-income families, university students, and anyone else who is looking to help reduce food waste or find savings on food. They should be able to open the app through the user view, and search for specific products or browse the products available near them, so that they can place a reservation on the product.
-
-# Functional requirements
-
-- Any user should be able to identify which food and which store to choose from.
-- Merchants in the map view show their distance to the user.
-- The user should not be able to use the system without logging in.
-- Merchant accounts should be able to add, edit and remove items from the database.
-- The Google Map API should be online to use the app.
-- The order will be automatically cancelled depending on how much time was spent. (Ex: Distance to the store \* (on foot || driving) + extra time)
-- Cooldown of approximately 4 - 5 hours on every successful claim by the user in order to prevent spam.
-- The account will be set up with full name and phone number to limit bot accounts.
-- The admin account should be able to ban/time out any account.
-
-# Non-Functional requirements and environmental constraints
-
-- Programming Languages: Javascript and Typescript
-- User interface must be mobile friendly and support native mobile gestures.
-- Inventories must be reliable and up-to-date to prevent invalid orders.
-- The database should not be directly accessible and modifiable by regular users.
-- More broadly: all users should only have as much database access as is absolutely required. (e.g. none for regular users, access to their entries for merchants)
-- The homescreen should open in under 2 seconds at the slowest.
-- The map should open within 3 seconds, with all pinpoints on the map around the user.
-- Include loading screen as required in order to keep the user experience smooth and clear.
-- The account will require full name and phone number upon signing up, the name is never disclosed, but phone number is shared with the restaurants for quality assurance.
-- There will not be any information stored about the user from the restaurants other than the user ID for order history purposes.
-
-# Data Flow Diagrams
-
-Below are the level 0 and level 1 Data Flow Diagrams for this project. The color of each arrows, proccess, and database depends on the type of information it is dealing with. For example any process that involves the daily report is in pink.
-
-## Legend
-
-- <span color="green">Items (green)</span><br>
-- <span color="yellow">Pickup orders (yellow)</span><br>
-- <span color="blue">Customer accounts (blue)</span><br>
-- <span color="red">Restaurant accounts and applications (red)</span><br>
-- <span color="violet">Daily/weekly reports (violet)</span><br>
-
-## Data Flow Diagram Level 0
-
-![image info](./DFDs/Equifoods_DFD_0.png)
-
-## Data Flow Diagram Level 1
-
-![image info](./DFDs/Equifoods_DFD_1.png)
+\newpage

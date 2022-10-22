@@ -1,2 +1,2 @@
 #!/bin/bash 
-pandoc --pdf-engine=pdflatex -V geometry:margin=1in -f gfm+hard_line_breaks -o software-requirements-spec.pdf software-requirements-spec.md
+pandoc --pdf-engine=pdflatex -V geometry:margin=1in -f markdown+hard_line_breaks+autolink_bare_uris+tex_math_single_backslash -o software-requirements-spec.pdf software-requirements-spec.md --to latex
