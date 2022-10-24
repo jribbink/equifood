@@ -37,7 +37,7 @@ It is NOT compatible with Github-flavoured markdown.
 - [Functional requirements](#functional-requirements)
 - [Non-Functional requirements and environmental constraints](#non-functional-requirements-and-environmental-constraints)
 - [Frameworks, libraries, and database ("Tech Stack")](#frameworks-libraries-and-database-tech-stack)
-  - [Client App](#client-app)
+  - [Frontend App](#frontend-app)
   - [Backend](#backend)
   - [Database](#database)
 - [Testing plan](#testing-plan)
@@ -45,6 +45,7 @@ It is NOT compatible with Github-flavoured markdown.
   - [Regression Testing](#regression-testing)
   - [Unit testing](#unit-testing)
   - [End-to-end testing](#end-to-end-testing)
+- [Questions & Answers](#questions--answers)
 
 \newpage
 
@@ -162,7 +163,7 @@ This is the bare minimum requirement; homescreen must be working at the minimum.
 
 The EquiFood software necessitates both a frontend, client-facing interface (in the form of a mobile app) and a backend API responsible for software business logic. Additionally, this backend API must be paired with some form of relational database.
 
-## Client App
+## Frontend App
 
 | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Pros &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | Cons &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |
 | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -253,3 +254,99 @@ While E2E tests are very effective at spotting bugs, they are very expensive to 
 For these reasons, only core functionalities will deserve E2E tests (i.e. authentication, happy path of making order, etc.) but niche functions will not receive these tests.
 
 \newpage
+
+# Questions & Answers
+
+- **How do you plan to allow users to sort between different types of food?**
+  There is no official roadmap for this. The client was quite adamant on this being an agnostic catalog - he did not seem to want any categorization of our items. While we think it is a beneficial feature, we have no choice but to do as the client intends currently and raise this issue to him when it necessitates itself.
+
+- **Are you going to develop each version (android ios pc) at the same time?**
+  This is correct - there will be no PC version. It will only be a React Native mobile app. The majority of code will be shared and only small adaptations will be required per device target. Adding PC target in the future is an option.
+
+- **The DFD 0 is a little too complicated and should have some details moved to the DFD 1**
+  We tend to agree on this and have simplified DFD level 0.
+
+- **What are your budget constraints?**
+  We have essentially a budget of $0 as our client is a UBC student. While he can request funding it is very nuanced and we realisitcally don't need a budget if this will only be deployed locally (everything is open-source/free as far as tooling goes)
+
+- **What criteria is there to approve a restaurant for an account?**
+  This is a business constraint which is outside of our domain.
+
+- **The DFD's are difficult to grasp, and it would be great if you broke it down.**
+  Agreed. Has been done.
+
+- **What's Jest?**
+  Jest is a JavaScript testing framework by Facebook and the most common JS testing framework used for unit tests.
+
+- **Will the weekly report be emailed to admins or sent through another medium?**
+  Yes reports will be emailed and be visible through the administrative page.
+
+- **Will it track what restaurants are the highest donors on the app?**
+  Yes this will be part of weekly report.
+
+- **One of mongoDB’s problems is how it lacks support for mobile applications and might need customized codes for the app to sync properly with the server? Have your team considered this potential issue?**
+
+  1. We are not using MongoDB, we are using MariaDB.
+  2. If this question is with regards to realtime updates, yes we have considered this issue. We will have to build out websockets in order to dispatch realtime updates. This is necessary for push notifications as well.
+
+- **Will you use a UI Library**
+  We will use [NativeBase](https://nativebase.io/). Will speed up development time and we have no UI/UX person, so making anything look nice without would be hard.
+
+- **Adding many different foods can be time-consuming**
+  This is a business requirement. The merchant adds what they want. We have no say in how this part of the App operates.
+
+- **Will there be a date showing when the food goes bad online? May forget to take a food listing down**
+  Great idea. Foods will default to expiry at end of day and can be configured for otherwise if desired.
+
+- **May be a bit too much given the constraints and timeline to complete by**
+  I think you are right. But we never got to choose this project, our client is a UBC student with no knowledge of software engineering or project management, and we need to do it to graduate. I offer my condolances to the other two equifood groups.
+
+- **For the food items that will have a cost, will the money go to Equifood or the restaurant?**
+  Restaurant. Equifood makes no profit.
+
+- **Will there be a cancellation fee for users who do not pick up their food?**
+  There is no way to enforce this as Equifood does not process payments
+
+- **Will there be something implemented to ensure the food posted is safe to consume? Maybe it will be beneficial to add a blurb on food safety for the specific post.**
+  This is probably smart from a liability standpoint. Again. Business requirement which has not been thought out and we have no say over.
+
+- **Use a laser pointer when explaining diagram. The digram was hard to follow at points both in terms of complexity and visually. How can businesses find out about the app could it be a feature?**
+  We are not responsible for marketing and partnerships.
+
+- **What is your budget? Where are you hosting the app? Why did you pick relational over nonrelational databases? What proof of enrollment would be required for a restaurant to join the app?**
+  $0 budget, as already mentioned. No hosting because it has to run locally.
+
+- **In your presentation, there didn’t seem to be a mention of whether you are planning to build the app for iOS native or Android native. Has one been decided yet or do you plan to do both?**
+  For both, using React Native.
+
+- **Can users make payments directly online? Since there were mentions about the donations, it is quite unclear what 'donations' mean in this case.**
+  No payment processing.
+
+- **How are you guys going to enforce security for the transactions on your app?**
+  No transactions. Will use JWT for authentication of users.
+- **Project never elaborated on the budget of the developement**
+  $0
+
+- **Are there any approval processes for a restaurant? Are there criterias to be met?**
+  This is a business decision for the client. We will just implement functionality to submit application.
+
+- **Will delivery service be implemented in the future?**
+  Not that we know of.
+
+- **Can a customer be notified if their order is removed?**
+  Yes everything will be realtime and they will know about cancellations.
+
+- **When the user looks for food around them, how will you filter the food? Dietary restrictions, type of food (like SkipTheDishes)?**
+  This is outside of the scope of this project
+
+- **How will the restaurant be notified? By email, by notification, or only in the app if they look at the food donation they posted?**
+  Will need a merchant-facing app.
+
+- **Will restaurants be able to see how much food was reduced by other nearby restaurants, or will that information be private?**
+  We are not sure yet, this is something we will have to consult the client about.
+
+- **Are all group members comfortable with the chosen tech stack? Would a lack of knowledge cause issues down the road during development? (constraints/risks)**
+  Learning curve isn't too bad and they are reading documentation currently. It was the best choice available.
+
+- **Good description of the problem and idea. How do people apply, do you need an account or is it just anyone? With having to make a restaurant add or remove items, it may be hard for them to add items if stock is constantly rotating. Is there any way to set an inventory mode or quantity? Are the daily reports made automatically or does someone have to manually make it. Like the other Equi Food projects it would be great to see some design ideas. Tech stack seems very well thought out. Overall seems good but make sure you have a design beforehand.**
+  Ultimately people will apply through a web form. In the short term, they will apply by emailing administrators. 100% there will be quantities associated with all items. Daily reports are automatic.
