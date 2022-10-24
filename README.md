@@ -7,14 +7,13 @@ This is a capstone (COSC 499) project for the Equifood App.
 ### Installation & Configuration
 
 1. Install [Node JS](https://nodejs.org/en/) v16 or later
-2. Run `npm install` in `backend` and `frontend` directories
+2. Run `npm install`
 3. Install and configure [MariaDB](https://mariadb.org/)
-4. Create a configuration file `.env` in the `backend` directory (use `example.env` for reference)
+4. Create a configuration file `.env` in the `apps/equifood-api` directory (use `example.env` for reference)
 
 ### Development
 
-1. Run backend using `npm run start` in `backend` directory
-2. Run frontend using `npm run start` in `frontend` directory
+Apps can be served using `nx serve APP_NAME` command.
 
 ### Testing
 
