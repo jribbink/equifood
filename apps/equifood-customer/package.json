@@ -8,7 +8,13 @@
     "react-native": "*",
     "expo": "*",
     "react-native-svg": "*",
-    "react-native-web": "*"
+    "react-native-web": "*",
+    "@nrwl/expo": "*",
+    "@expo/metro-config": "*",
+    "react": "*",
+    "@expo/webpack-config": "*",
+    "native-base": "*",
+    "@equifood/api-interfaces": "*"
   },
   "scripts": {
     "eas-build-pre-install": "cd ../../ && cp package-lock.json ./apps/equifood-customer/",
