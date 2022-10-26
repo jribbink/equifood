@@ -8,7 +8,8 @@
     "noEmit": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "strict": true
+    "strict": true,
+    "typeRoots": ["src/types"]
   },
   "files": ["../../node_modules/@nrwl/expo/typings/svg.d.ts"],
   "include": [],

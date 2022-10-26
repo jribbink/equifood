@@ -14,7 +14,11 @@
     "react": "*",
     "@expo/webpack-config": "*",
     "native-base": "*",
-    "@equifood/api-interfaces": "*"
+    "@equifood/api-interfaces": "*",
+    "@reduxjs/toolkit": "*",
+    "react-redux": "*",
+    "dotenv": "*",
+    "@expo/config-types": "*"
   },
   "scripts": {
     "eas-build-pre-install": "cd ../../ && cp package-lock.json ./apps/equifood-customer/",
