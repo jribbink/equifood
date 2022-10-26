@@ -8,7 +8,18 @@
     "react-native": "*",
     "expo": "*",
     "react-native-svg": "*",
-    "react-native-web": "*"
+    "react-native-web": "*",
+    "@nrwl/expo": "*",
+    "@expo/metro-config": "*",
+    "react": "*",
+    "@expo/webpack-config": "*",
+    "native-base": "*",
+    "@equifood/api-interfaces": "*",
+    "@reduxjs/toolkit": "*",
+    "react-redux": "*",
+    "dotenv": "*",
+    "@expo/config-types": "*",
+    "axios": "*"
   },
   "scripts": {
     "eas-build-pre-install": "cd ../../ && cp package-lock.json ./apps/equifood-customer/",

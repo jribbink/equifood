@@ -58,3 +58,6 @@ apps/equifood-merchant-e2e/artifacts
 
 # Next.js
 .next
+
+# .env configs
+.env
