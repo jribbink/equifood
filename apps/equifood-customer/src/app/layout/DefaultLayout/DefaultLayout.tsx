@@ -8,18 +8,34 @@ interface Props {
   children?: ReactNode;
 }
 
-function HomeScreen() {
+function RestaurantsScreen() {
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home!</Text>
+      <Text>List Restaurants here</Text>
     </SafeAreaView>
   );
 }
 
-function SettingsScreen() {
+function MapScreen() {
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
+      <Text>Implement a Google map api here</Text>
+    </SafeAreaView>
+  );
+}
+
+function OrdersScreen() {
+  return (
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>List order history here</Text>
+    </SafeAreaView>
+  );
+}
+
+function AccountsScreen() {
+  return (
+    <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>List account info and settings here</Text>
     </SafeAreaView>
   );
 }
@@ -33,8 +49,10 @@ function DefaultLayout({ children }: Props) {
         {children}
         <NavigationContainer>
           <Tab.Navigator>
-            <Tab.Screen name="Home" component={HomeScreen} />
-            <Tab.Screen name="Settings" component={SettingsScreen} />
+            <Tab.Screen name="Restaurants" component={RestaurantsScreen} />
+            <Tab.Screen name="Map" component={MapScreen} />
+            <Tab.Screen name="Orders" component={OrdersScreen} />
+            <Tab.Screen name="Accounts" component={AccountsScreen} />
           </Tab.Navigator>
         </NavigationContainer>
       </Box>
