@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EntityClassOrSchema } from '@nestjs/typeorm/dist/interfaces/entity-class-or-schema.type';
-import entities from '../src/app/database/entities';
+import entities from '../app/database/entities';
 
 export const TypeOrmSqlLiteTestingModule = (
   feature: EntityClassOrSchema | EntityClassOrSchema[]

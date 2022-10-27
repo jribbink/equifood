@@ -6,6 +6,7 @@ import { Merchant } from '@equifood/api-interfaces';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { getMerchants } from '../../redux/slices/merchant-slice';
 import { AppDispatch, RootState } from '../../redux/store';
+import { View } from 'react-native';
 
 const Home = () => {
   const store = useStore<RootState>();
@@ -20,14 +21,10 @@ const Home = () => {
   }, [dispatch]);
 
   return (
-    <ScrollView data-testID="heading">
+    <ScrollView>
       <VStack space={3} paddingX={2}>
         {merchants.map((merchant) => (
-          <MerchantCard
-            data-foo="heading"
-            merchant={merchant}
-            key={merchant.id}
-          ></MerchantCard>
+          <MerchantCard merchant={merchant} key={merchant.id}></MerchantCard>
         ))}
       </VStack>
     </ScrollView>
