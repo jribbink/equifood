@@ -7,7 +7,7 @@ import axios from 'axios';
 import appConfig from './app-config';
 
 import { Provider as ReduxProvider } from 'react-redux';
-import { store } from './redux/store';
+import { setupStore } from './redux/store';
 
 const App = () => {
   useEffect(() => {
@@ -15,7 +15,7 @@ const App = () => {
   }, []);
 
   return (
-    <ReduxProvider store={store}>
+    <ReduxProvider store={setupStore()}>
       <NativeBaseProvider>
         <DefaultLayout>
           <Home></Home>
