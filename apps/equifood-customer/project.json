@@ -37,7 +37,10 @@
     },
     "build": {
       "executor": "@nrwl/expo:build",
-      "options": {}
+      "options": {
+        "local": true,
+        "platform": "android"
+      }
     },
     "build-list": {
       "executor": "@nrwl/expo:build-list",
@@ -55,14 +58,20 @@
     },
     "build-android": {
       "executor": "@nrwl/expo:build-android",
-      "options": {}
+      "options": {
+        "platform": "andoroid",
+        "local": true
+      }
     },
     "build-web": {
       "executor": "@nrwl/expo:build-web",
-      "options": {}
+      "options": {
+        "platform": "web",
+        "local": true
+      }
     },
     "build-status": {
-      "executor": "@nrwl/expo:build-web",
+      "executor": "@nrwl/expo:build-status",
       "options": {}
     },
     "sync-deps": {
