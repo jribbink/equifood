@@ -20,10 +20,14 @@ const Home = () => {
   }, [dispatch]);
 
   return (
-    <ScrollView>
+    <ScrollView data-testID="heading">
       <VStack space={3} paddingX={2}>
         {merchants.map((merchant) => (
-          <MerchantCard merchant={merchant} key={merchant.id}></MerchantCard>
+          <MerchantCard
+            data-foo="heading"
+            merchant={merchant}
+            key={merchant.id}
+          ></MerchantCard>
         ))}
       </VStack>
     </ScrollView>
