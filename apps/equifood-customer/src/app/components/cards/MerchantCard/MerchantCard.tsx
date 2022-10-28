@@ -7,8 +7,10 @@ interface Props {
 
 const RestuarantCard = ({ merchant }: Props) => {
   return (
-    <Box alignSelf="stretch" bg="primary.500">
-      <Text alignSelf="center">{merchant.name}</Text>
+    <Box testID="merchant-card" alignSelf="stretch" bg="primary.500">
+      <Text alignSelf="center" testID="merchant-name">
+        {merchant.name}
+      </Text>
     </Box>
   );
 };
