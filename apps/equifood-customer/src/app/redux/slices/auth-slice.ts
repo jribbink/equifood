@@ -4,14 +4,14 @@ import axios from 'axios';
 
 export const authenticate = createAsyncThunk(
   'auth/authenticate',
-  async (email, password) => {
-    const response = await axios.post('/auth/login', {"email": email, "password": password});
+  async (opts: {email: string, pw: string}) => {
+    const response = await axios.post('/auth/login', {"email": opts.email, "password": opts.pw});
     return response.data;
   }
 );
 
 interface AuthState {
-  jwt: String;
+  jwt: string;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error?: string;
   expires?: Date;

@@ -29,7 +29,7 @@ const Login = () => {
     },
   ]);
 
-  const [un, onChangeUsername] = useState("");
+  const [email, onChangeUsername] = useState("");
   const [pw, onChangePassword] = useState("");
 
   const styles = StyleSheet.create({
@@ -50,12 +50,12 @@ const Login = () => {
       </VStack>
       <SafeAreaView>
         <Text style={{padding: 10, fontSize: 24}}>
-          Username
+          Login
         </Text>
         <TextInput
           style={styles.input}
           onChangeText={onChangeUsername}
-          value={un}
+          value={email}
         />
         <Text style={{padding: 10, fontSize: 24}}>
           Password
@@ -68,7 +68,7 @@ const Login = () => {
         />
       </SafeAreaView>
 
-      <Button title="Login" onPress={() => (dispatch(authenticate(un, pw)))} color="#841584" accessibilityLabel="Learn more about this purple button" />
+      <Button title="Login" onPress={() => {dispatch(authenticate({email, pw}))}} color="#841584" />
       
     </ScrollView>
   );
