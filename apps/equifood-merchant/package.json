@@ -8,10 +8,7 @@
     "react-native": "*",
     "expo": "*",
     "react-native-svg": "*",
-    "react-native-web": "*",
-    "@nrwl/expo": "*",
-    "@expo/metro-config": "*",
-    "react": "*"
+    "react-native-web": "*"
   },
   "scripts": {
     "eas-build-pre-install": "cd ../../ && cp package-lock.json ./apps/equifood-merchant/",
