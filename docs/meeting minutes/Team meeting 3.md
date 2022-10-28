@@ -1,5 +1,7 @@
 Oct 11 2022
+
 # Meeting Minutes Equifoods C
+
 -Discussed what we were missing and need in the slides.
 
 -Discused to do our recordings on thursday and friday.

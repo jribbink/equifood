@@ -1,5 +1,7 @@
 Sept 28
+
 # Meeting minutes Equifoods C
+
 -Everyone has read the email given to us and have discussed it.
 
 -We have delegated tasks for the Requirements report.

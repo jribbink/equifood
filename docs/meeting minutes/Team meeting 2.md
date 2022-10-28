@@ -1,5 +1,7 @@
 Oct 11 2022
+
 # Meeting Minutes Equifoods C
+
 -Discussed Future timeline and milestones.
 
 -Discussed Weekly tasks for requirements report as well as dates due. (Due friday but

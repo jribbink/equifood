@@ -1,6 +1,9 @@
 October 23, 2022
+
 # Meeting Minutes 5
+
 ## What needs to be done this week:
+
 -We need to read documentation on react and nest.js. -Everyone
 
 -Create figma for customer app. -Riley C
