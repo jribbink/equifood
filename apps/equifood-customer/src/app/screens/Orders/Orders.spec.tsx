@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { render } from '@testing-library/react-native';
 
-import Home from './Home';
+import Orders from './Orders';
 
 test('renders correctly', () => {
-  const { getByTestId } = render(<Home />);
+  const { getByTestId } = render(<Orders />);
   expect(getByTestId('heading')).toHaveTextContent('Welcome');
 });

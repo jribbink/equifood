@@ -15,7 +15,6 @@ const App = () => {
     <>
       <NativeBaseProvider>
         <DefaultLayout>
-          <Home></Home>
         </DefaultLayout>
       </NativeBaseProvider>
     </>

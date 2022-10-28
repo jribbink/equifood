@@ -4,7 +4,7 @@ import { VStack, ScrollView } from 'native-base';
 import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
 import { Merchant } from '@equifood/api-interfaces';
 
-const Home = () => {
+const Account = () => {
   const [merchants, setMerchants] = useState<Merchant[]>([
     {
       id: '1',
@@ -34,4 +34,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Account;
