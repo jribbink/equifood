@@ -19,10 +19,7 @@
     "react-redux": "*",
     "dotenv": "*",
     "@expo/config-types": "*",
-    "axios": "*",
-    "expo-constants": "*",
-    "@jest/globals": "*",
-    "@testing-library/react": "*"
+    "axios": "*"
   },
   "scripts": {
     "eas-build-pre-install": "cd ../../ && cp package-lock.json ./apps/equifood-customer/",
