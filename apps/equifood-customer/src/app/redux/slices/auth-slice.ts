@@ -2,10 +2,10 @@ import { Merchant } from '@equifood/api-interfaces';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const getMerchants = createAsyncThunk(
-  'merchants/getMerchants',
-  async () => {
-    const response = await axios.get('/merchants');
+export const authenticate = createAsyncThunk(
+  'auth/authenticate',
+  async (email, password) => {
+    const response = await axios.post('/auth/login', {"email": email, "password": password});
     return response.data;
   }
 );
@@ -14,6 +14,7 @@ interface AuthState {
   jwt: String;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error?: string;
+  expires?: Date;
 }
 
 const initialState: AuthState = {
@@ -21,29 +22,30 @@ const initialState: AuthState = {
   status: 'idle'
 };
 
-export const merchantSlice = createSlice({
-  name: 'merchants',
+export const authSlice = createSlice({
+  name: 'auth',
   initialState,
   reducers: {
-    addMerchants(state, action) {
-      //state.merchants.push(action.payload);
+    logout(state,action){
+        state.jwt = "";
     },
   },
   extraReducers(builder) {
-    builder.addCase(getMerchants.pending, (state, action) => {
+    builder.addCase(authenticate.pending, (state, action) => {
       state.status = 'loading';
     });
-    builder.addCase(getMerchants.fulfilled, (state, action) => {
+    builder.addCase(authenticate.fulfilled, (state, action) => {
       state.status = 'succeeded';
-      //state.merchants = [...action.payload];
+      state.jwt = action.payload.access_token;
+      state.expires = action.payload.expires; 
     });
-    builder.addCase(getMerchants.rejected, (state, action) => {
+    builder.addCase(authenticate.rejected, (state, action) => {
       state.status = 'failed';
       state.error = action.error.message;
     });
   },
 });
 
-export const { addMerchants } = merchantSlice.actions;
+export const { logout } = authSlice.actions;
 
-export default merchantSlice.reducer;
+export default authSlice.reducer;

@@ -6,9 +6,11 @@ import {
   ThunkAction,
 } from '@reduxjs/toolkit';
 import merchantReducer from './slices/merchant-slice';
+import authReducer from './slices/auth-slice';
 
 const rootReducer = combineReducers({
   merchants: merchantReducer,
+  auth: authReducer,
 });
 
 export const setupStore = (preloadedState?: PreloadedState<RootState>) =>
