@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { VStack, ScrollView } from 'native-base';
 import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
@@ -6,7 +6,6 @@ import { Merchant } from '@equifood/api-interfaces';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { getMerchants } from '../../redux/slices/merchant-slice';
 import { AppDispatch, RootState } from '../../redux/store';
-import { View } from 'react-native';
 
 const Home = () => {
   const store = useStore<RootState>();

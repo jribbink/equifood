@@ -1,4 +1,3 @@
-import { Merchant } from '@equifood/api-interfaces';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
