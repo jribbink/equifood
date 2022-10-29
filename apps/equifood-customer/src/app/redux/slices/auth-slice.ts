@@ -3,8 +3,11 @@ import axios from 'axios';
 
 export const authenticate = createAsyncThunk(
   'auth/authenticate',
-  async (opts: {email: string, pw: string}) => {
-    const response = await axios.post('/auth/login', {"email": opts.email, "password": opts.pw});
+  async (opts: { email: string; pw: string }) => {
+    const response = await axios.post('/auth/login', {
+      email: opts.email,
+      password: opts.pw,
+    });
     return response.data;
   }
 );
@@ -17,16 +20,16 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  jwt: "",
-  status: 'idle'
+  jwt: '',
+  status: 'idle',
 };
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logout(state,action){
-        state.jwt = "";
+    logout(state, action) {
+      state.jwt = '';
     },
   },
   extraReducers(builder) {
@@ -36,7 +39,7 @@ export const authSlice = createSlice({
     builder.addCase(authenticate.fulfilled, (state, action) => {
       state.status = 'succeeded';
       state.jwt = action.payload.access_token;
-      state.expires = action.payload.expires; 
+      state.expires = action.payload.expires;
     });
     builder.addCase(authenticate.rejected, (state, action) => {
       state.status = 'failed';
