@@ -30,7 +30,7 @@ const Orders = () => {
           <MerchantCard merchant={merchant} key={merchant.id}></MerchantCard>
         ))}
       </VStack>
-      <Text testid='heading'> Welcome </Text>
+      <Text testid="heading"> Welcome </Text>
     </ScrollView>
   );
 };

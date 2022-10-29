@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 
-import { VStack, ScrollView, Text} from 'native-base';
+import { VStack, ScrollView, Text } from 'native-base';
 import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
 import { Merchant } from '@equifood/api-interfaces';
 
@@ -30,7 +30,7 @@ const Map = () => {
           <MerchantCard merchant={merchant} key={merchant.id}></MerchantCard>
         ))}
       </VStack>
-      <Text testid='heading'> Welcome </Text>
+      <Text testid="heading"> Welcome </Text>
     </ScrollView>
   );
 };
