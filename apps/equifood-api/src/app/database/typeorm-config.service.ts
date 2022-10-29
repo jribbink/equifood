@@ -34,7 +34,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         ssl: this.configService.get('database.sslEnabled')
           ? {
               rejectUnauthorized: this.configService.get(
-                'database.rejectUnauthorized',
+                'database.rejectUnauthorized'
               ),
               ca: this.configService.get('database.ca') ?? undefined,
               key: this.configService.get('database.key') ?? undefined,

@@ -1,19 +1,31 @@
 import { Box, Text } from 'native-base';
 import { ReactNode } from 'react';
 import { SafeAreaView } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Home from '../../screens/Home/Home';
+import Map from '../../screens/Map/Map';
+import Orders from '../../screens/Orders/Orders';
+import Account from '../../screens/Account/Account';
 
 interface Props {
   children?: ReactNode;
 }
 
+const Tab = createBottomTabNavigator();
+
 function DefaultLayout({ children }: Props) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Box flex={1}>
-        {children}
-        <Box bgColor="green.400">
-          <Text>This is where navigation needs to go...</Text>
-        </Box>
+        <NavigationContainer>
+          <Tab.Navigator>
+            <Tab.Screen name="Restaurants" component={Home} />
+            <Tab.Screen name="Map" component={Map} />
+            <Tab.Screen name="Orders" component={Orders} />
+            <Tab.Screen name="Accounts" component={Account} />
+          </Tab.Navigator>
+        </NavigationContainer>
       </Box>
     </SafeAreaView>
   );
