@@ -10,12 +10,12 @@ import ms from 'ms';
 export class AuthService {
   constructor(
     private userService: UsersService,
-    private jwtService: JwtService,
+    private jwtService: JwtService
   ) {}
 
   async validateUser(
     fields: FindOptionsWhere<User>,
-    password: string,
+    password: string
   ): Promise<User> {
     const user = await this.userService.findOne(fields);
     if (!user) return null;

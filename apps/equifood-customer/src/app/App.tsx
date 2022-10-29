@@ -17,8 +17,7 @@ const App = () => {
   return (
     <ReduxProvider store={setupStore()}>
       <NativeBaseProvider>
-        <DefaultLayout>
-        </DefaultLayout>
+        <DefaultLayout></DefaultLayout>
       </NativeBaseProvider>
     </ReduxProvider>
   );
