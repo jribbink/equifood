@@ -1,21 +1,30 @@
-import React, {  useState } from 'react';
+import React, { useState } from 'react';
 
 import { ScrollView } from 'native-base';
-import { Button, Text, SafeAreaView, StyleSheet, TextInput } from "react-native";
-import { authenticate} from '../../redux/slices/auth-slice';
+import {
+  Button,
+  Text,
+  SafeAreaView,
+  StyleSheet,
+  TextInput,
+} from 'react-native';
+import { authenticate } from '../../redux/slices/auth-slice';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
+import { Provider as ReduxProvider } from 'react-redux';
+import { setupStore } from '../../redux/store';
+import { NativeBaseProvider } from 'native-base';
 
 const Login = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const store = useStore<RootState>();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const [email, onChangeUsername] = useState("");
-  const [pw, onChangePassword] = useState("");
+  const [email, onChangeUsername] = useState('');
+  const [pw, onChangePassword] = useState('');
 
-  const jwt = useSelector<RootState, string>(
-    () => store.getState().auth.jwt
-  );
+  const jwt = useSelector<RootState, string>(() => store.getState().auth.jwt);
+
+  //hi
 
   const styles = StyleSheet.create({
     input: {
@@ -27,33 +36,38 @@ const Login = () => {
   });
 
   return (
-    <ScrollView style={{justifyContent: "center"}}>
-      <Text style={{padding: 10, fontSize: 24}}>
-        Login
-      </Text>
-      <SafeAreaView>
-        <Text style={{padding: 10, fontSize: 24}}>
-          Login
-        </Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeUsername}
-          value={email}
-        />
-        <Text style={{padding: 10, fontSize: 24}}>
-          Password
-        </Text>
-        <TextInput
-          secureTextEntry={true}
-          style={styles.input}
-          onChangeText={onChangePassword}
-          value={pw}
-        />
-      </SafeAreaView>
+    <ReduxProvider store={setupStore()}>
+      <NativeBaseProvider>
+        <ScrollView style={{ justifyContent: 'center' }}>
+          <Text style={{ padding: 10, fontSize: 24 }}>Login</Text>
+          <SafeAreaView>
+            <Text testID="login" style={{ padding: 10, fontSize: 24 }}>
+              Login
+            </Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={onChangeUsername}
+              value={email}
+            />
+            <Text style={{ padding: 10, fontSize: 24 }}>Password</Text>
+            <TextInput
+              secureTextEntry={true}
+              style={styles.input}
+              onChangeText={onChangePassword}
+              value={pw}
+            />
+          </SafeAreaView>
 
-      <Button title="Login" onPress={() => {dispatch(authenticate({email, pw}))}} color="#841584" />
-      
-    </ScrollView>
+          <Button
+            title="Login"
+            onPress={() => {
+              dispatch(authenticate({ email, pw }));
+            }}
+            color="#841584"
+          />
+        </ScrollView>
+      </NativeBaseProvider>
+    </ReduxProvider>
   );
 };
 
