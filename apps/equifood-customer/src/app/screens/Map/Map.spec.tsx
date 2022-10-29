@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render } from '@testing-library/react-native';
+import { render } from '../../../test-utils/render';
 
 import Map from './Map';
 
