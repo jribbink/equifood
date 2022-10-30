@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
-
-import { NativeBaseProvider } from 'native-base';
-import Home from './screens/Home/Home';
-import Login from './screens/Login/Login';
-import DefaultLayout from './layout/DefaultLayout/DefaultLayout';
+import { Box, NativeBaseProvider } from 'native-base';
 import axios from 'axios';
 import appConfig from './app-config';
 
 import { Provider as ReduxProvider } from 'react-redux';
 import { setupStore } from './redux/store';
+import { SafeAreaView } from 'react-native';
+import Root from './layouts/Root/Root';
+
+const store = setupStore();
 
 const App = () => {
   useEffect(() => {
@@ -16,11 +16,13 @@ const App = () => {
   }, []);
 
   return (
-    <ReduxProvider store={setupStore()}>
+    <ReduxProvider store={store}>
       <NativeBaseProvider>
-        <DefaultLayout>
-          <Login></Login>
-        </DefaultLayout>
+        <SafeAreaView style={{ flex: 1 }}>
+          <Box flex={1}>
+            <Root></Root>
+          </Box>
+        </SafeAreaView>
       </NativeBaseProvider>
     </ReduxProvider>
   );
