@@ -28,11 +28,12 @@ jobs:
       # build step needs to be configured locally for all platforms (run in parallel?) instead of using EAS (expo acct)
       # - run: npx nx affected --base=origin/master --target=build --parallel=3
 
+      - run: mkdir ./coverage
       - name: Comment Code Coverage on PR
         uses: dkhunt27/nx-code-coverage@v0.3.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          coverage-folder: ../coverage
+          coverage-folder: ./coverage
           coverage-base-folder: ./coverage-base
           gist-token: ${{ secrets.CODE_COV_GITHUB }}
           gist-id: 7129b81deb4f12f274575a7ae9e8bda3
