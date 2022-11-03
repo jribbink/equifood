@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { ScrollView } from 'native-base';
+import { ScrollView, View } from 'native-base';
 import {
   Button,
   Text,
@@ -11,9 +11,9 @@ import {
 import { authenticate } from '../../redux/slices/auth-slice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
-import { useIsFocused } from '@react-navigation/native';
+import { Testable } from '../../../test-utils/testable';
 
-const Login = () => {
+const Login = (_: Testable) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [email, setEmail] = useState('');
@@ -28,10 +28,8 @@ const Login = () => {
     },
   });
 
-  const isFocused = useIsFocused();
-
   return (
-    <ScrollView testID={isFocused ? 'login-screen' : undefined}>
+    <ScrollView testID="login-screen">
       <Text style={{ padding: 10, fontSize: 24 }}>Login</Text>
       <SafeAreaView>
         <Text testID="login" style={{ padding: 10, fontSize: 24 }}>

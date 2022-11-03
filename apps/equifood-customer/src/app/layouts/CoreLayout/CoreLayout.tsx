@@ -5,18 +5,18 @@ import Home from '../../screens/Home/Home';
 import Map from '../../screens/Map/Map';
 import Orders from '../../screens/Orders/Orders';
 import Account from '../../screens/Account/Account';
-import { Box } from 'native-base';
+import { View } from 'native-base';
+import { Testable } from '../../../test-utils/testable';
 
-interface Props {
+interface Props extends Testable {
   children?: ReactNode;
 }
 
 const Tab = createBottomTabNavigator();
 
 function CoreLayout({ children }: Props) {
-  const isFocused = useIsFocused();
   return (
-    <Box testID={isFocused ? 'core-layout' : undefined}>
+    <View flex={1} testID="core-layout">
       <NavigationContainer independent={true}>
         <Tab.Navigator>
           <Tab.Screen name="Restaurants" component={Home} />
@@ -25,7 +25,7 @@ function CoreLayout({ children }: Props) {
           <Tab.Screen name="Accounts" component={Account} />
         </Tab.Navigator>
       </NavigationContainer>
-    </Box>
+    </View>
   );
 }
 

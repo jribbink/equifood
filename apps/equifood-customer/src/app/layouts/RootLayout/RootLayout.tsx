@@ -1,57 +1,93 @@
-import axios from 'axios';
-import React, { useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { useNavigationContainerRef } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useStore } from 'react-redux';
 import { RootState } from '../../redux/store';
-import appConfig from '../../app-config';
 
 import Login from '../../screens/Login/Login';
 import CoreLayout from '../CoreLayout/CoreLayout';
-
-const Stack = createStackNavigator();
+import { Animated, Dimensions } from 'react-native';
 
 const RootLayout = () => {
-  useEffect(() => {
-    axios.defaults.baseURL = appConfig.apiUrl;
-  }, []);
-
   const store = useStore<RootState>();
   const jwt = useSelector<RootState, string>(() => store.getState().auth.jwt);
+  const [loggedIn, setLoggedIn] = useState(jwt !== '');
+  useEffect(() => {
+    setLoggedIn(jwt !== '');
+  }, [jwt]);
 
-  const navigationRef = useNavigationContainerRef();
+  const [showLogin, setShowLogin] = useState(false);
+  const [showCore, setShowCore] = useState(false);
+  const topLogin = useState(new Animated.Value(0))[0];
+  const topCore = useState(new Animated.Value(0))[0];
 
   useEffect(() => {
-    let target = '';
-    if (jwt !== '') target = 'core';
-    else target = 'login';
+    if (!showLogin && !showCore) {
+      if (loggedIn) {
+        setShowCore(true);
+      } else {
+        setShowLogin(true);
+      }
+    } else {
+      setShowLogin(true);
+      setShowCore(true);
 
-    console.log('HELLO JWT', jwt);
+      const candidatesShow: [boolean, React.Dispatch<boolean>][] = [
+        [showLogin, setShowLogin],
+        [showCore, setShowCore],
+      ];
+      const candidatesTop: Animated.Value[] = [topLogin, topCore];
+      const [, setShowOther] = candidatesShow[Number(!loggedIn)];
+      const topTarget = candidatesTop[Number(loggedIn)];
+      const topOther = candidatesTop[Number(!loggedIn)];
 
-    if (navigationRef.getCurrentRoute()?.name !== target)
-      navigationRef.navigate(target as never);
-  }, [jwt, navigationRef]);
+      topOther.setValue(0);
+      topTarget.setValue(Dimensions.get('window').height);
+
+      Animated.timing(topTarget, {
+        toValue: 0,
+        duration: 750,
+        useNativeDriver: true,
+      }).start(() => {
+        setShowOther(false);
+      });
+    }
+
+    if (loggedIn && showLogin) return;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loggedIn]);
 
   return (
-    <NavigationContainer ref={navigationRef}>
-      <Stack.Navigator
-        screenOptions={{
-          headerShown: false,
-        }}
-      >
-        <Stack.Screen
-          navigationKey="login"
-          name="login"
-          component={Login}
-        ></Stack.Screen>
-        <Stack.Screen
-          navigationKey="core"
-          name="core"
-          component={CoreLayout}
-        ></Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
+    <>
+      {showCore ? (
+        <Animated.View
+          style={{
+            flex: 1,
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            transform: [{ translateY: topCore }],
+            zIndex: Number(loggedIn),
+          }}
+        >
+          <CoreLayout></CoreLayout>
+        </Animated.View>
+      ) : null}
+
+      {showLogin ? (
+        <Animated.View
+          style={{
+            flex: 1,
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'white',
+            transform: [{ translateY: topLogin }],
+            zIndex: Number(!loggedIn),
+          }}
+        >
+          <Login></Login>
+        </Animated.View>
+      ) : null}
+    </>
   );
 };
 
