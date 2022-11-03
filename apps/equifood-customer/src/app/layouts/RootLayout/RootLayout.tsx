@@ -1,18 +1,18 @@
+import axios from 'axios';
 import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import axios from 'axios';
-import appConfig from '../../app-config';
-
+import { useNavigationContainerRef } from '@react-navigation/native';
 import { useSelector, useStore } from 'react-redux';
 import { RootState } from '../../redux/store';
+import appConfig from '../../app-config';
+
 import Login from '../../screens/Login/Login';
-import Core from '../Core/Core';
-import { useNavigationContainerRef } from '@react-navigation/native';
+import CoreLayout from '../CoreLayout/CoreLayout';
 
 const Stack = createStackNavigator();
 
-const Root = () => {
+const RootLayout = () => {
   useEffect(() => {
     axios.defaults.baseURL = appConfig.apiUrl;
   }, []);
@@ -27,7 +27,9 @@ const Root = () => {
     if (jwt !== '') target = 'core';
     else target = 'login';
 
-    if (navigationRef.getCurrentRoute()?.name != target)
+    console.log('HELLO JWT', jwt);
+
+    if (navigationRef.getCurrentRoute()?.name !== target)
       navigationRef.navigate(target as never);
   }, [jwt, navigationRef]);
 
@@ -46,11 +48,11 @@ const Root = () => {
         <Stack.Screen
           navigationKey="core"
           name="core"
-          component={Core}
+          component={CoreLayout}
         ></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
 
-export default Root;
+export default RootLayout;

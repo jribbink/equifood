@@ -9,7 +9,8 @@
     "skipLibCheck": true,
     "resolveJsonModule": true,
     "strict": true,
-    "typeRoots": ["src/types"]
+    "typeRoots": ["node_modules/@types", "src/types"],
+    "types": ["node"]
   },
   "files": ["../../node_modules/@nrwl/expo/typings/svg.d.ts"],
   "include": [],

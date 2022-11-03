@@ -32,6 +32,9 @@ export const authSlice = createSlice({
       state.jwt = '';
       delete state.expires;
     },
+    setJWT(state, jwt) {
+      state.jwt = jwt.payload;
+    },
   },
   extraReducers(builder) {
     builder.addCase(authenticate.pending, (state, action) => {
@@ -49,6 +52,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, setJWT } = authSlice.actions;
 
 export default authSlice.reducer;

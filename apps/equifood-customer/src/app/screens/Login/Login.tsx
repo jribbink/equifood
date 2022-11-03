@@ -11,6 +11,7 @@ import {
 import { authenticate } from '../../redux/slices/auth-slice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
+import { useIsFocused } from '@react-navigation/native';
 
 const Login = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -27,8 +28,10 @@ const Login = () => {
     },
   });
 
+  const isFocused = useIsFocused();
+
   return (
-    <ScrollView>
+    <ScrollView testID={isFocused ? 'login-screen' : undefined}>
       <Text style={{ padding: 10, fontSize: 24 }}>Login</Text>
       <SafeAreaView>
         <Text testID="login" style={{ padding: 10, fontSize: 24 }}>

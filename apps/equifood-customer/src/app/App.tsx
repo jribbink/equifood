@@ -6,7 +6,7 @@ import appConfig from './app-config';
 import { Provider as ReduxProvider } from 'react-redux';
 import { setupStore } from './redux/store';
 import { SafeAreaView } from 'react-native';
-import Root from './layouts/Root/Root';
+import RootLayout from './layouts/RootLayout/RootLayout';
 
 const store = setupStore();
 
@@ -20,7 +20,7 @@ const App = () => {
       <NativeBaseProvider>
         <SafeAreaView style={{ flex: 1 }}>
           <Box flex={1}>
-            <Root></Root>
+            <RootLayout></RootLayout>
           </Box>
         </SafeAreaView>
       </NativeBaseProvider>
