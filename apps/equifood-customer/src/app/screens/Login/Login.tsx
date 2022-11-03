@@ -48,6 +48,7 @@ const Login = () => {
               style={styles.input}
               onChangeText={onChangeUsername}
               value={email}
+              testID="emailInput"
             />
             <Text style={{ padding: 10, fontSize: 24 }}>Password</Text>
             <TextInput
@@ -55,6 +56,7 @@ const Login = () => {
               style={styles.input}
               onChangeText={onChangePassword}
               value={pw}
+              testID="pwInput"
             />
           </SafeAreaView>
 
@@ -64,6 +66,7 @@ const Login = () => {
               dispatch(authenticate({ email, pw }));
             }}
             color="#841584"
+            testID="loginButton"
           />
         </ScrollView>
       </NativeBaseProvider>
