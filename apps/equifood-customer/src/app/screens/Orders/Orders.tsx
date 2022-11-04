@@ -28,11 +28,11 @@ const Orders = () => {
     },
   ]);
 
-  
-  
   return (
     <ScrollView>
-      <Text style={{fontWeight: 'bold', marginTop:20, fontSize:40, padding:20}} >
+      <Text
+        style={{ fontWeight: 'bold', marginTop: 20, fontSize: 40, padding: 20 }}
+      >
         Current Orders
       </Text>
       <Divider my={2} />
@@ -42,30 +42,23 @@ const Orders = () => {
         ))}
       </VStack>
       <Divider my={2} />
-      <Text style={{fontWeight: 'bold', marginTop:20, fontSize:40, padding:20}} >
+      <Text
+        style={{ fontWeight: 'bold', marginTop: 20, fontSize: 40, padding: 20 }}
+      >
         Completed Orders
       </Text>
       <Divider my={2} />
-      <Text style={{marginTop:10, fontSize:20, padding:10}} >
+      <Text style={{ marginTop: 10, fontSize: 20, padding: 10 }}>
         Restaurant Name + Time goes here
       </Text>
-      
+
       <VStack space={3} paddingX={8}>
         {merchants.map((merchant) => (
           <MerchantCard merchant={merchant} key={merchant.id}></MerchantCard>
         ))}
       </VStack>
       <Divider my={2} />
-      <Text style={{marginTop:10, fontSize:20, padding:10}} >
-        Restaurant Name + Time goes here
-      </Text>
-      <VStack space={3} paddingX={8}>
-        {merchants.map((merchant) => (
-          <MerchantCard merchant={merchant} key={merchant.id}></MerchantCard>
-        ))}
-      </VStack>
-      <Divider my={2} />
-      <Text style={{marginTop:10, fontSize:20, padding:10}} >
+      <Text style={{ marginTop: 10, fontSize: 20, padding: 10 }}>
         Restaurant Name + Time goes here
       </Text>
       <VStack space={3} paddingX={8}>
@@ -74,7 +67,16 @@ const Orders = () => {
         ))}
       </VStack>
       <Divider my={2} />
-      <Text style={{marginTop:10, fontSize:20, padding:10}} >
+      <Text style={{ marginTop: 10, fontSize: 20, padding: 10 }}>
+        Restaurant Name + Time goes here
+      </Text>
+      <VStack space={3} paddingX={8}>
+        {merchants.map((merchant) => (
+          <MerchantCard merchant={merchant} key={merchant.id}></MerchantCard>
+        ))}
+      </VStack>
+      <Divider my={2} />
+      <Text style={{ marginTop: 10, fontSize: 20, padding: 10 }}>
         Restaurant Name + Time goes here
       </Text>
       <VStack space={3} paddingX={8}>

@@ -5,7 +5,6 @@ import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
 import { Merchant } from '@equifood/api-interfaces';
 
 const Map = () => {
-  
   return (
     <ScrollView>
       {/* <VStack space={3} paddingX={2}>
