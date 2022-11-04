@@ -7,7 +7,6 @@ import { fireEvent, act } from '@testing-library/react-native';
 import { afterAll, afterEach, beforeAll, expect } from '@jest/globals';
 import { login_handlers } from '../../../test-utils/mocks/handlers';
 import { setupServer } from 'msw/node';
-import { rest } from 'msw';
 
 const server = setupServer(...login_handlers);
 

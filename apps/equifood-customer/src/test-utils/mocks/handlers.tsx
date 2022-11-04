@@ -5,7 +5,9 @@ const apiUrl = appConfig.apiUrl;
 
 export const login_handlers = [
   rest.post(apiUrl + '/auth/login', (req, res, ctx) => {
-    console.log('got here too');
-    return { access_token: 'foo', expires: null };
+    return res(
+      ctx.json({ access_token: 'foo', expires: null }),
+      ctx.status(201)
+    );
   }),
 ];
