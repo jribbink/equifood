@@ -1,4 +1,6 @@
 import React, { useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../redux/slices/auth-slice';
 import { StyleSheet, Button, View, SafeAreaView, Alert } from 'react-native';
 import { VStack, ScrollView, Text } from 'native-base';
 import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
@@ -6,6 +8,11 @@ import { Merchant } from '@equifood/api-interfaces';
 import { Divider } from 'native-base';
 
 const Account = () => {
+
+  function logoutUser() {
+    console.log('logout');
+    dispatch(logout());
+  }
 
   return (
     <ScrollView>
@@ -35,7 +42,7 @@ const Account = () => {
           <Button
             title="Log out"
             color="cyan"
-            onPress={() => Alert.alert('Are you sure you want to log out?')}
+            onPress={logoutUser}
           />
       </View>
     </ScrollView>

@@ -21,7 +21,7 @@ const Home = () => {
 
   return (
     
-    <ScrollView>
+    <ScrollView testID="home-screen">
       <ScrollView horizontal={true}>
       <Button
         title="Food Type A"
