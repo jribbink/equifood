@@ -35,13 +35,19 @@ const Login = (_: Testable) => {
         <Text testID="login" style={{ padding: 10, fontSize: 24 }}>
           Login
         </Text>
-        <TextInput style={styles.input} onChangeText={setEmail} value={email} />
+        <TextInput
+          style={styles.input}
+          onChangeText={setEmail}
+          value={email}
+          testID="emailInput"
+        />
         <Text style={{ padding: 10, fontSize: 24 }}>Password</Text>
         <TextInput
           secureTextEntry={true}
           style={styles.input}
           onChangeText={setPassword}
           value={password}
+          testID="pwInput"
         />
       </SafeAreaView>
 
@@ -51,6 +57,7 @@ const Login = (_: Testable) => {
           dispatch(authenticate({ email, password }));
         }}
         color="#841584"
+        testID="loginButton"
       />
     </ScrollView>
   );
