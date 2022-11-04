@@ -1,26 +1,24 @@
-import React, { useEffect } from 'react';
+import './bootstrap';
 
-import { NativeBaseProvider } from 'native-base';
-import Home from './screens/Home/Home';
-import Login from './screens/Login/Login';
-import DefaultLayout from './layout/DefaultLayout/DefaultLayout';
-import axios from 'axios';
-import appConfig from './app-config';
+import React from 'react';
+import { Box, NativeBaseProvider } from 'native-base';
 
 import { Provider as ReduxProvider } from 'react-redux';
 import { setupStore } from './redux/store';
+import { SafeAreaView } from 'react-native';
+import RootLayout from './layouts/RootLayout/RootLayout';
+
+const store = setupStore();
 
 const App = () => {
-  useEffect(() => {
-    axios.defaults.baseURL = appConfig.apiUrl;
-  }, []);
-
   return (
-    <ReduxProvider store={setupStore()}>
+    <ReduxProvider store={store}>
       <NativeBaseProvider>
-        <DefaultLayout>
-          <Login></Login>
-        </DefaultLayout>
+        <SafeAreaView style={{ flex: 1 }}>
+          <Box flex={1}>
+            <RootLayout></RootLayout>
+          </Box>
+        </SafeAreaView>
       </NativeBaseProvider>
     </ReduxProvider>
   );
