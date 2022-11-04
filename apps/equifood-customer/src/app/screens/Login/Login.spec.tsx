@@ -26,7 +26,7 @@ test('renders correctly', () => {
   expect(getByTestId('login')).toHaveTextContent('Login');
 });
 
-test('logs in properly', () => {
+test('logs in properly', async () => {
   const { store, getByTestId } = render(<Login></Login>);
 
   // input email
@@ -43,6 +43,14 @@ test('logs in properly', () => {
   act(() => {
     fireEvent.press(getByTestId('loginButton'));
   });
+
+  //delay
+  await new Promise<void>((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, 1000);
+  });
+
   // test that redux has changed
   expect(store.getState().auth.jwt).toBe('foo');
 });

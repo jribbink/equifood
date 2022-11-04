@@ -4,18 +4,9 @@ import Constants from 'expo-constants';
 import axios from 'axios';
 import appConfig from './src/app/app-config';
 
-// Mock expo config (.env variables)
-jest.doMock('expo-constants', () => {
-  const actual = jest.requireActual('expo-constants') as typeof Constants;
-  return {
-    ...actual,
-    expoConfig: {
-      ...actual.expoConfig,
-      extra: {
-        ...actual.expoConfig?.extra,
-        apiUrl: 'http://api-endpoint.com',
-      },
-    },
-  };
-});
+// Mock app config (.env variables)
+jest.mock('./src/app/app-config.ts', () => ({
+  apiUrl: 'http://api-endpoint.com',
+  skipAnimations: true,
+}));
 axios.defaults.baseURL = appConfig.apiUrl;
