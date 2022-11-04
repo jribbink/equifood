@@ -4,10 +4,12 @@ import axios from 'axios';
 export const authenticate = createAsyncThunk(
   'auth/authenticate',
   async (opts: { email: string; pw: string }) => {
+    console.log('got here');
     const response = await axios.post('/auth/login', {
       email: opts.email,
       password: opts.pw,
     });
+    console.log('data: ' + response.data);
     return response.data;
   }
 );

@@ -1,6 +1,8 @@
 import '@testing-library/jest-native/extend-expect';
 import { jest } from '@jest/globals';
 import Constants from 'expo-constants';
+import axios from 'axios';
+import appConfig from './src/app/app-config';
 
 // Mock expo config (.env variables)
 jest.doMock('expo-constants', () => {
@@ -16,3 +18,4 @@ jest.doMock('expo-constants', () => {
     },
   };
 });
+axios.defaults.baseURL = appConfig.apiUrl;
