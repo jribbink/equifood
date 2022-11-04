@@ -8,6 +8,7 @@ export default ({ config }: { config: ExpoConfig }) => {
     ...config,
     extra: {
       apiUrl: process.env.API_URL,
+      skipAnimations: process.env.SKIP_ANIMATIONS || false,
     },
   };
 };

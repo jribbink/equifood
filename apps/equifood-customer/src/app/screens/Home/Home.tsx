@@ -86,12 +86,6 @@ const Home = () => {
             color="gray"
           />
       </View>
-
-      <VStack space={3} paddingX={2}>
-        {merchants.map((merchant) => (
-          <MerchantCard merchant={merchant} key={merchant.id}></MerchantCard>
-        ))}
-      </VStack>
     </ScrollView>
   );
 };

@@ -9,6 +9,8 @@ import { Divider } from 'native-base';
 
 const Account = () => {
 
+  const dispatch = useDispatch();
+
   function logoutUser() {
     console.log('logout');
     dispatch(logout());
