@@ -38,7 +38,7 @@ const Login = () => {
   return (
     <ReduxProvider store={setupStore()}>
       <NativeBaseProvider>
-        <ScrollView style={{ justifyContent: 'center' }}>
+        <ScrollView>
           <Text style={{ padding: 10, fontSize: 24 }}>Login</Text>
           <SafeAreaView>
             <Text testID="login" style={{ padding: 10, fontSize: 24 }}>
