@@ -22,7 +22,13 @@
     "axios": "*",
     "expo-constants": "*",
     "@jest/globals": "*",
-    "@testing-library/react": "*"
+    "@testing-library/react": "*",
+    "@react-navigation/native": "*",
+    "@react-navigation/bottom-tabs": "*",
+    "jest-matcher-utils": "*",
+    "react-test-renderer": "*",
+    "redent": "*",
+    "pretty-format": "*"
   },
   "scripts": {
     "eas-build-pre-install": "cd ../../ && cp package-lock.json ./apps/equifood-customer/",

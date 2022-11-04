@@ -6,15 +6,10 @@ import Map from '../../screens/Map/Map';
 import Orders from '../../screens/Orders/Orders';
 import Account from '../../screens/Account/Account';
 import { View } from 'native-base';
-import { Testable } from '../../../test-utils/testable';
-
-interface Props extends Testable {
-  children?: ReactNode;
-}
 
 const Tab = createBottomTabNavigator();
 
-function CoreLayout({ children }: Props) {
+function CoreLayout() {
   return (
     <View flex={1} testID="core-layout">
       <NavigationContainer independent={true}>

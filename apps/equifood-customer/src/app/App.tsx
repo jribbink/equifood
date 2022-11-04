@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import './bootstrap';
+
+import React from 'react';
 import { Box, NativeBaseProvider } from 'native-base';
-import axios from 'axios';
-import appConfig from './app-config';
 
 import { Provider as ReduxProvider } from 'react-redux';
 import { setupStore } from './redux/store';
@@ -11,10 +11,6 @@ import RootLayout from './layouts/RootLayout/RootLayout';
 const store = setupStore();
 
 const App = () => {
-  useEffect(() => {
-    axios.defaults.baseURL = appConfig.apiUrl;
-  }, []);
-
   return (
     <ReduxProvider store={store}>
       <NativeBaseProvider>

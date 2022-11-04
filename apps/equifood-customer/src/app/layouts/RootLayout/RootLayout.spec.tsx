@@ -7,7 +7,9 @@ import { act } from '@testing-library/react-native';
 describe('Root layout', () => {
   test('starts on Home screen', async () => {
     const { queryByTestId } = render(<RootLayout></RootLayout>);
-    expect(await queryByTestId('login-screen')).toBeTruthy();
+
+    expect(queryByTestId('core-layout')).toBeNull();
+    expect(queryByTestId('login-screen')).toBeDefined();
   });
 
   test('navigates to Core screen when logged in', async () => {
@@ -16,7 +18,9 @@ describe('Root layout', () => {
     act(() => {
       store.dispatch(setJWT('foobar'));
     });
-    await expect(queryByTestId('core-layout')).toBeTruthy();
+
+    expect(queryByTestId('core-layout')).toBeDefined();
+    expect(queryByTestId('login-screen')).toBeNull();
   });
 
   test('navigates to Home screen when logged out', async () => {
@@ -33,6 +37,7 @@ describe('Root layout', () => {
     act(() => {
       store.dispatch(logout());
     });
-    expect(queryByTestId('login-screen')).toBeTruthy();
+    expect(queryByTestId('core-layout')).toBeNull();
+    expect(queryByTestId('login-screen')).toBeDefined();
   });
 });
