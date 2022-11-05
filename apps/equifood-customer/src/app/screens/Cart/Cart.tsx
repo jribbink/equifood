@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect} from 'react';
 import { VStack, ScrollView, Text, Button, View } from 'native-base';
-import { Item, Merchant } from '@equifood/api-interfaces';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
-import { addItem, removeItem } from '../../redux/slices/cart-slice';
+import { addItem, removeItem, setMerchant } from '../../redux/slices/cart-slice';
 
 //This is the test initialization
 const i1 = {
@@ -19,25 +18,27 @@ const i2 = {
   oldPrice: 4.99,
 };
 
-const Cart = () => {
-  const [merchant] = useState<Merchant>({
-    id: '1',
-    name: 'Test',
-    address: '1234 st',
-    banner_url: 'https://example.com/foo.png',
-  });
+const m = {
+  id: '1',
+  name: 'Test',
+  address: '1234 st',
+  banner_url: 'https://example.com/foo.png',
+};
 
+const Cart = () => {
   const store = useStore<RootState>();
   const dispatch = useDispatch<AppDispatch>();
+
+  //Linking items to stored value
+  const items = useSelector((state) => store.getState().cart.items);
+  const merchant = useSelector((state) => store.getState().cart.merchant);
 
   // this runs only on component mount
   useEffect(() => {
     dispatch(addItem(i1));
     dispatch(addItem(i2));
+    dispatch(setMerchant(m));
   }, [dispatch]);
-
-  //Linking items to stored value
-  const items = useSelector((state) => store.getState().cart.items);
 
   let totalPrice = 0;
   items.forEach((item) => {

@@ -21,7 +21,7 @@ function DefaultLayout({ children }: Props) {
       <Box flex={1}>
         <NavigationContainer>
           <Tab.Navigator>
-            <Tab.Screen name="Cart" component={Cart} />
+            <Tab.Screen name="Restaurants" component={Home} />
             <Tab.Screen name="Map" component={Map} />
             <Tab.Screen name="Orders" component={Orders} />
             <Tab.Screen name="Accounts" component={Account} />

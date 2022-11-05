@@ -1,20 +1,27 @@
-import { Item } from '@equifood/api-interfaces';
+import { Item, Merchant } from '@equifood/api-interfaces';
 import { createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 
 interface CartState {
   items: Item[];
+  merchant:Merchant;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error?: string;
 }
 
 const initialState: CartState = {
   items: [],
+  merchant:{
+    id:'0',
+    name: 'No Restaurant',
+    address: 'test',
+    banner_url: 'test',
+  },
   status: 'idle',
 };
 
 export const cartSlice = createSlice({
-  name: 'items',
+  name: 'cart',
   initialState,
   reducers: {
     addItem(state, action) {
@@ -25,9 +32,12 @@ export const cartSlice = createSlice({
         return items.id !== action.payload.id;
       });
     },
+    setMerchant(state, action) {
+      state.merchant=action.payload;
+    },
   },
 });
 
-export const { addItem, removeItem } = cartSlice.actions;
+export const { addItem, removeItem, setMerchant } = cartSlice.actions;
 
 export default cartSlice.reducer;
