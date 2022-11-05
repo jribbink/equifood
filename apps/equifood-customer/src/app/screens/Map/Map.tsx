@@ -1,17 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 
-import { VStack, ScrollView, Text } from 'native-base';
-import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
-import { Merchant } from '@equifood/api-interfaces';
+import { ScrollView, Text } from 'native-base';
 
 const Map = () => {
   return (
     <ScrollView>
-      {/* <VStack space={3} paddingX={2}>
-        {merchants.map((merchant) => (
-          <MerchantCard merchant={merchant} key={merchant.id}></MerchantCard>
-        ))}
-      </VStack> */}
       <Text testid="heading"> Google Map goes her</Text>
     </ScrollView>
   );

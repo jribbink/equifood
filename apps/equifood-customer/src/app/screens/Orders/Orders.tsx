@@ -8,22 +8,20 @@ const Orders = () => {
   const [merchants, setMerchants] = useState<Merchant[]>([
     {
       id: '1',
-      name: 'Food 1',
+      name: 'Test',
+      address: '1234 st',
       banner_url: 'https://example.com/foo.png',
     },
     {
       id: '2',
-      name: 'Food 2',
+      name: 'Test',
+      address: '1234 st',
       banner_url: 'https://example.com/foo.png',
     },
     {
       id: '3',
-      name: 'Food 3',
-      banner_url: 'https://example.com/foo.png',
-    },
-    {
-      id: '4',
-      name: 'Food 4',
+      name: 'Test',
+      address: '1234 st',
       banner_url: 'https://example.com/foo.png',
     },
   ]);
