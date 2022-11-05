@@ -9,16 +9,19 @@ const Orders = () => {
     {
       id: '1',
       name: 'Test',
+      address: '1234 st',
       banner_url: 'https://example.com/foo.png',
     },
     {
       id: '2',
       name: 'Test',
+      address: '1234 st',
       banner_url: 'https://example.com/foo.png',
     },
     {
       id: '3',
       name: 'Test',
+      address: '1234 st',
       banner_url: 'https://example.com/foo.png',
     },
   ]);
