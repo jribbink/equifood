@@ -1,8 +1,12 @@
-import React, { useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { VStack, ScrollView, Text, Button, View } from 'native-base';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
-import { addItem, removeItem, setMerchant } from '../../redux/slices/cart-slice';
+import {
+  addItem,
+  removeItem,
+  setMerchant,
+} from '../../redux/slices/cart-slice';
 
 //This is the test initialization
 const i1 = {
