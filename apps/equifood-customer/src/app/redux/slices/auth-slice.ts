@@ -3,10 +3,10 @@ import axios from 'axios';
 
 export const authenticate = createAsyncThunk(
   'auth/authenticate',
-  async (opts: { email: string; pw: string }) => {
+  async ({ email, password }: { email: string; password: string }) => {
     const response = await axios.post('/auth/login', {
-      email: opts.email,
-      password: opts.pw,
+      email,
+      password,
     });
     return response.data;
   }
@@ -28,8 +28,12 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logout(state, action) {
+    logout(state) {
       state.jwt = '';
+      delete state.expires;
+    },
+    setJWT(state, jwt) {
+      state.jwt = jwt.payload;
     },
   },
   extraReducers(builder) {
@@ -48,6 +52,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { logout, setJWT } = authSlice.actions;
 
 export default authSlice.reducer;

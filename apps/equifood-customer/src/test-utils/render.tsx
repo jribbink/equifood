@@ -41,6 +41,7 @@ export function render(
   // Return an object with the store and all of RTL's query functions
   return {
     ui,
+    store,
     ...defaultRender(ui, { wrapper: Wrapper, ...renderOptions }),
   };
 }

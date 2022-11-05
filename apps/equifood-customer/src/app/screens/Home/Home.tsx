@@ -20,7 +20,7 @@ const Home = () => {
   }, [dispatch]);
 
   return (
-    <ScrollView>
+    <ScrollView testID="home-screen">
       <VStack space={3} paddingX={2}>
         {merchants.map((merchant) => (
           <MerchantCard merchant={merchant} key={merchant.id}></MerchantCard>
