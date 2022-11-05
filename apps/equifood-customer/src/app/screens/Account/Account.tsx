@@ -1,17 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
+import { Text, Button, ScrollView, Divider, View } from 'native-base';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../redux/slices/auth-slice';
-import { StyleSheet, Button, View, SafeAreaView, Alert } from 'react-native';
-import { VStack, ScrollView, Text } from 'native-base';
-import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
-import { Merchant } from '@equifood/api-interfaces';
-import { Divider } from 'native-base';
 
 const Account = () => {
   const dispatch = useDispatch();
-
   function logoutUser() {
-    console.log('logout');
     dispatch(logout());
   }
 
@@ -78,7 +72,9 @@ const Account = () => {
         User phone number here
       </Text>
       <View style={[{ width: '70%', margin: 60, backgroundColor: 'blue' }]}>
-        <Button title="Log out" color="cyan" onPress={logoutUser} />
+        <Button color="cyan" onPress={logoutUser}>
+          <Text>Logout</Text>
+        </Button>
       </View>
     </ScrollView>
   );

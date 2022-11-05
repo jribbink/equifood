@@ -11,9 +11,8 @@ import {
 import { authenticate } from '../../redux/slices/auth-slice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
-import { Testable } from '../../../test-utils/testable';
 
-const Login = (_: Testable) => {
+const Login = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [email, setEmail] = useState('');
@@ -40,6 +39,7 @@ const Login = (_: Testable) => {
           onChangeText={setEmail}
           value={email}
           testID="emailInput"
+          autoCapitalize="none"
         />
         <Text style={{ padding: 10, fontSize: 24 }}>Password</Text>
         <TextInput

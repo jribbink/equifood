@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { setupStore, AppStore, RootState } from '../app/redux/store';
 import { NativeBaseProvider } from 'native-base';
 import { PreloadedState } from '@reduxjs/toolkit';
+import { bootstrapApp } from '../app/bootstrap';
 
 // This type interface extends the default options for render from RTL, as well
 // as allows the user to specify other things such as initialState, store.
@@ -20,7 +21,7 @@ const inset = {
   insets: { top: 0, left: 0, right: 0, bottom: 0 },
 };
 
-export function render(
+export async function render(
   ui: React.ReactElement,
   {
     preloadedState,
@@ -28,6 +29,8 @@ export function render(
     ...renderOptions
   }: ExtendedRenderOptions = {}
 ) {
+  await bootstrapApp(store);
+
   function Wrapper({ children }: PropsWithChildren<unknown>): JSX.Element {
     return (
       <Provider store={store}>
