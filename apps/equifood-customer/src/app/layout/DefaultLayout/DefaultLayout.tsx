@@ -7,6 +7,7 @@ import Home from '../../screens/Home/Home';
 import Map from '../../screens/Map/Map';
 import Orders from '../../screens/Orders/Orders';
 import Account from '../../screens/Account/Account';
+import Cart from '../../screens/Cart/Cart';
 
 interface Props {
   children?: ReactNode;
@@ -20,7 +21,7 @@ function DefaultLayout({ children }: Props) {
       <Box flex={1}>
         <NavigationContainer>
           <Tab.Navigator>
-            <Tab.Screen name="Restaurants" component={Home} />
+            <Tab.Screen name="Cart" component={Cart} />
             <Tab.Screen name="Map" component={Map} />
             <Tab.Screen name="Orders" component={Orders} />
             <Tab.Screen name="Accounts" component={Account} />

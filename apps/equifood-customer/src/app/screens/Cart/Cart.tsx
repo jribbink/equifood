@@ -1,6 +1,9 @@
-import React, { useRef, useState } from 'react';
-import { VStack, ScrollView, Text, Button, View, Box } from 'native-base';
+import React, {useState} from 'react';
+import { VStack, ScrollView, Text, Button, View} from 'native-base';
 import { Item, Merchant } from '@equifood/api-interfaces';
+import { useDispatch, useSelector, useStore } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store';
+import { addItem, removeItem } from '../../redux/slices/cart-slice';
 
 const Cart = () => {
   const [merchant] = useState<Merchant>({
@@ -10,34 +13,27 @@ const Cart = () => {
     banner_url: 'https://example.com/foo.png',
   });
 
-  const [items, setItems] = useState<Item[]>([
-    {
-      id: '1',
-      name: 'Burger',
-      newPrice: 3.99,
-      oldPrice: 4.99,
-    },
-    {
-      id: '2',
-      name: 'Drink',
-      newPrice: 3.99,
-      oldPrice: 4.99,
-    },
-    {
-      id: '3',
-      name: 'Hot Dog',
-      newPrice: 3.99,
-      oldPrice: 4.99,
-    },
-  ]);
+  const store = useStore<RootState>();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const removeItem = (id:string) => {
-    setItems(current =>
-      current.filter(items => {
-        return items.id !== id;
-      }),
-    );
+  //This is the test initialization
+  const i1={
+    id: '1',
+    name: 'Burger',
+    newPrice: 3.99,
+    oldPrice: 4.99,
   };
+  const i2={
+    id: '2',
+    name: 'Drink',
+    newPrice: 3.99,
+    oldPrice: 4.99,
+  };
+  dispatch(addItem(i1));
+  dispatch(addItem(i2));
+
+  //Linking items to stored value
+  const items=useSelector(state => store.getState().cart.items);
 
   let totalPrice = 0;
   items.forEach((item) => {
@@ -79,7 +75,7 @@ const Cart = () => {
               <Button
                   style={{backgroundColor:"red", borderRadius:30}}
                   accessibilityLabel="Remove item from cart"
-                  onPress={()=>removeItem(item.id)}
+                  onPress={()=>dispatch(removeItem(item))}
                 >Remove</Button>
               </View>
           </View>
