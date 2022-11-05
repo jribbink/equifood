@@ -5,13 +5,17 @@ import { RootState } from '../../redux/store';
 import Login from '../../screens/Login/Login';
 import CoreLayout from '../CoreLayout/CoreLayout';
 import { Animated, Dimensions } from 'react-native';
+import { Box } from 'native-base';
+import { JWT } from '@equifood/api-interfaces';
 
 const RootLayout = () => {
   const store = useStore<RootState>();
-  const jwt = useSelector<RootState, string>(() => store.getState().auth.jwt);
-  const [loggedIn, setLoggedIn] = useState(jwt !== '');
+  const jwt = useSelector<RootState, JWT | null>(
+    () => store.getState().auth.jwt
+  );
+  const [loggedIn, setLoggedIn] = useState(!!jwt);
   useEffect(() => {
-    setLoggedIn(jwt !== '');
+    setLoggedIn(!!jwt);
   }, [jwt]);
 
   const [showLogin, setShowLogin] = useState(false);
@@ -56,7 +60,7 @@ const RootLayout = () => {
   }, [loggedIn]);
 
   return (
-    <>
+    <Box flex={1}>
       {showCore ? (
         <Animated.View
           style={{
@@ -87,7 +91,7 @@ const RootLayout = () => {
           <Login></Login>
         </Animated.View>
       ) : null}
-    </>
+    </Box>
   );
 };
 

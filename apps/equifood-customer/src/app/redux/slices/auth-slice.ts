@@ -1,10 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { JWT } from '@equifood/api-interfaces';
 import axios from 'axios';
+import storage from '../../storage';
 
 export const authenticate = createAsyncThunk(
   'auth/authenticate',
   async ({ email, password }: { email: string; password: string }) => {
-    const response = await axios.post('/auth/login', {
+    const response = await axios.post<JWT>('/auth/login', {
       email,
       password,
     });
@@ -13,14 +15,13 @@ export const authenticate = createAsyncThunk(
 );
 
 interface AuthState {
-  jwt: string;
+  jwt: JWT | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error?: string;
-  expires?: Date;
 }
 
 const initialState: AuthState = {
-  jwt: '',
+  jwt: null,
   status: 'idle',
 };
 
@@ -29,11 +30,14 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     logout(state) {
-      state.jwt = '';
-      delete state.expires;
+      authSlice.caseReducers.setJWT(state, {
+        payload: null,
+        type: '',
+      });
     },
-    setJWT(state, jwt) {
-      state.jwt = jwt.payload;
+    setJWT(state, { payload: jwt }) {
+      state.jwt = jwt;
+      storage.set('jwt', jwt);
     },
   },
   extraReducers(builder) {
@@ -42,8 +46,7 @@ export const authSlice = createSlice({
     });
     builder.addCase(authenticate.fulfilled, (state, action) => {
       state.status = 'succeeded';
-      state.jwt = action.payload.access_token;
-      state.expires = action.payload.expires;
+      authSlice.caseReducers.setJWT(state, action);
     });
     builder.addCase(authenticate.rejected, (state, action) => {
       state.status = 'failed';

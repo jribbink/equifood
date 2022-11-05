@@ -1,26 +1,38 @@
 import './bootstrap';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, NativeBaseProvider } from 'native-base';
 
 import { Provider as ReduxProvider } from 'react-redux';
-import { setupStore } from './redux/store';
+import { RootState, setupStore } from './redux/store';
 import { SafeAreaView } from 'react-native';
 import RootLayout from './layouts/RootLayout/RootLayout';
-
-const store = setupStore();
+import { bootstrapApp } from './bootstrap';
+import { Store } from '@reduxjs/toolkit';
+import LoadingScreen from './screens/LoadingScreen/LoadingScreen';
 
 const App = () => {
+  const [store, setStore] = useState<Store<RootState>>();
+
+  useEffect(() => {
+    (async () => {
+      const { store } = await bootstrapApp();
+      setStore(store);
+    })();
+  }, []);
+
   return (
-    <ReduxProvider store={store}>
-      <NativeBaseProvider>
-        <SafeAreaView style={{ flex: 1 }}>
-          <Box flex={1}>
+    <NativeBaseProvider>
+      <SafeAreaView style={{ flex: 1 }}>
+        {store ? (
+          <ReduxProvider store={store}>
             <RootLayout></RootLayout>
-          </Box>
-        </SafeAreaView>
-      </NativeBaseProvider>
-    </ReduxProvider>
+          </ReduxProvider>
+        ) : (
+          <LoadingScreen></LoadingScreen>
+        )}
+      </SafeAreaView>
+    </NativeBaseProvider>
   );
 };
 
