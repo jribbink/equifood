@@ -6,10 +6,12 @@ import {
   ThunkAction,
 } from '@reduxjs/toolkit';
 import merchantReducer from './slices/merchant-slice';
+import cartReducer from './slices/cart-slice';
 import authReducer from './slices/auth-slice';
 
 const rootReducer = combineReducers({
   merchants: merchantReducer,
+  cart: cartReducer,
   auth: authReducer,
 });
 

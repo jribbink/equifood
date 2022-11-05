@@ -1,10 +1,10 @@
 import './bootstrap';
 
 import React, { useEffect, useState } from 'react';
-import { Box, NativeBaseProvider } from 'native-base';
+import { NativeBaseProvider } from 'native-base';
 
 import { Provider as ReduxProvider } from 'react-redux';
-import { RootState, setupStore } from './redux/store';
+import { RootState } from './redux/store';
 import { SafeAreaView } from 'react-native';
 import RootLayout from './layouts/RootLayout/RootLayout';
 import { bootstrapApp } from './bootstrap';

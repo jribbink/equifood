@@ -102,6 +102,7 @@
     "jest-environment-jsdom": "28.1.1",
     "jest-expo": "46.0.1",
     "metro-resolver": "0.72.3",
+    "msw": "^0.47.4",
     "nx": "15.0.1",
     "prettier": "^2.6.2",
     "react-test-renderer": "18.0.0",
@@ -123,9 +124,6 @@
     "@testing-library/jest-native": {
       "react": "$react",
       "react-test-renderer": "$react-test-renderer"
-    },
-    "@react-native-community/async-storage-backend-legacy": {
-      "react": "$react"
     }
   }
 }

@@ -38,6 +38,7 @@ const Login = () => {
           style={styles.input}
           onChangeText={setEmail}
           value={email}
+          testID="emailInput"
           autoCapitalize="none"
         />
         <Text style={{ padding: 10, fontSize: 24 }}>Password</Text>
@@ -46,6 +47,7 @@ const Login = () => {
           style={styles.input}
           onChangeText={setPassword}
           value={password}
+          testID="pwInput"
         />
       </SafeAreaView>
 
@@ -55,6 +57,7 @@ const Login = () => {
           dispatch(authenticate({ email, password }));
         }}
         color="#841584"
+        testID="loginButton"
       />
     </ScrollView>
   );
