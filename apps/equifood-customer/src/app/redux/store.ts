@@ -11,7 +11,7 @@ import authReducer from './slices/auth-slice';
 
 const rootReducer = combineReducers({
   merchants: merchantReducer,
-  cart:cartReducer,
+  cart: cartReducer,
   auth: authReducer,
 });
 

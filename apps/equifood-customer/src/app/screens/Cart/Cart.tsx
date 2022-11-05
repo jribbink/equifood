@@ -1,9 +1,23 @@
-import React, {useState} from 'react';
-import { VStack, ScrollView, Text, Button, View} from 'native-base';
+import React, { useEffect, useState } from 'react';
+import { VStack, ScrollView, Text, Button, View } from 'native-base';
 import { Item, Merchant } from '@equifood/api-interfaces';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
 import { addItem, removeItem } from '../../redux/slices/cart-slice';
+
+//This is the test initialization
+const i1 = {
+  id: '1',
+  name: 'Burger',
+  newPrice: 3.99,
+  oldPrice: 4.99,
+};
+const i2 = {
+  id: '2',
+  name: 'Drink',
+  newPrice: 3.99,
+  oldPrice: 4.99,
+};
 
 const Cart = () => {
   const [merchant] = useState<Merchant>({
@@ -16,24 +30,14 @@ const Cart = () => {
   const store = useStore<RootState>();
   const dispatch = useDispatch<AppDispatch>();
 
-  //This is the test initialization
-  const i1={
-    id: '1',
-    name: 'Burger',
-    newPrice: 3.99,
-    oldPrice: 4.99,
-  };
-  const i2={
-    id: '2',
-    name: 'Drink',
-    newPrice: 3.99,
-    oldPrice: 4.99,
-  };
-  dispatch(addItem(i1));
-  dispatch(addItem(i2));
+  // this runs only on component mount
+  useEffect(() => {
+    dispatch(addItem(i1));
+    dispatch(addItem(i2));
+  }, [dispatch]);
 
   //Linking items to stored value
-  const items=useSelector(state => store.getState().cart.items);
+  const items = useSelector((state) => store.getState().cart.items);
 
   let totalPrice = 0;
   items.forEach((item) => {
@@ -53,17 +57,20 @@ const Cart = () => {
       </Text>
       <VStack paddingBottom={5}>
         {items.map((item) => (
-          <View testID="CartItem" key={item.id} alignSelf="stretch" style={{
-            flexDirection: "row",
-            height: 60,
-            padding: 10
-          }}>
-            <View style={{flex: 1 }}>
-              <Text testID="item-name">
-                {item.name}
-              </Text>
+          <View
+            testID="CartItem"
+            key={item.id}
+            alignSelf="stretch"
+            style={{
+              flexDirection: 'row',
+              height: 60,
+              padding: 10,
+            }}
+          >
+            <View style={{ flex: 1 }}>
+              <Text testID="item-name">{item.name}</Text>
             </View>
-            <View style={{flex: 1 }}>
+            <View style={{ flex: 1 }}>
               <Text testID="item-newPrice" fontWeight={'bold'}>
                 {item.newPrice}
               </Text>
@@ -71,13 +78,15 @@ const Cart = () => {
                 {item.oldPrice}
               </Text>
             </View>
-            <View style={{flex: 1 }}>
+            <View style={{ flex: 1 }}>
               <Button
-                  style={{backgroundColor:"red", borderRadius:30}}
-                  accessibilityLabel="Remove item from cart"
-                  onPress={()=>dispatch(removeItem(item))}
-                >Remove</Button>
-              </View>
+                style={{ backgroundColor: 'red', borderRadius: 30 }}
+                accessibilityLabel="Remove item from cart"
+                onPress={() => dispatch(removeItem(item))}
+              >
+                Remove
+              </Button>
+            </View>
           </View>
         ))}
       </VStack>
