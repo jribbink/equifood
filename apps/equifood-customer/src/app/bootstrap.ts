@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Animated } from 'react-native';
 import appConfig from './app-config';
@@ -21,6 +20,7 @@ export async function bootstrapApp(store = setupStore()) {
         ...config,
         duration: 0,
         delay: 0,
+        useNativeDriver: false,
       });
     };
   }

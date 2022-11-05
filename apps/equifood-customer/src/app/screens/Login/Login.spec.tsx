@@ -2,7 +2,7 @@ import * as React from 'react';
 import { render } from '../../../test-utils/render';
 
 import Login from './Login';
-import { fireEvent, act } from '@testing-library/react-native';
+import { fireEvent, act, waitFor } from '@testing-library/react-native';
 
 import { afterAll, afterEach, beforeAll, expect } from '@jest/globals';
 import { login_handlers } from '../../../test-utils/mocks/handlers';
@@ -20,13 +20,13 @@ afterEach(() => server.resetHandlers());
 // Clean up after the tests are finished.
 afterAll(() => server.close());
 
-test('renders correctly', () => {
-  const { getByTestId } = render(<Login />);
+test('renders correctly', async () => {
+  const { getByTestId } = await render(<Login />);
   expect(getByTestId('login')).toHaveTextContent('Login');
 });
 
 test('logs in properly', async () => {
-  const { store, getByTestId } = render(<Login></Login>);
+  const { store, getByTestId } = await render(<Login></Login>);
 
   // input email
   act(() => {
@@ -51,5 +51,12 @@ test('logs in properly', async () => {
   });
 
   // test that redux has changed
-  expect(store.getState().auth.jwt).toBe('foo');
+  await waitFor(
+    () =>
+      expect(store.getState().auth.jwt).toEqual({
+        access_token: 'foo',
+        expires: null,
+      }),
+    { timeout: 1000 }
+  );
 });

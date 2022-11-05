@@ -6,14 +6,14 @@ import { act } from '@testing-library/react-native';
 
 describe('Root layout', () => {
   test('starts on Home screen', async () => {
-    const { queryByTestId } = render(<RootLayout></RootLayout>);
+    const { queryByTestId } = await render(<RootLayout></RootLayout>);
 
     expect(queryByTestId('core-layout')).toBeNull();
     expect(queryByTestId('login-screen')).toBeDefined();
   });
 
   test('navigates to Core screen when logged in', async () => {
-    const { queryByTestId, store } = render(<RootLayout></RootLayout>);
+    const { queryByTestId, store } = await render(<RootLayout></RootLayout>);
 
     act(() => {
       store.dispatch(setJWT('foobar'));
@@ -26,11 +26,14 @@ describe('Root layout', () => {
   test('navigates to Home screen when logged out', async () => {
     const store = setupStore({
       auth: {
-        jwt: 'foobar',
+        jwt: {
+          access_token: 'foobar',
+          expires: null,
+        },
         status: 'idle',
       },
     });
-    const { queryByTestId } = render(<RootLayout></RootLayout>, {
+    const { queryByTestId } = await render(<RootLayout></RootLayout>, {
       store,
     });
 

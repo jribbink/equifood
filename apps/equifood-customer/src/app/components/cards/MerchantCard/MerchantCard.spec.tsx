@@ -5,13 +5,13 @@ import MerchantCard from './MerchantCard';
 import { Merchant } from '@equifood/api-interfaces';
 
 describe('MerchantCard tests', () => {
-  test('renders name correctly', () => {
+  test('renders name correctly', async () => {
     const merchant: Merchant = {
       id: '1234',
       name: 'foo',
       banner_url: 'https://example.com/example.png',
     };
-    const { getByTestId } = render(<MerchantCard merchant={merchant} />);
+    const { getByTestId } = await render(<MerchantCard merchant={merchant} />);
     expect(getByTestId('merchant-name')).toHaveTextContent(merchant.name);
   });
 });
