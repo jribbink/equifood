@@ -38,7 +38,8 @@
         "production": {
           "buildTarget": "equifood-api:build:production"
         }
-      }
+      },
+      "dependsOn": ["clear-tempdb"]
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
@@ -53,6 +54,13 @@
       "options": {
         "jestConfig": "apps/equifood-api/jest.config.ts",
         "passWithNoTests": true
+      }
+    },
+    "clear-tempdb": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": ["npx rimraf ./tempdb"],
+        "cwd": "apps/equifood-api"
       }
     }
   },
