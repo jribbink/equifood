@@ -5,11 +5,12 @@ import { NativeBaseProvider } from 'native-base';
 
 import { Provider as ReduxProvider } from 'react-redux';
 import { RootState } from './redux/store';
-import { SafeAreaView } from 'react-native';
+import { AppState, AppStateStatus, SafeAreaView } from 'react-native';
 import RootLayout from './layouts/RootLayout/RootLayout';
 import { bootstrapApp } from './bootstrap';
 import { Store } from '@reduxjs/toolkit';
 import LoadingScreen from './screens/LoadingScreen/LoadingScreen';
+import { SWRConfig, SWRConfiguration } from 'swr';
 
 const App = () => {
   const [store, setStore] = useState<Store<RootState>>();
@@ -21,17 +22,50 @@ const App = () => {
     })();
   }, []);
 
+  const swrConfig = {
+    provider: () => new Map(),
+    isVisible: () => {
+      return true;
+    },
+    initFocus(callback: () => void) {
+      let appState = AppState.currentState;
+
+      const onAppStateChange = (nextAppState: AppStateStatus) => {
+        /* If it's resuming from background or inactive mode to active one */
+        if (
+          appState.match(/inactive|background/) &&
+          nextAppState === 'active'
+        ) {
+          callback();
+        }
+        appState = nextAppState;
+      };
+
+      // Subscribe to the app state change events
+      const subscription = AppState.addEventListener(
+        'change',
+        onAppStateChange
+      );
+
+      return () => {
+        subscription.remove();
+      };
+    },
+  };
+
   return (
     <NativeBaseProvider>
-      <SafeAreaView style={{ flex: 1 }}>
-        {store ? (
-          <ReduxProvider store={store}>
-            <RootLayout></RootLayout>
-          </ReduxProvider>
-        ) : (
-          <LoadingScreen></LoadingScreen>
-        )}
-      </SafeAreaView>
+      <SWRConfig value={swrConfig}>
+        <SafeAreaView style={{ flex: 1 }}>
+          {store ? (
+            <ReduxProvider store={store}>
+              <RootLayout></RootLayout>
+            </ReduxProvider>
+          ) : (
+            <LoadingScreen></LoadingScreen>
+          )}
+        </SafeAreaView>
+      </SWRConfig>
     </NativeBaseProvider>
   );
 };
