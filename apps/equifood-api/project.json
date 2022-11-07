@@ -10,7 +10,7 @@
       "options": {
         "target": "node",
         "compiler": "tsc",
-        "outputPath": "dist/apps/equifood-api",
+        "outputPath": "dist/apps/equifood-api/app",
         "main": "apps/equifood-api/src/main.ts",
         "tsConfig": "apps/equifood-api/tsconfig.app.json",
         "assets": ["apps/equifood-api/src/assets"]
@@ -56,11 +56,41 @@
         "passWithNoTests": true
       }
     },
-    "clear-tempdb": {
-      "executor": "@nrwl/workspace:run-commands",
+    "build-seed": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
       "options": {
-        "commands": ["npx rimraf ./tempdb"],
-        "cwd": "apps/equifood-api"
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/equifood-api/seed",
+        "main": "apps/equifood-api/src/seed.ts",
+        "tsConfig": "apps/equifood-api/tsconfig.app.json",
+        "assets": ["apps/equifood-api/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/equifood-api/src/environments/environment.ts",
+              "with": "apps/equifood-api/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "clear-tempdb": {
+      "executor": "@nrwl/js:node",
+      "options": {
+        "buildTarget": "equifood-api:build-seed",
+        "watch": false
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "equifood-api:build-seed:production"
+        }
       }
     }
   },

@@ -1,12 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { createHash } from 'crypto';
-import { Connection, getConnection, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Merchant } from '../../merchant/entities/merchant.entity';
 import { User } from '../../users/entities/user.entity';
 import { hashPassword } from '../../utils/crypto';
-
-export const DATABASE_CLEAR = 'CLEAR_DATABASE';
 
 @Injectable()
 export class Seeder {
