@@ -17,7 +17,6 @@ export default registerAs('database', () => ({
   key: process.env.DATABASE_KEY,
   cert: process.env.DATABASE_CERT,
 
-  // Backup Config
-  backupSchedule: process.env.DATABASE_BACKUP_SCHEDULE,
-  backupDir: process.env.DATABASE_GCP_BACKUP_DIR,
+  // Mock DB for dev mode
+  mock: process.env.DATABASE_MOCK || false,
 }));
