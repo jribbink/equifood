@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, VStack } from 'native-base';
+import { Box, ScrollView, VStack } from 'native-base';
 import { Merchant } from '@equifood/api-interfaces';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { getMerchants } from '../../redux/slices/merchant-slice';
@@ -40,19 +40,28 @@ const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
     setSelectedItemKey(filter ? String(filter) : null);
   }
 
+  function onMerchantPress(merchant: Merchant) {
+    navigation.navigate('merchant', { merchant });
+  }
+
   return (
-    <VStack>
+    <ScrollView testID="home-screen" flex={1}>
       <ScrollingMenu
         items={MerchantFilters}
         selectedKey={selectedItemKey}
         onChange={onChangeFilter}
       ></ScrollingMenu>
-      <ScrollView testID="home-screen">
+      <VStack space="4" m="4">
         {merchants.map((m) => (
-          <MerchantCard merchant={m}></MerchantCard>
+          <Box key={m.id} shadow="2">
+            <MerchantCard
+              merchant={m}
+              onPress={() => onMerchantPress(m)}
+            ></MerchantCard>
+          </Box>
         ))}
-      </ScrollView>
-    </VStack>
+      </VStack>
+    </ScrollView>
   );
 };
 

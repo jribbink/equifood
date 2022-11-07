@@ -5,7 +5,7 @@ import { ScrollView, Text } from 'native-base';
 const Map = () => {
   return (
     <ScrollView>
-      <Text testid="heading"> Google Map goes her</Text>
+      <Text testID="heading"> Google Map goes her</Text>
     </ScrollView>
   );
 };

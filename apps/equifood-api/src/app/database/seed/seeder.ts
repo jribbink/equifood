@@ -38,7 +38,22 @@ export class Seeder {
     await this.merchantRepository.save({
       name: 'Fresh Slice',
       banner_url:
-        'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.ubereats.com%2Fca%2Fstore%2Ffreshslice-pizza-pacific-blvd%2F39uW_A8vSVO0geSdOMEDpg&psig=AOvVaw3n-7XOwpjcqyDobMLWPmwr&ust=1667850691511000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCNDS6pGqmvsCFQAAAAAdAAAAABAE',
+        'https://d1ralsognjng37.cloudfront.net/a2e400d2-5526-44c2-bdf0-4bcc10ac59ef.jpeg',
+      logo_url:
+        'https://upload.wikimedia.org/wikipedia/en/thumb/8/8c/Freshslice_Pizza_logo.svg/1920px-Freshslice_Pizza_logo.svg.png',
+      description: 'Order pizza',
+      deadline: null,
+      phone_number: '(123) 456-7890',
+      location: {},
+      price: 4.44,
+      inventory: 2,
+    });
+    await this.merchantRepository.save({
+      name: 'Fresh Slice',
+      banner_url:
+        'https://d1ralsognjng37.cloudfront.net/a2e400d2-5526-44c2-bdf0-4bcc10ac59ef.jpeg',
+      logo_url:
+        'https://upload.wikimedia.org/wikipedia/en/thumb/8/8c/Freshslice_Pizza_logo.svg/1920px-Freshslice_Pizza_logo.svg.png',
       description: 'Order pizza',
       deadline: null,
       phone_number: '(123) 456-7890',
