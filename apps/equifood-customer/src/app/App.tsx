@@ -1,4 +1,4 @@
-import './bootstrap';
+import './util/bootstrap';
 
 import React, { useEffect, useState } from 'react';
 import { NativeBaseProvider } from 'native-base';
@@ -7,7 +7,7 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { RootState } from './redux/store';
 import { AppState, AppStateStatus, SafeAreaView } from 'react-native';
 import RootLayout from './layouts/RootLayout/RootLayout';
-import { bootstrapApp } from './bootstrap';
+import { bootstrapApp } from './util/bootstrap';
 import { Store } from '@reduxjs/toolkit';
 import LoadingScreen from './screens/LoadingScreen/LoadingScreen';
 import { SWRConfig, SWRConfiguration } from 'swr';

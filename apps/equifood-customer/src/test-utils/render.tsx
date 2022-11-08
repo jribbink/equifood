@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { setupStore, AppStore, RootState } from '../app/redux/store';
 import { NativeBaseProvider } from 'native-base';
 import { PreloadedState } from '@reduxjs/toolkit';
-import { bootstrapApp } from '../app/bootstrap';
+import { bootstrapApp } from '../app/util/bootstrap';
 
 // This type interface extends the default options for render from RTL, as well
 // as allows the user to specify other things such as initialState, store.

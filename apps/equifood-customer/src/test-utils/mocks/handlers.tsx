@@ -1,4 +1,4 @@
-import appConfig from '../../app/app-config';
+import appConfig from '../../app/util/app-config';
 import { rest } from 'msw';
 
 const apiUrl = appConfig.apiUrl;
