@@ -51,7 +51,7 @@ const RestuarantCard = ({ merchant, onPress }: Props) => {
           p="1.5"
           space="2"
         >
-          <Heading fontSize="md" fontWeight="bold">
+          <Heading testID="merchant-name" fontSize="md" fontWeight="bold">
             {merchant.name}
           </Heading>
         </HStack>
