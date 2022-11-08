@@ -1,23 +1,11 @@
-import {
-  CompositeNavigationProp,
-  createNavigationContainerRef,
-  NavigationContainer,
-  useNavigation,
-} from '@react-navigation/native';
-import {
-  BottomTabNavigationProp,
-  createBottomTabNavigator,
-} from '@react-navigation/bottom-tabs';
-import {
-  createStackNavigator,
-  StackNavigationProp,
-  StackScreenProps,
-} from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import Home from '../../screens/Home/Home';
 import Map from '../../screens/Map/Map';
 import Orders from '../../screens/Orders/Orders';
 import Account from '../../screens/Account/Account';
-import RestaurantScreen from '../../screens/RestaurantScreen/RestaurantScreen';
+import MerchantScreen from '../../screens/MerchantScreen/MerchantScreen';
 import { View } from 'native-base';
 import { CoreStackParams, CoreTabParams } from './CoreNavigatorParams';
 
@@ -47,7 +35,7 @@ function CoreLayout() {
           ></Stack.Screen>
           <Stack.Screen
             name="merchant"
-            component={RestaurantScreen}
+            component={MerchantScreen}
           ></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
