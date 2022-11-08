@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Box, ScrollView, VStack } from 'native-base';
 import { Merchant } from '@equifood/api-interfaces';
-import { useDispatch, useSelector, useStore } from 'react-redux';
-import { getMerchants } from '../../redux/slices/merchant-slice';
-import { AppDispatch, RootState } from '../../redux/store';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import ScrollingMenu, {
   MenuItem,
 } from '../../components/menu/ScrollingMenu/ScrollingMenu';
 import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
+import { useMerchants } from '../../hooks/useMerchants';
 
 const MerchantFilters: { [key: string]: MenuItem } = {
   burgers: {
@@ -23,18 +21,8 @@ const MerchantFilters: { [key: string]: MenuItem } = {
 };
 
 const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
-  const store = useStore<RootState>();
-  const dispatch = useDispatch<AppDispatch>();
-
   const [selectedItemKey, setSelectedItemKey] = useState<string | null>(null);
-
-  const merchants = useSelector<RootState, Merchant[]>(
-    () => store.getState().merchants.merchants
-  );
-
-  useEffect(() => {
-    dispatch(getMerchants());
-  }, [dispatch]);
+  const { merchants } = useMerchants();
 
   function onChangeFilter(filter: keyof typeof MerchantFilters) {
     setSelectedItemKey(filter ? String(filter) : null);
@@ -52,7 +40,7 @@ const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
         onChange={onChangeFilter}
       ></ScrollingMenu>
       <VStack space="4" m="4">
-        {merchants.map((m) => (
+        {(merchants || []).map((m) => (
           <Box key={m.id} shadow="2">
             <MerchantCard
               merchant={m}

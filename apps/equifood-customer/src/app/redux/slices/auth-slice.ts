@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { JWT } from '@equifood/api-interfaces';
 import axios from 'axios';
-import storage from '../../storage';
+import storage from '../../util/storage';
 
 export const authenticate = createAsyncThunk(
   'auth/authenticate',

@@ -1,4 +1,4 @@
-import { ExpoConfig } from './src/app/app-config';
+import { ExpoConfig } from './src/app/util/app-config';
 
 import dotenv from 'dotenv';
 dotenv.config();
