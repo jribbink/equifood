@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import entities from './entities';
-import * as sql from 'better-sqlite3';
 
+export const MOCK_DB_PATH = 'tempdb/tempdb';
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   constructor(private configService: ConfigService) {}
@@ -12,7 +12,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
     if (this.configService.get('database.mock')) {
       return {
         type: 'better-sqlite3',
-        database: 'tempdb/tempdb',
+        database: MOCK_DB_PATH,
         entities: entities,
         synchronize: true,
       };

@@ -5,7 +5,7 @@ import Home from '../../screens/Home/Home';
 import Map from '../../screens/Map/Map';
 import Orders from '../../screens/Orders/Orders';
 import Account from '../../screens/Account/Account';
-import RestaurantScreen from '../../screens/MerchantScreen/MerchantScreen';
+import MerchantScreen from '../../screens/MerchantScreen/MerchantScreen';
 import { View } from 'native-base';
 import { CoreStackParams, CoreTabParams } from './CoreNavigatorParams';
 
@@ -35,7 +35,7 @@ function CoreLayout() {
           ></Stack.Screen>
           <Stack.Screen
             name="merchant"
-            component={RestaurantScreen}
+            component={MerchantScreen}
           ></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>

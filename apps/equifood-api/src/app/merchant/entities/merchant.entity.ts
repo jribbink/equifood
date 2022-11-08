@@ -10,6 +10,9 @@ export class Merchant extends UuidEntity {
   banner_url: string;
 
   @Column()
+  logo_url: string;
+
+  @Column()
   description: string;
 
   @Column({ type: 'simple-json' })
