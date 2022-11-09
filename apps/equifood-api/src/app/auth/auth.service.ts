@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { FindOptionsWhere } from 'typeorm';
-import { hashPassword } from '../utils/crypto';
+import { hashPassword } from '../common/utils/crypto';
 import ms from 'ms';
 
 @Injectable()
