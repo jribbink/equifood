@@ -1,9 +1,12 @@
-import { Module } from '@nestjs/common';
+import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { AppConfigModule } from './config/app-config.module';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
 import { MerchantsModule } from './merchant/merchants.module';
+import { UploadsModule } from './uploads/uploads.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { DynamicPropertyInterceptor } from './common/interceptors/dynamic-property-interceptor';
 
 @Module({
   imports: [
@@ -12,8 +15,18 @@ import { MerchantsModule } from './merchant/merchants.module';
     AppConfigModule,
     DatabaseModule,
     MerchantsModule,
+    UploadsModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: DynamicPropertyInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor,
+    },
+  ],
 })
 export class AppModule {}

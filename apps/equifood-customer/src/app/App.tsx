@@ -1,5 +1,3 @@
-import './util/bootstrap';
-
 import React, { useEffect, useState } from 'react';
 import { NativeBaseProvider } from 'native-base';
 
@@ -10,7 +8,7 @@ import RootLayout from './layouts/RootLayout/RootLayout';
 import { bootstrapApp } from './util/bootstrap';
 import { Store } from '@reduxjs/toolkit';
 import LoadingScreen from './screens/LoadingScreen/LoadingScreen';
-import { SWRConfig, SWRConfiguration } from 'swr';
+import { SWRConfig } from 'swr';
 
 const App = () => {
   const [store, setStore] = useState<Store<RootState>>();

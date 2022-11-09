@@ -1,16 +1,18 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, Relation } from 'typeorm';
+import { UploadColumn } from '../../common/decorators/upload-column';
 import { UuidEntity } from '../../database/models/uuid-entity';
+import { Upload } from '../../uploads/entities/upload.entity';
 
 @Entity()
 export class Merchant extends UuidEntity {
   @Column()
   name: string;
 
-  @Column()
-  banner_url: string;
+  @UploadColumn()
+  banner: Upload;
 
-  @Column()
-  logo_url: string;
+  @UploadColumn()
+  logo: Relation<Upload>;
 
   @Column()
   description: string;

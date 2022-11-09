@@ -3,19 +3,24 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Merchant } from '../../merchant/entities/merchant.entity';
 import { User } from '../../users/entities/user.entity';
-import { hashPassword } from '../../utils/crypto';
+import { hashPassword } from '../../common/utils/crypto';
+import { Upload } from '../../uploads/entities/upload.entity';
+import { statSync } from 'fs';
 
+const SEED_ASSET_PATH = './src/app/database/seed/assets/';
 @Injectable()
 export class Seeder {
   constructor(
     @InjectRepository(Merchant)
     private merchantRepository: Repository<Merchant>,
     @InjectRepository(User)
-    private userRepository: Repository<User>
+    private userRepository: Repository<User>,
+    @InjectRepository(Upload)
+    private uploadRepository: Repository<Upload>
   ) {}
 
   async seed() {
-    await this.userRepository.save({
+    await this.userRepository.insert({
       email: 'admin@example.com',
       passwordHash: hashPassword('password', ''),
       passwordSalt: '',
@@ -25,7 +30,7 @@ export class Seeder {
       roles: ['admin'],
     });
 
-    await this.userRepository.save({
+    await this.userRepository.insert({
       email: 'customer@example.com',
       passwordHash: hashPassword('password', ''),
       passwordSalt: '',
@@ -35,31 +40,40 @@ export class Seeder {
       roles: ['customer'],
     });
 
-    await this.merchantRepository.save({
-      name: 'Fresh Slice',
-      banner_url:
-        'https://d1ralsognjng37.cloudfront.net/a2e400d2-5526-44c2-bdf0-4bcc10ac59ef.jpeg',
-      logo_url:
-        'https://upload.wikimedia.org/wikipedia/en/thumb/8/8c/Freshslice_Pizza_logo.svg/1920px-Freshslice_Pizza_logo.svg.png',
-      description: 'Order pizza',
-      deadline: null,
-      phone_number: '(123) 456-7890',
-      location: {},
-      price: 4.44,
-      inventory: 2,
+    const banner1 = await this.uploadRepository.save(<Upload>{
+      id: '6e8043ff-282e-44ae-af8b-90b5930a78d4',
+      name: 'Fresh Slice Banner',
+      filename: 'freshslice-banner.jpeg',
+      ext: '.jpeg',
+      mine_type: 'image/jpeg',
+      path: SEED_ASSET_PATH + 'freshslice-banner.jpeg',
+      size: statSync(SEED_ASSET_PATH + 'freshslice-banner.jpeg').size,
+      upload_date: new Date(2022, 11, 8, 12),
     });
-    await this.merchantRepository.save({
-      name: 'Fresh Slice',
-      banner_url:
-        'https://d1ralsognjng37.cloudfront.net/a2e400d2-5526-44c2-bdf0-4bcc10ac59ef.jpeg',
-      logo_url:
-        'https://upload.wikimedia.org/wikipedia/en/thumb/8/8c/Freshslice_Pizza_logo.svg/1920px-Freshslice_Pizza_logo.svg.png',
-      description: 'Order pizza',
-      deadline: null,
-      phone_number: '(123) 456-7890',
-      location: {},
-      price: 4.44,
-      inventory: 2,
+
+    const logo1 = await this.uploadRepository.save(<Upload>{
+      id: 'a31389d3-8fbf-48d8-99a6-85b53edbef1d',
+      name: 'Fresh Slice Logo',
+      filename: 'freshslice-logo.png',
+      ext: '.png',
+      mine_type: 'image/png',
+      path: SEED_ASSET_PATH + 'freshslice-logo.png',
+      size: statSync(SEED_ASSET_PATH + 'freshslice-logo.png').size,
+      upload_date: new Date(2022, 11, 8, 12),
     });
+
+    await this.merchantRepository
+      .save({
+        name: 'Fresh Slice',
+        banner: banner1,
+        logo: logo1,
+        description: 'Order pizza',
+        deadline: null,
+        phone_number: '(123) 456-7890',
+        location: {},
+        price: 4.44,
+        inventory: 2,
+      })
+      .then(console.log);
   }
 }
