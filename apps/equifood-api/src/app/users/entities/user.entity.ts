@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { Entity, Column } from 'typeorm';
+import { Role } from '../../common/types/role.enum';
 import { UuidEntity } from '../../database/models/uuid-entity';
 
 @Entity({ name: 'users' })
@@ -25,7 +26,7 @@ export class User extends UuidEntity {
   passwordSalt: string;
 
   @Column({ type: 'simple-array' })
-  roles: string[];
+  roles: Role[];
 
   constructor(data: Partial<User>) {
     super(data?.id);

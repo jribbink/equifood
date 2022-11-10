@@ -6,6 +6,7 @@ import { User } from '../../users/entities/user.entity';
 import { hashPassword } from '../../common/utils/crypto';
 import { Upload } from '../../uploads/entities/upload.entity';
 import { statSync } from 'fs';
+import { Item } from '../../merchant/entities/item.entity';
 
 const SEED_ASSET_PATH = './src/app/database/seed/assets/';
 @Injectable()
@@ -16,7 +17,9 @@ export class Seeder {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @InjectRepository(Upload)
-    private uploadRepository: Repository<Upload>
+    private uploadRepository: Repository<Upload>,
+    @InjectRepository(Item)
+    private itemRepository: Repository<Item>
   ) {}
 
   async seed() {
@@ -62,8 +65,15 @@ export class Seeder {
       upload_date: new Date(2022, 11, 8, 12),
     });
 
+    const item1 = await this.itemRepository.save(<Item>{
+      name: 'Example item',
+      price: 10.99,
+      //original price?
+      quantity: 5,
+    });
+
     await this.merchantRepository
-      .save({
+      .save(<Merchant>{
         name: 'Fresh Slice',
         banner: banner1,
         logo: logo1,
@@ -71,8 +81,7 @@ export class Seeder {
         deadline: null,
         phone_number: '(123) 456-7890',
         location: {},
-        price: 4.44,
-        inventory: 2,
+        items: [item1],
       })
       .then(console.log);
   }

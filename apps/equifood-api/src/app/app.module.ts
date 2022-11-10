@@ -7,6 +7,7 @@ import { MerchantsModule } from './merchant/merchants.module';
 import { UploadsModule } from './uploads/uploads.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { DynamicPropertyInterceptor } from './common/interceptors/dynamic-property-interceptor';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -16,8 +17,8 @@ import { DynamicPropertyInterceptor } from './common/interceptors/dynamic-proper
     DatabaseModule,
     MerchantsModule,
     UploadsModule,
+    OrdersModule,
   ],
-  controllers: [],
   providers: [
     {
       provide: APP_INTERCEPTOR,

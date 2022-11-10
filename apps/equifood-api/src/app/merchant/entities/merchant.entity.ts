@@ -1,7 +1,8 @@
-import { Column, Entity, Relation } from 'typeorm';
+import { Column, Entity, OneToMany, Relation } from 'typeorm';
 import { UploadColumn } from '../../common/decorators/upload-column';
 import { UuidEntity } from '../../database/models/uuid-entity';
 import { Upload } from '../../uploads/entities/upload.entity';
+import type { Item } from './item.entity';
 
 @Entity()
 export class Merchant extends UuidEntity {
@@ -23,11 +24,8 @@ export class Merchant extends UuidEntity {
   @Column()
   phone_number: string;
 
-  @Column({ default: 0 })
-  inventory: number;
-
-  @Column({ nullable: true })
-  price: number | null;
+  @OneToMany<Item>('Item', (o) => o.merchant)
+  items: Item[];
 
   @Column({ nullable: true })
   deadline: Date | null;

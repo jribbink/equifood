@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext } from '@nestjs/common';
-import { Role } from '../../common/enums/role.enum';
+import { Role } from '../../common/types/role.enum';
 
 export function RolesGuard(...roles: Role[]) {
   return class RolesGuard implements CanActivate {
