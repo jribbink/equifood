@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { UuidEntity } from '../../database/models/uuid-entity';
 import { Item } from '../../merchant/entities/item.entity';
 import type { Order } from './order.entity';

@@ -24,6 +24,7 @@ export class Seeder {
 
   async seed() {
     await this.userRepository.insert({
+      id: 'a1eb82d0-ee87-441f-87ef-0e5c26954c24',
       email: 'admin@example.com',
       passwordHash: hashPassword('password', ''),
       passwordSalt: '',
@@ -34,6 +35,7 @@ export class Seeder {
     });
 
     await this.userRepository.insert({
+      id: '314d472d-7b35-4b22-b823-256a2ec10fb0',
       email: 'customer@example.com',
       passwordHash: hashPassword('password', ''),
       passwordSalt: '',

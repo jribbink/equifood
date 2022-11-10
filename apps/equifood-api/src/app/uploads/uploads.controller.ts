@@ -9,7 +9,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiHeader } from '@nestjs/swagger';
 import { createReadStream } from 'fs';
 import { join } from 'path';
 import { cwd } from 'process';
@@ -35,6 +35,9 @@ export class UploadsController {
         },
       },
     },
+  })
+  @ApiHeader({
+    name: '',
   })
   @UseInterceptors(NonceFileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File, @Req() req: any) {
