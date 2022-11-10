@@ -14,4 +14,10 @@ export class UsersController {
   async getProfile(@AuthUser() user: User, @TargetUser() targetUser: User) {
     return targetUser;
   }
+
+  @UseGuards(UserGuard)
+  @Get('orders')
+  async getOrders(@TargetUser() user: User) {
+    return this.usersService.getOrders(user);
+  }
 }

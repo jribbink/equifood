@@ -9,16 +9,10 @@ import { OrdersService } from './orders.service';
 export class OrdersController {
   constructor(private ordersService: OrdersService) {}
 
-  @AuthRoute('customer', 'merchant')
+  @AuthRoute()
   @Get(':orderId')
   async getOrder(@AuthUser() user: User, @Param('orderId') orderId: string) {
     return await this.ordersService.getOrder(user, orderId);
-  }
-
-  @AuthRoute('customer', 'merchant')
-  @Get()
-  async getOrders(@AuthUser() user: User) {
-    return await this.ordersService.getOrders(user);
   }
 
   @AuthRoute('customer')
