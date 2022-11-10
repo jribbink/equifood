@@ -9,6 +9,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 import { createReadStream } from 'fs';
 import { join } from 'path';
 import { cwd } from 'process';
@@ -23,6 +24,18 @@ export class UploadsController {
   ) {}
 
   @Post()
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
+  })
   @UseInterceptors(NonceFileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File, @Req() req: any) {
     return await this.uploadsService.uploadFile(file, req.upload_nonce);
