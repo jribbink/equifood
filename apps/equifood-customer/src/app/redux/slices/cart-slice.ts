@@ -14,8 +14,18 @@ const initialState: CartState = {
   merchant: {
     id: '0',
     name: 'No Restaurant',
-    address: 'test',
+    description:"test",
+    location:{
+      address: 'test',
+      latitude: 0,
+      longitude: 0
+    },
     banner_url: 'test',
+    logo_url: 'test',
+    phone_number: '666-666-666',
+    inventory: 0,
+    price:null,
+    deadline:null,
   },
   status: 'idle',
 };
