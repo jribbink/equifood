@@ -7,8 +7,11 @@ import { hashPassword } from '../../common/utils/crypto';
 import { Upload } from '../../uploads/entities/upload.entity';
 import { statSync } from 'fs';
 import { Item } from '../../merchant/entities/item.entity';
+import { cwd } from 'process';
+import { join } from 'path';
 
-const SEED_ASSET_PATH = './src/app/database/seed/assets/';
+console.log(cwd());
+const SEED_ASSET_PATH = join(cwd(), './src/app/database/seed/assets/');
 @Injectable()
 export class Seeder {
   constructor(
