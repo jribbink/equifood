@@ -18,6 +18,7 @@ export type CoreStackParams = {
   merchant: {
     merchant: Merchant;
   };
+  cart: undefined;
 };
 
 export type CoreNavigationProps<T extends keyof CoreTabParams> =
