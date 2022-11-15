@@ -12,6 +12,7 @@ import MerchantScreen from '../../screens/MerchantScreen/MerchantScreen';
 import Cart from '../../screens/Cart/Cart';
 import { Button, View, Text } from 'native-base';
 import { CoreStackParams, CoreTabParams } from './CoreNavigatorParams';
+import OrderScreen from '../../screens/OrderScreen/OrderScreen';
 
 const Tab = createBottomTabNavigator<CoreTabParams>();
 const Stack = createStackNavigator<CoreStackParams>();
@@ -42,6 +43,7 @@ function CoreLayout() {
             component={MerchantScreen}
           ></Stack.Screen>
           <Stack.Screen name="Cart" component={Cart}></Stack.Screen>
+          <Stack.Screen name="order" component={OrderScreen}></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
       <Button onPress={() => navigation.navigate('Cart')}></Button>

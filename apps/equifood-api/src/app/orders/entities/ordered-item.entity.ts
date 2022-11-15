@@ -8,7 +8,7 @@ export class OrderedItem extends UuidEntity {
   @ManyToOne<Order>('Order', (order) => order.items)
   order: Order;
 
-  @ManyToOne(() => Item)
+  @ManyToOne(() => Item, { eager: true })
   item: Item;
 
   @Column()
