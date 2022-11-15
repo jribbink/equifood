@@ -21,4 +21,7 @@ export class Item extends UuidEntity {
 
   @Column()
   price: number;
+
+  @Column({ nullable: true })
+  originalPrice?: number;
 }

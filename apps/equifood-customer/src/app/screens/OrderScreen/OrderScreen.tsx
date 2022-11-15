@@ -1,5 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { Box, Heading, Text } from 'native-base';
+import OrderView from '../../components/views/OrderView/OrderView';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 
 function OrderScreen({
@@ -10,11 +11,7 @@ function OrderScreen({
   return (
     <Box>
       <Heading>Order #{order.id}</Heading>
-      {order.items.map(({ quantity, item }) => (
-        <Text>
-          {quantity}x {item.name}
-        </Text>
-      ))}
+      <OrderView merchant={order.merchant} items={order.items}></OrderView>
     </Box>
   );
 }

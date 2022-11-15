@@ -1,6 +1,7 @@
 export interface Item {
   id: string;
   name: string;
-  newPrice: number;
-  oldPrice: number;
+  description: string;
+  price: number;
+  originalPrice: number;
 }

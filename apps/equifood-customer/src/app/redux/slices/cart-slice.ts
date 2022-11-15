@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 interface CartState {
-  items: Item[];
+  items: { quantity: number; item: Item }[];
   merchant: Merchant;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error?: string;
@@ -14,7 +14,9 @@ const initialState: CartState = {
   merchant: {
     id: '0',
     name: 'No Restaurant',
-    address: 'test',
+    location: {
+      address: 'test',
+    },
     banner_url: 'test',
   },
   status: 'idle',
@@ -29,7 +31,7 @@ export const cartSlice = createSlice({
     },
     removeItem(state, action) {
       state.items = state.items.filter((items) => {
-        return items.id !== action.payload.id;
+        return items.item.id !== action.payload.id;
       });
     },
     setMerchant(state, action) {
