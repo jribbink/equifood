@@ -1,7 +1,15 @@
-import { Column, Entity, OneToMany, Relation } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  Relation,
+} from 'typeorm';
 import { UploadColumn } from '../../common/decorators/upload-column';
 import { UuidEntity } from '../../database/models/uuid-entity';
 import { Upload } from '../../uploads/entities/upload.entity';
+import { User } from '../../users/entities/user.entity';
 import type { Item } from './item.entity';
 
 @Entity()
@@ -29,4 +37,8 @@ export class Merchant extends UuidEntity {
 
   @Column({ nullable: true })
   deadline: Date | null;
+
+  @OneToOne(() => User, { cascade: true })
+  @JoinColumn()
+  user: User;
 }
