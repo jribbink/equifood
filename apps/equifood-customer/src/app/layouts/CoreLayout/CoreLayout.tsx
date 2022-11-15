@@ -1,4 +1,7 @@
-import { NavigationContainer } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from '../../screens/Home/Home';
@@ -8,6 +11,9 @@ import Account from '../../screens/Account/Account';
 import MerchantScreen from '../../screens/MerchantScreen/MerchantScreen';
 import { View } from 'native-base';
 import { CoreStackParams, CoreTabParams } from './CoreNavigatorParams';
+import OrderScreen from '../../screens/OrderScreen/OrderScreen';
+import { useEffect } from 'react';
+import { mutate, useSWRConfig } from 'swr';
 
 const Tab = createBottomTabNavigator<CoreTabParams>();
 const Stack = createStackNavigator<CoreStackParams>();
@@ -24,9 +30,18 @@ function CoreNavigation() {
 }
 
 function CoreLayout() {
+  const navigation = useNavigationContainerRef();
+  const config = useSWRConfig();
+
+  useEffect(() => {
+    navigation.addListener('state', (e) => {
+      config.cache.clear();
+    });
+  });
+
   return (
     <View flex={1} testID="core-layout">
-      <NavigationContainer>
+      <NavigationContainer ref={navigation}>
         <Stack.Navigator>
           <Stack.Screen
             name="core"
@@ -37,6 +52,7 @@ function CoreLayout() {
             name="merchant"
             component={MerchantScreen}
           ></Stack.Screen>
+          <Stack.Screen name="order" component={OrderScreen}></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
     </View>
