@@ -12,8 +12,6 @@ import MerchantScreen from '../../screens/MerchantScreen/MerchantScreen';
 import { View } from 'native-base';
 import { CoreStackParams, CoreTabParams } from './CoreNavigatorParams';
 import OrderScreen from '../../screens/OrderScreen/OrderScreen';
-import { useEffect } from 'react';
-import { mutate, useSWRConfig } from 'swr';
 
 const Tab = createBottomTabNavigator<CoreTabParams>();
 const Stack = createStackNavigator<CoreStackParams>();
@@ -31,13 +29,6 @@ function CoreNavigation() {
 
 function CoreLayout() {
   const navigation = useNavigationContainerRef();
-  const config = useSWRConfig();
-
-  useEffect(() => {
-    navigation.addListener('state', (e) => {
-      config.cache.clear();
-    });
-  });
 
   return (
     <View flex={1} testID="core-layout">
