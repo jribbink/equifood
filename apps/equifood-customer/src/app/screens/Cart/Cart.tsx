@@ -39,14 +39,14 @@ const Cart = () => {
 
   // this runs only on component mount
   useEffect(() => {
-    dispatch(addItem(i1));
-    dispatch(addItem(i2));
+    dispatch(addItem({ quantity: 1, item: i1 }));
+    dispatch(addItem({ quantity: 1, item: i2 }));
     dispatch(setMerchant(m));
   }, [dispatch]);
 
   let totalPrice = 0;
-  items.forEach((item) => {
-    totalPrice += item.newPrice;
+  items.forEach(({ quantity, item }) => {
+    totalPrice += quantity * item.newPrice;
   });
 
   return (
@@ -61,7 +61,7 @@ const Cart = () => {
         {merchant.name}
       </Text>
       <VStack paddingBottom={5}>
-        {items.map((item) => (
+        {items.map(({ item }) => (
           <View
             testID="CartItem"
             key={item.id}

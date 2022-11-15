@@ -10,9 +10,10 @@ import Orders from '../../screens/Orders/Orders';
 import Account from '../../screens/Account/Account';
 import MerchantScreen from '../../screens/MerchantScreen/MerchantScreen';
 import Cart from '../../screens/Cart/Cart';
-import { Button, View, Text } from 'native-base';
+import { View, Box } from 'native-base';
 import { CoreStackParams, CoreTabParams } from './CoreNavigatorParams';
 import OrderScreen from '../../screens/OrderScreen/OrderScreen';
+import CartButton from '../../components/buttons/CartButton/CartButton';
 
 const Tab = createBottomTabNavigator<CoreTabParams>();
 const Stack = createStackNavigator<CoreStackParams>();
@@ -29,6 +30,7 @@ function CoreNavigation() {
 }
 function CoreLayout() {
   const navigation = createNavigationContainerRef<CoreStackParams>();
+
   return (
     <View flex={1} testID="core-layout">
       <NavigationContainer ref={navigation}>
@@ -42,11 +44,13 @@ function CoreLayout() {
             name="merchant"
             component={MerchantScreen}
           ></Stack.Screen>
-          <Stack.Screen name="Cart" component={Cart}></Stack.Screen>
+          <Stack.Screen name="cart" component={Cart}></Stack.Screen>
           <Stack.Screen name="order" component={OrderScreen}></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
-      <Button onPress={() => navigation.navigate('Cart')}></Button>
+      <Box position="absolute" bottom={60} right={5}>
+        <CartButton navigation={navigation}></CartButton>
+      </Box>
     </View>
   );
 }
