@@ -1,87 +1,45 @@
-import React, { useRef, useState } from 'react';
-import { Divider } from 'native-base';
-import { VStack, ScrollView, Text } from 'native-base';
-import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
-import { Merchant } from '@equifood/api-interfaces';
+import React from 'react';
+import { VStack, ScrollView, Heading, Text } from 'native-base';
+import { useOrders } from '../../hooks/useOrders';
+import OrderCard from '../../components/cards/OrderCard/OrderCard';
 
 const Orders = () => {
-  const [merchants, setMerchants] = useState<Merchant[]>([
-    {
-      id: '1',
-      name: 'Test',
-      address: '1234 st',
-      banner_url: 'https://example.com/foo.png',
-    },
-    {
-      id: '2',
-      name: 'Test',
-      address: '1234 st',
-      banner_url: 'https://example.com/foo.png',
-    },
-    {
-      id: '3',
-      name: 'Test',
-      address: '1234 st',
-      banner_url: 'https://example.com/foo.png',
-    },
-  ]);
+  const { orders } = useOrders();
+
+  const currentOrders =
+    orders?.filter((order) => order.status === 'pending') || [];
+  const completedOrders =
+    orders?.filter((order) => order.status === 'completed' || 'cancelled') ||
+    [];
 
   return (
-    <ScrollView>
-      <Text
-        style={{ fontWeight: 'bold', marginTop: 20, fontSize: 40, padding: 20 }}
-      >
-        Current Orders
-      </Text>
-      <Divider my={2} />
-      <VStack space={3} paddingX={8}>
-        {merchants.map((merchant) => (
-          <MerchantCard merchant={merchant} key={merchant.id}></MerchantCard>
-        ))}
-      </VStack>
-      <Divider my={2} />
-      <Text
-        style={{ fontWeight: 'bold', marginTop: 20, fontSize: 40, padding: 20 }}
-      >
-        Completed Orders
-      </Text>
-      <Divider my={2} />
-      <Text style={{ marginTop: 10, fontSize: 20, padding: 10 }}>
-        Restaurant Name + Time goes here
-      </Text>
+    <ScrollView p="3">
+      {currentOrders.length === 0 && completedOrders.length === 0 ? (
+        <Text>There are no orders to show currently.</Text>
+      ) : // placeholder, we should have a nice looking component
+      null}
 
-      <VStack space={3} paddingX={8}>
-        {merchants.map((merchant) => (
-          <MerchantCard merchant={merchant} key={merchant.id}></MerchantCard>
-        ))}
-      </VStack>
-      <Divider my={2} />
-      <Text style={{ marginTop: 10, fontSize: 20, padding: 10 }}>
-        Restaurant Name + Time goes here
-      </Text>
-      <VStack space={3} paddingX={8}>
-        {merchants.map((merchant) => (
-          <MerchantCard merchant={merchant} key={merchant.id}></MerchantCard>
-        ))}
-      </VStack>
-      <Divider my={2} />
-      <Text style={{ marginTop: 10, fontSize: 20, padding: 10 }}>
-        Restaurant Name + Time goes here
-      </Text>
-      <VStack space={3} paddingX={8}>
-        {merchants.map((merchant) => (
-          <MerchantCard merchant={merchant} key={merchant.id}></MerchantCard>
-        ))}
-      </VStack>
-      <Divider my={2} />
-      <Text style={{ marginTop: 10, fontSize: 20, padding: 10 }}>
-        Restaurant Name + Time goes here
-      </Text>
-      <VStack space={3} paddingX={8}>
-        {merchants.map((merchant) => (
-          <MerchantCard merchant={merchant} key={merchant.id}></MerchantCard>
-        ))}
-      </VStack>
+      {currentOrders.length > 0 ? (
+        <>
+          <Heading pb="4">Current Orders</Heading>
+          <VStack space={3} paddingX={8}>
+            {currentOrders.map((order) => (
+              <OrderCard key={order.id} order={order}></OrderCard>
+            ))}
+          </VStack>
+        </>
+      ) : null}
+
+      {completedOrders.length > 0 ? (
+        <>
+          <Heading pb="4">Completed Orders</Heading>
+          <VStack>
+            {completedOrders.map((order) => (
+              <OrderCard key={order.id} order={order}></OrderCard>
+            ))}
+          </VStack>
+        </>
+      ) : null}
     </ScrollView>
   );
 };

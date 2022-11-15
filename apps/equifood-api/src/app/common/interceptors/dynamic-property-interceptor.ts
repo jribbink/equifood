@@ -15,20 +15,20 @@ export class DynamicPropertyInterceptor implements NestInterceptor {
 
     return next.handle().pipe(
       map((res: PlainLiteralObject | Array<PlainLiteralObject>) => {
-        function replaceProps(o: any) {
+        const v = new Set();
+        function replaceProps(o: any, v: Set<any>) {
+          if (v.has(o)) return;
+          v.add(o);
           for (const p in o) {
             if (typeof o[p] == 'function' && o[p].__isDynamic) {
               const orig = o[p];
               o[p] = orig(ctx.getRequest(), ctx.getResponse(), ctx.getNext());
+            } else {
+              replaceProps(o[p], v);
             }
           }
-          return o;
         }
-        if (Array.isArray(res)) {
-          res = res.map((o) => replaceProps(o));
-        } else {
-          res = replaceProps(res);
-        }
+        replaceProps(res, v);
         return res;
       })
     );

@@ -1,4 +1,4 @@
-import { Merchant } from '@equifood/api-interfaces';
+import { Merchant, Order } from '@equifood/api-interfaces';
 import type {
   CompositeScreenProps,
   NavigatorScreenParams,
@@ -18,6 +18,7 @@ export type CoreStackParams = {
   merchant: {
     merchant: Merchant;
   };
+  order: Order;
 };
 
 export type CoreNavigationProps<T extends keyof CoreTabParams> =
