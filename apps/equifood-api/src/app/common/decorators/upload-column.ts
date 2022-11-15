@@ -2,8 +2,6 @@ import { Expose, Transform } from 'class-transformer';
 import { ManyToOne } from 'typeorm';
 import { Upload } from '../../uploads/entities/upload.entity';
 
-type DynamicProperty = (req: any, res: any, next: any) => void;
-
 export function UploadColumn(opts = {}) {
   return (target: any, propertyKey: string | symbol) => {
     const exposedName = `${String(propertyKey)}_url`;
