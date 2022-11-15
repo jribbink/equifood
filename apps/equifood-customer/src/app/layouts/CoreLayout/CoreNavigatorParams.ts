@@ -18,7 +18,9 @@ export type CoreStackParams = {
   merchant: {
     merchant: Merchant;
   };
-  order: Order;
+  order: {
+    order: Order;
+  };
 };
 
 export type CoreNavigationProps<T extends keyof CoreTabParams> =
