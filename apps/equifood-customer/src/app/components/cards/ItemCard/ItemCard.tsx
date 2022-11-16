@@ -1,5 +1,14 @@
-import { Box, Heading, HStack, Image, Text, View, ZStack } from 'native-base';
-import { Merchant } from '@equifood/api-interfaces';
+import {
+  Box,
+  Heading,
+  HStack,
+  Image,
+  ITheme,
+  Text,
+  View,
+  ZStack,
+} from 'native-base';
+import { Item } from '@equifood/api-interfaces';
 import {
   GestureResponderEvent,
   TouchableHighlight,
@@ -10,11 +19,11 @@ import {
 // should be fixed.
 
 interface Props {
-  merchant: Merchant;
+  item: Item;
   onPress?: ((e: GestureResponderEvent) => void) | null;
 }
 
-const RestuarantCard = ({ merchant, onPress }: Props) => {
+const RestuarantCard = ({ item, onPress }: Props) => {
   return (
     <TouchableHighlight
       onPress={(e: any) => onPress?.(e)}
@@ -23,8 +32,8 @@ const RestuarantCard = ({ merchant, onPress }: Props) => {
     >
       <Box borderRadius="5">
         <Box h="32">
-          <Image
-            source={{
+          {/*<Image                                   // food images probably not necessary?
+            source={{                                 // worth considering as future feature
               uri: merchant.banner_url,
             }}
             alt={merchant.name}
@@ -34,16 +43,16 @@ const RestuarantCard = ({ merchant, onPress }: Props) => {
             right="0"
             bottom="0"
             borderTopRadius="5"
-          />
+          ></Image>*/}
           <Box flex={1} justifyContent="flex-end" p="1.5">
-            <Image
-              source={{ uri: merchant.logo_url }}
+            {/*<Image
+              source={{ uri: merchant.logo_url }}     //
               alt={merchant.name}
               backgroundColor="white"
               borderRadius="full"
               width="16"
               height="16"
-            ></Image>
+          ></Image>*/}
           </Box>
         </Box>
 
@@ -54,9 +63,15 @@ const RestuarantCard = ({ merchant, onPress }: Props) => {
           p="1.5"
           space="2"
         >
-          <Heading testID="merchant-name" fontSize="md" fontWeight="bold">
-            {merchant.name}
+          <Heading testID="item-name" fontSize="md" fontWeight="bold">
+            {item.name}
           </Heading>
+          <Text testID="new-price" fontSize="sm">
+            {item.newPrice}
+          </Text>
+          <Text testID="old-price" fontSize="xs" fontWeight="italic">
+            Old: {item.oldPrice}
+          </Text>
         </HStack>
       </Box>
     </TouchableHighlight>
