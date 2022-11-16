@@ -1,9 +1,8 @@
 import { Merchant } from '@equifood/api-interfaces';
-import useSWR from 'swr';
-import { fetcher } from '../util/fetcher';
+import { useFetcher } from './useFetcher';
 
 export function useMerchants() {
-  const { data, error } = useSWR<Merchant[]>('merchants', fetcher);
+  const { data, error } = useFetcher<Merchant[]>('merchants');
 
   return {
     merchants: data,

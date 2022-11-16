@@ -1,4 +1,5 @@
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import { Type } from 'class-transformer';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { UuidEntity } from '../../database/models/uuid-entity';
 import { Merchant } from '../../merchant/entities/merchant.entity';
 import { User } from '../../users/entities/user.entity';
@@ -15,7 +16,8 @@ export class Order extends UuidEntity {
   @ManyToOne(() => User)
   user: User;
 
-  @ManyToOne(() => Merchant)
+  @Type(() => Merchant)
+  @ManyToOne(() => Merchant, { eager: true })
   merchant: Merchant;
 
   @Column()
@@ -24,7 +26,9 @@ export class Order extends UuidEntity {
   @Column()
   status: 'pending' | 'completed' | 'cancelled';
 
-  @OneToMany<OrderedItem>('OrderedItem', (orderedItem) => orderedItem.order)
+  @OneToMany<OrderedItem>('OrderedItem', (orderedItem) => orderedItem.order, {
+    eager: true,
+  })
   items: OrderedItem[];
 
   @Column()
