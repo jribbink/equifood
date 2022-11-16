@@ -69,7 +69,12 @@ const RestuarantCard = ({ item, onPress }: Props) => {
           <Text testID="new-price" fontSize="sm">
             {item.newPrice}
           </Text>
-          <Text testID="old-price" fontSize="xs" fontWeight="italic">
+          <Text
+            testID="old-price"
+            fontSize="xs"
+            fontWeight="italic"
+            style={{ textDecorationLine: 'line-through' }}
+          >
             Old: {item.oldPrice}
           </Text>
         </HStack>
