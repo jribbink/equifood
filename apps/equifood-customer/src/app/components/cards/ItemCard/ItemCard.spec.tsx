@@ -2,16 +2,17 @@ import * as React from 'react';
 import { render } from '../../../../test-utils/render';
 
 import ItemCard from './ItemCard';
-import { Merchant } from '@equifood/api-interfaces';
+import { Item } from '@equifood/api-interfaces';
 
 describe('MerchantCard tests', () => {
   test('renders name correctly', async () => {
-    const merchant: Merchant = {
+    const item: Item = {
       id: '1234',
       name: 'foo',
-      banner_url: 'https://example.com/example.png',
+      oldPrice: 6.99,
+      newPrice: 5.99,
     };
-    const { getByTestId } = await render(<ItemCard merchant={merchant} />);
-    expect(getByTestId('merchant-name')).toHaveTextContent(merchant.name);
+    const { getByTestId } = await render(<ItemCard item={item} />);
+    expect(getByTestId('item-name')).toHaveTextContent(item.name);
   });
 });
