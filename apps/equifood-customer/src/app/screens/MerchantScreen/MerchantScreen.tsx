@@ -26,7 +26,7 @@ function RestaurantScreen({
         (items || []).map((i) => (
           <Box key={i.id} shadow="2">
             <ItemCard
-              merchant={i}
+              item={i}
               onPress={() => {
                 console.log('press');
               }} // temporary until I get smart and figure out how to add this to the cart
