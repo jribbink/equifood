@@ -88,7 +88,7 @@ export class Seeder {
       deadline: null,
       phone_number: '(123) 456-7890',
       location: {
-        address: "123",
+        address: '123',
         latitude: 49.941,
         longitude: -119.386,
       },
