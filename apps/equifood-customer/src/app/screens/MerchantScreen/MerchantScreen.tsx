@@ -5,6 +5,13 @@ import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import React, { useState } from 'react';
 import { useMerchant } from '../../hooks/useMerchant';
 import ItemCard from '../../components/cards/ItemCard/ItemCard';
+import {
+  addItem,
+  removeItem,
+  setMerchant,
+} from '../../redux/slices/cart-slice';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
 
 export interface MerchantScreenParams {
   merchant: Merchant;
@@ -14,22 +21,24 @@ function RestaurantScreen({
   navigation,
   route,
 }: StackScreenProps<CoreStackParams, 'merchant'>) {
+  const dispatch = useDispatch<AppDispatch>();
   const { merchant } = useMerchant(route.params.merchant.id);
+  // why can merchant be undefined?? please fix
   const { items } = merchant.items;
-  // why can this be undefined? fix later I guess
 
   return (
     <ScrollView testID="merchants" flex={1}>
       {
-        // ItemCard is currently (nov 13/2022) a placeholder copied from MerchantScreen
+        // ItemCard is currently (nov 17/2022) mostly copied from MerchantCard
         // please fix
         (items || []).map((i) => (
           <Box key={i.id} shadow="2">
             <ItemCard
               item={i}
               onPress={() => {
-                console.log('press');
-              }} // temporary until I get smart and figure out how to add this to the cart
+                dispatch(addItem(i));
+                // change cart merchant here
+              }}
             ></ItemCard>
           </Box>
         ))
