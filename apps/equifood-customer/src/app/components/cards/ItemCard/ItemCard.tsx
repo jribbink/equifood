@@ -67,7 +67,7 @@ const RestuarantCard = ({ item, onPress }: Props) => {
             {item.name}
           </Heading>
           <Text testID="new-price" fontSize="sm">
-            {item.newPrice}
+            {'Price: ' + item.newPrice}
           </Text>
           <Text
             testID="old-price"
@@ -75,7 +75,7 @@ const RestuarantCard = ({ item, onPress }: Props) => {
             fontWeight="italic"
             style={{ textDecorationLine: 'line-through' }}
           >
-            Old: {item.oldPrice}
+            {'Old: ' + item.oldPrice}
           </Text>
         </HStack>
       </Box>

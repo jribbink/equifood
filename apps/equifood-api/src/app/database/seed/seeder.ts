@@ -12,8 +12,7 @@ import { join } from 'path';
 import { Order } from '../../orders/entities/order.entity';
 import { OrderedItem } from '../../orders/entities/ordered-item.entity';
 
-console.log(cwd());
-const SEED_ASSET_PATH = join(cwd(), './src/app/database/seed/assets/');
+const SEED_ASSET_PATH = './src/app/database/seed/assets/';
 @Injectable()
 export class Seeder {
   constructor(

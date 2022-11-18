@@ -23,11 +23,13 @@ function RestaurantScreen({
 }: StackScreenProps<CoreStackParams, 'merchant'>) {
   const dispatch = useDispatch<AppDispatch>();
   const { merchant } = useMerchant(route.params.merchant.id);
-  // why can merchant be undefined?? please fix
-  const { items } = merchant.items;
+
+  if (!merchant) return null;
+
+  const { items } = merchant;
 
   return (
-    <ScrollView testID="merchants" flex={1}>
+    <ScrollView testID="items" flex={1}>
       {
         // ItemCard is currently (nov 17/2022) mostly copied from MerchantCard
         // please fix
