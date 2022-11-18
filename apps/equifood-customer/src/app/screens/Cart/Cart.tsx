@@ -99,7 +99,7 @@ const Cart = () => {
         Total Price: {totalPrice}$
       </Text>
       <Text testID="address" fontSize="20" alignSelf="center" padding="3">
-        Address: {merchant.address}
+        Address: {merchant.location.address}
       </Text>
       <Text testID="pickup" fontSize="20" alignSelf="center" padding="3">
         PickupTime: now-15 min

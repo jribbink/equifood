@@ -1,13 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
-import { View, Actionsheet, useDisclose} from 'native-base';
-import { Dimensions } from 'react-native';
+import { View, Actionsheet, useDisclose, Text} from 'native-base';
+import { Dimensions} from 'react-native';
 import { Merchant, Location} from '@equifood/api-interfaces';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
 import { useState } from 'react';
 import { useMerchants } from '../../hooks/useMerchants';
+import * as expoLocation from 'expo-location';
 
 const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
 
@@ -20,10 +21,28 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
   const { merchants } = useMerchants();
 
   const [userLocation, setUserLocation]= useState<Location>({
-    address: "1234 st",
-    latitude: 49.941,
-    longitude: -119.386,
-  })
+      address: "",
+      latitude: 49.9,
+      longitude: -119.5,
+  });
+
+  useEffect(() => {
+    (async () => {
+      
+      const { status } = await expoLocation.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        return;
+      }
+
+      const location = await expoLocation.getCurrentPositionAsync({});
+      const out: Location={
+        address: "",
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+      setUserLocation(out);
+    })();
+  }, []);
 
   const [selectedMerchant, setMerchant]= useState<Merchant> ({
     id: "null",
@@ -53,6 +72,7 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
 
   return (
     <View>
+      <Text>{userLocation.latitude}</Text>
       <MapView style={{
         height:Dimensions.get('window').height, 
         width:Dimensions.get('window').width
