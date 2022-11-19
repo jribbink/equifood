@@ -89,7 +89,11 @@ export class Seeder {
       description: 'Order pizza',
       deadline: null,
       phone_number: '(123) 456-7890',
-      location: {},
+      location: {
+        address: '123',
+        latitude: 49.941,
+        longitude: -119.386,
+      },
       items: [item1],
     });
 

@@ -1,3 +1,4 @@
+import { Location } from './location';
 import { Item } from './item';
 
 export interface Merchant {
@@ -6,7 +7,7 @@ export interface Merchant {
   banner_url: string;
   logo_url: string;
   description: string;
-  location: object;
+  location: Location;
   phone_number: string;
   inventory: number;
   items: Item[];
