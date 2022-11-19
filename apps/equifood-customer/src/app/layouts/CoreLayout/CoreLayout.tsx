@@ -12,7 +12,6 @@ import MerchantScreen from '../../screens/MerchantScreen/MerchantScreen';
 import Cart from '../../screens/Cart/Cart';
 import { View, Box } from 'native-base';
 import { CoreStackParams, CoreTabParams } from './CoreNavigatorParams';
-import SafeViewAndroid from './osChecker';
 import OrderScreen from '../../screens/OrderScreen/OrderScreen';
 import CartButton from '../../components/buttons/CartButton/CartButton';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -58,7 +57,7 @@ function CoreLayout() {
   const navigation = createNavigationContainerRef<CoreStackParams>();
 
   return (
-    <View style={SafeViewAndroid.AndroidSafeArea} flex={1} testID="core-layout">
+    <View flex={1} testID="core-layout">
       <NavigationContainer ref={navigation}>
         <Stack.Navigator>
           <Stack.Screen
