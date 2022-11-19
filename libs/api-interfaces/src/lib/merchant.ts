@@ -1,4 +1,5 @@
 import { Location } from './location';
+import { Item } from './item';
 
 export interface Merchant {
   id: string;
@@ -9,6 +10,7 @@ export interface Merchant {
   location: Location;
   phone_number: string;
   inventory: number;
+  items: Item[];
   price: number | null;
   deadline: Date | null;
 }
