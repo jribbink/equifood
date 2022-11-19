@@ -1,11 +1,11 @@
 import { Merchant } from '@equifood/api-interfaces';
 import { useFetcher } from './useFetcher';
 
-export function useMerchants() {
-  const { data, error } = useFetcher<Merchant[]>('merchants');
+export function useMerchant(id: string) {
+  const { data, error } = useFetcher<Merchant>(`/merchants/${id}`);
 
   return {
-    merchants: data,
+    merchant: data,
     isLoading: !error && !data,
     isError: error,
   };
