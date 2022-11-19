@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NativeBaseProvider } from 'native-base';
-
+import SafeViewAndroid from './osChecker';
 import { Provider as ReduxProvider } from 'react-redux';
 import { RootState } from './redux/store';
 import { AppState, AppStateStatus, SafeAreaView } from 'react-native';
@@ -54,7 +54,7 @@ const App = () => {
   return (
     <NativeBaseProvider>
       <SWRConfig value={swrConfig}>
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={SafeViewAndroid.AndroidSafeArea}>
           {store ? (
             <ReduxProvider store={store}>
               <RootLayout></RootLayout>
