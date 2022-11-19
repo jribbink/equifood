@@ -7,6 +7,8 @@ import { hashPassword } from '../../common/utils/crypto';
 import { Upload } from '../../uploads/entities/upload.entity';
 import { statSync } from 'fs';
 import { Item } from '../../merchant/entities/item.entity';
+import { cwd } from 'process';
+import { join } from 'path';
 import { Order } from '../../orders/entities/order.entity';
 import { OrderedItem } from '../../orders/entities/ordered-item.entity';
 
