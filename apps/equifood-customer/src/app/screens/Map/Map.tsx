@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
-import { View, Actionsheet, useDisclose, Text } from 'native-base';
-import { Dimensions } from 'react-native';
+import { useDisclose, Text, Box } from 'native-base';
 import { Merchant, Location } from '@equifood/api-interfaces';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
 import { useState } from 'react';
 import { useMerchants } from '../../hooks/useMerchants';
 import * as expoLocation from 'expo-location';
+import ActionSheet from '../../components/ActionSheet/ActionSheet';
 
 const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
   const { isOpen, onOpen, onClose } = useDisclose();
@@ -38,39 +38,26 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
     })();
   }, []);
 
-  const [selectedMerchant, setMerchant] = useState<Merchant>({
-    id: 'null',
-    name: 'Name',
-    banner_url: 'test',
-    logo_url: 'test',
-    description: 'test',
-    location: {
-      address: '123',
-      latitude: 0,
-      longitude: 0,
-    },
-    phone_number: '',
-    inventory: 0,
-    price: null,
-    deadline: null,
-  });
+  const [selectedMerchant, setSelectedMerchant] = useState<Merchant | null>(
+    null
+  );
 
   function onMerchantPress(merchant: Merchant) {
     navigation.navigate('merchant', { merchant });
   }
 
   function selectMerchant(merchant: Merchant) {
-    setMerchant(merchant);
+    setSelectedMerchant(merchant);
+    console.log('OK');
     onOpen();
   }
 
   return (
-    <View>
-      <Text>{userLocation.latitude}</Text>
+    <Box height="full">
       <MapView
         style={{
-          height: Dimensions.get('window').height,
-          width: Dimensions.get('window').width,
+          height: '100%',
+          width: '100%',
         }}
         initialRegion={{
           latitude: userLocation.latitude,
@@ -92,19 +79,27 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
           />
         ))}
       </MapView>
-      {selectedMerchant.id != 'null' && (
-        <Actionsheet isOpen={isOpen} onClose={onClose} disableOverlay _backdrop>
-          <Actionsheet.Content>
-            <Actionsheet.Item>
-              <MerchantCard
-                merchant={selectedMerchant}
-                onPress={() => onMerchantPress(selectedMerchant)}
-              />
-            </Actionsheet.Item>
-          </Actionsheet.Content>
-        </Actionsheet>
+      {selectedMerchant !== null && (
+        <Box
+          justifyContent="flex-end"
+          height="full"
+          position="absolute"
+          top="0"
+          bottom="0"
+          left="0"
+          right="0"
+          pointerEvents="box-none"
+        >
+          <ActionSheet isOpen={isOpen} onClose={onClose}>
+            <Text>Hello</Text>
+            <MerchantCard
+              merchant={selectedMerchant}
+              onPress={() => onMerchantPress(selectedMerchant)}
+            />
+          </ActionSheet>
+        </Box>
       )}
-    </View>
+    </Box>
   );
 };
 
