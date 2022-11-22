@@ -20,7 +20,6 @@ export class MerchantsService {
   async get(merchantId: string) {
     const merchant = await this.merchantRepository.findOne({
       where: { id: merchantId },
-      relations: { items: true },
     });
     if (!merchant) throw new NotFoundException();
     return merchant;

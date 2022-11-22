@@ -10,7 +10,7 @@ export interface Merchant {
   location: Location;
   phone_number: string;
   inventory: number;
-  items: Item[];
+  item: Item;
   price: number | null;
   deadline: Date | null;
 }
