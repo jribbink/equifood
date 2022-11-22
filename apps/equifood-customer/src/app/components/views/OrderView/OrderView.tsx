@@ -4,17 +4,15 @@ import { removeItem } from '../../../redux/slices/cart-slice';
 import { Item, Merchant } from '@equifood/api-interfaces';
 
 interface OrderViewProps {
-  items: { quantity: number; item: Item }[];
+  item: Item;
+  quantity: number;
   merchant: Merchant;
 }
 
-function OrderView({ items, merchant }: OrderViewProps) {
+function OrderView({ item, quantity, merchant }: OrderViewProps) {
   const dispatch = useDispatch();
 
-  const totalPrice = items.reduce(
-    (total, { quantity, item }) => total + quantity * item.originalPrice,
-    0
-  );
+  const totalPrice = item.price * quantity;
 
   return (
     <VStack>
@@ -28,39 +26,37 @@ function OrderView({ items, merchant }: OrderViewProps) {
         {merchant.name}
       </Text>
       <VStack paddingBottom={5}>
-        {items.map(({ item }) => (
-          <View
-            testID="CartItem"
-            key={item.id}
-            alignSelf="stretch"
-            style={{
-              flexDirection: 'row',
-              height: 60,
-              padding: 10,
-            }}
-          >
-            <View style={{ flex: 1 }}>
-              <Text testID="item-name">{item.name}</Text>
-            </View>
-            <View style={{ flex: 1 }}>
-              <Text testID="item-newPrice" fontWeight={'bold'}>
-                {item.price}
-              </Text>
-              <Text testID="item-oldPrice" textDecorationLine={'line-through'}>
-                {item.originalPrice}
-              </Text>
-            </View>
-            <View style={{ flex: 1 }}>
-              <Button
-                style={{ backgroundColor: 'red', borderRadius: 30 }}
-                accessibilityLabel="Remove item from cart"
-                onPress={() => dispatch(removeItem(item))}
-              >
-                Remove
-              </Button>
-            </View>
+        <View
+          testID="CartItem"
+          key={item.id}
+          alignSelf="stretch"
+          style={{
+            flexDirection: 'row',
+            height: 60,
+            padding: 10,
+          }}
+        >
+          <View style={{ flex: 1 }}>
+            <Text testID="item-name">{item.name}</Text>
           </View>
-        ))}
+          <View style={{ flex: 1 }}>
+            <Text testID="item-newPrice" fontWeight={'bold'}>
+              {item.price}
+            </Text>
+            <Text testID="item-oldPrice" textDecorationLine={'line-through'}>
+              {item.originalPrice}
+            </Text>
+          </View>
+          <View style={{ flex: 1 }}>
+            <Button
+              style={{ backgroundColor: 'red', borderRadius: 30 }}
+              accessibilityLabel="Remove item from cart"
+              onPress={() => dispatch(removeItem(item))}
+            >
+              Remove
+            </Button>
+          </View>
+        </View>
       </VStack>
       <Text testID="totalPrice" fontSize="20" alignSelf="center" padding="3">
         Total Price: {totalPrice}$

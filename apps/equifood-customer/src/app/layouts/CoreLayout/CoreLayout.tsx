@@ -74,7 +74,7 @@ function CoreLayout() {
         </Stack.Navigator>
       </NavigationContainer>
       <Box position="absolute" bottom={60} right={5}>
-        <CartButton navigation={navigation}></CartButton>
+        {/*<CartButton navigation={navigation}></CartButton>*/}
       </Box>
     </View>
   );
