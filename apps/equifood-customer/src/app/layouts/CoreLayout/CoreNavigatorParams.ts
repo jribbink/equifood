@@ -21,6 +21,7 @@ export type CoreStackParams = {
   order: {
     order: Order;
   };
+  cart: undefined;
 };
 
 export type CoreNavigationProps<T extends keyof CoreTabParams> =

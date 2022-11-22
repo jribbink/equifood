@@ -7,6 +7,8 @@ import { hashPassword } from '../../common/utils/crypto';
 import { Upload } from '../../uploads/entities/upload.entity';
 import { statSync } from 'fs';
 import { Item } from '../../merchant/entities/item.entity';
+import { cwd } from 'process';
+import { join } from 'path';
 import { Order } from '../../orders/entities/order.entity';
 import { OrderedItem } from '../../orders/entities/ordered-item.entity';
 
@@ -87,7 +89,7 @@ export class Seeder {
     const item1 = await this.itemRepository.save(<Item>{
       name: 'Example item',
       price: 10.99,
-      //original price?
+      originalPrice: 20.0,
       quantity: 5,
     });
 
@@ -98,8 +100,12 @@ export class Seeder {
       description: 'Order pizza',
       deadline: null,
       phone_number: '(123) 456-7890',
-      location: {},
-      items: [item1],
+      location: {
+        address: '123',
+        latitude: 49.941,
+        longitude: -119.386,
+      },
+      item: item1,
       user: merchantUser,
     });
 
@@ -111,7 +117,7 @@ export class Seeder {
     await this.orderRepository.save({
       completed_date: new Date(2022, 11, 1, 22),
       deadline: new Date(2022, 11, 1, 22, 30),
-      items: [orderedItem],
+      item: orderedItem,
       merchant: merchant,
       order_date: new Date(2022, 11, 1, 21, 45),
       status: 'completed',

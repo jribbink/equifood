@@ -34,8 +34,8 @@ const Cart = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    dispatch(addItem(i1));
-    dispatch(addItem(i2));
+    dispatch(addItem({ quantity: 1, item: i1 }));
+    dispatch(addItem({ quantity: 1, item: i2 }));
     dispatch(setMerchant(m));
   }, [dispatch]);
 

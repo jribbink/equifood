@@ -1,11 +1,16 @@
 import React from 'react';
-import { StyleSheet, View, Modal, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, Modal, Text, ActivityIndicator } from 'react-native';
 
 function LoadingScreen() {
   return (
     <View style={styles.modalBackground}>
-      <View style={styles.activityIndicatorWrapper}>
-        <ActivityIndicator animating={true} color="black" />
+      <View style={styles.activityIndicatorSpacer}>
+        <ActivityIndicator
+          style={styles.activityIndicatorWrapper}
+          animating={true}
+          color="green"
+        />
+        <Text style={styles.activityIndicatorText}>Food for thought!</Text>
       </View>
     </View>
   );
@@ -22,12 +27,32 @@ const styles = StyleSheet.create({
   },
   activityIndicatorWrapper: {
     backgroundColor: '#FFFFFF',
-    height: 100,
-    width: 100,
-    borderRadius: 10,
+    height: 50,
+    width: 50,
+    borderRadius: 100,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-around',
+  },
+  activityIndicatorSpacer: {
+    paddingTop: 10,
+    borderRadius: 30,
+    backgroundColor: '#DDDDDD',
+    flexDirection: 'column',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  activityIndicatorText: {
+    height: 30,
+    paddingLeft: 20,
+    paddingRight: 20,
+    flexDirection: 'column',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    paddingTop: 5,
+    textAlign: 'center',
   },
 });
 

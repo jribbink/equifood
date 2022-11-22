@@ -3,7 +3,7 @@ import {
   Column,
   Entity,
   ManyToOne,
-  OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Merchant } from '../../merchant/entities/merchant.entity';
@@ -34,10 +34,10 @@ export class Order {
   @Column()
   status: 'pending' | 'completed' | 'cancelled';
 
-  @OneToMany<OrderedItem>('OrderedItem', (orderedItem) => orderedItem.order, {
+  @OneToOne<OrderedItem>('OrderedItem', (orderedItem) => orderedItem.order, {
     eager: true,
   })
-  items: OrderedItem[];
+  item: OrderedItem;
 
   @Column()
   total: number;

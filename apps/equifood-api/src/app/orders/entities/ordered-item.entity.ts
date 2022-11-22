@@ -5,7 +5,7 @@ import type { Order } from './order.entity';
 
 @Entity()
 export class OrderedItem extends UuidEntity {
-  @ManyToOne<Order>('Order', (order) => order.items)
+  @ManyToOne<Order>('Order', (order) => order.item)
   order: Order;
 
   @ManyToOne(() => Item, { eager: true })

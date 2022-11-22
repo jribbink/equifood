@@ -32,8 +32,9 @@ export class Merchant extends UuidEntity {
   @Column()
   phone_number: string;
 
-  @OneToMany<Item>('Item', (o) => o.merchant)
-  items: Item[];
+  @OneToOne<Item>('Item', (o) => o.merchant, { eager: true })
+  @JoinColumn()
+  item: Item;
 
   @Column({ nullable: true })
   deadline: Date | null;
