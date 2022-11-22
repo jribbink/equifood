@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { UuidEntity } from '../../database/models/uuid-entity';
 import { Merchant } from '../../merchant/entities/merchant.entity';
 import { User } from '../../users/entities/user.entity';
@@ -26,10 +26,10 @@ export class Order extends UuidEntity {
   @Column()
   status: 'pending' | 'completed' | 'cancelled';
 
-  @OneToMany<OrderedItem>('OrderedItem', (orderedItem) => orderedItem.order, {
+  @OneToOne<OrderedItem>('OrderedItem', (orderedItem) => orderedItem.order, {
     eager: true,
   })
-  items: OrderedItem[];
+  item: OrderedItem;
 
   @Column()
   total: number;

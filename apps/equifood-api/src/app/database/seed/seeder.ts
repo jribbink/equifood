@@ -78,7 +78,7 @@ export class Seeder {
     const item1 = await this.itemRepository.save(<Item>{
       name: 'Example item',
       price: 10.99,
-      //original price?
+      originalPrice: 20.0,
       quantity: 5,
     });
 
@@ -94,7 +94,7 @@ export class Seeder {
         latitude: 49.941,
         longitude: -119.386,
       },
-      items: [item1],
+      item: item1,
     });
 
     const orderedItem = await this.orderedItemRepository.save(<OrderedItem>{
@@ -105,7 +105,7 @@ export class Seeder {
     await this.orderRepository.save({
       completed_date: new Date(2022, 11, 1, 22),
       deadline: new Date(2022, 11, 1, 22, 30),
-      items: [orderedItem],
+      item: orderedItem,
       merchant: merchant,
       order_date: new Date(2022, 11, 1, 21, 45),
       status: 'completed',
