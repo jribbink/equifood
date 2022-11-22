@@ -1,17 +1,26 @@
-import { Box } from 'native-base';
-import { ReactNode, useEffect, useState } from 'react';
+import { Box, NativeBaseProviderProps, ZStack } from 'native-base';
+import { ReactElement, ReactNode, useEffect, useState } from 'react';
 import { Animated, GestureResponderEvent } from 'react-native';
+import Svg, { Rect, RectProps } from 'react-native-svg';
 
-interface ActionSheetProps {
+type ArgumentTypes<F extends (props: any) => ReactElement | null> = F extends (
+  args: infer A
+) => any
+  ? A
+  : never;
+
+interface ActionSheetProps extends ArgumentTypes<typeof Box> {
   isOpen: boolean;
   children: ReactNode | undefined;
   onClose: () => void;
+  grabIndicatorProps?: RectProps;
 }
 
 function ActionSheet({
   isOpen,
   onClose,
   children,
+  grabIndicatorProps,
   ...props
 }: ActionSheetProps) {
   const [startPos, setStartPos] = useState<number>(0);
@@ -22,6 +31,7 @@ function ActionSheet({
     if (!isOpen) {
       currentOffset.setValue(currentHeight);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentHeight]);
 
   useEffect(() => {
@@ -85,6 +95,18 @@ function ActionSheet({
       >
         {children}
       </Box>
+      <Svg width="100%" height="25" style={{ position: 'absolute', top: 0 }}>
+        <Rect
+          x="45%"
+          y="13"
+          fill="#666666"
+          height="4"
+          width="10%"
+          rx={2}
+          ry={2}
+          {...grabIndicatorProps}
+        ></Rect>
+      </Svg>
     </Animated.View>
   );
 }

@@ -48,7 +48,6 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
 
   function selectMerchant(merchant: Merchant) {
     setSelectedMerchant(merchant);
-    console.log('OK');
     onOpen();
   }
 
@@ -65,6 +64,10 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
+        onPress={() => {
+          onClose();
+          setSelectedMerchant(null);
+        }}
       >
         {(merchants || []).map((merchant) => (
           <Marker
@@ -75,7 +78,10 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
             }}
             title={merchant.name}
             description={merchant.description}
-            onPress={() => selectMerchant(merchant)}
+            onPress={(e) => {
+              e.stopPropagation();
+              selectMerchant(merchant);
+            }}
           />
         ))}
       </MapView>
