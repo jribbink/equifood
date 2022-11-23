@@ -1,4 +1,3 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { FontAwesome } from '@expo/vector-icons';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Box, Divider, Heading, HStack, Text } from 'native-base';
@@ -231,7 +230,7 @@ function OrderScreen({
                 (order.item.item.originalPrice - order.item.item.price) *
                 order.item.quantity
               ).toFixed(2)}{' '}
-              today. Thank you for your contribution to reducing food insecurity
+              today. Thank you for your contribution to reducing food waste
               across Canada.
             </Text>
           </HStack>
