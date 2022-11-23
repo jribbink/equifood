@@ -32,7 +32,7 @@ function ProgressSteps({
 }: ProgressStepsProps) {
   const [dims, setDims] = useState<[number, number]>([0, 0]);
 
-  function resolveStatus(i) {
+  function resolveStatus(i: number) {
     if (currentIndex > i) {
       return 'complete';
     } else if (currentIndex === i) {
@@ -181,8 +181,10 @@ function ProgressStep({
         stroke="none"
         fontSize="20"
         fontWeight="bold"
-        x={cx - 6}
-        y={cy + 6}
+        x={cx}
+        y={cy}
+        alignmentBaseline="middle"
+        textAnchor="middle"
       >
         {styles.innerText}
       </SvgText>
