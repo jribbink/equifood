@@ -118,14 +118,14 @@ function OrderScreen({
               <Box>
                 <Box flexDirection="row" width="full" backgroundColor="red">
                   <Text>{`${order.item.quantity}x ${order.item.item.name}`}</Text>
-                  <Text ml="auto">
-                    ${(order.item.item.price * order.item.quantity).toFixed(2)}
-                  </Text>
-                  <Text strikeThrough={true} color="red.600" ml="2">
+                  <Text ml="auto" strikeThrough={true} color="red.600">
                     $
                     {(
                       order.item.item.originalPrice * order.item.quantity
                     ).toFixed(2)}
+                  </Text>
+                  <Text ml="2">
+                    ${(order.item.item.price * order.item.quantity).toFixed(2)}
                   </Text>
                 </Box>
                 {order.item.item.description ? (
