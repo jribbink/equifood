@@ -26,32 +26,28 @@ function RestaurantScreen({
 
   if (!merchant) return null;
 
-  const { items } = merchant;
+  const item = merchant.item;
 
   return (
     <ScrollView testID="items" flex={1}>
       {
         // ItemCard is currently (nov 17/2022) mostly copied from MerchantCard
         // please fix
-        (items || []).map((i) => (
-          <Box key={i.id} shadow="2">
-            <ItemCard
-              item={i}
-              onPress={() => {
-                dispatch(addItem(i));
-                // change cart merchant here
-              }}
-            ></ItemCard>
-          </Box>
-        ))
+        <ItemCard
+          item={item}
+          onPress={() => {
+            dispatch(addItem(item));
+            // change cart merchant here
+          }}
+        ></ItemCard>
       }
       <Box>
         <Text>
           {route.params.merchant.name + ': ' + route.params.merchant.inventory}
         </Text>
-        <Button
-          onPress={() => navigation.navigate('core', { screen: 'map' })}
-        ></Button>
+        <Button onPress={() => navigation.navigate('core', { screen: 'home' })}>
+          Back to Home
+        </Button>
       </Box>
     </ScrollView>
   );
