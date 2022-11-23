@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { useMerchants } from '../../hooks/useMerchants';
 import * as expoLocation from 'expo-location';
 import ActionSheet from '../../components/ActionSheet/ActionSheet';
+import MerchantMap from '../../components/MerchantMap/MerchantMap';
 
 const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
   const { isOpen, onOpen, onClose } = useDisclose();
@@ -42,49 +43,24 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
     null
   );
 
-  function onMerchantPress(merchant: Merchant) {
-    navigation.navigate('merchant', { merchant });
-  }
-
-  function selectMerchant(merchant: Merchant) {
+  function handleMerchantChange(merchant: Merchant | null) {
     setSelectedMerchant(merchant);
-    onOpen();
+    if (merchant) onOpen();
+    else onClose();
   }
 
   return (
     <Box height="full">
-      <MapView
-        style={{
-          height: '100%',
-          width: '100%',
-        }}
+      <MerchantMap
+        merchants={merchants}
         initialRegion={{
           latitude: userLocation.latitude,
           longitude: userLocation.longitude,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
-        onPress={() => {
-          onClose();
-          setSelectedMerchant(null);
-        }}
-      >
-        {(merchants || []).map((merchant) => (
-          <Marker
-            key={merchant.id}
-            coordinate={{
-              latitude: merchant.location.latitude,
-              longitude: merchant.location.longitude,
-            }}
-            title={merchant.name}
-            description={merchant.description}
-            onPress={(e) => {
-              e.stopPropagation();
-              selectMerchant(merchant);
-            }}
-          />
-        ))}
-      </MapView>
+        onMerchantChange={handleMerchantChange}
+      ></MerchantMap>
       {selectedMerchant !== null && (
         <Box
           justifyContent="flex-end"
