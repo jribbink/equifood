@@ -3,11 +3,21 @@ import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from '@nestjs/typeorm';
 import entities from './entities';
 
+export const MOCK_DB_PATH = 'tempdb/tempdb';
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
   constructor(private configService: ConfigService) {}
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
+    if (this.configService.get('database.mock')) {
+      return {
+        type: 'better-sqlite3',
+        database: MOCK_DB_PATH,
+        entities: entities,
+        synchronize: true,
+      };
+    }
+
     return {
       type: this.configService.get('database.type'),
       url: this.configService.get('database.url'),
@@ -34,7 +44,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
         ssl: this.configService.get('database.sslEnabled')
           ? {
               rejectUnauthorized: this.configService.get(
-                'database.rejectUnauthorized',
+                'database.rejectUnauthorized'
               ),
               ca: this.configService.get('database.ca') ?? undefined,
               key: this.configService.get('database.key') ?? undefined,

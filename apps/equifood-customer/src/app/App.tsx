@@ -1,24 +1,70 @@
-import React, { useEffect } from 'react';
-
+import React, { useEffect, useState } from 'react';
 import { NativeBaseProvider } from 'native-base';
-import Home from './screens/Home/Home';
-import DefaultLayout from './layout/DefaultLayout/DefaultLayout';
-import axios from 'axios';
-import appConfig from './app-config';
+import SafeViewAndroid from './osChecker';
+import { Provider as ReduxProvider } from 'react-redux';
+import { RootState } from './redux/store';
+import { AppState, AppStateStatus, SafeAreaView } from 'react-native';
+import RootLayout from './layouts/RootLayout/RootLayout';
+import { bootstrapApp } from './util/bootstrap';
+import { Store } from '@reduxjs/toolkit';
+import LoadingScreen from './screens/LoadingScreen/LoadingScreen';
+import { SWRConfig } from 'swr';
 
 const App = () => {
+  const [store, setStore] = useState<Store<RootState>>();
+
   useEffect(() => {
-    axios.defaults.baseURL = appConfig.apiUrl;
+    (async () => {
+      const { store } = await bootstrapApp();
+      setStore(store);
+    })();
   }, []);
 
+  const swrConfig = {
+    provider: () => new Map(),
+    isVisible: () => {
+      return true;
+    },
+    initFocus(callback: () => void) {
+      let appState = AppState.currentState;
+
+      const onAppStateChange = (nextAppState: AppStateStatus) => {
+        /* If it's resuming from background or inactive mode to active one */
+        if (
+          appState.match(/inactive|background/) &&
+          nextAppState === 'active'
+        ) {
+          callback();
+        }
+        appState = nextAppState;
+      };
+
+      // Subscribe to the app state change events
+      const subscription = AppState.addEventListener(
+        'change',
+        onAppStateChange
+      );
+
+      return () => {
+        subscription.remove();
+      };
+    },
+  };
+
   return (
-    <>
-      <NativeBaseProvider>
-        <DefaultLayout>
-          <Home></Home>
-        </DefaultLayout>
-      </NativeBaseProvider>
-    </>
+    <NativeBaseProvider>
+      <SWRConfig value={swrConfig}>
+        <SafeAreaView style={SafeViewAndroid.AndroidSafeArea}>
+          {store ? (
+            <ReduxProvider store={store}>
+              <RootLayout></RootLayout>
+            </ReduxProvider>
+          ) : (
+            <LoadingScreen></LoadingScreen>
+          )}
+        </SafeAreaView>
+      </SWRConfig>
+    </NativeBaseProvider>
   );
 };
 

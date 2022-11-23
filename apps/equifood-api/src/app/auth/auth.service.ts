@@ -3,19 +3,19 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { FindOptionsWhere } from 'typeorm';
-import { hashPassword } from '../utils/crypto';
+import { hashPassword } from '../common/utils/crypto';
 import ms from 'ms';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UsersService,
-    private jwtService: JwtService,
+    private jwtService: JwtService
   ) {}
 
   async validateUser(
     fields: FindOptionsWhere<User>,
-    password: string,
+    password: string
   ): Promise<User> {
     const user = await this.userService.findOne(fields);
     if (!user) return null;
