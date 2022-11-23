@@ -101,7 +101,7 @@ export class Seeder {
       deadline: null,
       phone_number: '(123) 456-7890',
       location: {
-        address: '123',
+        address: '975 Academy Way Unit # 120. Kelowna, BC V1V 3A4',
         latitude: 49.941,
         longitude: -119.386,
       },
