@@ -1,7 +1,7 @@
 import { Box } from 'native-base';
 import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primitives/Box';
 import { useEffect, useState } from 'react';
-import { Animated } from 'react-native';
+import { Animated, Easing } from 'react-native';
 import Svg, { Circle, Rect, Text as SvgText } from 'react-native-svg';
 
 export interface ProgressStep {
@@ -42,8 +42,31 @@ function ProgressSteps({
     }
   }
 
+  const [pendingScale, setPendingScale] = useState<number>(1);
+  useEffect(() => {
+    const animation = new Animated.Value(0.95);
+
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(animation, {
+          duration: 750,
+          toValue: 1.05,
+          useNativeDriver: false,
+        }),
+        Animated.timing(animation, {
+          duration: 750,
+          toValue: 0.95,
+          useNativeDriver: false,
+        }),
+      ])
+    ).start();
+    animation.addListener(({ value }) => setPendingScale(value));
+  }, []);
+
+  const height = stepRadius * 2 + lineWidth + 25;
+
   return (
-    <Box height={200} {...props}>
+    <Box height={height + 'px'} {...props}>
       <Svg
         height="100%"
         width="100%"
@@ -57,27 +80,45 @@ function ProgressSteps({
           <Rect
             key={i}
             x={dims[0] * ((i + 0.5) / steps.length) + stepRadius + lineSpacing}
-            y={dims[1] / 2 - lineWidth / 2}
+            y={stepRadius + lineWidth / 2 - lineWidth / 2}
             width={dims[0] / steps.length - stepRadius * 2 - lineSpacing * 2}
             height={lineWidth}
             fill={i >= currentIndex ? secondaryColor : primaryColor}
           ></Rect>
         ))}
 
-        {steps.map((step, i) => (
-          <ProgressStep
-            key={i}
-            radius={stepRadius}
-            cx={dims[0] * ((i + 0.5) / steps.length)}
-            cy={dims[1] / 2}
-            step={step}
-            index={i}
-            primaryColor={primaryColor}
-            secondaryColor={secondaryColor}
-            status={resolveStatus(i)}
-            cancelled={cancelled}
-          ></ProgressStep>
-        ))}
+        {steps.map((step, i) => {
+          const status = resolveStatus(i);
+          return (
+            <>
+              <ProgressStep
+                key={i}
+                radius={
+                  status === 'pending' ? stepRadius * pendingScale : stepRadius
+                }
+                cx={dims[0] * ((i + 0.5) / steps.length)}
+                cy={stepRadius + lineWidth / 2}
+                step={step}
+                index={i}
+                primaryColor={primaryColor}
+                secondaryColor={secondaryColor}
+                status={status}
+                cancelled={cancelled}
+              ></ProgressStep>
+              <SvgText
+                fill={status === 'idle' ? secondaryColor : primaryColor}
+                stroke="none"
+                fontSize={status === 'pending' ? pendingScale * 15 : 15}
+                x={dims[0] * ((i + 0.5) / steps.length)}
+                y={stepRadius * 2 + lineWidth + 7}
+                alignmentBaseline="top"
+                textAnchor="middle"
+              >
+                {step.text}
+              </SvgText>
+            </>
+          );
+        })}
       </Svg>
     </Box>
   );
@@ -144,27 +185,6 @@ function ProgressStep({
       };
   }
 
-  const dash = '';
-  const dashStart = useState(new Animated.Value(0))[0];
-  const dashEnd = useState(new Animated.Value(0))[0];
-
-  const [d, setDash] = useState<number>();
-
-  useEffect(() => {
-    if (status === 'pending') {
-      Animated.loop(
-        Animated.timing(dashStart, {
-          toValue: 2 * radius * Math.PI,
-          duration: 1000,
-          useNativeDriver: false,
-        })
-      ).start();
-    }
-  }, [status]);
-  useEffect(() => {
-    dashStart.addListener((e) => setDash(e.value));
-  }, [dashStart]);
-
   return (
     <>
       <Circle
@@ -173,7 +193,6 @@ function ProgressStep({
         r={radius}
         stroke={styles.stroke}
         strokeWidth="5"
-        strokeDasharray={[0, d, 30, 1000]}
         fill={styles.fill}
       />
       <SvgText

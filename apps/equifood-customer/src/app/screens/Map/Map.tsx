@@ -1,6 +1,4 @@
 import React, { useEffect } from 'react';
-import MapView from 'react-native-maps';
-import { Marker } from 'react-native-maps';
 import { useDisclose, Text, Box } from 'native-base';
 import { Merchant, Location } from '@equifood/api-interfaces';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';

@@ -6,7 +6,7 @@ import MapView, { Region, Marker } from 'react-native-maps';
 interface MerchantMapProps extends InterfaceBoxProps {
   merchants: Merchant[] | undefined;
   initialRegion: Region | undefined;
-  onMerchantChange: (merchant: Merchant | null) => void;
+  onMerchantChange?: (merchant: Merchant | null) => void;
 }
 
 function MerchantMap({
@@ -24,7 +24,7 @@ function MerchantMap({
         }}
         initialRegion={initialRegion}
         onPress={() => {
-          onMerchantChange(null);
+          onMerchantChange?.(null);
         }}
       >
         {(merchants || []).map((merchant) => (
@@ -38,7 +38,7 @@ function MerchantMap({
             description={merchant.description}
             onPress={(e) => {
               e.stopPropagation();
-              onMerchantChange(merchant);
+              onMerchantChange?.(merchant);
             }}
           />
         ))}

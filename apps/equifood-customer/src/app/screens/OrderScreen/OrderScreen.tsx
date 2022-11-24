@@ -8,7 +8,7 @@ import ProgressSteps, {
   ProgressStep,
 } from '../../components/visuals/ProgressSteps/ProgressSteps';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
-import MapView from 'react-native-maps';
+import MerchantMap from '../../components/MerchantMap/MerchantMap';
 
 function OrderScreen({
   navigation,
@@ -97,15 +97,21 @@ function OrderScreen({
           minH={(viewHeight ?? 0) + 10}
           borderRadius="10px"
           backgroundColor="white"
+          pt="5"
         >
-          <Heading textAlign="center" pt="5" color="green.800">
-            Order Progress
-          </Heading>
+          <Box flexDirection="row" mx="4" my="2" alignItems="center">
+            <Heading>{order.merchant.name}</Heading>
+            <Text ml="auto">Order #{order.id}</Text>
+          </Box>
+
           <ProgressSteps
             steps={steps}
-            currentIndex={1}
+            currentIndex={
+              (steps.findIndex((s) => s.text.toLowerCase() === order.status) ??
+                -2) + 1
+            }
             cancelled={true}
-            height="75"
+            my="3"
           ></ProgressSteps>
 
           <Divider></Divider>
@@ -194,9 +200,16 @@ function OrderScreen({
               </Text>
               <Text pb="4">Payment: In-person</Text>
               {viewHeight ? (
-                <MapView
+                <MerchantMap
+                  merchants={[order.merchant]}
+                  initialRegion={{
+                    longitude: order.merchant.location.longitude,
+                    latitude: order.merchant.location.latitude,
+                    latitudeDelta: 2,
+                    longitudeDelta: 2,
+                  }}
                   style={{ width: '100%', height: viewHeight * 0.5 }}
-                ></MapView>
+                ></MerchantMap>
               ) : null}
             </Box>
           </Box>
