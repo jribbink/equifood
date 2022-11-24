@@ -1,8 +1,7 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Box, Divider, Heading, HStack, Text } from 'native-base';
-import { useEffect, useRef, useState } from 'react';
-import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native';
+import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import ProgressSteps, {
   ProgressStep,
@@ -15,11 +14,13 @@ function OrderScreen({
   route,
 }: StackScreenProps<CoreStackParams, 'order'>) {
   const order = route.params.order;
+
   useEffect(() => {
     navigation.setOptions({
       headerTitle: `Order #${order.id}`,
     });
   }, [navigation, order]);
+
   const steps: ProgressStep[] = [
     {
       text: 'Pending',
@@ -32,33 +33,6 @@ function OrderScreen({
     },
   ];
 
-  const baseBannerHeight = 200;
-  const [imageHeight, setImageHeight] = useState<number>(baseBannerHeight);
-  const scrollViewRef = useRef<ScrollView | null>(null);
-
-  function handleScroll(event: NativeSyntheticEvent<NativeScrollEvent>) {
-    const offset = event.nativeEvent.contentOffset.y;
-    setImageHeight(
-      Math.min(Math.max(baseBannerHeight - offset, 0), baseBannerHeight)
-    );
-  }
-
-  function handleScrollEnd(event: NativeSyntheticEvent<NativeScrollEvent>) {
-    const offset = event.nativeEvent.contentOffset.y;
-    if (offset > (0.4 * baseBannerHeight) / 2) {
-      scrollViewRef.current?.scrollTo({
-        y: baseBannerHeight / 2,
-        animated: true,
-      });
-    } else {
-      scrollViewRef.current?.scrollTo({ y: 0, animated: true });
-    }
-  }
-
-  function handleScrollStart(event: NativeSyntheticEvent<NativeScrollEvent>) {
-    scrollViewRef.current?.scrollTo({ y: event.nativeEvent.contentOffset.y });
-  }
-
   const [viewHeight, setViewHeight] = useState<number>(0);
 
   return (
@@ -67,30 +41,7 @@ function OrderScreen({
       backgroundColor="white"
       onLayout={(e) => setViewHeight(e.nativeEvent.layout.height)}
     >
-      {/*onScroll={handleScroll}
-        onScrollEndDrag={handleScrollEnd}
-  onScrollBeginDrag={handleScrollStart}*/}
-      <ScrollView ref={scrollViewRef} scrollEventThrottle={0.1}>
-        {/*<ZStack height={imageHeight + 'px'} overflow="hidden">
-          {/*<Image
-            source={{ uri: order.merchant.banner_url }}
-            alt={order.merchant.name}
-            width="full"
-            height={imageHeight + 'px'}
-            overflow="hidden"
-  ></Image>}
-          <MapView style={{ width: '100%', height: '100%' }}></MapView>
-          <Svg height="100%" width="100%">
-            <Defs>
-              <LinearGradient id="grad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <Stop offset="0.5" stopColor={'#000000'} stopOpacity={0.7} />
-                <Stop offset="1" stopColor={'#000000'} stopOpacity={0.85} />
-              </LinearGradient>
-            </Defs>
-            <Rect width="100%" height="100%" fill="url(#grad)" />
-          </Svg>
-        </ZStack>*/}
-
+      <ScrollView scrollEventThrottle={0.1}>
         <Box
           position="relative"
           top="-10"
@@ -252,9 +203,5 @@ function OrderScreen({
     </Box>
   );
 }
-
-function OrderInfo() {}
-
-function OrderPrice() {}
 
 export default OrderScreen;
