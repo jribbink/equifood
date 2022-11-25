@@ -54,40 +54,40 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
 
   return (
     <Box height="full">
-      {userLocation!=null &&(
-      <MapView
-        style={{
-          height: '100%',
-          width: '100%',
-        }}
-        initialRegion={{
-          latitude: userLocation.latitude,
-          longitude: userLocation.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-        onPress={() => {
-          onClose();
-          setSelectedMerchant(null);
-        }}
-      >
-        {(merchants || []).map((merchant) => (
-          <Marker
-            key={merchant.id}
-            coordinate={{
-              latitude: merchant.location.latitude,
-              longitude: merchant.location.longitude,
-            }}
-            title={merchant.name}
-            description={merchant.description}
-            image={{uri: 'https://imgur.com/L5PXC8v.png'}}
-            onPress={(e) => {
-              e.stopPropagation();
-              selectMerchant(merchant);
-            }}
-          />
-        ))}
-      </MapView>
+      {userLocation != null && (
+        <MapView
+          style={{
+            height: '100%',
+            width: '100%',
+          }}
+          initialRegion={{
+            latitude: userLocation.latitude,
+            longitude: userLocation.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+          onPress={() => {
+            onClose();
+            setSelectedMerchant(null);
+          }}
+        >
+          {(merchants || []).map((merchant) => (
+            <Marker
+              key={merchant.id}
+              coordinate={{
+                latitude: merchant.location.latitude,
+                longitude: merchant.location.longitude,
+              }}
+              title={merchant.name}
+              description={merchant.description}
+              image={{ uri: 'https://imgur.com/L5PXC8v.png' }}
+              onPress={(e) => {
+                e.stopPropagation();
+                selectMerchant(merchant);
+              }}
+            />
+          ))}
+        </MapView>
       )}
       {selectedMerchant !== null && (
         <Box
