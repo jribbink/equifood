@@ -1,15 +1,14 @@
 import React, { useEffect } from 'react';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
-import { View, Actionsheet, useDisclose } from 'native-base';
-import { Dimensions } from 'react-native';
+import { useDisclose, Text, Box } from 'native-base';
 import { Merchant, Location } from '@equifood/api-interfaces';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
 import { useState } from 'react';
 import { useMerchants } from '../../hooks/useMerchants';
 import * as expoLocation from 'expo-location';
-import { PROVIDER_GOOGLE } from 'react-native-maps';
+import ActionSheet from '../../components/ActionSheet/ActionSheet';
 
 const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
   const { isOpen, onOpen, onClose } = useDisclose();
@@ -40,60 +39,76 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
     })();
   }, []);
 
-  const [selectedMerchant, setMerchant] = useState<Merchant>();
+  const [selectedMerchant, setSelectedMerchant] = useState<Merchant | null>(
+    null
+  );
 
   function onMerchantPress(merchant: Merchant) {
     navigation.navigate('merchant', { merchant });
   }
 
   function selectMerchant(merchant: Merchant) {
-    setMerchant(merchant);
+    setSelectedMerchant(merchant);
     onOpen();
   }
 
   return (
-    <View>
-      {userLocation != null && (
-        <MapView
-          style={{
-            height: Dimensions.get('window').height,
-            width: Dimensions.get('window').width,
-          }}
-          initialRegion={{
-            latitude: userLocation.latitude,
-            longitude: userLocation.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
+    <Box height="full">
+      {userLocation!=null &&(
+      <MapView
+        style={{
+          height: '100%',
+          width: '100%',
+        }}
+        initialRegion={{
+          latitude: userLocation.latitude,
+          longitude: userLocation.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}
+        onPress={() => {
+          onClose();
+          setSelectedMerchant(null);
+        }}
+      >
+        {(merchants || []).map((merchant) => (
+          <Marker
+            key={merchant.id}
+            coordinate={{
+              latitude: merchant.location.latitude,
+              longitude: merchant.location.longitude,
+            }}
+            title={merchant.name}
+            description={merchant.description}
+            onPress={(e) => {
+              e.stopPropagation();
+              selectMerchant(merchant);
+            }}
+          />
+        ))}
+      </MapView>
+      )}
+      {selectedMerchant !== null && (
+        <Box
+          justifyContent="flex-end"
+          height="full"
+          position="absolute"
+          top="0"
+          bottom="0"
+          left="0"
+          right="0"
+          pointerEvents="box-none"
         >
-          {(merchants || []).map((merchant) => (
-            <Marker
-              key={merchant.id}
-              coordinate={{
-                latitude: merchant.location.latitude,
-                longitude: merchant.location.longitude,
-              }}
-              title={merchant.name}
-              description={merchant.description}
-              onPress={() => selectMerchant(merchant)}
-              image={{ uri: 'https://imgur.com/L5PXC8v.png' }}
+          <ActionSheet isOpen={isOpen} onClose={onClose}>
+            <Text>Hello</Text>
+            <MerchantCard
+              merchant={selectedMerchant}
+              onPress={() => onMerchantPress(selectedMerchant)}
             />
-          ))}
-        </MapView>
+          </ActionSheet>
+        </Box>
       )}
-      {selectedMerchant != null && (
-        <Actionsheet isOpen={isOpen} onClose={onClose} disableOverlay _backdrop>
-          <Actionsheet.Content>
-            <Actionsheet.Item>
-              <MerchantCard
-                merchant={selectedMerchant}
-                onPress={() => onMerchantPress(selectedMerchant)}
-              />
-            </Actionsheet.Item>
-          </Actionsheet.Content>
-        </Actionsheet>
-      )}
-    </View>
+    </Box>
   );
 };
 
