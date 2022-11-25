@@ -80,6 +80,7 @@ export class Seeder {
       price: 10.99,
       originalPrice: 20.0,
       quantity: 5,
+      description: 'An ordinary item of food.',
     });
 
     const merchant = await this.merchantRepository.save(<Merchant>{
