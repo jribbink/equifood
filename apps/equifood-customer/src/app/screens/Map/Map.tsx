@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
-import { View, Actionsheet, useDisclose} from 'native-base';
+import { View, Actionsheet, useDisclose } from 'native-base';
 import { Dimensions } from 'react-native';
 import { Merchant, Location } from '@equifood/api-interfaces';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
@@ -30,13 +30,13 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
         setUserLocation(out);
         return;
       }
-        const location = await expoLocation.getCurrentPositionAsync({});
-        const out: Location = {
-          address: '',
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        };
-        setUserLocation(out);
+      const location = await expoLocation.getCurrentPositionAsync({});
+      const out: Location = {
+        address: '',
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+      setUserLocation(out);
     })();
   }, []);
 
@@ -51,38 +51,36 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
     onOpen();
   }
 
-
-
   return (
     <View>
-      {userLocation !=null &&
-      <MapView
-        style={{
-          height: Dimensions.get('window').height,
-          width: Dimensions.get('window').width,
-        }}
-        initialRegion={{
-          latitude: userLocation.latitude,
-          longitude: userLocation.longitude,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
-        }}
-      >
-        {(merchants || []).map((merchant) => (
-          <Marker
-            key={merchant.id}
-            coordinate={{
-              latitude: merchant.location.latitude,
-              longitude: merchant.location.longitude,
-            }}
-            title={merchant.name}
-            description={merchant.description}
-            onPress={() => selectMerchant(merchant)}
-            image={{uri: 'https://imgur.com/L5PXC8v.png'}}
-          />
-        ))}
-      </MapView>
-      }
+      {userLocation != null && (
+        <MapView
+          style={{
+            height: Dimensions.get('window').height,
+            width: Dimensions.get('window').width,
+          }}
+          initialRegion={{
+            latitude: userLocation.latitude,
+            longitude: userLocation.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        >
+          {(merchants || []).map((merchant) => (
+            <Marker
+              key={merchant.id}
+              coordinate={{
+                latitude: merchant.location.latitude,
+                longitude: merchant.location.longitude,
+              }}
+              title={merchant.name}
+              description={merchant.description}
+              onPress={() => selectMerchant(merchant)}
+              image={{ uri: 'https://imgur.com/L5PXC8v.png' }}
+            />
+          ))}
+        </MapView>
+      )}
       {selectedMerchant != null && (
         <Actionsheet isOpen={isOpen} onClose={onClose} disableOverlay _backdrop>
           <Actionsheet.Content>
