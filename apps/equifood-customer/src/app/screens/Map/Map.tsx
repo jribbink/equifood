@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
-import { View, Actionsheet, useDisclose, Text } from 'native-base';
+import { View, Actionsheet, useDisclose} from 'native-base';
 import { Dimensions } from 'react-native';
 import { Merchant, Location } from '@equifood/api-interfaces';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
@@ -9,51 +9,38 @@ import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
 import { useState } from 'react';
 import { useMerchants } from '../../hooks/useMerchants';
 import * as expoLocation from 'expo-location';
+import { PROVIDER_GOOGLE } from 'react-native-maps';
 
 const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
   const { isOpen, onOpen, onClose } = useDisclose();
 
   const { merchants } = useMerchants();
 
-  const [userLocation, setUserLocation] = useState<Location>({
-    address: '',
-    latitude: 49.9,
-    longitude: -119.5,
-  });
+  const [userLocation, setUserLocation] = useState<Location>();
 
   useEffect(() => {
     (async () => {
       const { status } = await expoLocation.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
+        const out: Location = {
+          address: '',
+          latitude: 49.941,
+          longitude: -119.386,
+        };
+        setUserLocation(out);
         return;
       }
-
-      const location = await expoLocation.getCurrentPositionAsync({});
-      const out: Location = {
-        address: '',
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      };
-      setUserLocation(out);
+        const location = await expoLocation.getCurrentPositionAsync({});
+        const out: Location = {
+          address: '',
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        };
+        setUserLocation(out);
     })();
   }, []);
 
-  const [selectedMerchant, setMerchant] = useState<Merchant>({
-    id: 'null',
-    name: 'Name',
-    banner_url: 'test',
-    logo_url: 'test',
-    description: 'test',
-    location: {
-      address: '123',
-      latitude: 0,
-      longitude: 0,
-    },
-    phone_number: '',
-    inventory: 0,
-    price: null,
-    deadline: null,
-  });
+  const [selectedMerchant, setMerchant] = useState<Merchant>();
 
   function onMerchantPress(merchant: Merchant) {
     navigation.navigate('merchant', { merchant });
@@ -64,9 +51,11 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
     onOpen();
   }
 
+
+
   return (
     <View>
-      <Text>{userLocation.latitude}</Text>
+      {userLocation !=null &&
       <MapView
         style={{
           height: Dimensions.get('window').height,
@@ -89,10 +78,12 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
             title={merchant.name}
             description={merchant.description}
             onPress={() => selectMerchant(merchant)}
+            image={{uri: 'https://imgur.com/L5PXC8v.png'}}
           />
         ))}
       </MapView>
-      {selectedMerchant.id != 'null' && (
+      }
+      {selectedMerchant != null && (
         <Actionsheet isOpen={isOpen} onClose={onClose} disableOverlay _backdrop>
           <Actionsheet.Content>
             <Actionsheet.Item>
