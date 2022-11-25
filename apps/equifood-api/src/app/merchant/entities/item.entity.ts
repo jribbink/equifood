@@ -25,6 +25,6 @@ export class Item extends UuidEntity {
   @Column()
   originalPrice: number;
 
-  @Column({ nullable: true })
-  allergies?: string;
+  @Column({ default: '', type: 'simple-array' })
+  allergies: string[];
 }
