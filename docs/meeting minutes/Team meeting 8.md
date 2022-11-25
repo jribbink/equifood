@@ -8,5 +8,5 @@ November 13, 2022
 
 ## Things we discussed this meeting:
 
--Fixing issues with code envirement.
+-Fixing issues with code environment.
 -Try to get things done quickly so we have time to fix issues before testing.

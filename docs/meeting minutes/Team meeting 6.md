@@ -10,4 +10,4 @@ October 30, 2022
 
 ## Things we discussed this meeting:
 
-How to get code envirement working.
+How to get code environment working.
