@@ -74,7 +74,35 @@ function RestaurantScreen({
               <Heading testID="merchant-name" fontSize="lg" fontWeight="bold">
                 {merchant.name}
               </Heading>
-              <Text>{'\n' + merchant.description}</Text>
+              <Text>
+                {'\n' +
+                  merchant.description +
+                  '\n' +
+                  merchant.location +
+                  '\nBy ' +
+                  merchant.deadline}
+              </Text>
+            </Text>
+          </HStack>
+        </Box>
+        <Box borderRadius="5" testID="desc" shadow="2">
+          <HStack
+            bgColor="white"
+            borderBottomRadius={5}
+            shadow="5"
+            p="1.5"
+            space="2"
+          >
+            <Text>
+              <Heading testID="merchant-name" fontSize="lg" fontWeight="bold">
+                {item.name}
+              </Heading>
+              <Heading testID="price" fontSize="md">
+                {item.newPrice}
+              </Heading>
+              <Text fontWeight="italic" fontSize="sm">
+                {item.oldPrice}
+              </Text>
             </Text>
           </HStack>
         </Box>
