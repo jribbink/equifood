@@ -100,7 +100,6 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
           pointerEvents="box-none"
         >
           <ActionSheet isOpen={isOpen} onClose={onClose}>
-            <Text>Hello</Text>
             <MerchantCard
               merchant={selectedMerchant}
               onPress={() => onMerchantPress(selectedMerchant)}
