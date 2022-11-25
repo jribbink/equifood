@@ -26,5 +26,5 @@ export class Item extends UuidEntity {
   originalPrice: number;
 
   @Column()
-  allergies?: string[];
+  allergies?: string;
 }

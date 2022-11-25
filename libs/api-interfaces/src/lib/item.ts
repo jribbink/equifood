@@ -4,5 +4,5 @@ export interface Item {
   newPrice: number;
   oldPrice: number;
   description: string;
-  allergies: string[];
+  allergies: string;
 }
