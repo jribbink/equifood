@@ -77,8 +77,8 @@ function RestaurantScreen({
               <Text>
                 {'\n' +
                   merchant.description +
-                  '\n' +
-                  merchant.location +
+                  '\nAddress: ' +
+                  //merchant.location + '\n' +          add their address at some point
                   '\nBy ' +
                   merchant.deadline}
               </Text>
@@ -94,20 +94,36 @@ function RestaurantScreen({
             space="2"
           >
             <Text>
-              <Heading testID="merchant-name" fontSize="lg" fontWeight="bold">
+              <Heading testID="item-name" fontSize="lg" fontWeight="bold">
                 {item.name}
               </Heading>
-              <Heading testID="price" fontSize="md">
-                {item.newPrice}
+              <Heading testID="priceHeader" fontSize="md">
+                {'\nnew price: '}
               </Heading>
-              <Text fontWeight="italic" fontSize="sm">
-                {item.oldPrice}
+              {' ' + item.newPrice}
+              <Text testID="oldPrice" fontWeight="italic" fontSize="sm">
+                {'\nold price: ' + item.oldPrice}
               </Text>
             </Text>
           </HStack>
         </Box>
+        <Box borderRadius="5" testID="desc" shadow="2">
+          <HStack
+            bgColor="white"
+            borderBottomRadius={5}
+            shadow="5"
+            p="1.5"
+            space="2"
+          >
+            <Text>
+              <Heading testID="reviews" fontSize="lg" fontWeight="bold">
+                Reviews:
+              </Heading>
+            </Text>
+          </HStack>
+        </Box>
       </VStack>
-      <Button onPress={() => alert('checkout')}>hello</Button>
+      <Button onPress={() => alert('checkout')}>Order</Button>
     </ScrollView>
   );
 }
