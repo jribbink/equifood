@@ -6,7 +6,7 @@ October 30, 2022
 
 -Everyone must complete assigned tasks on kanban.
 
--Gant chart
+-Gantt chart
 
 ## Things we discussed this meeting:
 
