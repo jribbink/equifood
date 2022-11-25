@@ -13,7 +13,7 @@ export class Item extends UuidEntity {
   @Column({ nullable: true })
   name?: string;
 
-  @Column({ nullable: true })
+  @Column()
   description: string;
 
   @Column()
@@ -25,6 +25,6 @@ export class Item extends UuidEntity {
   @Column()
   originalPrice: number;
 
-  @Column()
+  @Column({ nullable: true })
   allergies?: string;
 }
