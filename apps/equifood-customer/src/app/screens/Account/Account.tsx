@@ -2,8 +2,10 @@ import React from 'react';
 import { Text, Button, ScrollView, Divider, View } from 'native-base';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../redux/slices/auth-slice';
+import { useProfile } from '../../hooks/useProfile';
 
 const Account = () => {
+  const { User } = useProfile();
   const dispatch = useDispatch();
   function logoutUser() {
     dispatch(logout());
@@ -37,7 +39,7 @@ const Account = () => {
       <Text
         style={{ fontWeight: 'bold', marginTop: 5, fontSize: 20, padding: 20 }}
       >
-        User full name here
+        <User className="email"></User>
       </Text>
       <Text
         style={{
