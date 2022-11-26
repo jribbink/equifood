@@ -13,7 +13,7 @@ import Cart from '../../screens/Cart/Cart';
 import { View, Box } from 'native-base';
 import { CoreStackParams, CoreTabParams } from './CoreNavigatorParams';
 import OrderScreen from '../../screens/OrderScreen/OrderScreen';
-import CartButton from '../../components/buttons/CartButton/CartButton';
+//import CartButton from '../../components/buttons/CartButton/CartButton';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator<CoreTabParams>();
@@ -73,9 +73,14 @@ function CoreLayout() {
           <Stack.Screen name="order" component={OrderScreen}></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
-      <Box position="absolute" bottom={60} right={5}>
-        {/*<CartButton navigation={navigation}></CartButton>*/}
-      </Box>
+      {
+        /*<Box position="absolute" bottom={60} right={5}>
+        {
+          <CartButton navigation={navigation}></CartButton>
+        }
+      </Box>*/
+        //remove if cart is added back
+      }
     </View>
   );
 }
