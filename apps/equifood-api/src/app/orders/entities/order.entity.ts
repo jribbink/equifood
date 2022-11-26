@@ -1,12 +1,20 @@
 import { Type } from 'class-transformer';
-import { Column, Entity, ManyToOne, OneToMany, OneToOne } from 'typeorm';
-import { UuidEntity } from '../../database/models/uuid-entity';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Merchant } from '../../merchant/entities/merchant.entity';
 import { User } from '../../users/entities/user.entity';
 import type { OrderedItem } from './ordered-item.entity';
 
 @Entity()
-export class Order extends UuidEntity {
+export class Order {
+  @PrimaryGeneratedColumn()
+  id: number;
+
   @Column()
   order_date: Date;
 

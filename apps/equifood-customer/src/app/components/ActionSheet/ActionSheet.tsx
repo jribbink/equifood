@@ -24,45 +24,50 @@ function ActionSheet({
   ...props
 }: ActionSheetProps) {
   const [startPos, setStartPos] = useState<number>(0);
-  const [currentOffset] = useState<Animated.Value>(new Animated.Value(0));
+  const translateY = useState<Animated.Value>(new Animated.Value(0))[0];
+  const [_translateY, _setTranslateY] = useState<number>(0);
   const [currentHeight, setCurrentHeight] = useState<number>(0);
 
   useEffect(() => {
+    translateY.addListener((e) => _setTranslateY(e.value));
+  }, [translateY]);
+
+  useEffect(() => {
     if (!isOpen) {
-      currentOffset.setValue(currentHeight);
+      translateY.setValue(currentHeight);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentHeight]);
 
   useEffect(() => {
-    currentOffset.setValue(isOpen ? currentHeight : 0);
-    const animation = Animated.timing(currentOffset, {
+    translateY.setValue(isOpen ? currentHeight : 0);
+    const animation = Animated.timing(translateY, {
       toValue: isOpen ? 0 : currentHeight,
       duration: 500,
       useNativeDriver: true,
     });
     animation.start();
-  }, [isOpen, currentOffset, currentHeight]);
+  }, [isOpen, translateY, currentHeight]);
 
   function handleTouchStart(event: GestureResponderEvent) {
-    setStartPos(event.nativeEvent.pageY);
+    setStartPos(event.nativeEvent.pageY - _translateY);
   }
 
   function handleTouchMove(event: GestureResponderEvent) {
     const newOffset = event.nativeEvent.pageY - startPos;
-    if (newOffset > 0) currentOffset.setValue(newOffset);
+    if (newOffset > 0) translateY.setValue(newOffset);
   }
 
   function handleTouchEnd(event: GestureResponderEvent) {
     const newOffset = event.nativeEvent.pageY - startPos;
     if (newOffset > 0.4 * currentHeight) {
-      Animated.timing(currentOffset, {
+      Animated.timing(translateY, {
         toValue: currentHeight,
         duration: 500,
         useNativeDriver: true,
       }).start(() => onClose());
     } else {
-      Animated.timing(currentOffset, {
+      Animated.timing(translateY, {
         toValue: 0,
         duration: 500,
         useNativeDriver: true,
@@ -74,7 +79,7 @@ function ActionSheet({
   return (
     <Animated.View
       style={{
-        transform: [{ translateY: currentOffset }],
+        transform: [{ translateY }],
         width: '100%',
         padding: 0,
         position: 'absolute',
