@@ -10,7 +10,7 @@ export class OrdersController {
 
   @AuthRoute()
   @Get(':orderId')
-  async getOrder(@AuthUser() user: User, @Param('orderId') orderId: string) {
+  async getOrder(@AuthUser() user: User, @Param('orderId') orderId: number) {
     return await this.ordersService.getOrder(user, orderId);
   }
 
