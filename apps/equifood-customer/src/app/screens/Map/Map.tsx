@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDisclose, Text, Box } from 'native-base';
+import { useDisclose, Box } from 'native-base';
 import { Merchant, Location } from '@equifood/api-interfaces';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
@@ -37,6 +37,10 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
       setUserLocation(out);
     })();
   }, []);
+
+  function onMerchantPress(merchant: Merchant) {
+    navigation.navigate('merchant', { merchant });
+  }
 
   const [selectedMerchant, setSelectedMerchant] = useState<Merchant | null>(
     null
