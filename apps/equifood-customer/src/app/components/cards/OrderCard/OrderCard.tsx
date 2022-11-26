@@ -27,7 +27,7 @@ function OrderCard({ order }: OrderCardProps) {
   return (
     <TouchableHighlight
       style={{ borderRadius: 5 }}
-      onPress={() => navigation.navigate('order', order)}
+      onPress={() => navigation.navigate('order', { order })}
     >
       <HStack
         shadow="5"

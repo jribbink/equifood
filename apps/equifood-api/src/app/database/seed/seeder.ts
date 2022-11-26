@@ -53,6 +53,17 @@ export class Seeder {
       roles: ['customer'],
     });
 
+    const merchantUser = await this.userRepository.save({
+      id: '314d472d-7b35-4b22-b823-128a2ec10fb0',
+      email: 'merchant@example.com',
+      passwordHash: hashPassword('password', ''),
+      passwordSalt: '',
+      first_name: 'John',
+      last_name: 'Doe',
+      phone: '(123) 456-789',
+      roles: ['merchant'],
+    });
+
     const banner1 = await this.uploadRepository.save(<Upload>{
       id: '6e8043ff-282e-44ae-af8b-90b5930a78d4',
       name: 'Fresh Slice Banner',
@@ -91,11 +102,12 @@ export class Seeder {
       deadline: new Date(2022, 11, 8, 23),
       phone_number: '(123) 456-7890',
       location: {
-        address: '123',
+        address: '975 Academy Way Unit # 120. Kelowna, BC V1V 3A4',
         latitude: 49.941,
         longitude: -119.386,
       },
       item: item1,
+      user: merchantUser,
     });
 
     const orderedItem = await this.orderedItemRepository.save(<OrderedItem>{
