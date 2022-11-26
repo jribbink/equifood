@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDisclose, Text, Box } from 'native-base';
+import { useDisclose, Box } from 'native-base';
 import { Merchant, Location } from '@equifood/api-interfaces';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
@@ -7,7 +7,8 @@ import { useState } from 'react';
 import { useMerchants } from '../../hooks/useMerchants';
 import * as expoLocation from 'expo-location';
 import ActionSheet from '../../components/ActionSheet/ActionSheet';
-import MerchantMap from '../../components/MerchantMap/MerchantMap';
+import MapView from 'react-native-maps';
+import { Marker } from 'react-native-maps';
 
 const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
   const { isOpen, onOpen, onClose } = useDisclose();
@@ -37,6 +38,10 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
       setUserLocation(out);
     })();
   }, []);
+
+  function onMerchantPress(merchant: Merchant) {
+    navigation.navigate('merchant', { merchant });
+  }
 
   const [selectedMerchant, setSelectedMerchant] = useState<Merchant | null>(
     null
@@ -79,7 +84,7 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
               image={{ uri: 'https://imgur.com/L5PXC8v.png' }}
               onPress={(e) => {
                 e.stopPropagation();
-                selectMerchant(merchant);
+                handleMerchantChange(merchant);
               }}
             />
           ))}
