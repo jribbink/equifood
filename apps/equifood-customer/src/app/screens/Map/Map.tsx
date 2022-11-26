@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDisclose, Text, Box } from 'native-base';
+import { useDisclose, Box } from 'native-base';
 import { Merchant, Location } from '@equifood/api-interfaces';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
@@ -14,19 +14,20 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
 
   const { merchants } = useMerchants();
 
-  const [userLocation, setUserLocation] = useState<Location>({
-    address: '',
-    latitude: 49.9,
-    longitude: -119.5,
-  });
+  const [userLocation, setUserLocation] = useState<Location>();
 
   useEffect(() => {
     (async () => {
       const { status } = await expoLocation.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
+        const out: Location = {
+          address: '',
+          latitude: 49.941,
+          longitude: -119.386,
+        };
+        setUserLocation(out);
         return;
       }
-
       const location = await expoLocation.getCurrentPositionAsync({});
       const out: Location = {
         address: '',
@@ -37,6 +38,10 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
     })();
   }, []);
 
+  function onMerchantPress(merchant: Merchant) {
+    navigation.navigate('merchant', { merchant });
+  }
+
   const [selectedMerchant, setSelectedMerchant] = useState<Merchant | null>(
     null
   );
@@ -46,6 +51,8 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
     if (merchant) onOpen();
     else onClose();
   }
+
+  if (!userLocation) return null;
 
   return (
     <Box height="full">
@@ -71,7 +78,6 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
           pointerEvents="box-none"
         >
           <ActionSheet isOpen={isOpen} onClose={onClose}>
-            <Text>Hello</Text>
             <MerchantCard
               merchant={selectedMerchant}
               onPress={() => onMerchantPress(selectedMerchant)}
