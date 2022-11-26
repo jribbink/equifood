@@ -13,8 +13,8 @@ export class Item extends UuidEntity {
   @Column({ nullable: true })
   name?: string;
 
-  @Column({ nullable: true })
-  description?: string;
+  @Column()
+  description: string;
 
   @Column()
   quantity: number;
@@ -24,4 +24,7 @@ export class Item extends UuidEntity {
 
   @Column()
   originalPrice: number;
+
+  @Column({ default: '', type: 'simple-array' })
+  allergies: string[];
 }

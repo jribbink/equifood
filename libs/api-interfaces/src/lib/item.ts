@@ -3,4 +3,6 @@ export interface Item {
   name: string;
   newPrice: number;
   oldPrice: number;
+  description: string;
+  allergies: string;
 }

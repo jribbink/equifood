@@ -80,6 +80,7 @@ export class Seeder {
       price: 10.99,
       originalPrice: 20.0,
       quantity: 5,
+      description: 'An ordinary item of food.',
     });
 
     const merchant = await this.merchantRepository.save(<Merchant>{
@@ -87,7 +88,7 @@ export class Seeder {
       banner: banner1,
       logo: logo1,
       description: 'Order pizza',
-      deadline: null,
+      deadline: new Date(2022, 11, 8, 23),
       phone_number: '(123) 456-7890',
       location: {
         address: '123',
