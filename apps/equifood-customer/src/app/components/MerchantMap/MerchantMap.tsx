@@ -36,6 +36,7 @@ function MerchantMap({
             }}
             title={merchant.name}
             description={merchant.description}
+            image={{ uri: 'https://imgur.com/L5PXC8v.png' }}
             onPress={(e) => {
               e.stopPropagation();
               onMerchantChange?.(merchant);

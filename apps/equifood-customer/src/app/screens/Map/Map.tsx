@@ -53,6 +53,8 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
     else onClose();
   }
 
+  if (!userLocation) return null;
+
   return (
     <Box height="full">
       {userLocation != null && (
