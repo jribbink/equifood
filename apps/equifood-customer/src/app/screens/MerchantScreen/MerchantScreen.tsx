@@ -140,7 +140,7 @@ function RestaurantScreen({
             </HStack>
           </Box>
         </VStack>
-        <Button onPress={() => alert('checkout')}>Order</Button>
+        <Button onPress={() => onOpen()}>Order</Button>
       </ScrollView>
       <ActionSheet isOpen={isOpen} onClose={onClose}>
         <Text style={{ textAlign: 'center' }}>Number to order:</Text>
@@ -159,10 +159,11 @@ function RestaurantScreen({
             padding="3"
             accessibilityLabel="Confirm Order"
             onPress={async () => {
-              const { data } = await axios.post<Order>('/api/orders', {
-                merchant: merchant,
+              const { data } = await axios.post<Order>('/orders', {
+                merchant: merchant.id,
                 quantity: number,
               });
+              navigation.navigate('core', { screen: 'orders' });
               navigation.navigate('order', { order: data });
             }}
           ></Button>
