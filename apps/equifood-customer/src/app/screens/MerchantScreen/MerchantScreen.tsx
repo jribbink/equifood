@@ -12,7 +12,7 @@ import {
   useDisclose,
 } from 'native-base';
 import { TouchableHighlight, TextInput, StyleSheet } from 'react-native';
-import { Merchant } from '@equifood/api-interfaces';
+import { Merchant, Order } from '@equifood/api-interfaces';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import React, { useState } from 'react';
 import { useMerchant } from '../../hooks/useMerchant';
@@ -20,6 +20,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
 import * as expoLocation from 'expo-location';
 import ActionSheet from '../../components/ActionSheet/ActionSheet';
+import { useAxios } from '../../hooks/useAxios';
 
 export interface MerchantScreenParams {
   merchant: Merchant;
@@ -29,6 +30,7 @@ function RestaurantScreen({
   navigation,
   route,
 }: StackScreenProps<CoreStackParams, 'merchant'>) {
+  const axios = useAxios();
   const dispatch = useDispatch<AppDispatch>();
   const { merchant } = useMerchant(route.params.merchant.id);
   const { isOpen, onOpen, onClose } = useDisclose();
@@ -156,7 +158,13 @@ function RestaurantScreen({
             style={{ backgroundColor: 'cyan', borderRadius: 30 }}
             padding="3"
             accessibilityLabel="Confirm Order"
-            onPress={() => alert('checkout')}
+            onPress={async () => {
+              const { data } = await axios.post<Order>('/api/orders', {
+                merchant: merchant,
+                quantity: number,
+              });
+              navigation.navigate('order', { order: data });
+            }}
           ></Button>
         }
       </ActionSheet>
