@@ -11,7 +11,7 @@ import {
   HStack,
   useDisclose,
 } from 'native-base';
-import { TouchableHighlight } from 'react-native';
+import { TouchableHighlight, TextInput, StyleSheet } from 'react-native';
 import { Merchant } from '@equifood/api-interfaces';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import React, { useState } from 'react';
@@ -32,6 +32,16 @@ function RestaurantScreen({
   const dispatch = useDispatch<AppDispatch>();
   const { merchant } = useMerchant(route.params.merchant.id);
   const { isOpen, onOpen, onClose } = useDisclose();
+  const [number, setNumber] = useState('');
+
+  const styles = StyleSheet.create({
+    input: {
+      height: 40,
+      margin: 12,
+      borderWidth: 1,
+      padding: 10,
+    },
+  });
 
   if (!merchant) return null;
 
@@ -132,8 +142,15 @@ function RestaurantScreen({
       </ScrollView>
       <ActionSheet isOpen={isOpen} onClose={onClose}>
         <Text style={{ textAlign: 'center' }}>Number to order:</Text>
+        <TextInput
+          style={styles.input}
+          keyboardType="numeric"
+          onChangeText={setNumber}
+          value={number}
+          testID="numberInput"
+          autoCapitalize="none"
+        />
         {
-          // # input
           // change onPress to dispatch order / add to orders page
           <Button
             style={{ backgroundColor: 'cyan', borderRadius: 30 }}
