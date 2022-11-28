@@ -142,33 +142,44 @@ function RestaurantScreen({
         </VStack>
         <Button onPress={() => onOpen()}>Order</Button>
       </ScrollView>
-      <ActionSheet isOpen={isOpen} onClose={onClose}>
-        <Text style={{ textAlign: 'center' }}>Number to order:</Text>
-        <TextInput
-          style={styles.input}
-          keyboardType="numeric"
-          onChangeText={setNumber}
-          value={number}
-          testID="numberInput"
-          autoCapitalize="none"
-        />
-        {
-          // change onPress to dispatch order / add to orders page
-          <Button
-            style={{ backgroundColor: 'cyan', borderRadius: 30 }}
-            padding="3"
-            accessibilityLabel="Confirm Order"
-            onPress={async () => {
-              const { data } = await axios.post<Order>('/orders', {
-                merchant: merchant.id,
-                quantity: number,
-              });
-              navigation.navigate('core', { screen: 'orders' });
-              navigation.navigate('order', { order: data });
-            }}
-          ></Button>
-        }
-      </ActionSheet>
+      <Box
+        justifyContent="flex-end"
+        height="full"
+        position="absolute"
+        top="0"
+        bottom="0"
+        left="0"
+        right="0"
+        pointerEvents="box-none"
+      >
+        <ActionSheet isOpen={isOpen} onClose={onClose}>
+          <Text style={{ textAlign: 'center' }}>Number to order:</Text>
+          <TextInput
+            style={styles.input}
+            keyboardType="numeric"
+            onChangeText={setNumber}
+            value={number}
+            testID="numberInput"
+            autoCapitalize="none"
+          />
+          {
+            // change onPress to dispatch order / add to orders page
+            <Button
+              style={{ backgroundColor: 'cyan', borderRadius: 30 }}
+              padding="3"
+              accessibilityLabel="Confirm Order"
+              onPress={async () => {
+                const { data } = await axios.post<Order>('/orders', {
+                  merchant: merchant.id,
+                  quantity: number,
+                });
+                navigation.navigate('core', { screen: 'orders' });
+                navigation.navigate('order', { order: data });
+              }}
+            ></Button>
+          }
+        </ActionSheet>
+      </Box>
     </Box>
   );
 }
