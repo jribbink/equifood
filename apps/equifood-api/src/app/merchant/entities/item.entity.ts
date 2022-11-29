@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { UuidEntity } from '../../database/models/uuid-entity';
 import type { Merchant } from './merchant.entity';
 
@@ -7,7 +7,7 @@ import type { Merchant } from './merchant.entity';
 // only should be deleted if no orders exist referencing this item
 @Entity()
 export class Item extends UuidEntity {
-  @OneToOne<Merchant>('Merchant', (merchant) => merchant.item)
+  @ManyToOne<Merchant>('Merchant', (merchant) => merchant.items)
   merchant: Merchant;
 
   @Column({ nullable: true })
