@@ -1,6 +1,6 @@
 import { Box } from 'native-base';
 import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primitives/Box';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Animated, Easing } from 'react-native';
 import Svg, { Circle, Rect, Text as SvgText } from 'react-native-svg';
 
@@ -90,9 +90,8 @@ function ProgressSteps({
         {steps.map((step, i) => {
           const status = resolveStatus(i);
           return (
-            <>
+            <React.Fragment key={i}>
               <ProgressStep
-                key={i}
                 radius={
                   status === 'pending' ? stepRadius * pendingScale : stepRadius
                 }
@@ -116,7 +115,7 @@ function ProgressSteps({
               >
                 {step.text}
               </SvgText>
-            </>
+            </React.Fragment>
           );
         })}
       </Svg>
