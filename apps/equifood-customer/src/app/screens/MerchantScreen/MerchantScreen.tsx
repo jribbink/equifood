@@ -21,6 +21,7 @@ import { AppDispatch } from '../../redux/store';
 import * as expoLocation from 'expo-location';
 import ActionSheet from '../../components/ActionSheet/ActionSheet';
 import { useAxios } from '../../hooks/useAxios';
+import ItemCard from '../../components/cards/ItemCard/ItemCard';
 
 export interface MerchantScreenParams {
   merchant: Merchant;
@@ -35,6 +36,9 @@ function RestaurantScreen({
   const { merchant } = useMerchant(route.params.merchant.id);
   const { isOpen, onOpen, onClose } = useDisclose();
   const [number, setNumber] = useState('');
+  const [quantityMap, setQuantityMap] = useState<{ [itemId: string]: number }>(
+    {}
+  );
 
   const styles = StyleSheet.create({
     input: {
@@ -47,7 +51,7 @@ function RestaurantScreen({
 
   if (!merchant) return null;
 
-  const item = merchant.item;
+  const items = merchant.items;
 
   return (
     <Box height="full">
@@ -97,33 +101,23 @@ function RestaurantScreen({
                     '\nAddress: ' +
                     merchant.location.address +
                     '\nBy ' +
-                    merchant.deadline}
+                    merchant.deadline?.getTime()}
                 </Text>
               </Text>
             </HStack>
           </Box>
-          <Box borderRadius="5" testID="desc" shadow="2">
-            <HStack
-              bgColor="white"
-              borderBottomRadius={5}
-              shadow="5"
-              p="1.5"
-              space="2"
-            >
-              <Text>
-                <Heading testID="item-name" fontSize="lg" fontWeight="bold">
-                  {item.name}
-                </Heading>
-                <Heading testID="newPrice" fontSize="md">
-                  {'\nnew price: '}
-                </Heading>
-                {' ' + item.price}
-                <Text testID="originalPrice" fontWeight="italic" fontSize="sm">
-                  {'\nold price: ' + item.originalPrice}
-                </Text>
-              </Text>
-            </HStack>
-          </Box>
+          {(items || []).map((item) => (
+            <ItemCard
+              item={item}
+              quantity={quantityMap[item.id]}
+              onQuantityChange={(newQuantity) =>
+                setQuantityMap((currentValue) => ({
+                  ...currentValue,
+                  [item.id]: newQuantity,
+                }))
+              }
+            ></ItemCard>
+          ))}
           <Box borderRadius="5" testID="desc" shadow="2">
             <HStack
               bgColor="white"
