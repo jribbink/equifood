@@ -12,6 +12,7 @@ import { Merchant } from '../merchant/entities/merchant.entity';
 import { User } from '../users/entities/user.entity';
 import { Order } from './entities/order.entity';
 import { OrderedItem } from './entities/ordered-item.entity';
+import { OrderedItemDTO } from './models/ordered-item.dto';
 
 @Injectable()
 export class OrdersService {
@@ -53,33 +54,84 @@ export class OrdersService {
     return order;
   }
 
-  async placeOrder(user: User, merchantId: string, quantity: number) {
+  async placeOrder(
+    user: User,
+    merchantId: string,
+    itemDtoList: OrderedItemDTO[]
+  ) {
     const merchant = await this.merchantRepository.findOneBy({
       id: merchantId,
     });
     if (!merchant)
       throw new BadRequestException(`Merchant ${merchantId} does not exist`);
 
-    if (merchant.item.quantity < quantity)
-      throw new BadRequestException(`Insufficient quantity available`);
+    // generate item quantity map & validate ordered items
+    const quantityMap = new Map<string, [quantity: number, itemRef: Item]>();
+    await Promise.all(
+      itemDtoList.map((itemDto) =>
+        this.validateOrderItem(itemDto, merchantId, quantityMap)
+      )
+    );
 
-    const orderedItem = await this.orderedItemRepository.save(<OrderedItem>{
-      item: merchant.item,
-      quantity: quantity,
-    });
-
-    merchant.item.quantity -= quantity;
-    this.itemRepository.save(merchant.item);
+    // update item quantities & create OrderedItem entities
+    const orderedItems = [];
+    await Promise.all([
+      ...[...quantityMap.entries()].map(async ([id, [quantity, itemRef]]) => {
+        this.itemRepository.save({
+          id,
+          quantity: itemRef.quantity - quantity,
+        });
+      }),
+      ...[...quantityMap.values()].map(async ([quantity, itemRef]) => {
+        orderedItems.push(
+          await this.orderedItemRepository.save(<OrderedItem>{
+            item: itemRef,
+            quantity: quantity,
+          })
+        );
+      }),
+    ]);
 
     // save order
     return await this.ordersRepository.save({
       order_date: new Date(),
       deadline: new Date(),
-      item: orderedItem,
+      items: [...orderedItems],
       merchant: merchant,
       status: 'pending',
       total: 1234,
       user: user,
     });
+  }
+
+  async validateOrderItem(
+    itemDto: OrderedItemDTO,
+    merchantId: string,
+    quantityMap: Map<string, [quantity: number, itemRef: Item]>
+  ) {
+    const item = await this.itemRepository.findOne({
+      where: { id: itemDto.id },
+      relations: { merchant: true },
+    });
+    if (!item) {
+      throw new BadRequestException(`Item ${itemDto.id} does not exist`);
+    }
+
+    if (item.merchant.id !== merchantId) {
+      throw new BadRequestException(
+        `Item ${item.id} does not belong to merchant ${merchantId}`
+      );
+    }
+
+    if (quantityMap.has(item.id)) {
+      throw new BadRequestException('Duplicate item id exists');
+    }
+    quantityMap.set(item.id, [itemDto.quantity, item]);
+
+    if (item.quantity < itemDto.quantity) {
+      throw new BadRequestException(`Insufficient quantity of item ${item.id}`);
+    }
+
+    return item;
   }
 }

@@ -106,7 +106,7 @@ export class Seeder {
         latitude: 49.941,
         longitude: -119.386,
       },
-      item: item1,
+      items: [item1],
       user: merchantUser,
     });
 
@@ -118,7 +118,7 @@ export class Seeder {
     await this.orderRepository.save({
       completed_date: new Date(2022, 11, 1, 22),
       deadline: new Date(2022, 11, 1, 22, 30),
-      item: orderedItem,
+      items: [orderedItem],
       merchant: merchant,
       order_date: new Date(2022, 11, 1, 21, 45),
       status: 'completed',
