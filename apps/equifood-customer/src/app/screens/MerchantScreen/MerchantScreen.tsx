@@ -108,6 +108,7 @@ function RestaurantScreen({
           </Box>
           {(items || []).map((item) => (
             <ItemCard
+              key={item.id}
               item={item}
               quantity={quantityMap[item.id]}
               onQuantityChange={(newQuantity) =>
