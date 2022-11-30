@@ -1,5 +1,6 @@
 import { Box, Heading, HStack, Text, Button } from 'native-base';
 import { Item } from '@equifood/api-interfaces';
+import NumericUpDown from '../../primitives/NumericUpDown/NumericUpDown';
 
 interface Props {
   item: Item;
@@ -11,7 +12,7 @@ const MAX_PER_PURCHASE = 3; //placeholder, maybe let merchants define this event
 
 const ItemCard = ({ item, quantity, onQuantityChange }: Props) => {
   return (
-    <Box borderRadius="5" width="70%">
+    <Box borderRadius="5">
       <HStack
         bgColor="white"
         borderBottomRadius={5}
@@ -19,7 +20,7 @@ const ItemCard = ({ item, quantity, onQuantityChange }: Props) => {
         p="1.5"
         space="5"
       >
-        <Box>
+        <Box flexShrink={1}>
           <Heading testID="item-name" fontSize="md" fontWeight="bold">
             {item.name}
           </Heading>
@@ -40,59 +41,12 @@ const ItemCard = ({ item, quantity, onQuantityChange }: Props) => {
               ' of this item per order.'}
           </Text>
         </Box>
-        <Box
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Button
-            style={{
-              backgroundColor: 'blue',
-              borderRadius: 30,
-            }}
-            onPress={() => onQuantityChange(Math.max(quantity - 1, 0))}
-          >
-            -
-          </Button>
-        </Box>
-        <Box
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Text>{quantity}</Text>
-        </Box>
-        <Box
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <Button
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: 'blue',
-              borderRadius: 30,
-            }}
-            onPress={() =>
-              onQuantityChange(
-                Math.min(
-                  quantity + 1,
-                  Math.min(MAX_PER_PURCHASE, item.quantity)
-                )
-              )
-            }
-          >
-            +
-          </Button>
-        </Box>
+        <NumericUpDown
+          value={quantity}
+          onValueChange={onQuantityChange}
+          maxValue={Math.min(MAX_PER_PURCHASE, item.quantity)}
+          minValue={0}
+        ></NumericUpDown>
       </HStack>
     </Box>
   );

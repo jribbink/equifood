@@ -137,22 +137,22 @@ function RestaurantScreen({
             </HStack>
           </Box>
         </VStack>
-        <Button
-          onPress={async () => {
-            const { data } = await axios.post<Order>('/orders', {
-              merchant: merchant.id,
-              items: Object.entries(quantityMap).map(([id, quantity]) => ({
-                id,
-                quantity,
-              })),
-            });
-            navigation.navigate('core', { screen: 'orders' });
-            navigation.navigate('order', { order: data });
-          }}
-        >
-          Order
-        </Button>
       </ScrollView>
+      <Button
+        onPress={async () => {
+          const { data } = await axios.post<Order>('/orders', {
+            merchant: merchant.id,
+            items: Object.entries(quantityMap).map(([id, quantity]) => ({
+              id,
+              quantity,
+            })),
+          });
+          navigation.navigate('core', { screen: 'orders' });
+          navigation.navigate('order', { order: data });
+        }}
+      >
+        Order
+      </Button>
     </Box>
   );
 }
