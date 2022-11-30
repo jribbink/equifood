@@ -10,9 +10,15 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @UseGuards(UserGuard)
-  @Get('profile')
+  @Get()
   async getProfile(@AuthUser() user: User, @TargetUser() targetUser: User) {
     return targetUser;
+  }
+
+  @UseGuards(UserGuard)
+  @Get('providers')
+  async getProviders(@AuthUser() user: User) {
+    return this.usersService.getProviders({ id: user.id });
   }
 
   @UseGuards(UserGuard)

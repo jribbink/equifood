@@ -1,5 +1,4 @@
 import { CanActivate, ExecutionContext } from '@nestjs/common';
-import { AuthGuard, IAuthGuard } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';

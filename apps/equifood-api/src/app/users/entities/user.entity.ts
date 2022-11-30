@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, OneToMany } from 'typeorm';
+import type { AuthProvider } from '../../auth/entities/auth-provider';
 import { Role } from '../../common/types/role.enum';
 import { UuidEntity } from '../../database/models/uuid-entity';
 
@@ -17,16 +18,19 @@ export class User extends UuidEntity {
   @Column()
   phone: string;
 
-  @Column()
+  @Column({ nullable: true })
   @Exclude()
-  passwordHash: string;
+  passwordHash?: string;
 
-  @Column()
+  @Column({ nullable: true })
   @Exclude()
-  passwordSalt: string;
+  passwordSalt?: string;
 
   @Column({ type: 'simple-array' })
   roles: Role[];
+
+  @OneToMany('AuthProvider', (provider: AuthProvider) => provider.user)
+  authProviders: AuthProvider;
 
   constructor(data: Partial<User>) {
     super(data?.id);
