@@ -1,61 +1,101 @@
-import {
-  Box,
-  Heading,
-  HStack,
-  Image,
-  ITheme,
-  Text,
-  View,
-  ZStack,
-} from 'native-base';
+import { Box, Heading, HStack, Text, Button } from 'native-base';
 import { Item } from '@equifood/api-interfaces';
-import {
-  GestureResponderEvent,
-  TouchableHighlight,
-  TouchableOpacity,
-} from 'react-native';
-
-// currently just a copy of MerchantCard.
-// should be fixed.
 
 interface Props {
   item: Item;
-  onPress?: ((e: GestureResponderEvent) => void) | null;
+  quantity: number;
+  onQuantityChange: (n: number) => void;
 }
 
-const RestuarantCard = ({ item, onPress }: Props) => {
+const MAX_PER_PURCHASE = 3; //placeholder, maybe let merchants define this eventually
+
+const ItemCard = ({ item, quantity, onQuantityChange }: Props) => {
   return (
-    <TouchableHighlight
-      onPress={(e: any) => onPress?.(e)}
-      testID="merchant-card"
-      style={{ borderRadius: 5 }}
-    >
-      <Box borderRadius="5">
-        <HStack
-          bgColor="white"
-          borderBottomRadius={5}
-          shadow="5"
-          p="1.5"
-          space="2"
-        >
+    <Box borderRadius="5" width="70%">
+      <HStack
+        bgColor="white"
+        borderBottomRadius={5}
+        shadow="5"
+        p="1.5"
+        space="5"
+      >
+        <Box>
           <Heading testID="item-name" fontSize="md" fontWeight="bold">
             {item.name}
           </Heading>
           <Text testID="new-price" fontSize="sm">
-            {'Price: ' + item.newPrice}
+            {'Price: ' + item.price}
           </Text>
           <Text
             testID="old-price"
             fontSize="xs"
-            fontWeight="italic"
+            fontStyle="italic"
             style={{ textDecorationLine: 'line-through' }}
           >
-            {'Old: ' + item.oldPrice}
+            {'Old: ' + item.originalPrice}
           </Text>
-        </HStack>
-      </Box>
-    </TouchableHighlight>
+          <Text testID="purchase-limit" fontSize="sm" fontStyle="italic">
+            {'Please note that you may only purchase ' +
+              MAX_PER_PURCHASE +
+              ' of this item per order.'}
+          </Text>
+        </Box>
+        <Box
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Button
+            style={{
+              backgroundColor: 'blue',
+              borderRadius: 30,
+            }}
+            onPress={() => onQuantityChange(Math.max(quantity - 1, 0))}
+          >
+            -
+          </Button>
+        </Box>
+        <Box
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Text>{quantity}</Text>
+        </Box>
+        <Box
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Button
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'blue',
+              borderRadius: 30,
+            }}
+            onPress={() =>
+              onQuantityChange(
+                Math.min(
+                  quantity + 1,
+                  Math.min(MAX_PER_PURCHASE, item.quantity)
+                )
+              )
+            }
+          >
+            +
+          </Button>
+        </Box>
+      </HStack>
+    </Box>
   );
 };
 
-export default RestuarantCard;
+export default ItemCard;
