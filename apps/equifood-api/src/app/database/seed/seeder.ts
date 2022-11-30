@@ -95,6 +95,7 @@ export class Seeder {
     });
 
     const merchant = await this.merchantRepository.save(<Merchant>{
+      id: 'a31381d4-8fbf-10d8-99a6-85b53edbef1d',
       name: 'Fresh Slice',
       banner: banner1,
       logo: logo1,
