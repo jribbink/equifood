@@ -1,28 +1,13 @@
-import {
-  Box,
-  Heading,
-  HStack,
-  Image,
-  ITheme,
-  Text,
-  View,
-  ZStack,
-} from 'native-base';
+import { Box, Heading, HStack, Text, Button } from 'native-base';
 import { Item } from '@equifood/api-interfaces';
-import {
-  GestureResponderEvent,
-  TouchableHighlight,
-  TouchableOpacity,
-} from 'react-native';
-
-// currently just a copy of MerchantCard.
-// should be fixed.
 
 interface Props {
   item: Item;
   quantity: number;
   onQuantityChange: (n: number) => void;
 }
+
+const MAX_PER_PURCHASE = 3; //placeholder, maybe let merchants define this eventually
 
 const ItemCard = ({ item, quantity, onQuantityChange }: Props) => {
   return (
@@ -49,15 +34,37 @@ const ItemCard = ({ item, quantity, onQuantityChange }: Props) => {
           >
             {'Old: ' + item.originalPrice}
           </Text>
+          <Text testID="purchase-limit" fontSize="sm" fontWeight="italic">
+            {'Please note that you may only purchase ' +
+              MAX_PER_PURCHASE +
+              ' of this item per order.'}
+          </Text>
         </Box>
         <Box>
-          <Text>-</Text>
+          <Button
+            style={{ backgroundColor: 'cyan', borderRadius: 30 }}
+            onPress={() => onQuantityChange(Math.max(quantity - 1, 0))}
+          >
+            -
+          </Button>
         </Box>
         <Box>
           <Text>{quantity}</Text>
         </Box>
         <Box>
-          <Text>+</Text>
+          <Button
+            style={{ backgroundColor: 'cyan', borderRadius: 30 }}
+            onPress={() =>
+              onQuantityChange(
+                Math.min(
+                  quantity + 1,
+                  Math.min(MAX_PER_PURCHASE, item.quantity)
+                )
+              )
+            }
+          >
+            +
+          </Button>
         </Box>
       </HStack>
     </Box>

@@ -6,19 +6,17 @@ import {
   ScrollView,
   VStack,
   Image,
-  View,
   Heading,
   HStack,
   useDisclose,
 } from 'native-base';
-import { TouchableHighlight, TextInput, StyleSheet } from 'react-native';
+import { TextInput, StyleSheet } from 'react-native';
 import { Merchant, Order } from '@equifood/api-interfaces';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import React, { useState } from 'react';
 import { useMerchant } from '../../hooks/useMerchant';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
-import * as expoLocation from 'expo-location';
 import ActionSheet from '../../components/ActionSheet/ActionSheet';
 import { useAxios } from '../../hooks/useAxios';
 import ItemCard from '../../components/cards/ItemCard/ItemCard';

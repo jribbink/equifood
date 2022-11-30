@@ -5,4 +5,5 @@ export interface Item {
   price: number;
   originalPrice: number;
   allergies: string;
+  quantity: number;
 }
