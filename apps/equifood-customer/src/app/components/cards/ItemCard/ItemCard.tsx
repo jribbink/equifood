@@ -11,13 +11,13 @@ const MAX_PER_PURCHASE = 3; //placeholder, maybe let merchants define this event
 
 const ItemCard = ({ item, quantity, onQuantityChange }: Props) => {
   return (
-    <Box borderRadius="5">
+    <Box borderRadius="5" width="70%">
       <HStack
         bgColor="white"
         borderBottomRadius={5}
         shadow="5"
         p="1.5"
-        space="2"
+        space="5"
       >
         <Box>
           <Heading testID="item-name" fontSize="md" fontWeight="bold">
@@ -29,31 +29,58 @@ const ItemCard = ({ item, quantity, onQuantityChange }: Props) => {
           <Text
             testID="old-price"
             fontSize="xs"
-            fontWeight="italic"
+            fontStyle="italic"
             style={{ textDecorationLine: 'line-through' }}
           >
             {'Old: ' + item.originalPrice}
           </Text>
-          <Text testID="purchase-limit" fontSize="sm" fontWeight="italic">
+          <Text testID="purchase-limit" fontSize="sm" fontStyle="italic">
             {'Please note that you may only purchase ' +
               MAX_PER_PURCHASE +
               ' of this item per order.'}
           </Text>
         </Box>
-        <Box>
+        <Box
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
           <Button
-            style={{ backgroundColor: 'cyan', borderRadius: 30 }}
+            style={{
+              backgroundColor: 'blue',
+              borderRadius: 30,
+            }}
             onPress={() => onQuantityChange(Math.max(quantity - 1, 0))}
           >
             -
           </Button>
         </Box>
-        <Box>
+        <Box
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
           <Text>{quantity}</Text>
         </Box>
-        <Box>
+        <Box
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
           <Button
-            style={{ backgroundColor: 'cyan', borderRadius: 30 }}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'blue',
+              borderRadius: 30,
+            }}
             onPress={() =>
               onQuantityChange(
                 Math.min(

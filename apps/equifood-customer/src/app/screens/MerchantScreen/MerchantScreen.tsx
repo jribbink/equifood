@@ -32,8 +32,6 @@ function RestaurantScreen({
   const axios = useAxios();
   const dispatch = useDispatch<AppDispatch>();
   const { merchant } = useMerchant(route.params.merchant.id);
-  const { isOpen, onOpen, onClose } = useDisclose();
-  const [number, setNumber] = useState('');
   const [quantityMap, setQuantityMap] = useState<{ [itemId: string]: number }>(
     {}
   );
@@ -94,12 +92,18 @@ function RestaurantScreen({
                   {merchant.name}
                 </Heading>
                 <Text>
-                  {'\n' +
+                  {'\nDescription: ' +
                     merchant.description +
-                    '\nAddress: ' +
+                    '\nAddress:\n' +
                     merchant.location.address +
-                    '\nBy ' +
-                    merchant.deadline?.getTime()}
+                    '\nPick up by:\n' +
+                    merchant.deadline?.toLocaleDateString(undefined, {
+                      hour: 'numeric',
+                      minute: '2-digit',
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric',
+                    })}
                 </Text>
               </Text>
             </HStack>
@@ -108,7 +112,7 @@ function RestaurantScreen({
             <ItemCard
               key={item.id}
               item={item}
-              quantity={quantityMap[item.id]}
+              quantity={quantityMap[item.id] ?? 0}
               onQuantityChange={(newQuantity) =>
                 setQuantityMap((currentValue) => ({
                   ...currentValue,
@@ -133,46 +137,22 @@ function RestaurantScreen({
             </HStack>
           </Box>
         </VStack>
-        <Button onPress={() => onOpen()}>Order</Button>
+        <Button
+          onPress={async () => {
+            const { data } = await axios.post<Order>('/orders', {
+              merchant: merchant.id,
+              items: Object.entries(quantityMap).map(([id, quantity]) => ({
+                id,
+                quantity,
+              })),
+            });
+            navigation.navigate('core', { screen: 'orders' });
+            navigation.navigate('order', { order: data });
+          }}
+        >
+          Order
+        </Button>
       </ScrollView>
-      <Box
-        justifyContent="flex-end"
-        height="full"
-        position="absolute"
-        top="0"
-        bottom="0"
-        left="0"
-        right="0"
-        pointerEvents="box-none"
-      >
-        <ActionSheet isOpen={isOpen} onClose={onClose}>
-          <Text style={{ textAlign: 'center' }}>Number to order:</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            onChangeText={setNumber}
-            value={number}
-            testID="numberInput"
-            autoCapitalize="none"
-          />
-          {
-            // change onPress to dispatch order / add to orders page
-            <Button
-              style={{ backgroundColor: 'cyan', borderRadius: 30 }}
-              padding="3"
-              accessibilityLabel="Confirm Order"
-              onPress={async () => {
-                const { data } = await axios.post<Order>('/orders', {
-                  merchant: merchant.id,
-                  quantity: number,
-                });
-                navigation.navigate('core', { screen: 'orders' });
-                navigation.navigate('order', { order: data });
-              }}
-            ></Button>
-          }
-        </ActionSheet>
-      </Box>
     </Box>
   );
 }
