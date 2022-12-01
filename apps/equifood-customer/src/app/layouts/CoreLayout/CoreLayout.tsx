@@ -10,7 +10,7 @@ import Orders from '../../screens/Orders/Orders';
 import Account from '../../screens/Account/Account';
 import MerchantScreen from '../../screens/MerchantScreen/MerchantScreen';
 import Cart from '../../screens/Cart/Cart';
-import { View, Box } from 'native-base';
+import { View } from 'native-base';
 import { CoreStackParams, CoreTabParams } from './CoreNavigatorParams';
 import OrderScreen from '../../screens/OrderScreen/OrderScreen';
 //import CartButton from '../../components/buttons/CartButton/CartButton';
@@ -73,14 +73,6 @@ function CoreLayout() {
           <Stack.Screen name="order" component={OrderScreen}></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
-      {
-        /*<Box position="absolute" bottom={60} right={5}>
-        {
-          <CartButton navigation={navigation}></CartButton>
-        }
-      </Box>*/
-        //remove if cart is added back
-      }
     </View>
   );
 }
