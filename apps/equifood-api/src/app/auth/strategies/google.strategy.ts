@@ -20,13 +20,12 @@ export class GoogleStrategy extends AuthStrategy(Strategy, 'google', 'GET') {
     @Inject(authConfig.KEY)
     config: ConfigType<typeof authConfig>
   ) {
-    const options: StrategyOptionsWithRequest & { proxy: boolean } = {
+    const options: StrategyOptionsWithRequest = {
       clientID: config.googleClientId,
       callbackURL: `/api/auth/google/`,
       clientSecret: config.googleSecret,
       scope: ['email', 'openid', 'profile'],
       passReqToCallback: true as any,
-      proxy: true,
     };
     super(options);
   }

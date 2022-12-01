@@ -23,14 +23,13 @@ export class FacebookStrategy extends AuthStrategy(
     @Inject(authConfig.KEY)
     config: ConfigType<typeof authConfig>
   ) {
-    const options: StrategyOptionWithRequest & { proxy: boolean } = {
+    const options: StrategyOptionWithRequest = {
       clientID: config.facebookClientId,
       callbackURL: `/api/auth/facebook/`,
       clientSecret: config.facebookSecret,
       enableProof: true,
       profileFields: ['id', 'first_name', 'last_name', 'emails'],
       passReqToCallback: true,
-      proxy: true,
     };
     super(options);
   }
