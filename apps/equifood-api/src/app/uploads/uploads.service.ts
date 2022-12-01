@@ -64,7 +64,7 @@ export class UploadsService {
       id: uploadInfo.id,
       filename: file.originalname,
       ext: extname(file.originalname),
-      mine_type: file.mimetype,
+      mime_type: file.mimetype,
       size: file.size,
       name: 'foobar',
       path: file.path,
