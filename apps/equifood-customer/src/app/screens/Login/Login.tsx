@@ -68,7 +68,7 @@ const Login = ({ navigation }) => {
         <Button
           title="Login"
           onPress={() => {
-            dispatch(authenticate({ email, password, strategy: 'local' }));
+            dispatch(authenticate({ email, password }));
           }}
           color="#841584"
           testID="loginButton"

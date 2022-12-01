@@ -5,7 +5,9 @@ import { useAxios } from './useAxios';
 export function useFetcher<T>(key: any) {
   const axios = useAxios();
   useEffect(() => {
-    mutate(key, true);
+    mutate(key, null, {
+      revalidate: true,
+    });
   }, [axios, key]);
   // Fetcher for SWR
   const fetcher = (url: string) => axios.get(url).then((res) => res.data);

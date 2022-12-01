@@ -104,7 +104,7 @@ export class AppleStrategy extends AuthStrategy(Strategy, 'apple', 'POST') {
     private authService: AuthService,
     private configService: ConfigService,
     @Inject(authConfig.KEY)
-    private config: ConfigType<typeof authConfig>
+    config: ConfigType<typeof authConfig>
   ) {
     super({
       audience: configService.get(config.openIdAudience),

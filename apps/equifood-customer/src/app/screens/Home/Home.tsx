@@ -32,6 +32,8 @@ const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
     navigation.navigate('merchant', { merchant });
   }
 
+  console.log(merchants);
+
   return (
     <ScrollView testID="home-screen" flex={1}>
       <ScrollingMenu

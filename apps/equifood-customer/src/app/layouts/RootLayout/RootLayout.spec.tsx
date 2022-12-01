@@ -16,7 +16,11 @@ describe('Root layout', () => {
     const { queryByTestId, store } = await render(<RootLayout></RootLayout>);
 
     act(() => {
-      store.dispatch(setJWT('foobar'));
+      store.dispatch(
+        setJWT(
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U'
+        )
+      );
     });
 
     expect(queryByTestId('core-layout')).toBeDefined();
@@ -26,10 +30,7 @@ describe('Root layout', () => {
   test('navigates to Home screen when logged out', async () => {
     const store = setupStore({
       auth: {
-        jwt: {
-          access_token: 'foobar',
-          expires: null,
-        },
+        jwt: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U',
         status: 'idle',
       },
     });

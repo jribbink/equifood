@@ -21,7 +21,7 @@ export class FacebookStrategy extends AuthStrategy(
     private authService: AuthService,
     private userService: UsersService,
     @Inject(authConfig.KEY)
-    private config: ConfigType<typeof authConfig>
+    config: ConfigType<typeof authConfig>
   ) {
     const options: StrategyOptionWithRequest = {
       clientID: config.facebookClientId,

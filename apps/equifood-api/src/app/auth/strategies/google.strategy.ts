@@ -18,7 +18,7 @@ export class GoogleStrategy extends AuthStrategy(Strategy, 'google', 'GET') {
     private userService: UsersService,
     private authService: AuthService,
     @Inject(authConfig.KEY)
-    private config: ConfigType<typeof authConfig>
+    config: ConfigType<typeof authConfig>
   ) {
     const options: StrategyOptionsWithRequest = {
       clientID: config.googleClientId,
