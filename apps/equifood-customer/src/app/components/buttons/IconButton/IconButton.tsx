@@ -1,8 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Box, Divider, Image, Text } from 'native-base';
+import { Box, Image, Text } from 'native-base';
 import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primitives/Box';
-import sizes from 'native-base/lib/typescript/theme/base/sizes';
-import { GestureResponderEvent } from 'react-native';
+import { GestureResponderEvent, ImageSourcePropType } from 'react-native';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 interface IconButtonProps extends InterfaceBoxProps {
   icon: React.ComponentProps<typeof Ionicons>['name'];
@@ -13,7 +12,8 @@ interface IconButtonProps extends InterfaceBoxProps {
   iconProps: Partial<React.ComponentProps<typeof Ionicons>>;
   onPress?: ((event: GestureResponderEvent) => void) & (() => void);
   textColor?: React.ComponentProps<typeof Text>['color'];
-  imageSource: any;
+  imageSource: ImageSourcePropType;
+  imageAlt: string;
 }
 
 function IconButton({
@@ -26,6 +26,7 @@ function IconButton({
   onPress,
   textColor = 'black',
   imageSource,
+  imageAlt,
   ...props
 }: IconButtonProps) {
   return (
@@ -38,6 +39,7 @@ function IconButton({
       >
         <Image
           source={imageSource}
+          alt={imageAlt}
           width={size}
           height={size}
           resizeMode="contain"

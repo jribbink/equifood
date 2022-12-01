@@ -8,12 +8,12 @@ import FacebookLogo from '../../../../assets/provider-logos/facebook-logo.png';
 import GoogleLogo from '../../../../assets/provider-logos/google-logo.png';
 import React from 'react';
 import { Box, Text } from 'native-base';
-import { Platform } from 'react-native';
+import { ImageSourcePropType, Platform } from 'react-native';
 
 export interface AuthProviderConfig {
   type: AuthProviderType;
   strategy: ({ axios }: { axios: AxiosInstance }) => Promise<any>;
-  logo: React.FC;
+  logo: ImageSourcePropType;
   color: React.ComponentProps<typeof Box>['backgroundColor'];
   textColor: React.ComponentProps<typeof Text>['color'];
 }

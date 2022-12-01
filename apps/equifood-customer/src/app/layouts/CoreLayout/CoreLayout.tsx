@@ -43,13 +43,20 @@ function CoreNavigation() {
         },
         tabBarActiveTintColor: 'green',
         tabBarInactiveTintColor: 'gray',
-        headerShown: false,
       })}
     >
-      <Tab.Screen name="home" component={Home} />
-      <Tab.Screen name="map" component={Map} />
-      <Tab.Screen name="orders" component={Orders} />
-      <Tab.Screen name="account" component={Account} />
+      <Tab.Screen name="home" component={Home} options={{ title: 'Home' }} />
+      <Tab.Screen name="map" component={Map} options={{ headerShown: false }} />
+      <Tab.Screen
+        name="orders"
+        component={Orders}
+        options={{ title: 'Orders' }}
+      />
+      <Tab.Screen
+        name="account"
+        component={Account}
+        options={{ title: 'Account' }}
+      />
     </Tab.Navigator>
   );
 }
