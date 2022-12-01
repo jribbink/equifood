@@ -6,6 +6,8 @@
     "npm": ">=8.3.0"
   },
   "scripts": {
+    "customer-dev": "npx nx run equifood-customer:start",
+    "api-dev": "npx nx run equifood-api:start",
     "start": "nx serve",
     "build": "nx build",
     "test": "nx test"
