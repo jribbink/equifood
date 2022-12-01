@@ -50,7 +50,7 @@ export class AuthService {
 
   async createProvider(provider: AuthProvider) {
     if (
-      this.authProviderService.findOneBy({
+      await this.authProviderService.findOneBy({
         providerId: provider.providerId,
         providerType: provider.providerType,
       })

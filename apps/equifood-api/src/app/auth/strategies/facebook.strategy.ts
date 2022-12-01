@@ -1,9 +1,11 @@
 import { Profile, Strategy } from 'passport-facebook';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AuthService } from '../auth.service';
 import { UsersService } from '../../users/users.service';
 import { AuthStrategy } from '../types/auth-strategy';
 import { User } from '../../users/entities/user.entity';
+import authConfig from '../../config/auth.config';
+import { ConfigType } from '@nestjs/config';
 
 @Injectable()
 export class FacebookStrategy extends AuthStrategy(
@@ -13,12 +15,15 @@ export class FacebookStrategy extends AuthStrategy(
 ) {
   constructor(
     private authService: AuthService,
-    private userService: UsersService
+    private userService: UsersService,
+    @Inject(authConfig.KEY)
+    private config: ConfigType<typeof authConfig>
   ) {
+    const hostname = 'http://localhost:3333';
     super({
-      clientID: '445686011071519',
-      callbackURL: 'http://localhost:3333/api/auth/facebook/',
-      clientSecret: 'a27ae2bc1c8aab2b4d4282ac1add894d',
+      clientID: config.facebookClientId,
+      callbackURL: `${hostname}/api/auth/facebook/`,
+      clientSecret: config.facebookSecret,
       enableProof: true,
       scope: ['public_profile', 'email'],
       profileFields: ['id', 'first_name', 'last_name', 'emails'],

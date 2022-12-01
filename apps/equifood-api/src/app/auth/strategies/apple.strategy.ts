@@ -1,5 +1,5 @@
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AuthService } from '../auth.service';
 import { UsersService } from '../../users/users.service';
 import passport from 'passport';
@@ -8,6 +8,8 @@ import jwt from 'jsonwebtoken';
 import axios from 'axios';
 import { AuthStrategy } from '../types/auth-strategy';
 import { User } from '../../users/entities/user.entity';
+import { ConfigService, ConfigType } from '@nestjs/config';
+import authConfig from '../../config/auth.config';
 
 type Profile = passport.Profile;
 
@@ -99,10 +101,13 @@ class Strategy extends passport.Strategy {
 export class AppleStrategy extends AuthStrategy(Strategy, 'apple', 'POST') {
   constructor(
     private userService: UsersService,
-    private authService: AuthService
+    private authService: AuthService,
+    private configService: ConfigService,
+    @Inject(authConfig.KEY)
+    private config: ConfigType<typeof authConfig>
   ) {
     super({
-      audience: 'host.exp.Exponent',
+      audience: configService.get(config.openIdAudience),
     });
   }
 
