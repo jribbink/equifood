@@ -1,4 +1,10 @@
-import { Profile, Strategy, VerifyCallback } from 'passport-google-oauth20';
+import {
+  Profile,
+  Strategy,
+  StrategyOptions,
+  StrategyOptionsWithRequest,
+  VerifyCallback,
+} from 'passport-google-oauth20';
 import { Inject, Injectable } from '@nestjs/common';
 import { AuthService } from '../auth.service';
 import { UsersService } from '../../users/users.service';
@@ -14,15 +20,14 @@ export class GoogleStrategy extends AuthStrategy(Strategy, 'google', 'GET') {
     @Inject(authConfig.KEY)
     private config: ConfigType<typeof authConfig>
   ) {
-    const hostname = 'http://localhost:3333';
-    super({
+    const options: StrategyOptionsWithRequest = {
       clientID: config.googleClientId,
-      callbackURL: `${hostname}/api/auth/google/`,
+      callbackURL: `/api/auth/google/`,
       clientSecret: config.googleSecret,
       scope: ['email', 'openid', 'profile'],
-      enableProof: true,
-      passReqToCallback: true,
-    });
+      passReqToCallback: true as any,
+    };
+    super(options);
   }
 
   async validate(

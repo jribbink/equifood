@@ -1,4 +1,8 @@
-import { Profile, Strategy } from 'passport-facebook';
+import {
+  Profile,
+  Strategy,
+  StrategyOptionWithRequest,
+} from 'passport-facebook';
 import { Inject, Injectable } from '@nestjs/common';
 import { AuthService } from '../auth.service';
 import { UsersService } from '../../users/users.service';
@@ -19,16 +23,15 @@ export class FacebookStrategy extends AuthStrategy(
     @Inject(authConfig.KEY)
     private config: ConfigType<typeof authConfig>
   ) {
-    const hostname = 'http://localhost:3333';
-    super({
+    const options: StrategyOptionWithRequest = {
       clientID: config.facebookClientId,
-      callbackURL: `${hostname}/api/auth/facebook/`,
+      callbackURL: `/api/auth/facebook/`,
       clientSecret: config.facebookSecret,
       enableProof: true,
-      scope: ['public_profile', 'email'],
       profileFields: ['id', 'first_name', 'last_name', 'emails'],
       passReqToCallback: true,
-    });
+    };
+    super(options);
   }
 
   async validate(
