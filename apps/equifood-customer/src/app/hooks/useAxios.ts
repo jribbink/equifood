@@ -1,4 +1,4 @@
-import appConfig from '../util/app-config';
+import appConfig from '../config/app-config';
 import axios, { AxiosInstance } from 'axios';
 import { useAuth } from './useAuth';
 import { useEffect, useState } from 'react';

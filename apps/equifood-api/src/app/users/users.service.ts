@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
+import { AuthProvider } from '../auth/entities/auth-provider';
 import { Order } from '../orders/entities/order.entity';
 import { User } from './entities/user.entity';
 
@@ -10,7 +11,9 @@ export class UsersService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @InjectRepository(Order)
-    private orderRepository: Repository<Order>
+    private orderRepository: Repository<Order>,
+    @InjectRepository(AuthProvider)
+    private authProviderRepository: Repository<AuthProvider>
   ) {}
 
   async findOne(fields: FindOptionsWhere<User>): Promise<User> {
@@ -19,5 +22,13 @@ export class UsersService {
 
   async getOrders(user: User) {
     return this.orderRepository.find({ where: { user: { id: user.id } } });
+  }
+
+  async createUser(user: Partial<User>) {
+    return this.userRepository.save(user);
+  }
+
+  async getProviders(whereUser: FindOptionsWhere<User>) {
+    return this.authProviderRepository.findBy({ user: whereUser });
   }
 }

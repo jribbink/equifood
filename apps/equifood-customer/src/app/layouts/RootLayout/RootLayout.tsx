@@ -2,15 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useStore } from 'react-redux';
 import { RootState } from '../../redux/store';
 
-import Login from '../../screens/Login/Login';
 import CoreLayout from '../CoreLayout/CoreLayout';
 import { Animated, Dimensions } from 'react-native';
 import { Box } from 'native-base';
-import { JWT } from '@equifood/api-interfaces';
+import AuthLayout from '../AuthLayout/AuthLayout';
 
 const RootLayout = () => {
   const store = useStore<RootState>();
-  const jwt = useSelector<RootState, JWT | null>(
+  const jwt = useSelector<RootState, string | null>(
     () => store.getState().auth.jwt
   );
   const [loggedIn, setLoggedIn] = useState(!!jwt);
@@ -88,7 +87,7 @@ const RootLayout = () => {
             zIndex: Number(!loggedIn),
           }}
         >
-          <Login></Login>
+          <AuthLayout></AuthLayout>
         </Animated.View>
       ) : null}
     </Box>
