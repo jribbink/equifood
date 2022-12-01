@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 
-import { Box, Image, ScrollView, VStack } from 'native-base';
+import { Box, VStack } from 'native-base';
 import {
   Button,
   Text,
-  SafeAreaView,
   StyleSheet,
   TextInput,
   TouchableOpacity,
@@ -43,27 +42,24 @@ const Login = ({ navigation }) => {
   return (
     <Box flex={1}>
       <Box flex={1} overflow="auto" testID="login-screen">
-        <Text style={{ padding: 10, fontSize: 24 }}>Login</Text>
-        <SafeAreaView>
-          <Text testID="login" style={{ padding: 10, fontSize: 24 }}>
-            Login
-          </Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={setEmail}
-            value={email}
-            testID="emailInput"
-            autoCapitalize="none"
-          />
-          <Text style={{ padding: 10, fontSize: 24 }}>Password</Text>
-          <TextInput
-            secureTextEntry={true}
-            style={styles.input}
-            onChangeText={setPassword}
-            value={password}
-            testID="pwInput"
-          />
-        </SafeAreaView>
+        <Text testID="login" style={{ padding: 10, fontSize: 24 }}>
+          Login
+        </Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={setEmail}
+          value={email}
+          testID="emailInput"
+          autoCapitalize="none"
+        />
+        <Text style={{ padding: 10, fontSize: 24 }}>Password</Text>
+        <TextInput
+          secureTextEntry={true}
+          style={styles.input}
+          onChangeText={setPassword}
+          value={password}
+          testID="pwInput"
+        />
 
         <Button
           title="Login"
@@ -90,6 +86,7 @@ const Login = ({ navigation }) => {
             size={8}
             fontSize={18}
             imageSource={provider.logo}
+            imageAlt={provider.type}
             shadow="lg"
             iconProps={{
               style: { fontWeight: '800', fontSize: 30 },

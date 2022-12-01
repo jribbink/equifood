@@ -1,20 +1,16 @@
-import { Box, Heading, HStack, Image, Text, View, ZStack } from 'native-base';
+import { Box, Heading, HStack, Image } from 'native-base';
 import { Merchant } from '@equifood/api-interfaces';
-import {
-  GestureResponderEvent,
-  TouchableHighlight,
-  TouchableOpacity,
-} from 'react-native';
+import { GestureResponderEvent, TouchableHighlight } from 'react-native';
 
 interface Props {
   merchant: Merchant;
-  onPress?: ((e: GestureResponderEvent) => void) | null;
+  onPress?: (e: GestureResponderEvent) => void;
 }
 
 const RestuarantCard = ({ merchant, onPress }: Props) => {
   return (
     <TouchableHighlight
-      onPress={(e: any) => onPress?.(e)}
+      onPress={onPress}
       testID="merchant-card"
       style={{ borderRadius: 5 }}
     >
