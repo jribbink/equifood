@@ -13,12 +13,14 @@ interface ActionSheetProps extends ArgumentTypes<typeof Box> {
   isOpen: boolean;
   children: ReactNode | undefined;
   onClose: () => void;
+  onHeightChange?: (height: number) => void;
   grabIndicatorProps?: RectProps;
 }
 
 function ActionSheet({
   isOpen,
   onClose,
+  onHeightChange,
   children,
   grabIndicatorProps,
   ...props
@@ -38,6 +40,10 @@ function ActionSheet({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentHeight]);
+
+  useEffect(() => {
+    onHeightChange?.(currentHeight - _translateY);
+  }, [_translateY, currentHeight, onHeightChange]);
 
   useEffect(() => {
     translateY.setValue(isOpen ? currentHeight : 0);

@@ -1,11 +1,13 @@
 import { Merchant } from '@equifood/api-interfaces';
 import { Box } from 'native-base';
 import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primitives/Box';
-import MapView, { Region, Marker } from 'react-native-maps';
+import MapView, { Region, Marker, MapViewProps } from 'react-native-maps';
+import RestaurantIcon from '../../../../assets/restaurant-icon.png';
 
 interface MerchantMapProps extends InterfaceBoxProps {
   merchants: Merchant[] | undefined;
   initialRegion: Region | undefined;
+  mapViewProps?: MapViewProps;
   onMerchantChange?: (merchant: Merchant | null) => void;
 }
 
@@ -13,6 +15,7 @@ function MerchantMap({
   merchants,
   initialRegion,
   onMerchantChange,
+  mapViewProps,
   ...props
 }: MerchantMapProps) {
   return (
@@ -26,6 +29,8 @@ function MerchantMap({
         onPress={() => {
           onMerchantChange?.(null);
         }}
+        showsUserLocation
+        {...mapViewProps}
       >
         {(merchants || []).map((merchant) => (
           <Marker
@@ -36,7 +41,7 @@ function MerchantMap({
             }}
             title={merchant.name}
             description={merchant.description}
-            image={{ uri: 'https://imgur.com/L5PXC8v.png' }}
+            image={RestaurantIcon}
             onPress={(e) => {
               e.stopPropagation();
               onMerchantChange?.(merchant);
