@@ -87,7 +87,6 @@ function ActionSheet({
         transform: [{ translateY: translateY }],
         width: '100%',
         padding: 0,
-        overflow: 'hidden',
       }}
       {...panResponder.panHandlers}
     >
