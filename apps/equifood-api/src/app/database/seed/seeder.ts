@@ -64,6 +64,28 @@ export class Seeder {
       roles: ['merchant'],
     });
 
+    const merchantUser2 = await this.userRepository.save({
+      id: '314d472d-7b35-4b22-b823-128a2ec10fb1',
+      email: 'merchant@example.com',
+      passwordHash: hashPassword('password', ''),
+      passwordSalt: '',
+      first_name: 'John',
+      last_name: 'Doe',
+      phone: '(123) 456-789',
+      roles: ['merchant'],
+    });
+
+    const merchantUser3 = await this.userRepository.save({
+      id: '314d472d-7b35-4b22-b823-128a2ec10fb2',
+      email: 'merchant@example.com',
+      passwordHash: hashPassword('password', ''),
+      passwordSalt: '',
+      first_name: 'John',
+      last_name: 'Doe',
+      phone: '(123) 456-789',
+      roles: ['merchant'],
+    });
+
     const banner1 = await this.uploadRepository.save(<Upload>{
       id: '6e8043ff-282e-44ae-af8b-90b5930a78d4',
       name: 'Fresh Slice Banner',
@@ -139,7 +161,7 @@ export class Seeder {
         longitude: -119.44,
       },
       items: [item2],
-      user: merchantUser,
+      user: merchantUser2,
     });
 
     const merchant3 = await this.merchantRepository.save(<Merchant>{
@@ -155,7 +177,7 @@ export class Seeder {
         longitude: -119.497,
       },
       items: [item3],
-      user: merchantUser,
+      user: merchantUser3,
     });
 
     const orderedItem = await this.orderedItemRepository.save(<OrderedItem>{
