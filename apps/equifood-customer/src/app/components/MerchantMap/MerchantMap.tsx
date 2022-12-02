@@ -1,25 +1,28 @@
 import { Merchant } from '@equifood/api-interfaces';
-import { Box } from 'native-base';
+import { Box, Text } from 'native-base';
 import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primitives/Box';
+import { Animated } from 'react-native';
 import MapView, { Region, Marker, MapViewProps } from 'react-native-maps';
 import RestaurantIcon from '../../../../assets/restaurant-icon.png';
 
-interface MerchantMapProps extends InterfaceBoxProps {
+interface MerchantMapProps extends React.ComponentProps<typeof Animated.View> {
   merchants: Merchant[] | undefined;
   initialRegion: Region | undefined;
   mapViewProps?: MapViewProps;
   onMerchantChange?: (merchant: Merchant | null) => void;
+  onMerchantPress?: (merchant: Merchant) => void;
 }
 
 function MerchantMap({
   merchants,
   initialRegion,
   onMerchantChange,
+  onMerchantPress,
   mapViewProps,
   ...props
 }: MerchantMapProps) {
   return (
-    <Box {...props}>
+    <Animated.View {...props}>
       <MapView
         style={{
           height: '100%',
@@ -46,10 +49,11 @@ function MerchantMap({
               e.stopPropagation();
               onMerchantChange?.(merchant);
             }}
+            onCalloutPress={() => onMerchantPress?.(merchant)}
           />
         ))}
       </MapView>
-    </Box>
+    </Animated.View>
   );
 }
 

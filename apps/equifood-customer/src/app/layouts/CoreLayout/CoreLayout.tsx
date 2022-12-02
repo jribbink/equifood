@@ -30,9 +30,9 @@ function CoreNavigation() {
             iconName = focused ? 'md-person' : 'md-person-outline';
           } else if (route.name === 'home') {
             iconName = focused ? 'md-restaurant' : 'ios-restaurant-outline';
-          } else if (route.name === 'map') {
+          } /*else if (route.name === 'map') {
             iconName = focused ? 'md-map' : 'md-map-outline';
-          } else if (route.name === 'orders') {
+          }*/ else if (route.name === 'orders') {
             iconName = focused ? 'md-list' : 'md-list-outline';
           } else {
             return;
@@ -45,8 +45,11 @@ function CoreNavigation() {
         tabBarInactiveTintColor: 'gray',
       })}
     >
-      <Tab.Screen name="home" component={Home} options={{ title: 'Home' }} />
-      <Tab.Screen name="map" component={Map} options={{ headerShown: false }} />
+      <Tab.Screen
+        name="home"
+        component={Home}
+        options={{ title: 'Restaurants' }}
+      />
       <Tab.Screen
         name="orders"
         component={Orders}
