@@ -88,6 +88,7 @@ const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
         right: 0,
       }}
       onLayout={(e) => setLayout(e.nativeEvent.layout)}
+      testID="home-screen"
     >
       {userLocation ? (
         <MerchantMap
