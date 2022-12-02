@@ -7,8 +7,6 @@ import { hashPassword } from '../../common/utils/crypto';
 import { Upload } from '../../uploads/entities/upload.entity';
 import { statSync } from 'fs';
 import { Item } from '../../merchant/entities/item.entity';
-import { cwd } from 'process';
-import { join } from 'path';
 import { Order } from '../../orders/entities/order.entity';
 import { OrderedItem } from '../../orders/entities/ordered-item.entity';
 
@@ -112,7 +110,7 @@ export class Seeder {
       name: 'Example item',
       price: 10.99,
       originalPrice: 20.0,
-      quantity: 5,
+      quantity: 20,
       description: 'An ordinary item of food.',
     });
 
@@ -120,7 +118,7 @@ export class Seeder {
       name: 'Cheese pizza',
       price: 4.99,
       originalPrice: 6.99,
-      quantity: 5,
+      quantity: 20,
       description: 'A pizza with cheese on it.',
     });
 
@@ -128,7 +126,7 @@ export class Seeder {
       name: 'Hawaiian pizza',
       price: 5.99,
       originalPrice: 8.49,
-      quantity: 5,
+      quantity: 20,
       description: 'A pizza with cheese, tomato sauce, ham and pineapple.',
     });
 

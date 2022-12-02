@@ -41,7 +41,7 @@ const Login = ({ navigation }) => {
 
   return (
     <Box flex={1}>
-      <Box flex={1} overflow="auto" testID="login-screen">
+      <Box flex={1} testID="login-screen">
         <Text testID="login" style={{ padding: 10, fontSize: 24 }}>
           Login
         </Text>
