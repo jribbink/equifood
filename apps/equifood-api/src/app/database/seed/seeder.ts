@@ -94,6 +94,22 @@ export class Seeder {
       description: 'An ordinary item of food.',
     });
 
+    const item2 = await this.itemRepository.save(<Item>{
+      name: 'Cheese pizza',
+      price: 4.99,
+      originalPrice: 6.99,
+      quantity: 5,
+      description: 'A pizza with cheese on it.',
+    });
+
+    const item3 = await this.itemRepository.save(<Item>{
+      name: 'Hawaiian pizza',
+      price: 5.99,
+      originalPrice: 8.49,
+      quantity: 5,
+      description: 'A pizza with cheese, tomato sauce, ham and pineapple.',
+    });
+
     const merchant = await this.merchantRepository.save(<Merchant>{
       name: 'Fresh Slice',
       banner: banner1,
@@ -107,6 +123,38 @@ export class Seeder {
         longitude: -119.386,
       },
       items: [item1],
+      user: merchantUser,
+    });
+
+    const merchant2 = await this.merchantRepository.save(<Merchant>{
+      name: 'Fresh Slice',
+      banner: banner1,
+      logo: logo1,
+      description: 'Order pizza',
+      deadline: new Date(2022, 11, 8, 23),
+      phone_number: '(123) 456-7890',
+      location: {
+        address: '227 Bernard Ave. Kelowna, BC V1Y 6N2',
+        latitude: 49.881,
+        longitude: -119.44,
+      },
+      items: [item2],
+      user: merchantUser,
+    });
+
+    const merchant3 = await this.merchantRepository.save(<Merchant>{
+      name: 'Fresh Slice',
+      banner: banner1,
+      logo: logo1,
+      description: 'Order pizza',
+      deadline: new Date(2022, 11, 8, 23),
+      phone_number: '(123) 456-7890',
+      location: {
+        address: '2271 Harvey Ave. Kelowna, BC V1Y 6H2',
+        latitude: 49.886,
+        longitude: -119.497,
+      },
+      items: [item3],
       user: merchantUser,
     });
 
