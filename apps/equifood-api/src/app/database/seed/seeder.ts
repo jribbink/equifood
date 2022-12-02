@@ -64,6 +64,28 @@ export class Seeder {
       roles: ['merchant'],
     });
 
+    const merchantUser2 = await this.userRepository.save({
+      id: '314d472d-7b35-4b22-b823-128a2ec10fb1',
+      email: 'merchant@example.com',
+      passwordHash: hashPassword('password', ''),
+      passwordSalt: '',
+      first_name: 'John',
+      last_name: 'Doe',
+      phone: '(123) 456-789',
+      roles: ['merchant'],
+    });
+
+    const merchantUser3 = await this.userRepository.save({
+      id: '314d472d-7b35-4b22-b823-128a2ec10fb2',
+      email: 'merchant@example.com',
+      passwordHash: hashPassword('password', ''),
+      passwordSalt: '',
+      first_name: 'John',
+      last_name: 'Doe',
+      phone: '(123) 456-789',
+      roles: ['merchant'],
+    });
+
     const banner1 = await this.uploadRepository.save(<Upload>{
       id: '6e8043ff-282e-44ae-af8b-90b5930a78d4',
       name: 'Fresh Slice Banner',
@@ -94,6 +116,22 @@ export class Seeder {
       description: 'An ordinary item of food.',
     });
 
+    const item2 = await this.itemRepository.save(<Item>{
+      name: 'Cheese pizza',
+      price: 4.99,
+      originalPrice: 6.99,
+      quantity: 5,
+      description: 'A pizza with cheese on it.',
+    });
+
+    const item3 = await this.itemRepository.save(<Item>{
+      name: 'Hawaiian pizza',
+      price: 5.99,
+      originalPrice: 8.49,
+      quantity: 5,
+      description: 'A pizza with cheese, tomato sauce, ham and pineapple.',
+    });
+
     const merchant = await this.merchantRepository.save(<Merchant>{
       name: 'Fresh Slice',
       banner: banner1,
@@ -108,6 +146,38 @@ export class Seeder {
       },
       items: [item1],
       user: merchantUser,
+    });
+
+    const merchant2 = await this.merchantRepository.save(<Merchant>{
+      name: 'Fresh Slice',
+      banner: banner1,
+      logo: logo1,
+      description: 'Order pizza',
+      deadline: new Date(2022, 11, 8, 23),
+      phone_number: '(123) 456-7890',
+      location: {
+        address: '227 Bernard Ave. Kelowna, BC V1Y 6N2',
+        latitude: 49.881,
+        longitude: -119.44,
+      },
+      items: [item2],
+      user: merchantUser2,
+    });
+
+    const merchant3 = await this.merchantRepository.save(<Merchant>{
+      name: 'Fresh Slice',
+      banner: banner1,
+      logo: logo1,
+      description: 'Order pizza',
+      deadline: new Date(2022, 11, 8, 23),
+      phone_number: '(123) 456-7890',
+      location: {
+        address: '2271 Harvey Ave. Kelowna, BC V1Y 6H2',
+        latitude: 49.886,
+        longitude: -119.497,
+      },
+      items: [item3],
+      user: merchantUser3,
     });
 
     const orderedItem = await this.orderedItemRepository.save(<OrderedItem>{
