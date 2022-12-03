@@ -24,8 +24,8 @@ export class UsersService {
     return this.orderRepository.find({ where: { user: { id: user.id } } });
   }
 
-  async getSavings(user:User){
-    const {savings} = await this.orderRepository
+  async getSavings(user: User) {
+    const { savings } = await this.orderRepository
       .createQueryBuilder('order')
       .leftJoin('order.user', 'user')
       .leftJoin('order.items', 'orderedItem')
@@ -36,7 +36,7 @@ export class UsersService {
         'savings'
       )
       .getRawOne();
-      return savings;
+    return savings;
   }
 
   async createUser(user: Partial<User>) {

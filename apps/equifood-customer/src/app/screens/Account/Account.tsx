@@ -9,7 +9,7 @@ import SocialCard from '../../components/cards/SocialCard/SocialCard';
 
 const Account = () => {
   const { user } = useProfile();
-  const {savings} = useSavings();
+  const { savings } = useSavings();
   const dispatch = useDispatch();
   function logoutUser() {
     dispatch(logout());
@@ -19,25 +19,27 @@ const Account = () => {
     <ScrollView p="3">
       <VStack space="3">
         {user ? <ProfileCard user={user}></ProfileCard> : null}
-        {savings ? <Box
-        style={{marginTop: 5}}>
-          <Text
-          style={{
-            fontWeight: 'bold',
-            fontSize: 20,
-            padding: 20,
-            color: 'black',
-          }}
-          >
-            Total Money Saved: <Text
-            style={{
-              color: 'green',
-            }}
+        {savings ? (
+          <Box style={{ marginTop: 5 }}>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                fontSize: 20,
+                padding: 20,
+                color: 'black',
+              }}
             >
-              ${savings}
+              Total Money Saved:{' '}
+              <Text
+                style={{
+                  color: 'green',
+                }}
+              >
+                ${savings}
+              </Text>
             </Text>
-          </Text>
-        </Box> : null}
+          </Box>
+        ) : null}
         <SocialCard></SocialCard>
 
         <Button
