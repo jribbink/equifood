@@ -24,6 +24,21 @@ export class UsersService {
     return this.orderRepository.find({ where: { user: { id: user.id } } });
   }
 
+  async getSavings(user: User) {
+    const { savings } = await this.orderRepository
+      .createQueryBuilder('order')
+      .leftJoin('order.user', 'user')
+      .leftJoin('order.items', 'orderedItem')
+      .leftJoin('orderedItem.item', 'item')
+      .where('user.id = :id', { id: user.id })
+      .select(
+        'SUM(item.originalPrice * orderedItem.quantity) - SUM(item.price * orderedItem.quantity)',
+        'savings'
+      )
+      .getRawOne();
+    return savings;
+  }
+
   async createUser(user: Partial<User>) {
     return this.userRepository.save(user);
   }
