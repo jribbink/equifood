@@ -8,6 +8,8 @@ import { UploadsModule } from './uploads/uploads.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { DynamicPropertyInterceptor } from './common/interceptors/dynamic-property-interceptor';
 import { OrdersModule } from './orders/orders.module';
+import { SubscriptionsModule } from './subscriptions/subscriptions.module';
+import { WebsocketValidator } from './auth/websocket-validator';
 
 @Module({
   imports: [
@@ -18,8 +20,16 @@ import { OrdersModule } from './orders/orders.module';
     MerchantsModule,
     UploadsModule,
     OrdersModule,
+    SubscriptionsModule.register({
+      imports: [AuthModule],
+      useFactory: (websocketValidator: WebsocketValidator) => ({
+        validator: websocketValidator.validate,
+      }),
+      inject: [WebsocketValidator],
+    }),
   ],
   providers: [
+    WebsocketValidator,
     {
       provide: APP_INTERCEPTOR,
       useClass: DynamicPropertyInterceptor,

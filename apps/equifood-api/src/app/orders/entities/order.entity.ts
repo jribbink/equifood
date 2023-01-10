@@ -4,7 +4,6 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Merchant } from '../../merchant/entities/merchant.entity';
