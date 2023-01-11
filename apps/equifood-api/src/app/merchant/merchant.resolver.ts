@@ -1,11 +1,4 @@
-import {
-  Args,
-  Int,
-  Parent,
-  Query,
-  ResolveField,
-  Resolver,
-} from '@nestjs/graphql';
+import { Args, Query, Resolver } from '@nestjs/graphql';
 import { Merchant } from './entities/merchant.entity';
 import { MerchantsService } from './merchants.service';
 
@@ -14,12 +7,12 @@ export class MerchantsResolver {
   constructor(private merchantsService: MerchantsService) {}
 
   @Query((returns) => Merchant)
-  async getMerchant(@Args('id') id: string): Promise<Merchant> {
+  async merchant(@Args('id') id: string): Promise<Merchant> {
     return this.merchantsService.get(id);
   }
 
-  /*@Query((returns) => Merchant)
-  async allMerchants(): Promise<Merchant[]> {
+  @Query((returns) => [Merchant])
+  async merchants(): Promise<Merchant[]> {
     return this.merchantsService.getAll();
-  }*/
+  }
 }

@@ -17,6 +17,9 @@ import type { Item } from './item.entity';
 @ObjectType()
 export class Merchant extends UuidEntity {
   @Field()
+  public id: string;
+
+  @Field()
   @Column()
   name: string;
 

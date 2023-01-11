@@ -44,7 +44,7 @@ export class OrdersService {
         user: true,
       },
     });
-    if (!order) return new NotFoundException('Order does not exist');
+    if (!order) throw new NotFoundException('Order does not exist');
     if (user.roles.includes('customer') && order.user.id !== user.id)
       throw new UnauthorizedException();
     if (user.roles.includes('merchant')) {
