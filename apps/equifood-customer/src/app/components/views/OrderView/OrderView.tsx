@@ -4,14 +4,15 @@ import { removeItem } from '../../../redux/slices/cart-slice';
 import { Item, Merchant } from '@equifood/api-interfaces';
 
 interface OrderViewProps {
-  item: Item;
+  items: { id: string; quantity: number }[];
   quantity: number;
   merchant: Merchant;
 }
 
-function OrderView({ item, quantity, merchant }: OrderViewProps) {
+function OrderView({ items, quantity, merchant }: OrderViewProps) {
   const dispatch = useDispatch();
 
+  const item = items[0]; // TEMPORARY
   const totalPrice = item.price * quantity;
 
   return (

@@ -5,12 +5,14 @@ import type {
 } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { StackScreenProps } from '@react-navigation/stack';
+import 
 
 export type CoreTabParams = {
   home: undefined;
   map: undefined;
   orders: undefined;
   account: undefined;
+  orderConfirm: undefined;
 };
 
 export type CoreStackParams = {
@@ -22,6 +24,10 @@ export type CoreStackParams = {
     order: Order;
   };
   cart: undefined;
+  orderConfirm: {
+    merchant: Merchant;
+    items: {id: string, quantity: number}[];
+  };
 };
 
 export type CoreNavigationProps<T extends keyof CoreTabParams> =
