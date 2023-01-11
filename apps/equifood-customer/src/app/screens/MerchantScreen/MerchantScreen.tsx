@@ -20,6 +20,7 @@ import { AppDispatch } from '../../redux/store';
 import ActionSheet from '../../components/ActionSheet/ActionSheet';
 import { useAxios } from '../../hooks/useAxios';
 import ItemCard from '../../components/cards/ItemCard/ItemCard';
+import MerchantMap from '../../components/MerchantMap/MerchantMap';
 
 export interface MerchantScreenParams {
   merchant: Merchant;
@@ -147,8 +148,13 @@ function RestaurantScreen({
               quantity,
             })),
           });
-          navigation.navigate('core', { screen: 'orders' });
-          navigation.navigate('order', { order: data });
+          navigation.navigate('orderConfirm', {merchant: MerchantMap, items: Object.entries(quantityMap).map(([id, quantity]) => ({
+            id,
+            quantity,
+          }))});
+          });
+          //navigation.navigate('core', { screen: 'orders' });
+          //navigation.navigate('order', { order: data });
         }}
       >
         Order
