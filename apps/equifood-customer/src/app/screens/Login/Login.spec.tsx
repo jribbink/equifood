@@ -53,10 +53,9 @@ test('logs in properly', async () => {
   // test that redux has changed
   await waitFor(
     () =>
-      expect(store.getState().auth.jwt).toEqual({
-        access_token: 'foo',
-        expires: null,
-      }),
+      expect(store.getState().auth.jwt).toEqual(
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U'
+      ),
     { timeout: 1000 }
   );
 });

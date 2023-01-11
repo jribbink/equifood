@@ -1,6 +1,6 @@
 import { Box, NativeBaseProviderProps, ZStack } from 'native-base';
-import { ReactElement, ReactNode, useEffect, useState } from 'react';
-import { Animated, GestureResponderEvent } from 'react-native';
+import { ReactElement, ReactNode, useEffect, useRef, useState } from 'react';
+import { Animated, GestureResponderEvent, PanResponder } from 'react-native';
 import Svg, { Rect, RectProps } from 'react-native-svg';
 
 type ArgumentTypes<F extends (props: any) => ReactElement | null> = F extends (
@@ -10,88 +10,89 @@ type ArgumentTypes<F extends (props: any) => ReactElement | null> = F extends (
   : never;
 
 interface ActionSheetProps extends ArgumentTypes<typeof Box> {
-  isOpen: boolean;
+  point: number;
+  points: number[];
+  onPointChange: (point: number) => void;
   children: ReactNode | undefined;
-  onClose: () => void;
   grabIndicatorProps?: RectProps;
+  offset?: number;
+  onTranslateYChange?: (value: number) => void;
 }
-
+const i = 0;
 function ActionSheet({
-  isOpen,
-  onClose,
+  point,
+  points,
+  onPointChange,
   children,
   grabIndicatorProps,
+  offset = 0,
+  onTranslateYChange,
   ...props
 }: ActionSheetProps) {
-  const [startPos, setStartPos] = useState<number>(0);
-  const translateY = useState<Animated.Value>(new Animated.Value(0))[0];
-  const [_translateY, _setTranslateY] = useState<number>(0);
-  const [currentHeight, setCurrentHeight] = useState<number>(0);
+  const start = useRef(new Animated.Value(points[point])).current;
+  const pan = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(Animated.add(start, pan)).current;
+  const _pan = useRef(0);
+  const _start = useRef(points[point]);
 
   useEffect(() => {
-    translateY.addListener((e) => _setTranslateY(e.value));
-  }, [translateY]);
-
-  useEffect(() => {
-    if (!isOpen) {
-      translateY.setValue(currentHeight);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentHeight]);
-
-  useEffect(() => {
-    translateY.setValue(isOpen ? currentHeight : 0);
-    const animation = Animated.timing(translateY, {
-      toValue: isOpen ? 0 : currentHeight,
-      duration: 500,
-      useNativeDriver: true,
+    start.addListener(({ value }) => {
+      _start.current = value;
+      onTranslateYChange?.(value);
     });
-    animation.start();
-  }, [isOpen, translateY, currentHeight]);
+  }, [start]);
 
-  function handleTouchStart(event: GestureResponderEvent) {
-    setStartPos(event.nativeEvent.pageY - _translateY);
-  }
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderStart: (e, gestureState) => {
+        start.stopAnimation();
+      },
+      onPanResponderMove: (e, gestureState) => {
+        onTranslateYChange?.(_start.current + gestureState.dy);
+        _pan.current = gestureState.dy;
+        Animated.event([null, { dy: pan }], {
+          useNativeDriver: false,
+        })(e, gestureState);
+      },
+      onPanResponderRelease: (_e, gestureState) => {
+        const startVal = _start.current + _pan.current;
 
-  function handleTouchMove(event: GestureResponderEvent) {
-    const newOffset = event.nativeEvent.pageY - startPos;
-    if (newOffset > 0) translateY.setValue(newOffset);
-  }
+        start.setValue(startVal);
+        pan.setValue(0);
 
-  function handleTouchEnd(event: GestureResponderEvent) {
-    const newOffset = event.nativeEvent.pageY - startPos;
-    if (newOffset > 0.4 * currentHeight) {
-      Animated.timing(translateY, {
-        toValue: currentHeight,
-        duration: 500,
-        useNativeDriver: true,
-      }).start(() => onClose());
-    } else {
-      Animated.timing(translateY, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: true,
-      }).start();
-    }
-  }
+        const goal = startVal;
+        const [closest, closest_idx] = points.reduce(
+          ([best, best_idx], curr, idx) => {
+            return Math.abs(curr - goal) < Math.abs(best - goal)
+              ? [curr, idx]
+              : [best, best_idx];
+          },
+          [Infinity, -1]
+        );
 
-  if (!isOpen) return null;
+        Animated.timing(start, {
+          toValue: closest,
+          duration: 500,
+          useNativeDriver: true,
+        }).start();
+        onPointChange(closest_idx);
+      },
+    })
+  ).current;
+
   return (
     <Animated.View
       style={{
-        transform: [{ translateY }],
+        transform: [{ translateY: translateY }],
         width: '100%',
         padding: 0,
-        position: 'absolute',
         overflow: 'hidden',
       }}
-      onLayout={(e) => setCurrentHeight(e.nativeEvent.layout.height)}
+      {...panResponder.panHandlers}
     >
       <Box
         backgroundColor="gray.50"
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
         roundedTop={25}
         padding={25}
         width="full"

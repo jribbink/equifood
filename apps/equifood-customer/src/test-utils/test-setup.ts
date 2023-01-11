@@ -6,7 +6,7 @@ import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/asy
 jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
 
 // Mock app config (.env variables)
-jest.mock('../app/util/app-config', () => ({
+jest.mock('../app/config/app-config', () => ({
   apiUrl: 'http://api-endpoint.com',
   skipAnimations: true,
 }));

@@ -18,7 +18,7 @@ function OrderCard({ order }: OrderCardProps) {
     string
   >([
     ['completed', 'green'],
-    ['pending', 'yellow'],
+    ['pending', 'blue'],
     ['cancelled', 'red'],
   ]);
 
@@ -48,7 +48,7 @@ function OrderCard({ order }: OrderCardProps) {
         ></Image>
         <HStack py="2" justifyContent="space-between" flexGrow={1} pr="2">
           <VStack>
-            <Text>{order.merchant.name}</Text>
+            <Text style={{ fontWeight: 'bold' }}>{order.merchant.name}</Text>
             <Text>
               {order.order_date.toLocaleDateString(undefined, {
                 year: 'numeric',
@@ -60,7 +60,7 @@ function OrderCard({ order }: OrderCardProps) {
           <VStack alignItems="flex-end">
             <Text
               textTransform="uppercase"
-              style={{ color: colorMap.get(order.status) }}
+              style={{ color: colorMap.get(order.status), fontWeight: 'bold' }}
             >
               {order.status}
             </Text>

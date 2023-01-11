@@ -1,26 +1,30 @@
-import { JWT, Merchant } from '@equifood/api-interfaces';
 import { useEffect } from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
 import { setJWT } from '../redux/slices/auth-slice';
 import { RootState } from '../redux/store';
+import { parseJwt } from '../util/jwt';
 
 export function useAuth() {
   const store = useStore<RootState>();
-  const dispath = useDispatch();
-  const jwt = useSelector<RootState, JWT | null>(
+  const dispatch = useDispatch();
+  const jwt = useSelector<RootState, string | null>(
     () => store.getState().auth.jwt
   );
 
   useEffect(() => {
-    if (!jwt?.expires) return;
-    const timeout = new Date().getTime() - new Date(jwt?.expires).getTime();
+    if (!jwt) return;
+
+    const { payload } = parseJwt(jwt);
+    if (!payload.exp) return;
+    const timeout =
+      new Date().getTime() - new Date(payload.exp * 1000).getTime();
 
     setTimeout(() => {
-      dispath(setJWT(null));
-    }, timeout);
+      dispatch(setJWT(null));
+    }, Math.max(timeout, 0));
   });
 
   return {
-    token: jwt?.access_token,
+    token: jwt,
   };
 }

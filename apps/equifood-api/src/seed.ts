@@ -13,7 +13,7 @@ async function bootstrap() {
   const isMockDb = configContext.get(ConfigService).get('database.mock');
   configContext.close();
   if (isMockDb) {
-    rmSync(path.join(cwd(), MOCK_DB_PATH));
+    rmSync(path.join(cwd(), MOCK_DB_PATH), { force: true });
     await seedDatabase();
   }
 }

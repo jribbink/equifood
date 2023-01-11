@@ -1,21 +1,19 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { JWT } from '@equifood/api-interfaces';
 import axios from 'axios';
 import storage from '../../util/storage';
 
 export const authenticate = createAsyncThunk(
   'auth/authenticate',
-  async ({ email, password }: { email: string; password: string }) => {
-    const response = await axios.post<JWT>('/auth/login', {
-      email,
-      password,
+  async ({ ...params }: { [param: string]: any }) => {
+    const response = await axios.post<string | null>('/auth/local', {
+      ...params,
     });
     return response.data;
   }
 );
 
 interface AuthState {
-  jwt: JWT | null;
+  jwt: string | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error?: string;
 }

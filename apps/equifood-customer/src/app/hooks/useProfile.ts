@@ -1,8 +1,10 @@
 import { User } from '@equifood/api-interfaces';
 import { useFetcher } from './useFetcher';
 
-export function useProfile() {
-  const { data, error } = useFetcher<User>(`/users/self/profile`);
+const GET_PROFILE_KEY = (userId = 'self') => `/users/${userId}/`;
+
+export function useProfile(userId = 'self') {
+  const { data, error } = useFetcher<User>(GET_PROFILE_KEY(userId));
 
   return {
     user: data,

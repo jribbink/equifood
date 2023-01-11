@@ -1,22 +1,28 @@
 import { Merchant } from '@equifood/api-interfaces';
-import { Box } from 'native-base';
+import { Box, Text } from 'native-base';
 import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primitives/Box';
-import MapView, { Region, Marker } from 'react-native-maps';
+import { Animated } from 'react-native';
+import MapView, { Region, Marker, MapViewProps } from 'react-native-maps';
+import RestaurantIcon from '../../../../assets/restaurant-icon.png';
 
-interface MerchantMapProps extends InterfaceBoxProps {
+interface MerchantMapProps extends React.ComponentProps<typeof Animated.View> {
   merchants: Merchant[] | undefined;
   initialRegion: Region | undefined;
+  mapViewProps?: MapViewProps;
   onMerchantChange?: (merchant: Merchant | null) => void;
+  onMerchantPress?: (merchant: Merchant) => void;
 }
 
 function MerchantMap({
   merchants,
   initialRegion,
   onMerchantChange,
+  onMerchantPress,
+  mapViewProps,
   ...props
 }: MerchantMapProps) {
   return (
-    <Box {...props}>
+    <Animated.View {...props}>
       <MapView
         style={{
           height: '100%',
@@ -26,6 +32,8 @@ function MerchantMap({
         onPress={() => {
           onMerchantChange?.(null);
         }}
+        showsUserLocation
+        {...mapViewProps}
       >
         {(merchants || []).map((merchant) => (
           <Marker
@@ -36,15 +44,16 @@ function MerchantMap({
             }}
             title={merchant.name}
             description={merchant.description}
-            image={{ uri: 'https://imgur.com/L5PXC8v.png' }}
+            image={RestaurantIcon}
             onPress={(e) => {
               e.stopPropagation();
               onMerchantChange?.(merchant);
             }}
+            onCalloutPress={() => onMerchantPress?.(merchant)}
           />
         ))}
       </MapView>
-    </Box>
+    </Animated.View>
   );
 }
 

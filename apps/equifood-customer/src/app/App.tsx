@@ -54,15 +54,13 @@ const App = () => {
   return (
     <NativeBaseProvider>
       <SWRConfig value={swrConfig}>
-        <SafeAreaView style={SafeViewAndroid.AndroidSafeArea}>
-          {store ? (
-            <ReduxProvider store={store}>
-              <RootLayout></RootLayout>
-            </ReduxProvider>
-          ) : (
-            <LoadingScreen></LoadingScreen>
-          )}
-        </SafeAreaView>
+        {store ? (
+          <ReduxProvider store={store}>
+            <RootLayout></RootLayout>
+          </ReduxProvider>
+        ) : (
+          <LoadingScreen></LoadingScreen>
+        )}
       </SWRConfig>
     </NativeBaseProvider>
   );
