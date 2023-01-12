@@ -1,18 +1,13 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { Button, ScrollView, Text } from 'native-base';
-import { useDispatch, useSelector, useStore } from 'react-redux';
 import OrderView from '../../components/views/OrderView/OrderView';
-import { AppDispatch, RootState } from '../../redux/store';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 
-function Confirm({
+function OrderConfirm({
   navigation,
   route,
 }: StackScreenProps<CoreStackParams, 'orderConfirm'>) {
-  const store = useStore<RootState>();
   const params = route.params; //merchant, items, quantities
-
-  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <ScrollView>
