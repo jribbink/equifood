@@ -1,11 +1,10 @@
-import { Merchant, Order } from '@equifood/api-interfaces';
+import { Merchant, Order, Item } from '@equifood/api-interfaces';
 import type {
   CompositeScreenProps,
   NavigatorScreenParams,
 } from '@react-navigation/native';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import type { StackScreenProps } from '@react-navigation/stack';
-import 
 
 export type CoreTabParams = {
   home: undefined;
@@ -26,7 +25,8 @@ export type CoreStackParams = {
   cart: undefined;
   orderConfirm: {
     merchant: Merchant;
-    items: {id: string, quantity: number}[];
+    items: Item[];
+    quantities: { id: string; quantity: number }[];
   };
 };
 

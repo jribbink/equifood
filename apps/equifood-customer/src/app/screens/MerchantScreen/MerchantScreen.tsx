@@ -8,19 +8,16 @@ import {
   Image,
   Heading,
   HStack,
-  useDisclose,
 } from 'native-base';
-import { TextInput, StyleSheet } from 'react-native';
-import { Merchant, Order } from '@equifood/api-interfaces';
+import { StyleSheet } from 'react-native';
+import { Order, Merchant } from '@equifood/api-interfaces';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import React, { useState } from 'react';
 import { useMerchant } from '../../hooks/useMerchant';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
-import ActionSheet from '../../components/ActionSheet/ActionSheet';
 import { useAxios } from '../../hooks/useAxios';
 import ItemCard from '../../components/cards/ItemCard/ItemCard';
-import MerchantMap from '../../components/MerchantMap/MerchantMap';
 
 export interface MerchantScreenParams {
   merchant: Merchant;
@@ -31,7 +28,6 @@ function RestaurantScreen({
   route,
 }: StackScreenProps<CoreStackParams, 'merchant'>) {
   const axios = useAxios();
-  const dispatch = useDispatch<AppDispatch>();
   const { merchant } = useMerchant(route.params.merchant.id);
   const [quantityMap, setQuantityMap] = useState<{ [itemId: string]: number }>(
     {}
@@ -141,20 +137,21 @@ function RestaurantScreen({
       </ScrollView>
       <Button
         onPress={async () => {
-          const { data } = await axios.post<Order>('/orders', {
+          /*const { data } = await axios.post<Order>('/orders', {
             merchant: merchant.id,
             items: Object.entries(quantityMap).map(([id, quantity]) => ({
               id,
               quantity,
             })),
+          });*/ // MOVE TO ORDERCONFIRM
+          navigation.navigate('orderConfirm', {
+            merchant: merchant,
+            items: items,
+            quantities: Object.entries(quantityMap).map(([id, quantity]) => ({
+              id,
+              quantity,
+            })),
           });
-          navigation.navigate('orderConfirm', {merchant: MerchantMap, items: Object.entries(quantityMap).map(([id, quantity]) => ({
-            id,
-            quantity,
-          }))});
-          });
-          //navigation.navigate('core', { screen: 'orders' });
-          //navigation.navigate('order', { order: data });
         }}
       >
         Order
