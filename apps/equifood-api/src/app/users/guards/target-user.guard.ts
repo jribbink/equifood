@@ -2,9 +2,10 @@ import { CanActivate, ExecutionContext } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { resolveContext } from '../../common/utils/resolve-context';
 import { User } from '../entities/user.entity';
 
-export class UserGuard implements CanActivate {
+export class TargetUserGuard implements CanActivate {
   jwtGuard = new JwtAuthGuard();
 
   constructor(
@@ -15,15 +16,29 @@ export class UserGuard implements CanActivate {
     // verify is authorized & add user to request
     if (!(await this.jwtGuard.canActivate(context))) return false;
 
-    const req = context.switchToHttp().getRequest();
+    const req = resolveContext(context).request;
     const { user } = req;
 
-    if (req.params.userId == 'self') {
+    let targetUserId;
+    switch (context.getType()) {
+      case <any>'graphql':
+        targetUserId = context
+          .getArgs()
+          .find((o) => o?.targetUserId).targetUserId;
+        break;
+      case 'http':
+        targetUserId = req.params.userId;
+        break;
+      default:
+        throw new Error('Unsupported context');
+    }
+
+    if (targetUserId == 'self') {
       req.targetUser = user;
       return true;
     } else {
       req.targetUser = await this.userRepository.findOneBy({
-        id: req.params.userId,
+        id: targetUserId,
       });
     }
 

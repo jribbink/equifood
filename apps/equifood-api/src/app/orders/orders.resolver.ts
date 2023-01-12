@@ -4,6 +4,7 @@ import { AuthRoute } from '../auth/decorators/auth-route.decorator';
 import { AuthUser } from '../auth/decorators/auth-user.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { User } from '../users/entities/user.entity';
+import { TargetUserGuard } from '../users/guards/target-user.guard';
 import { Order } from './entities/order.entity';
 import { OrderedItemDTO } from './models/ordered-item.dto';
 import { OrdersService } from './orders.service';
@@ -18,11 +19,15 @@ export class OrdersResolver {
     return this.ordersService.getOrder(user, id);
   }
 
+  @UseGuards(TargetUserGuard)
   @AuthRoute('customer')
   @Query((returns) => [Order], {
     description: 'Gets all orders for authenticated user',
   })
-  async orders(@AuthUser() user: User): Promise<Order[]> {
+  async orders(
+    @AuthUser() user: User,
+    @Args('userId') targetUserId: string
+  ): Promise<Order[]> {
     return this.ordersService.getOrders(user);
   }
 
