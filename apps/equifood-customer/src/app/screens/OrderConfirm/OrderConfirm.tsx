@@ -23,25 +23,19 @@ function OrderConfirm({
         style={{ backgroundColor: 'cyan', borderRadius: 30 }}
         padding="3"
         accessibilityLabel="Confirm Order"
-        onPress={() => alert('checkout')}
+        onPress={async () => {
+          const { data } = await axios.post<Order>('/orders', {
+            merchant: params.merchant.id,
+            items: Object.entries(params.quantities).map(([id, quantity]) => ({
+              id,
+              quantity,
+            })),
+          });
+          navigation.navigate('core', { screen: 'orders' });
+          navigation.navigate('order', { order: data });
+        }}
       >
-        <Text
-          fontSize="24"
-          fontWeight="bold"
-          onPress={async () => {
-            const { data } = await axios.post<Order>('/orders', {
-              merchant: params.merchant.id,
-              items: Object.entries(params.quantities).map(
-                ([id, quantity]) => ({
-                  id,
-                  quantity,
-                })
-              ),
-            });
-            navigation.navigate('core', { screen: 'orders' });
-            navigation.navigate('order', { order: data });
-          }}
-        >
+        <Text fontSize="24" fontWeight="bold">
           Confirm & Place Order
         </Text>
       </Button>
