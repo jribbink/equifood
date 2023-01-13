@@ -137,13 +137,6 @@ function RestaurantScreen({
       </ScrollView>
       <Button
         onPress={async () => {
-          /*const { data } = await axios.post<Order>('/orders', {
-            merchant: merchant.id,
-            items: Object.entries(quantityMap).map(([id, quantity]) => ({
-              id,
-              quantity,
-            })),
-          });*/ // MOVE TO ORDERCONFIRM
           navigation.navigate('orderConfirm', {
             merchant: merchant,
             items: items,
