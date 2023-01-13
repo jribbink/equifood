@@ -9,6 +9,9 @@ import { UuidEntity } from '../../database/models/uuid-entity';
 @Entity({ name: 'users' })
 export class User extends UuidEntity {
   @Field()
+  public id: string;
+
+  @Field()
   @Column()
   first_name: string;
 

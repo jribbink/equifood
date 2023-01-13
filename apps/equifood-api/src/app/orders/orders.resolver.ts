@@ -3,6 +3,7 @@ import { Args, Query, Mutation, Resolver } from '@nestjs/graphql';
 import { AuthRoute } from '../auth/decorators/auth-route.decorator';
 import { AuthUser } from '../auth/decorators/auth-user.decorator';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { TargetUser } from '../users/decorators/target-user.decorator';
 import { User } from '../users/entities/user.entity';
 import { TargetUserGuard } from '../users/guards/target-user.guard';
 import { Order } from './entities/order.entity';
@@ -25,10 +26,10 @@ export class OrdersResolver {
     description: 'Gets all orders for authenticated user',
   })
   async orders(
-    @AuthUser() user: User,
-    @Args('userId') targetUserId: string
+    @Args('targetUserId', { nullable: true }) targetUserId: string,
+    @TargetUser() targetUser: User
   ): Promise<Order[]> {
-    return this.ordersService.getOrders(user);
+    return this.ordersService.getOrders(targetUser);
   }
 
   @AuthRoute('customer')

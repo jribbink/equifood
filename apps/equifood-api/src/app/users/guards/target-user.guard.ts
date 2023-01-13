@@ -22,9 +22,9 @@ export class TargetUserGuard implements CanActivate {
     let targetUserId;
     switch (context.getType()) {
       case <any>'graphql':
-        targetUserId = context
-          .getArgs()
-          .find((o) => o?.targetUserId).targetUserId;
+        targetUserId =
+          context.getArgs().find((o) => o?.targetUserId)?.targetUserId ??
+          'self';
         break;
       case 'http':
         targetUserId = req.params.userId;

@@ -23,7 +23,7 @@ export class UsersResolver {
   async getProfile(
     @AuthUser() user: User,
     @TargetUser() targetUser: User,
-    @Args('targetUserId') targetUserId: string
+    @Args('targetUserId', { nullable: true }) targetUserId: string
   ): Promise<User> {
     return this.usersService.findOne({ id: targetUser.id });
   }

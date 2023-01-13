@@ -11,6 +11,6 @@ import { UsersResolver } from './users.resolver';
   imports: [TypeOrmModule.forFeature([User, Order, AuthProvider])],
   providers: [UsersService, UsersResolver],
   controllers: [UsersController],
-  exports: [UsersService],
+  exports: [UsersService, TypeOrmModule.forFeature([User])],
 })
 export class UsersModule {}
