@@ -144,10 +144,10 @@ function RestaurantScreen({
             navigation.navigate('orderConfirm', {
               merchant: merchant,
               items: items,
-              quantities: Object.entries(quantityMap).map(([id, quantity]) => ({
-                id,
-                quantity,
-              })),
+              /*quantities: Object.entries(quantityMap).map(([id, quantity]) => ({
+                [id]: quantity
+              })),*/
+              quantities: quantityMap,
             });
           }
         }}

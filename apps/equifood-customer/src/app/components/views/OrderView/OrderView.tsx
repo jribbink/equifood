@@ -2,10 +2,11 @@ import { Button, Text, View, VStack } from 'native-base';
 import { useDispatch } from 'react-redux';
 import { removeItem } from '../../../redux/slices/cart-slice';
 import { Item, Merchant } from '@equifood/api-interfaces';
+import CheckoutItemCard from '../../cards/CheckoutItemCard/CheckoutItemCard';
 
 interface OrderViewProps {
   items: Item[];
-  quantities: { id: string; quantity: number }[];
+  quantities: { [itemId: string]: number };
   merchant: Merchant;
 }
 
@@ -13,8 +14,14 @@ function OrderView({ items, quantities, merchant }: OrderViewProps) {
   const dispatch = useDispatch();
 
   const item = items[0]; // TEMPORARY
-  //const totalPrice = quantities[item.id]; //work around item.id being string
-  const totalPrice = 0; //boilerplate
+  let totalPrice = 0;
+  for (const itemId in quantities) {
+    const item = items.find((item) => item.id === itemId);
+    const qt = quantities[itemId];
+    if (item) {
+      totalPrice += qt * item.price;
+    }
+  }
   return (
     <VStack>
       <Text
@@ -27,37 +34,13 @@ function OrderView({ items, quantities, merchant }: OrderViewProps) {
         {merchant.name}
       </Text>
       <VStack paddingBottom={5}>
-        <View
-          testID="CartItem"
-          key={item.id}
-          alignSelf="stretch"
-          style={{
-            flexDirection: 'row',
-            height: 60,
-            padding: 10,
-          }}
-        >
-          <View style={{ flex: 1 }}>
-            <Text testID="item-name">{item.name}</Text>
-          </View>
-          <View style={{ flex: 1 }}>
-            <Text testID="item-newPrice" fontWeight={'bold'}>
-              {item.price}
-            </Text>
-            <Text testID="item-oldPrice" textDecorationLine={'line-through'}>
-              {item.originalPrice}
-            </Text>
-          </View>
-          <View style={{ flex: 1 }}>
-            <Button
-              style={{ backgroundColor: 'red', borderRadius: 30 }}
-              accessibilityLabel="Remove item from cart"
-              onPress={() => dispatch(removeItem(item))}
-            >
-              Remove
-            </Button>
-          </View>
-        </View>
+        {(items || []).map((item) => (
+          <CheckoutItemCard
+            key={item.id}
+            item={item}
+            quantity={quantities[item.id] ?? 0}
+          ></CheckoutItemCard>
+        ))}
       </VStack>
       <Text testID="totalPrice" fontSize="20" alignSelf="center" padding="3">
         Total Price: {totalPrice}$
