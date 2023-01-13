@@ -9,7 +9,7 @@ export async function bootstrapApp(store = setupStore()) {
   // Assign axios base URL
   axios.defaults.baseURL = appConfig.apiUrl;
 
-  // skip animations if enabled
+  // skip animations if enableds
   if (appConfig.skipAnimations) {
     const original = Animated.timing;
     (Animated.timing as any) = (

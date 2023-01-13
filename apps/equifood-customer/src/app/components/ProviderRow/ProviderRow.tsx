@@ -28,7 +28,7 @@ function ProviderRow({ providerConfig, provider, onPress }: ProviderRowProps) {
           {providerConfig.type.charAt(0).toUpperCase() +
             providerConfig.type.substring(1)}
         </Text>
-        <Text ml="auto">{provider?.accountEmail || 'Not conected'}</Text>
+        <Text ml="auto">{provider?.accountEmail || 'Not connected'}</Text>
       </Box>
     </TouchableOpacity>
   );

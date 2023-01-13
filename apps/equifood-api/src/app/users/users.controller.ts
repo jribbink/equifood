@@ -27,7 +27,7 @@ export class UsersController {
     return this.usersService.getOrders(user);
   }
 
-  @UseGuards(UserGuard)
+  @UseGuards(TargetUserGuard)
   @Get('savings')
   async getSavings(@TargetUser() user: User) {
     return this.usersService.getSavings(user);
