@@ -137,14 +137,19 @@ function RestaurantScreen({
       </ScrollView>
       <Button
         onPress={async () => {
-          navigation.navigate('orderConfirm', {
-            merchant: merchant,
-            items: items,
-            quantities: Object.entries(quantityMap).map(([id, quantity]) => ({
-              id,
-              quantity,
-            })),
-          });
+          // check if all values are 0
+          if (Object.entries(quantityMap).every((item) => item[1] === 0)) {
+            alert('Please choose at least one item before continuing.');
+          } else {
+            navigation.navigate('orderConfirm', {
+              merchant: merchant,
+              items: items,
+              quantities: Object.entries(quantityMap).map(([id, quantity]) => ({
+                id,
+                quantity,
+              })),
+            });
+          }
         }}
       >
         Order

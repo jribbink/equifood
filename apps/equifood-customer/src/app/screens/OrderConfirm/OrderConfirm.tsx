@@ -45,6 +45,12 @@ function OrderConfirm({
           Confirm & Place Order
         </Text>
       </Button>
+
+      <Button
+        onPress={(merchant) => navigation.navigate('merchant', { merchant })}
+      >
+        Go Back
+      </Button>
     </ScrollView>
   );
 }
