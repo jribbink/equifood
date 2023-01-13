@@ -26,7 +26,7 @@ export type CoreStackParams = {
   orderConfirm: {
     merchant: Merchant;
     items: Item[];
-    quantities: { id: string; quantity: number }[];
+    quantities: { [id: string]: number };
   };
 };
 
