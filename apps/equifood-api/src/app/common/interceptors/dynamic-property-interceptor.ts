@@ -7,11 +7,12 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { resolveContext } from '../utils/resolve-context';
 
 @Injectable()
 export class DynamicPropertyInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    const ctx = context.switchToHttp();
+    const ctx = resolveContext(context);
 
     return next.handle().pipe(
       map((res: PlainLiteralObject | Array<PlainLiteralObject>) => {
@@ -22,7 +23,7 @@ export class DynamicPropertyInterceptor implements NestInterceptor {
           for (const p in o) {
             if (typeof o[p] == 'function' && o[p].__isDynamic) {
               const orig = o[p];
-              o[p] = orig(ctx.getRequest(), ctx.getResponse(), ctx.getNext());
+              o[p] = orig(ctx.request, null, null);
             } else {
               replaceProps(o[p], v);
             }

@@ -10,6 +10,7 @@ import { Repository } from 'typeorm';
 import { Item } from '../merchant/entities/item.entity';
 import { Merchant } from '../merchant/entities/merchant.entity';
 import { User } from '../users/entities/user.entity';
+import { UsersService } from '../users/users.service';
 import { Order } from './entities/order.entity';
 import { OrderedItem } from './entities/ordered-item.entity';
 import { OrderedItemDTO } from './models/ordered-item.dto';
@@ -21,10 +22,19 @@ export class OrdersService {
     @InjectRepository(Item) private itemRepository: Repository<Item>,
     @InjectRepository(OrderedItem)
     private orderedItemRepository: Repository<OrderedItem>,
-    @InjectRepository(Merchant) private merchantRepository: Repository<Merchant>
+    @InjectRepository(Merchant)
+    private merchantRepository: Repository<Merchant>,
+    private usersService: UsersService
   ) {}
 
-  async getOrders(user: User) {
+  async getOrders(userIdOrUser: string | User) {
+    let user: User;
+    if (!(userIdOrUser instanceof User))
+      user = await this.usersService.findOne({
+        id: userIdOrUser,
+      });
+    else user = userIdOrUser;
+
     if (user.roles.includes('merchant')) {
       throw new NotImplementedException('Does not support merchants yet');
     }
@@ -44,7 +54,7 @@ export class OrdersService {
         user: true,
       },
     });
-    if (!order) return new NotFoundException('Order does not exist');
+    if (!order) throw new NotFoundException('Order does not exist');
     if (user.roles.includes('customer') && order.user.id !== user.id)
       throw new UnauthorizedException();
     if (user.roles.includes('merchant')) {

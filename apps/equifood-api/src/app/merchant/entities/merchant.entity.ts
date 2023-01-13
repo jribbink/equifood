@@ -1,3 +1,4 @@
+import { Field, ObjectType } from '@nestjs/graphql';
 import {
   Column,
   Entity,
@@ -13,7 +14,12 @@ import { User } from '../../users/entities/user.entity';
 import type { Item } from './item.entity';
 
 @Entity()
+@ObjectType()
 export class Merchant extends UuidEntity {
+  @Field()
+  public id: string;
+
+  @Field()
   @Column()
   name: string;
 
@@ -23,12 +29,14 @@ export class Merchant extends UuidEntity {
   @UploadColumn()
   logo: Relation<Upload>;
 
+  @Field()
   @Column()
   description: string;
 
   @Column({ type: 'simple-json' })
   location: object;
 
+  @Field()
   @Column()
   phone_number: string;
 

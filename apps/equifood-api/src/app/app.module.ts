@@ -8,7 +8,8 @@ import { UploadsModule } from './uploads/uploads.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { DynamicPropertyInterceptor } from './common/interceptors/dynamic-property-interceptor';
 import { OrdersModule } from './orders/orders.module';
-
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 @Module({
   imports: [
     AuthModule,
@@ -18,6 +19,10 @@ import { OrdersModule } from './orders/orders.module';
     MerchantsModule,
     UploadsModule,
     OrdersModule,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: true,
+    }),
   ],
   providers: [
     {
