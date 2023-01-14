@@ -67,23 +67,23 @@ There are two frontend apps for this project.
 
 ##### Customer App
 
-The client-facing frontend for the project (React Native) can be found in the `customer_app` directory.
+The client-facing frontend for the project (React Native) can be found in the `apps/customer-app` directory.
 
 The app is supported as an IOS/Android application.
 
-##### Restaurant App
+##### Merchant App
 
-The restaurant-facing frontend for the project (React Native) can be found in the `restaurant_app` directory.
+The merchant-facing frontend for the project (React Native) can be found in the `apps/merchant-app` directory.
 
 The app is supported as an IOS/Android application.
 
 #### Backend
 
-The backend for the project (NestJS) can be found in the `backend` directory.
+The backend for the project (NestJS) can be found in the `apps/equifood-api` directory.
 
 #### Shared
 
-Shared types for the frontend and backend can be found in the `shared` directory.
+Shared types for the frontend and backend can be found in the `lib/api-interfaces` directory.
 
 These types are shared between all of the TypeScript apps within this project for easy code reuse,
 
