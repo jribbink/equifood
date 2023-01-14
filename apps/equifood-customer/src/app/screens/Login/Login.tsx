@@ -40,9 +40,10 @@ const Login = ({ navigation }) => {
   }
 
   return (
-    <Box flex={1}
-      style={{ padding: 40 }}>
-      <Text style={{ marginTop: 20, fontSize: 40, marginBottom: 20 }}>Welcome!</Text>
+    <Box flex={1} style={{ padding: 40 }}>
+      <Text style={{ marginTop: 20, fontSize: 40, marginBottom: 20 }}>
+        Welcome!
+      </Text>
       <Box flex={1} testID="login-screen">
         <Text testID="login" style={{ padding: 5, fontSize: 24 }}>
           Login
@@ -68,10 +69,8 @@ const Login = ({ navigation }) => {
           onPress={() => {
             dispatch(authenticate({ email, password }));
           }}
-          
           color="darkgreen"
           testID="loginButton"
-          
         />
       </Box>
 
