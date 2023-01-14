@@ -42,23 +42,25 @@ const Login = ({ navigation }) => {
   return (
     <Box flex={1} style={{ padding: 40 }}>
       <Text style={{ marginTop: 20, fontSize: 40, marginBottom: 20 }}>
-        Welcome!
+        Login
       </Text>
       <Box flex={1} testID="login-screen">
         <Text testID="login" style={{ padding: 5, fontSize: 24 }}>
-          Login
+          Please Login to continue.
         </Text>
         <TextInput
           style={styles.input}
           onChangeText={setEmail}
+          placeholder="Email"
           value={email}
           testID="emailInput"
           autoCapitalize="none"
         />
-        <Text style={{ padding: 5, fontSize: 24 }}>Password</Text>
+        <Text style={{ padding: 5, fontSize: 24 }}></Text>
         <TextInput
           secureTextEntry={true}
           style={styles.input}
+          placeholder="Password"
           onChangeText={setPassword}
           value={password}
           testID="pwInput"
