@@ -9,7 +9,7 @@ This is a capstone (COSC 499) project for the Equifood App.
 1. Install [Node JS](https://nodejs.org/en/) v16 or later
 2. Run `npm install`
 3. Install and configure [MariaDB](https://mariadb.org/)
-4. Create a configuration file `.env` in the `apps/equifood-api` directory (use `example.env` for reference)
+4. Create a configuration file `.env` in the `apps/equifood-api` and `apps/equifood-customer` directory (use `example.env` for reference)
 
 ### Development
 
@@ -65,11 +65,15 @@ There are two frontend apps for this project.
 1. The customer facing app
 2. The merchant/restaurant facing app
 
+**NOTE** The frontend requires an `.env` file to be created (use `example.env` as reference)
+
 ##### Customer App
 
 The client-facing frontend for the project (React Native) can be found in the `apps/customer-app` directory.
 
 The app is supported as an IOS/Android application.
+
+**NOTE** The frontend requires an `.env` file to be created (use `example.env` as reference)
 
 ##### Merchant App
 
