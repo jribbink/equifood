@@ -28,6 +28,7 @@ const Login = ({ navigation }) => {
       margin: 12,
       borderWidth: 1,
       padding: 10,
+      borderRadius: 50,
     },
   });
 
@@ -40,12 +41,20 @@ const Login = ({ navigation }) => {
   }
 
   return (
-    <Box flex={1} style={{ padding: 40 }}>
-      <Text style={{ marginTop: 20, fontSize: 40, marginBottom: 20 }}>
+    <Box flex={1} style={{ padding: 30 }}>
+      <Text style={{ marginTop: 20, fontSize: 40, fontWeight: 'bold' }}>
         Login
       </Text>
       <Box flex={1} testID="login-screen">
-        <Text testID="login" style={{ padding: 5, fontSize: 24 }}>
+        <Text
+          testID="login"
+          style={{
+            fontSize: 18,
+            marginBottom: 20,
+            marginTop: 5,
+            color: 'gray',
+          }}
+        >
           Please Login to continue.
         </Text>
         <TextInput
@@ -56,7 +65,6 @@ const Login = ({ navigation }) => {
           testID="emailInput"
           autoCapitalize="none"
         />
-        <Text style={{ padding: 5, fontSize: 24 }}></Text>
         <TextInput
           secureTextEntry={true}
           style={styles.input}
@@ -67,7 +75,7 @@ const Login = ({ navigation }) => {
         />
 
         <Button
-          title="Login"
+          title="login"
           onPress={() => {
             dispatch(authenticate({ email, password }));
           }}
@@ -98,16 +106,15 @@ const Login = ({ navigation }) => {
             }}
           ></IconButton>
         ))}
+        <Box>
+          <Text style={{ fontSize: 15 }}>
+            Don't have an account?{' '}
+            <TouchableOpacity onPress={() => navigation.navigate('signup')}>
+              <Text style={{ color: 'darkgreen' }}>Sign up</Text>
+            </TouchableOpacity>
+          </Text>
+        </Box>
       </VStack>
-
-      <Box>
-        <Text>
-          Don't have an account?{' '}
-          <TouchableOpacity onPress={() => navigation.navigate('signup')}>
-            <Text>Sign up</Text>
-          </TouchableOpacity>
-        </Text>
-      </Box>
     </Box>
   );
 };

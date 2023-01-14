@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Animated } from 'react-native';
+import { stopCoverage } from 'v8';
 import appConfig from '../config/app-config';
 import { setJWT } from '../redux/slices/auth-slice';
 import { setupStore } from '../redux/store';
@@ -9,7 +10,7 @@ export async function bootstrapApp(store = setupStore()) {
   // Assign axios base URL
   axios.defaults.baseURL = appConfig.apiUrl;
 
-  // skip animations if enableds
+  // skip animations if enabled
   if (appConfig.skipAnimations) {
     const original = Animated.timing;
     (Animated.timing as any) = (
