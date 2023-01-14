@@ -1,6 +1,7 @@
 import { Buffer } from 'buffer';
 
 export function parseJwt(jwt: string) {
+  //console.log(jwt);
   const [header, payload] = jwt
     .split('.')
     .slice(0, 2)

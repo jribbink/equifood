@@ -8,6 +8,7 @@ export const authenticate = createAsyncThunk(
     const response = await axios.post<string | null>('/auth/local', {
       ...params,
     });
+    console.log(response.data);
     return response.data;
   }
 );

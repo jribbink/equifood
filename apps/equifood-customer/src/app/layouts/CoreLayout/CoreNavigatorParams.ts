@@ -1,4 +1,4 @@
-import { Merchant, Order } from '@equifood/api-interfaces';
+import { Merchant, Order, Item } from '@equifood/api-interfaces';
 import type {
   CompositeScreenProps,
   NavigatorScreenParams,
@@ -11,6 +11,7 @@ export type CoreTabParams = {
   map: undefined;
   orders: undefined;
   account: undefined;
+  orderConfirm: undefined;
 };
 
 export type CoreStackParams = {
@@ -22,6 +23,11 @@ export type CoreStackParams = {
     order: Order;
   };
   cart: undefined;
+  orderConfirm: {
+    merchant: Merchant;
+    items: Item[];
+    quantities: { [id: string]: number };
+  };
 };
 
 export type CoreNavigationProps<T extends keyof CoreTabParams> =
