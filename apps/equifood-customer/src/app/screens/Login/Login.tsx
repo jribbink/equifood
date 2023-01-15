@@ -42,8 +42,15 @@ const Login = ({ navigation }) => {
 
   return (
     <Box flex={1} style={{ padding: 30 }}>
-      <Text style={{ marginTop: 20, fontSize: 40, fontWeight: 'bold' }}>
-        Login
+      <Text
+        style={{
+          marginTop: 20,
+          fontSize: 40,
+          fontWeight: 'bold',
+          color: 'darkgreen',
+        }}
+      >
+        Sign In
       </Text>
       <Box flex={1} testID="login-screen">
         <Text
@@ -52,10 +59,10 @@ const Login = ({ navigation }) => {
             fontSize: 18,
             marginBottom: 20,
             marginTop: 5,
-            color: 'gray',
+            color: 'forestgreen',
           }}
         >
-          Please Login to continue.
+          Please sign in to continue.
         </Text>
         <TextInput
           style={styles.input}
@@ -64,6 +71,7 @@ const Login = ({ navigation }) => {
           value={email}
           testID="emailInput"
           autoCapitalize="none"
+          placeholderTextColor={'yellowgreen'}
         />
         <TextInput
           secureTextEntry={true}
@@ -72,16 +80,26 @@ const Login = ({ navigation }) => {
           onChangeText={setPassword}
           value={password}
           testID="pwInput"
+          placeholderTextColor={'yellowgreen'}
         />
-
-        <Button
-          title="login"
-          onPress={() => {
-            dispatch(authenticate({ email, password }));
+        <Box
+          style={{
+            marginTop: 15,
+            marginRight: 15,
+            borderRadius: 0,
+            width: '20%',
+            alignSelf: 'flex-end',
           }}
-          color="darkgreen"
-          testID="loginButton"
-        />
+        >
+          <Button
+            title="Sign in"
+            onPress={() => {
+              dispatch(authenticate({ email, password }));
+            }}
+            color="yellowgreen"
+            testID="loginButton"
+          />
+        </Box>
       </Box>
 
       <VStack flexDirection="column" p="3" space="3">
