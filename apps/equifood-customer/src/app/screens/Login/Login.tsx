@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 
-import { Box, VStack } from 'native-base';
+import { Button, Box, HStack, VStack } from 'native-base';
 import {
-  Button,
   Text,
   StyleSheet,
   TextInput,
@@ -86,19 +85,21 @@ const Login = ({ navigation }) => {
           style={{
             marginTop: 15,
             marginRight: 15,
-            borderRadius: 0,
             width: '20%',
             alignSelf: 'flex-end',
           }}
         >
           <Button
-            title="Sign in"
+          style={{
+            borderRadius: 30,
+            backgroundColor: 'yellowgreen',
+            
+          }}
             onPress={() => {
               dispatch(authenticate({ email, password }));
             }}
-            color="yellowgreen"
             testID="loginButton"
-          />
+          >Sign In</Button>
         </Box>
       </Box>
 
@@ -125,12 +126,14 @@ const Login = ({ navigation }) => {
           ></IconButton>
         ))}
         <Box>
-          <Text style={{ fontSize: 15 }}>
-            Don't have an account?{' '}
+          <HStack>
+            <Text style={{ fontSize: 15 }}>Don't have an account? </Text>
             <TouchableOpacity onPress={() => navigation.navigate('signup')}>
-              <Text style={{ color: 'darkgreen' }}>Sign up</Text>
+              <Text style={{ color: 'darkgreen' }}>
+                Sign up
+              </Text>
             </TouchableOpacity>
-          </Text>
+          </HStack>
         </Box>
       </VStack>
     </Box>
