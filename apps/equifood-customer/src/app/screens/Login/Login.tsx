@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import { Button, Box, HStack, VStack } from 'native-base';
 import {
   Text,
@@ -14,7 +14,7 @@ import authConfig, { AuthProviderConfig } from '../../config/auth/authConfig';
 import { useAxios } from '../../hooks/useAxios';
 import IconButton from '../../components/buttons/IconButton/IconButton';
 
-const Login = ({ navigation }) => {
+const Login = ({ navigation }: CoreNavigationProps<'login'>) => {
   const dispatch = useDispatch<AppDispatch>();
   const axios = useAxios();
 
