@@ -42,7 +42,7 @@ export class Order {
   @Column()
   status: 'pending' | 'completed' | 'cancelled';
 
-  @Field(() => [OrderedItem])
+  @Field()
   @OneToMany<OrderedItem>('OrderedItem', (orderedItem) => orderedItem.order, {
     eager: true,
   })

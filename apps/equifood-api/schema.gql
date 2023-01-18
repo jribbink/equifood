@@ -1,0 +1,64 @@
+type User {
+  id: String!
+  first_name: String!
+  last_name: String!
+  email: String!
+  phone: String!
+  roles: [String!]!
+  authProviders: AuthProvider!
+}
+
+type AuthProvider {
+  user: User!
+  providerId: String!
+  providerType: String!
+  accountEmail: String!
+}
+
+type Merchant {
+  id: String!
+  name: String!
+  description: String!
+  phone_number: String!
+}
+
+type Item {
+  name: String!
+  description: String!
+  quantity: Float!
+  price: Float!
+  originalPrice: Float!
+  allergies: [String!]!
+}
+
+type OrderedItem {
+  id: String!
+  order: Order!
+  item: Item!
+}
+
+type Order {
+  id: Float!
+  order_date: DateTime!
+  completed_date: DateTime!
+  merchant: Merchant!
+  deadline: DateTime!
+  status: String!
+  items: [OrderedItem!]!
+  total: Float!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  """
+  Get the specified target user's profile if sufficient permissions exist
+  """
+  getProfile(targetUserId: String): User!
+
+  """Gets all providers for specified user"""
+  getProviders: [AuthProvider!]!
+}

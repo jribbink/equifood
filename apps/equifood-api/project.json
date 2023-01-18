@@ -1,6 +1,7 @@
 {
   "name": "equifood-api",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "root": "apps/equifood-api",
   "sourceRoot": "apps/equifood-api/src",
   "projectType": "application",
   "targets": {
@@ -81,6 +82,31 @@
         }
       }
     },
+    "build-generate-schema": {
+      "executor": "@nrwl/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/equifood-api/generate-schema",
+        "main": "apps/equifood-api/src/schema-gen.ts",
+        "tsConfig": "apps/equifood-api/tsconfig.app.json",
+        "assets": ["apps/equifood-api/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/equifood-api/src/environments/environment.ts",
+              "with": "apps/equifood-api/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
     "clear-tempdb": {
       "executor": "@nrwl/js:node",
       "options": {
@@ -90,6 +116,18 @@
       "configurations": {
         "production": {
           "buildTarget": "equifood-api:build-seed:production"
+        }
+      }
+    },
+    "generate-schema": {
+      "executor": "@nrwl/node:node",
+      "options": {
+        "buildTarget": "equifood-api:build-generate-schema",
+        "watch": false
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "equifood-api:build-generate-schema:production"
         }
       }
     }

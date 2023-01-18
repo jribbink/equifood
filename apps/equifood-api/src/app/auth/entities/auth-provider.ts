@@ -7,8 +7,8 @@ import { Field, ObjectType } from '@nestjs/graphql';
 @ObjectType()
 @Entity()
 export class AuthProvider {
-  @Field()
-  @ManyToOne(() => User, (user) => user.authProviders)
+  @Field((type) => User)
+  @ManyToOne('User', (user: User) => user.authProviders)
   user: User;
 
   @Exclude()
