@@ -64,7 +64,7 @@ export class Seeder {
 
     const merchantUser2 = await this.userRepository.save({
       id: '314d472d-7b35-4b22-b823-128a2ec10fb1',
-      email: 'merchant@example.com',
+      email: 'merchant2@example.com',
       passwordHash: hashPassword('password', ''),
       passwordSalt: '',
       first_name: 'John',
@@ -75,13 +75,24 @@ export class Seeder {
 
     const merchantUser3 = await this.userRepository.save({
       id: '314d472d-7b35-4b22-b823-128a2ec10fb2',
-      email: 'merchant@example.com',
+      email: 'merchant3@example.com',
       passwordHash: hashPassword('password', ''),
       passwordSalt: '',
       first_name: 'John',
       last_name: 'Doe',
       phone: '(123) 456-789',
       roles: ['merchant'],
+    });
+
+    const adminUser = await this.userRepository.save({
+      id: '314d472d-7b35-4b22-b823-128a2ec10fb3',
+      email: 'admin@example.com',
+      passwordHash: hashPassword('password', ''),
+      passwordSalt: '',
+      first_name: 'John',
+      last_name: 'Doe',
+      phone: '(123) 456-789',
+      roles: ['admin'],
     });
 
     const banner1 = await this.uploadRepository.save(<Upload>{
