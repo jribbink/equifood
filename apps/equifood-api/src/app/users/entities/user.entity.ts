@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Exclude } from 'class-transformer';
-import { Entity, Column, OneToMany } from 'typeorm';
+import { Entity, Column, OneToMany, BaseEntity } from 'typeorm';
 import { AuthProvider } from '../../auth/entities/auth-provider';
 import { Role } from '../../common/types/role.enum';
 import { UuidEntity } from '../../database/models/uuid-entity';
