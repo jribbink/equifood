@@ -13,7 +13,8 @@
         "outputPath": "dist/apps/equifood-api/app",
         "main": "apps/equifood-api/src/main.ts",
         "tsConfig": "apps/equifood-api/tsconfig.app.json",
-        "assets": ["apps/equifood-api/src/assets"]
+        "assets": ["apps/equifood-api/src/assets"],
+        "webpackConfig": "apps/equifood-api/webpack.config.js"
       },
       "configurations": {
         "production": {
