@@ -18,6 +18,7 @@ AdminJS.registerAdapter({
   Database: AdminJSTypeorm.Database,
   Resource: AdminJSTypeorm.Resource,
 });
+
 @Module({
   imports: [
     AdminJsModule.createAdminAsync({
