@@ -18,6 +18,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
 import { useAxios } from '../../hooks/useAxios';
 import ItemCard from '../../components/cards/ItemCard/ItemCard';
+import BackButton from '../../components/buttons/BackButton/BackButton';
 
 export interface MerchantScreenParams {
   merchant: Merchant;
@@ -64,6 +65,7 @@ function RestaurantScreen({
   return (
     <Box height="full">
       <ScrollView testID="view" flex={1}>
+        <BackButton navigation={navigation} />
         <Box h="200">
           <Image
             width="100%"
