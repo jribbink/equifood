@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import { Button, Box, HStack, VStack } from 'native-base';
-import {
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import { Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { authenticate, setJWT } from '../../redux/slices/auth-slice';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
@@ -90,16 +85,17 @@ const Login = ({ navigation }: CoreNavigationProps<'login'>) => {
           }}
         >
           <Button
-          style={{
-            borderRadius: 30,
-            backgroundColor: 'yellowgreen',
-            
-          }}
+            style={{
+              borderRadius: 30,
+              backgroundColor: 'yellowgreen',
+            }}
             onPress={() => {
               dispatch(authenticate({ email, password }));
             }}
             testID="loginButton"
-          >Sign In</Button>
+          >
+            Sign In
+          </Button>
         </Box>
       </Box>
 
@@ -129,9 +125,7 @@ const Login = ({ navigation }: CoreNavigationProps<'login'>) => {
           <HStack>
             <Text style={{ fontSize: 15 }}>Don't have an account? </Text>
             <TouchableOpacity onPress={() => navigation.navigate('signup')}>
-              <Text style={{ color: 'darkgreen' }}>
-                Sign up
-              </Text>
+              <Text style={{ color: 'darkgreen' }}>Sign up</Text>
             </TouchableOpacity>
           </HStack>
         </Box>

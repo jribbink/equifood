@@ -48,8 +48,8 @@ const Account = () => {
             width: '90%',
             marginTop: 30,
             alignSelf: 'center',
+            backgroundColor: 'forestgreen',
           }}
-          color="darkgreen"
           onPress={logoutUser}
         >
           <Text>Logout</Text>
