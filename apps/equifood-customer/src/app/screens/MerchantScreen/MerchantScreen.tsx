@@ -9,7 +9,7 @@ import {
   Heading,
   HStack,
 } from 'native-base';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
 import { Order, Merchant } from '@equifood/api-interfaces';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import React, { useState } from 'react';
@@ -41,6 +41,21 @@ function RestaurantScreen({
       padding: 10,
     },
   });
+
+  const cancelConfirmAlert = () => {
+    Alert.alert('Cancel?', 'Are you sure you want to cancel your order?', [
+      {
+        text: 'Yes, cancel it',
+        onPress: () => navigation.navigate('core', { screen: 'home' }),
+        style: 'cancel',
+      },
+      {
+        text: 'No, keep me here',
+        onPress: () => console.log('staying on merchant screen'),
+        style: 'cancel',
+      },
+    ]);
+  };
 
   if (!merchant) return null;
 
