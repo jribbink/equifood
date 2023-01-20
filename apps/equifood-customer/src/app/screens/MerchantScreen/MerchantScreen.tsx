@@ -46,12 +46,12 @@ function RestaurantScreen({
   const cancelConfirmAlert = () => {
     Alert.alert('Cancel?', 'Are you sure you want to cancel your order?', [
       {
-        text: 'Yes, cancel it',
+        text: 'Confirm',
         onPress: () => navigation.navigate('core', { screen: 'home' }),
-        style: 'cancel',
+        style: 'default',
       },
       {
-        text: 'No, keep me here',
+        text: 'Go Back',
         onPress: () => console.log('staying on merchant screen'),
         style: 'cancel',
       },
@@ -65,7 +65,7 @@ function RestaurantScreen({
   return (
     <Box height="full">
       <ScrollView testID="view" flex={1}>
-        <BackButton navigation={navigation} />
+        <BackButton navigation={navigation} onPress={cancelConfirmAlert} />
         <Box h="200">
           <Image
             width="100%"

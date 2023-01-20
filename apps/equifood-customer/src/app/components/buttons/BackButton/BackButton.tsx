@@ -7,11 +7,13 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 
 function BackButton({
   navigation,
+  onPress,
 }: {
   navigation: NavigationProp<CoreStackParams>;
+  onPress: () => void | null;
 }) {
   return (
-    <TouchableOpacity onPress={() => navigation.dispatch(StackActions.pop(1))}>
+    <TouchableOpacity onPress={onPress}>
       <Box backgroundColor="green.500" p="3" px="4" rounded="full">
         <HStack space="2" alignItems="center">
           <Ionicons name="arrow-back-circle-outline" size={32} color="black" />
