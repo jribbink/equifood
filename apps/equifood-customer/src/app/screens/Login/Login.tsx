@@ -9,7 +9,7 @@ import authConfig, { AuthProviderConfig } from '../../config/auth/authConfig';
 import { useAxios } from '../../hooks/useAxios';
 import IconButton from '../../components/buttons/IconButton/IconButton';
 
-const Login = ({ navigation }: CoreNavigationProps<'login'>) => {
+const Login = ({ navigation }: { navigation: any }) => {
   const dispatch = useDispatch<AppDispatch>();
   const axios = useAxios();
 

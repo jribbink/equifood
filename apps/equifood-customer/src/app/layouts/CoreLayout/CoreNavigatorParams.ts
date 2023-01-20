@@ -11,14 +11,11 @@ export type CoreTabParams = {
   map: undefined;
   orders: undefined;
   account: undefined;
-  login: undefined;
-  signup: undefined;
   orderConfirm: undefined;
 };
 
 export type CoreStackParams = {
   core: NavigatorScreenParams<CoreTabParams>;
-  login: undefined;
   merchant: {
     merchant: Merchant;
   };
@@ -26,7 +23,6 @@ export type CoreStackParams = {
     order: Order;
   };
   cart: undefined;
-  signup: undefined;
   orderConfirm: {
     merchant: Merchant;
     items: Item[];
