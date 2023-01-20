@@ -10,6 +10,7 @@ import { DynamicPropertyInterceptor } from './common/interceptors/dynamic-proper
 import { OrdersModule } from './orders/orders.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { AdminModule } from './admin/admin.module';
 @Module({
   imports: [
     AuthModule,
@@ -23,6 +24,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
       driver: ApolloDriver,
       autoSchemaFile: true,
     }),
+    AdminModule,
   ],
   providers: [
     {

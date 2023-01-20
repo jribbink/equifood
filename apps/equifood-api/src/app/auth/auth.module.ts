@@ -12,7 +12,6 @@ import { FacebookStrategy } from './strategies/facebook.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthProvider } from './entities/auth-provider';
 import { AppleStrategy } from './strategies/apple.strategy';
-import { AuthStrategy } from './types/auth-strategy';
 import { SocialJwtStrategy } from './strategies/social-jwt.strategy';
 
 const strategies: any[] = [
@@ -37,6 +36,7 @@ const strategies: any[] = [
     }),
     TypeOrmModule.forFeature([AuthProvider]),
   ],
+  exports: [AuthService],
   providers: [...strategies, AuthService],
   controllers: [AuthController],
 })

@@ -9,6 +9,7 @@ import Map from '../../screens/Map/Map';
 import Orders from '../../screens/Orders/Orders';
 import Account from '../../screens/Account/Account';
 import MerchantScreen from '../../screens/MerchantScreen/MerchantScreen';
+import OrderConfirm from '../../screens/OrderConfirm/OrderConfirm';
 import Cart from '../../screens/Cart/Cart';
 import { View } from 'native-base';
 import { CoreStackParams, CoreTabParams } from './CoreNavigatorParams';
@@ -78,6 +79,10 @@ function CoreLayout() {
           <Stack.Screen
             name="merchant"
             component={MerchantScreen}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="orderConfirm"
+            component={OrderConfirm}
           ></Stack.Screen>
           <Stack.Screen name="cart" component={Cart}></Stack.Screen>
           <Stack.Screen name="order" component={OrderScreen}></Stack.Screen>
