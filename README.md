@@ -83,7 +83,7 @@ The app is supported as an IOS/Android application.
 
 #### Backend
 
-The backend for the project (NestJS) can be found in the `apps/equifood-api` directory.
+The backend for the project (NestJS) can be found in the `apps/equifood-api` directory.  Within the backend/API an admin portal endpoint is exposed for the administartor users (`/admin`).
 
 #### Shared
 
