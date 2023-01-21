@@ -29,9 +29,10 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
   const [mode, setMode] = useState<String>();
 
   useEffect(() => {
-    window.matchMedia('(prefers-color-scheme: dark)')
-      .addEventListener('change', event => {
-        const colorScheme = event.matches ? "dark" : "light";
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', (event) => {
+        const colorScheme = event.matches ? 'dark' : 'light';
         setMode(colorScheme);
       });
   }, []);
@@ -42,7 +43,7 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
     <Box height="full">
       <MerchantMap
         merchants={merchants}
-        darkMode={mode=="dark"}
+        darkMode={mode == 'dark'}
         initialRegion={{
           latitude: userLocation.latitude,
           longitude: userLocation.longitude,

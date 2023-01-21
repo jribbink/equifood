@@ -47,7 +47,7 @@ function MerchantMap({
             }}
             title={merchant.name}
             description={merchant.description}
-            image={darkMode===true? RestaurantIconDark:RestaurantIcon}
+            image={darkMode === true ? RestaurantIconDark : RestaurantIcon}
             onPress={(e) => {
               e.stopPropagation();
               onMerchantChange?.(merchant);
