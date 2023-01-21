@@ -44,7 +44,7 @@ function RestaurantScreen({
   });
 
   const cancelConfirmAlert = () => {
-    Alert.alert('Cancel?', 'Are you sure you want to cancel your order?', [
+    Alert.alert('Cancel?', 'Are you sure you want to go back?', [
       {
         text: 'Confirm',
         onPress: () => navigation.navigate('core', { screen: 'home' }),
@@ -65,7 +65,12 @@ function RestaurantScreen({
   return (
     <Box height="full">
       <ScrollView testID="view" flex={1}>
-        <BackButton navigation={navigation} onPress={cancelConfirmAlert} />
+        <BackButton
+          navigation={navigation}
+          confirmationString={
+            'Are you sure you want to go back? (This will cancel your order.)'
+          }
+        />
         <Box h="200">
           <Image
             width="100%"
