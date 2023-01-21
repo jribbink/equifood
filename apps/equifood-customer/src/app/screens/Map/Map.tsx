@@ -3,7 +3,7 @@ import { useDisclose, Box } from 'native-base';
 import { Merchant } from '@equifood/api-interfaces';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMerchants } from '../../hooks/useMerchants';
 import ActionSheet from '../../components/ActionSheet/ActionSheet';
 import MerchantMap from '../../components/MerchantMap/MerchantMap';
@@ -26,12 +26,24 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
     else onClose();
   }
 
+  const [mode, setMode] = useState<string>();
+
+  useEffect(() => {
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', (event) => {
+        const colorScheme = event.matches ? 'dark' : 'light';
+        setMode(colorScheme);
+      });
+  }, []);
+
   if (!userLocation) return null;
 
   return (
     <Box height="full">
       <MerchantMap
         merchants={merchants}
+        darkMode={mode == 'dark'}
         initialRegion={{
           latitude: userLocation.latitude,
           longitude: userLocation.longitude,

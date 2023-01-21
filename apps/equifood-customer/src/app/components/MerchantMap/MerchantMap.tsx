@@ -4,6 +4,7 @@ import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primiti
 import { Animated } from 'react-native';
 import MapView, { Region, Marker, MapViewProps } from 'react-native-maps';
 import RestaurantIcon from '../../../../assets/restaurant-icon.png';
+import RestaurantIconDark from '../../../../assets/restaurant-icon-dark.png';
 
 interface MerchantMapProps extends React.ComponentProps<typeof Animated.View> {
   merchants: Merchant[] | undefined;
@@ -11,6 +12,7 @@ interface MerchantMapProps extends React.ComponentProps<typeof Animated.View> {
   mapViewProps?: MapViewProps;
   onMerchantChange?: (merchant: Merchant | null) => void;
   onMerchantPress?: (merchant: Merchant) => void;
+  darkMode: boolean | undefined;
 }
 
 function MerchantMap({
@@ -19,6 +21,7 @@ function MerchantMap({
   onMerchantChange,
   onMerchantPress,
   mapViewProps,
+  darkMode,
   ...props
 }: MerchantMapProps) {
   return (
@@ -44,7 +47,7 @@ function MerchantMap({
             }}
             title={merchant.name}
             description={merchant.description}
-            image={RestaurantIcon}
+            image={darkMode === true ? RestaurantIconDark : RestaurantIcon}
             onPress={(e) => {
               e.stopPropagation();
               onMerchantChange?.(merchant);
