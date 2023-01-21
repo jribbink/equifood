@@ -13,11 +13,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Upload } from '../uploads/entities/upload.entity';
 import { Merchant } from '../merchant/entities/merchant.entity';
 import { Item } from '../merchant/entities/item.entity';
+import { componentLoader, Components, Pages } from './components';
+import path from 'path';
 
 AdminJS.registerAdapter({
   Database: AdminJSTypeorm.Database,
   Resource: AdminJSTypeorm.Resource,
 });
+
+console.log(__dirname, process.cwd());
 
 @Module({
   imports: [
@@ -26,6 +30,12 @@ AdminJS.registerAdapter({
         adminJsOptions: {
           rootPath: '/admin',
           resources: [User, Merchant, Item, Upload],
+          componentLoader,
+          pages: {
+            Reports: {
+              component: Pages.ReportPage,
+            },
+          },
         },
         auth: {
           authenticate: async (email: string, password: string) => {
