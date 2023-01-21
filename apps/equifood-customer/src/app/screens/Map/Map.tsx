@@ -26,7 +26,7 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
     else onClose();
   }
 
-  const [mode, setMode] = useState<String>();
+  const [mode, setMode] = useState<string>();
 
   useEffect(() => {
     window
