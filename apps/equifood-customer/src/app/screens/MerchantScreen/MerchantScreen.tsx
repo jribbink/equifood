@@ -9,7 +9,7 @@ import {
   Heading,
   HStack,
 } from 'native-base';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
 import { Order, Merchant } from '@equifood/api-interfaces';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import React, { useState } from 'react';
@@ -18,6 +18,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
 import { useAxios } from '../../hooks/useAxios';
 import ItemCard from '../../components/cards/ItemCard/ItemCard';
+import BackButton from '../../components/buttons/BackButton/BackButton';
 
 export interface MerchantScreenParams {
   merchant: Merchant;
@@ -42,6 +43,21 @@ function RestaurantScreen({
     },
   });
 
+  const cancelConfirmAlert = () => {
+    Alert.alert('Cancel?', 'Are you sure you want to go back?', [
+      {
+        text: 'Confirm',
+        onPress: () => navigation.navigate('core', { screen: 'home' }),
+        style: 'default',
+      },
+      {
+        text: 'Go Back',
+        onPress: () => console.log('staying on merchant screen'),
+        style: 'cancel',
+      },
+    ]);
+  };
+
   if (!merchant) return null;
 
   const items = merchant.items;
@@ -49,6 +65,12 @@ function RestaurantScreen({
   return (
     <Box height="full">
       <ScrollView testID="view" flex={1}>
+        <BackButton
+          navigation={navigation}
+          confirmationString={
+            'Are you sure you want to go back? (This will cancel your order.)'
+          }
+        />
         <Box h="200">
           <Image
             width="100%"
