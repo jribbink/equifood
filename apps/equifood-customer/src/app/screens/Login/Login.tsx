@@ -8,12 +8,11 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import { authenticate, setJWT } from '../../redux/slices/auth-slice';
+import { authenticate, setJWT, useAxios } from '@equifood/ui-shared';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
-import authConfig, { AuthProviderConfig } from '../../config/auth/authConfig';
-import { useAxios } from '../../hooks/useAxios';
-import IconButton from '../../components/buttons/IconButton/IconButton';
+import { authConfig, AuthProviderConfig } from '@equifood/ui-shared';
+import { IconButton } from '@equifood/ui-shared';
 
 const Login = ({ navigation }) => {
   const dispatch = useDispatch<AppDispatch>();

@@ -2,11 +2,9 @@ import React from 'react';
 import { useDisclose, Box } from 'native-base';
 import { Merchant } from '@equifood/api-interfaces';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
-import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
 import { useState, useEffect } from 'react';
-import { useMerchants } from '../../hooks/useMerchants';
-import ActionSheet from '../../components/ActionSheet/ActionSheet';
-import MerchantMap from '../../components/MerchantMap/MerchantMap';
+import { useMerchants } from '@equifood/ui-shared';
+import { MerchantMap, ActionSheet, MerchantCard } from '@equifood/ui-shared';
 
 const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
   const { isOpen, onOpen, onClose } = useDisclose();

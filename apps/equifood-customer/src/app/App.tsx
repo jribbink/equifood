@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { NativeBaseProvider } from 'native-base';
-import SafeViewAndroid from './osChecker';
 import { Provider as ReduxProvider } from 'react-redux';
 import { RootState } from './redux/store';
-import { AppState, AppStateStatus, SafeAreaView } from 'react-native';
+import { AppState, AppStateStatus } from 'react-native';
 import RootLayout from './layouts/RootLayout/RootLayout';
 import { bootstrapApp } from './util/bootstrap';
 import { Store } from '@reduxjs/toolkit';
 import LoadingScreen from './screens/LoadingScreen/LoadingScreen';
 import { SWRConfig } from 'swr';
+import { EquifoodContigContext } from '@equifood/ui-shared';
+import appConfig from './config/app-config';
 
 const App = () => {
   const [store, setStore] = useState<Store<RootState>>();
@@ -53,15 +54,21 @@ const App = () => {
 
   return (
     <NativeBaseProvider>
-      <SWRConfig value={swrConfig}>
-        {store ? (
-          <ReduxProvider store={store}>
-            <RootLayout></RootLayout>
-          </ReduxProvider>
-        ) : (
-          <LoadingScreen></LoadingScreen>
-        )}
-      </SWRConfig>
+      <EquifoodContigContext.Provider
+        value={{
+          apiUrl: appConfig.apiUrl,
+        }}
+      >
+        <SWRConfig value={swrConfig}>
+          {store ? (
+            <ReduxProvider store={store}>
+              <RootLayout></RootLayout>
+            </ReduxProvider>
+          ) : (
+            <LoadingScreen></LoadingScreen>
+          )}
+        </SWRConfig>
+      </EquifoodContigContext.Provider>
     </NativeBaseProvider>
   );
 };

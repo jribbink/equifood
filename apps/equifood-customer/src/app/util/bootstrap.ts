@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { Animated } from 'react-native';
 import appConfig from '../config/app-config';
-import { setJWT } from '../redux/slices/auth-slice';
-import { setupStore } from '../redux/store';
+import { setJWT } from '@equifood/ui-shared';
+import { setupStore } from '../../app/redux/store';
 import storage from './storage';
 
 export async function bootstrapApp(store = setupStore()) {
