@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render } from '../../../../test-utils/render';
 
-import CheckoutItemCard from './CheckoutItemCard';
+import { CheckoutItemCard } from './CheckoutItemCard';
 import { Item } from '@equifood/api-interfaces';
 
 describe('CheckoutItemCard tests', () => {
