@@ -1,15 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Box, ScrollView, useDisclose, View, VStack } from 'native-base';
+import { Box, ScrollView, View, VStack } from 'native-base';
 import { Merchant } from '@equifood/api-interfaces';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
-import ScrollingMenu, {
-  MenuItem,
-} from '../../components/menu/ScrollingMenu/ScrollingMenu';
 import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
-import { useMerchants } from '../../hooks/useMerchants';
-import MerchantMap from '../../components/MerchantMap/MerchantMap';
-import { useLocation } from '../../hooks/useLocation';
-import ActionSheet from '../../components/ActionSheet/ActionSheet';
+import {
+  useLocation,
+  MerchantMap,
+  useMerchants,
+  ActionSheet,
+  MenuItem,
+} from '@equifood/ui-shared';
 import { Animated, LayoutRectangle } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useHeaderHeight } from '@react-navigation/elements';

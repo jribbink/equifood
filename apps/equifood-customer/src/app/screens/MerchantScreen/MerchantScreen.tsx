@@ -10,15 +10,12 @@ import {
   HStack,
 } from 'native-base';
 import { StyleSheet, Alert } from 'react-native';
-import { Order, Merchant } from '@equifood/api-interfaces';
+import { Merchant } from '@equifood/api-interfaces';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import React, { useState } from 'react';
 import { useMerchant } from '../../hooks/useMerchant';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../redux/store';
 import { useAxios } from '../../hooks/useAxios';
-import ItemCard from '../../components/cards/ItemCard/ItemCard';
-import BackButton from '../../components/buttons/BackButton/BackButton';
+import { ItemCard, BackButton } from '@equifood/ui-shared';
 
 export interface MerchantScreenParams {
   merchant: Merchant;
@@ -66,7 +63,9 @@ function RestaurantScreen({
     <Box height="full">
       <ScrollView testID="view" flex={1}>
         <BackButton
-          navigation={navigation}
+          onPress={() => {
+            navigation.navigate('core', { screen: 'home' });
+          }}
           confirmationString={
             'Are you sure you want to go back? (This will cancel your order.)'
           }

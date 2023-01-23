@@ -3,11 +3,8 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { Box, Divider, Heading, HStack, Text } from 'native-base';
 import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
-import ProgressSteps, {
-  ProgressStep,
-} from '../../components/visuals/ProgressSteps/ProgressSteps';
+import { ProgressStep, ProgressSteps, MerchantMap } from '@equifood/ui-shared';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
-import MerchantMap from '../../components/MerchantMap/MerchantMap';
 
 function OrderScreen({
   navigation,
@@ -142,6 +139,7 @@ function OrderScreen({
               <Text pb="4">Payment: In-person</Text>
               {viewHeight ? (
                 <MerchantMap
+                  darkMode={false}
                   merchants={[order.merchant]}
                   initialRegion={{
                     longitude: order.merchant.location.longitude,

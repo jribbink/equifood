@@ -1,6 +1,4 @@
 import { Merchant } from '@equifood/api-interfaces';
-import { Box, Text } from 'native-base';
-import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primitives/Box';
 import { Animated } from 'react-native';
 import MapView, { Region, Marker, MapViewProps } from 'react-native-maps';
 import RestaurantIcon from '../../../../assets/restaurant-icon.png';

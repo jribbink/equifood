@@ -1,7 +1,7 @@
-import appConfig from '../../app/config/app-config';
+import appConfig from '../../config/app-config';
 import { rest } from 'msw';
 
-const apiUrl = appConfig.apiUrl;
+const apiUrl = (appConfig ?? {})['apiUrl'];
 
 export const login_handlers = [
   rest.post(apiUrl + '/auth/local', (req, res, ctx) => {

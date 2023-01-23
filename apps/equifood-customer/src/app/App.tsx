@@ -9,6 +9,8 @@ import { bootstrapApp } from './util/bootstrap';
 import { Store } from '@reduxjs/toolkit';
 import LoadingScreen from './screens/LoadingScreen/LoadingScreen';
 import { SWRConfig } from 'swr';
+import { EquifoodContigContext } from '@equifood/ui-shared';
+import appConfig from './config/app-config';
 
 const App = () => {
   const [store, setStore] = useState<Store<RootState>>();
@@ -53,15 +55,21 @@ const App = () => {
 
   return (
     <NativeBaseProvider>
-      <SWRConfig value={swrConfig}>
-        {store ? (
-          <ReduxProvider store={store}>
-            <RootLayout></RootLayout>
-          </ReduxProvider>
-        ) : (
-          <LoadingScreen></LoadingScreen>
-        )}
-      </SWRConfig>
+      <EquifoodContigContext.Provider
+        value={{
+          apiUrl: appConfig.apiUrl,
+        }}
+      >
+        <SWRConfig value={swrConfig}>
+          {store ? (
+            <ReduxProvider store={store}>
+              <RootLayout></RootLayout>
+            </ReduxProvider>
+          ) : (
+            <LoadingScreen></LoadingScreen>
+          )}
+        </SWRConfig>
+      </EquifoodContigContext.Provider>
     </NativeBaseProvider>
   );
 };

@@ -4,16 +4,14 @@ import type { RenderOptions } from '@testing-library/react';
 import { Provider } from 'react-redux';
 
 // As a basic setup, import your same slice reducers
-import { setupStore, AppStore, RootState } from '../app/redux/store';
 import { NativeBaseProvider } from 'native-base';
-import { PreloadedState } from '@reduxjs/toolkit';
-import { bootstrapApp } from '../app/util/bootstrap';
+import { Store } from '@reduxjs/toolkit';
+import { bootstrapApp } from '../util/bootstrap';
 
 // This type interface extends the default options for render from RTL, as well
 // as allows the user to specify other things such as initialState, store.
 interface ExtendedRenderOptions extends Omit<RenderOptions, 'queries'> {
-  store?: AppStore;
-  preloadedState?: PreloadedState<RootState>;
+  store: Store;
 }
 
 const inset = {
@@ -23,11 +21,7 @@ const inset = {
 
 export async function render(
   ui: React.ReactElement,
-  {
-    preloadedState,
-    store = setupStore(preloadedState),
-    ...renderOptions
-  }: ExtendedRenderOptions = {}
+  { store, ...renderOptions }: ExtendedRenderOptions
 ) {
   await bootstrapApp(store);
 

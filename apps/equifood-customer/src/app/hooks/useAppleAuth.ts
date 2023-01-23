@@ -1,6 +1,6 @@
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { useDispatch } from 'react-redux';
-import { setJWT } from '../redux/slices/auth-slice';
+import { setJWT } from '@equifood/ui-shared';
 import { AppDispatch } from '../redux/store';
 import { useAxios } from './useAxios';
 

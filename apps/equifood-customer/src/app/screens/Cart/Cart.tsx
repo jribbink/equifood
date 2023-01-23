@@ -1,7 +1,7 @@
 import { Button, ScrollView, Text } from 'native-base';
 import { useEffect } from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
-import OrderView from '../../components/views/OrderView/OrderView';
+import { OrderView } from '@equifood/ui-shared';
 import { addItem, setMerchant } from '../../redux/slices/cart-slice';
 import { AppDispatch, RootState } from '../../redux/store';
 

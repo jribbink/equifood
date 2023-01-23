@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import useSWR, { mutate } from 'swr';
-import { setJWT } from '../redux/slices/auth-slice';
+import { setJWT } from '@equifood/ui-shared';
 import { useAxios } from './useAxios';
 
 export function useFetcher<T>(key: any) {

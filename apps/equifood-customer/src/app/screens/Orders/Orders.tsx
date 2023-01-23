@@ -1,10 +1,15 @@
 import React from 'react';
 import { VStack, ScrollView, Heading, Text, Spacer } from 'native-base';
 import { useOrders } from '../../hooks/useOrders';
-import OrderCard from '../../components/cards/OrderCard/OrderCard';
+import { OrderCard } from '@equifood/ui-shared';
+import { Order } from '@equifood/api-interfaces';
+import { useNavigation } from '@react-navigation/native';
+import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
 
 const Orders = () => {
   const { orders } = useOrders();
+  const navigation =
+    useNavigation<CoreNavigationProps<'orders'>['navigation']>();
 
   const currentOrders =
     orders?.filter((order) => order.status === 'pending') || [];
@@ -12,6 +17,10 @@ const Orders = () => {
     orders?.filter(
       (order) => order.status === 'completed' || order.status === 'cancelled'
     ) || [];
+
+  function onOrderPress(order: Order) {
+    navigation.navigate('order', { order });
+  }
 
   return (
     <ScrollView p="4">
@@ -25,7 +34,11 @@ const Orders = () => {
           <Heading pb="4">Current Orders</Heading>
           <VStack space={3}>
             {currentOrders.map((order) => (
-              <OrderCard key={order.id} order={order}></OrderCard>
+              <OrderCard
+                key={order.id}
+                order={order}
+                onPress={onOrderPress}
+              ></OrderCard>
             ))}
           </VStack>
         </>
@@ -38,7 +51,11 @@ const Orders = () => {
           <Heading pb="4">Completed Orders</Heading>
           <VStack>
             {completedOrders.map((order) => (
-              <OrderCard key={order.id} order={order}></OrderCard>
+              <OrderCard
+                key={order.id}
+                order={order}
+                onPress={onOrderPress}
+              ></OrderCard>
             ))}
           </VStack>
         </>

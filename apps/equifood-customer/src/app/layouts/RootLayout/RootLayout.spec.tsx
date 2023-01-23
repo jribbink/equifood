@@ -1,6 +1,6 @@
 import { render } from '../../../test-utils/render';
 import { setupStore } from '../../redux/store';
-import { logout, setJWT } from '../../redux/slices/auth-slice';
+import { logout, setJWT } from '@equifood/ui-shared';
 import RootLayout from './RootLayout';
 import { act } from '@testing-library/react-native';
 

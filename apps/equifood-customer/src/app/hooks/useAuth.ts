@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector, useStore } from 'react-redux';
-import { setJWT } from '../redux/slices/auth-slice';
+import { setJWT } from '@equifood/ui-shared';
 import { RootState } from '../redux/store';
 import { parseJwt } from '../util/jwt';
 
