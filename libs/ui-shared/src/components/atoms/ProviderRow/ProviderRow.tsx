@@ -1,11 +1,7 @@
 import { AuthProvider } from '@equifood/api-interfaces';
 import { Box, Image, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { AuthProviderConfig } from '../../config/auth/authConfig';
-import { useAxios } from '../../../hooks/useAxios';
-import { AppDispatch } from '../../redux/store';
-
+import { AuthProviderConfig } from '../../../config/auth/authConfig';
 interface ProviderRowProps {
   provider?: AuthProvider;
   providerConfig: AuthProviderConfig;

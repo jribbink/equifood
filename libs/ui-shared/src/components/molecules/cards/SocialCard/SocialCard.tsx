@@ -1,7 +1,8 @@
 import { AuthProvider } from '@equifood/api-interfaces';
 import { Box, Divider, Heading } from 'native-base';
 import React from 'react';
-import authConfig, {
+import {
+  authConfig,
   AuthProviderConfig,
 } from '../../../../config/auth/authConfig';
 import { useAxios } from '../../../../hooks/useAxios';

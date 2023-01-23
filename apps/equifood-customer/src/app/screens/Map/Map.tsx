@@ -3,7 +3,7 @@ import { useDisclose, Box } from 'native-base';
 import { Merchant } from '@equifood/api-interfaces';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import { useState, useEffect } from 'react';
-import { useMerchants } from '../../hooks/useMerchants';
+import { useMerchants } from '@equifood/ui-shared';
 import { MerchantMap, ActionSheet, MerchantCard } from '@equifood/ui-shared';
 
 const Map = ({ navigation }: CoreNavigationProps<'map'>) => {

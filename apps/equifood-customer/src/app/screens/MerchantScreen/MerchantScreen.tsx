@@ -13,8 +13,7 @@ import { StyleSheet, Alert } from 'react-native';
 import { Merchant } from '@equifood/api-interfaces';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import React, { useState } from 'react';
-import { useMerchant } from '../../hooks/useMerchant';
-import { useAxios } from '../../hooks/useAxios';
+import { useMerchant, useAxios } from '@equifood/ui-shared';
 import { ItemCard, BackButton } from '@equifood/ui-shared';
 
 export interface MerchantScreenParams {

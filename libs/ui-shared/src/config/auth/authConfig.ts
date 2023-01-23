@@ -18,7 +18,7 @@ export interface AuthProviderConfig {
   textColor: React.ComponentProps<typeof Text>['color'];
 }
 
-export default {
+export const authConfig = {
   providers: [
     {
       type: 'google',

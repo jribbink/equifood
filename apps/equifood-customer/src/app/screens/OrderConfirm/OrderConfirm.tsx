@@ -1,8 +1,7 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { Button, ScrollView, Text } from 'native-base';
-import { OrderView } from '@equifood/ui-shared';
+import { OrderView, useAxios } from '@equifood/ui-shared';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
-import { useAxios } from '../../hooks/useAxios';
 import { Order } from '@equifood/api-interfaces';
 
 function OrderConfirm({

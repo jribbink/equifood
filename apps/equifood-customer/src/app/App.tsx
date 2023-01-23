@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { NativeBaseProvider } from 'native-base';
-import SafeViewAndroid from './osChecker';
 import { Provider as ReduxProvider } from 'react-redux';
 import { RootState } from './redux/store';
-import { AppState, AppStateStatus, SafeAreaView } from 'react-native';
+import { AppState, AppStateStatus } from 'react-native';
 import RootLayout from './layouts/RootLayout/RootLayout';
 import { bootstrapApp } from './util/bootstrap';
 import { Store } from '@reduxjs/toolkit';

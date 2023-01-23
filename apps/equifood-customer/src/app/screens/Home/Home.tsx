@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Box, ScrollView, View, VStack } from 'native-base';
 import { Merchant } from '@equifood/api-interfaces';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
-import MerchantCard from '../../components/cards/MerchantCard/MerchantCard';
+import { MerchantCard } from '@equifood/ui-shared';
 import {
   useLocation,
   MerchantMap,

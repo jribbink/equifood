@@ -1,7 +1,6 @@
 import React from 'react';
 import { VStack, ScrollView, Heading, Text, Spacer } from 'native-base';
-import { useOrders } from '../../hooks/useOrders';
-import { OrderCard } from '@equifood/ui-shared';
+import { OrderCard, useOrders } from '@equifood/ui-shared';
 import { Order } from '@equifood/api-interfaces';
 import { useNavigation } from '@react-navigation/native';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
