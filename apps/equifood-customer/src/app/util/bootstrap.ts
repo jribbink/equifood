@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Animated } from 'react-native';
 import appConfig from '../config/app-config';
-import { setJWT } from '../../../../../libs/ui-shared/src/redux/slices/auth-slice';
+import { setJWT } from '@equifood/ui-shared';
 import { setupStore } from '../../app/redux/store';
 import storage from './storage';
 
