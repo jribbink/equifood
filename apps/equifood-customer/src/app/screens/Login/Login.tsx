@@ -1,74 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Box, VStack } from 'native-base';
-import {
-  Button,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
-import { authenticate, setJWT, useAxios } from '@equifood/ui-shared';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../redux/store';
+import { Text, TouchableOpacity } from 'react-native';
+import { LoginView, useAuth, useAxios } from '@equifood/ui-shared';
 import { authConfig, AuthProviderConfig } from '@equifood/ui-shared';
 import { IconButton } from '@equifood/ui-shared';
 
 const Login = ({ navigation }) => {
-  const dispatch = useDispatch<AppDispatch>();
   const axios = useAxios();
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const styles = StyleSheet.create({
-    input: {
-      height: 40,
-      margin: 12,
-      borderWidth: 1,
-      padding: 10,
-    },
-  });
+  const { setJwt } = useAuth();
 
   async function loginWithProvider(provider: AuthProviderConfig) {
     const socialJwt = await provider.strategy({ axios });
     const { data: jwt } = await axios.post<string>(`/auth/social-jwt`, null, {
       headers: { Authorization: `Bearer ${socialJwt}` },
     });
-    dispatch(setJWT(jwt));
+    setJwt(jwt);
   }
 
   return (
-    <Box flex={1}>
-      <Box flex={1} testID="login-screen">
-        <Text testID="login" style={{ padding: 10, fontSize: 24 }}>
-          Login
-        </Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setEmail}
-          value={email}
-          testID="emailInput"
-          autoCapitalize="none"
-        />
-        <Text style={{ padding: 10, fontSize: 24 }}>Password</Text>
-        <TextInput
-          secureTextEntry={true}
-          style={styles.input}
-          onChangeText={setPassword}
-          value={password}
-          testID="pwInput"
-        />
-
-        <Button
-          title="Login"
-          onPress={() => {
-            dispatch(authenticate({ email, password }));
-          }}
-          color="#841584"
-          testID="loginButton"
-        />
-      </Box>
+    <Box flex={1} testID="login-screen">
+      <LoginView allowedRoles={['customer']}></LoginView>
 
       <VStack flexDirection="column" p="3" space="3">
         {authConfig.providers.map((provider) => (
