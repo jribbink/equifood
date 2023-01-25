@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
-import { Button, Box, HStack, VStack } from 'native-base';
-import { Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
-import { authenticate, setJWT } from '../../redux/slices/auth-slice';
+import { Box, HStack, VStack } from 'native-base';
+import {
+  Button,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
-import authConfig, { AuthProviderConfig } from '../../config/auth/authConfig';
-import { useAxios } from '../../hooks/useAxios';
-import IconButton from '../../components/buttons/IconButton/IconButton';
+import {
+  authenticate,
+  setJWT,
+  useAxios,
+  authConfig,
+  AuthProviderConfig,
+} from '@equifood/ui-shared';
+import { IconButton } from '@equifood/ui-shared';
 
 const Login = ({ navigation }: { navigation: any }) => {
   const dispatch = useDispatch<AppDispatch>();

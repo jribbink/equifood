@@ -1,3 +1,4 @@
+import { authReducer } from '@equifood/ui-shared';
 import {
   Action,
   combineReducers,
@@ -6,18 +7,18 @@ import {
   ThunkAction,
 } from '@reduxjs/toolkit';
 import cartReducer from './slices/cart-slice';
-import authReducer from './slices/auth-slice';
 
 const rootReducer = combineReducers({
-  cart: cartReducer,
   auth: authReducer,
+  cart: cartReducer,
 });
 
-export const setupStore = (preloadedState?: PreloadedState<RootState>) =>
-  configureStore({
+export function setupStore(preloadedState?: PreloadedState<RootState>) {
+  return configureStore({
     reducer: rootReducer,
     preloadedState,
   });
+}
 
 export type AppStore = ReturnType<typeof setupStore>;
 export type AppDispatch = AppStore['dispatch'];

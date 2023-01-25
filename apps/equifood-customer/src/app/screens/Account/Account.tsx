@@ -1,11 +1,13 @@
 import React from 'react';
 import { Text, Button, ScrollView, Box, VStack } from 'native-base';
 import { useDispatch } from 'react-redux';
-import { logout } from '../../redux/slices/auth-slice';
-import { useProfile } from '../../hooks/useProfile';
-import { useSavings } from '../../hooks/useSavings';
-import ProfileCard from '../../components/cards/ProfileCard/ProfileCard';
-import SocialCard from '../../components/cards/SocialCard/SocialCard';
+import { logout } from '@equifood/ui-shared';
+import {
+  ProfileCard,
+  SocialCard,
+  useProfile,
+  useSavings,
+} from '@equifood/ui-shared';
 
 const Account = () => {
   const { user } = useProfile();
