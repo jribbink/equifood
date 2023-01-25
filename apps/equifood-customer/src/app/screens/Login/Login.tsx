@@ -1,13 +1,7 @@
 import React, { useState } from 'react';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
-import { Box, HStack, VStack } from 'native-base';
-import {
-  Button,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import { Button, Box, HStack, VStack } from 'native-base';
+import { Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
 import {
