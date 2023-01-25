@@ -108,23 +108,23 @@ export class Seeder {
 
     const banner2 = await this.uploadRepository.save(<Upload>{
       id: '6e8043ff-282e-44ae-af8b-90b5930a78d4',
-      name: 'KBC Banner',
-      filename: 'kbc-banner.jpeg',
-      ext: '.jpeg',
-      mime_type: 'image/jpeg',
-      path: SEED_ASSET_PATH + 'kbc-banner.jpeg',
-      size: statSync(SEED_ASSET_PATH + 'kbc-banner.jpeg').size,
+      name: 'Shoreline Banner',
+      filename: 'shoreline-banner.jpg',
+      ext: '.jpg',
+      mime_type: 'image/jpg',
+      path: SEED_ASSET_PATH + 'shoreline-banner.jpg',
+      size: statSync(SEED_ASSET_PATH + 'shoreline-banner.jpg').size,
       upload_date: new Date(2023, 0, 25, 12),
     });
 
     const banner3 = await this.uploadRepository.save(<Upload>{
       id: '6e8043ff-282e-44ae-af8b-90b5930a78d4',
-      name: 'Tim Hortons',
-      filename: 'tim-hortons-banner.jpeg',
+      name: 'Hillcrest Cafe',
+      filename: 'hillcrest-banner.jpeg',
       ext: '.jpeg',
       mime_type: 'image/jpeg',
-      path: SEED_ASSET_PATH + 'tim-hortons-banner.jpeg',
-      size: statSync(SEED_ASSET_PATH + 'tim-hortons-banner.jpeg').size,
+      path: SEED_ASSET_PATH + 'hillcrest-banner.jpeg',
+      size: statSync(SEED_ASSET_PATH + 'hillcrest-banner.jpeg').size,
       upload_date: new Date(2023, 0, 25, 12),
     });
 
