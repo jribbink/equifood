@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
-
-import { Box, VStack } from 'native-base';
-import {
-  Button,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
-import { authenticate, setJWT, useAxios } from '@equifood/ui-shared';
+import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
+import { Button, Box, HStack, VStack } from 'native-base';
+import { Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
-import { authConfig, AuthProviderConfig } from '@equifood/ui-shared';
+import {
+  authenticate,
+  setJWT,
+  useAxios,
+  authConfig,
+  AuthProviderConfig,
+} from '@equifood/ui-shared';
 import { IconButton } from '@equifood/ui-shared';
 
-const Login = ({ navigation }) => {
+const Login = ({ navigation }: { navigation: any }) => {
   const dispatch = useDispatch<AppDispatch>();
   const axios = useAxios();
 
@@ -27,6 +26,7 @@ const Login = ({ navigation }) => {
       margin: 12,
       borderWidth: 1,
       padding: 10,
+      borderRadius: 50,
     },
   });
 
@@ -39,35 +39,68 @@ const Login = ({ navigation }) => {
   }
 
   return (
-    <Box flex={1}>
+    <Box flex={1} style={{ padding: 30 }}>
+      <Text
+        style={{
+          marginTop: 20,
+          fontSize: 40,
+          fontWeight: 'bold',
+          color: 'darkgreen',
+        }}
+      >
+        Sign In
+      </Text>
       <Box flex={1} testID="login-screen">
-        <Text testID="login" style={{ padding: 10, fontSize: 24 }}>
-          Login
+        <Text
+          testID="login"
+          style={{
+            fontSize: 18,
+            marginBottom: 20,
+            marginTop: 5,
+            color: 'forestgreen',
+          }}
+        >
+          Please sign in to continue.
         </Text>
         <TextInput
           style={styles.input}
           onChangeText={setEmail}
+          placeholder="Email"
           value={email}
           testID="emailInput"
           autoCapitalize="none"
+          placeholderTextColor={'yellowgreen'}
         />
-        <Text style={{ padding: 10, fontSize: 24 }}>Password</Text>
         <TextInput
           secureTextEntry={true}
           style={styles.input}
+          placeholder="Password"
           onChangeText={setPassword}
           value={password}
           testID="pwInput"
+          placeholderTextColor={'yellowgreen'}
         />
-
-        <Button
-          title="Login"
-          onPress={() => {
-            dispatch(authenticate({ email, password }));
+        <Box
+          style={{
+            marginTop: 15,
+            marginRight: 15,
+            width: '20%',
+            alignSelf: 'flex-end',
           }}
-          color="#841584"
-          testID="loginButton"
-        />
+        >
+          <Button
+            style={{
+              borderRadius: 30,
+              backgroundColor: 'yellowgreen',
+            }}
+            onPress={() => {
+              dispatch(authenticate({ email, password }));
+            }}
+            testID="loginButton"
+          >
+            Sign In
+          </Button>
+        </Box>
       </Box>
 
       <VStack flexDirection="column" p="3" space="3">
@@ -92,16 +125,15 @@ const Login = ({ navigation }) => {
             }}
           ></IconButton>
         ))}
+        <Box>
+          <HStack>
+            <Text style={{ fontSize: 15 }}>Don't have an account? </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('signup')}>
+              <Text style={{ color: 'darkgreen' }}>Sign up</Text>
+            </TouchableOpacity>
+          </HStack>
+        </Box>
       </VStack>
-
-      <Box>
-        <Text>
-          Don't have an account?{' '}
-          <TouchableOpacity onPress={() => navigation.navigate('signup')}>
-            <Text>Sign up</Text>
-          </TouchableOpacity>
-        </Text>
-      </Box>
     </Box>
   );
 };

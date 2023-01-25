@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Animated } from 'react-native';
+import { stopCoverage } from 'v8';
 import appConfig from '../config/app-config';
 import { setJWT } from '@equifood/ui-shared';
 import { setupStore } from '../../app/redux/store';
