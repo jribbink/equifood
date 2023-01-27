@@ -23,7 +23,7 @@ afterAll(() => server.close());
 
 test('renders correctly', async () => {
   const { getByTestId } = await render(<Login />);
-  expect(getByTestId('login')).toHaveTextContent('Login');
+  expect(getByTestId('login')).toHaveTextContent('sign in');
 });
 
 test('logs in properly', async () => {

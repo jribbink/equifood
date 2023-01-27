@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, VStack } from 'native-base';
+import { Box, HStack, VStack } from 'native-base';
 import { Text, TouchableOpacity } from 'react-native';
 import { LoginView, useAuth, useAxios } from '@equifood/ui-shared';
 import { authConfig, AuthProviderConfig } from '@equifood/ui-shared';
@@ -44,16 +44,15 @@ const Login = ({ navigation }) => {
             }}
           ></IconButton>
         ))}
+        <Box>
+          <HStack>
+            <Text style={{ fontSize: 15 }}>Don't have an account? </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('signup')}>
+              <Text style={{ color: 'darkgreen' }}>Sign up</Text>
+            </TouchableOpacity>
+          </HStack>
+        </Box>
       </VStack>
-
-      <Box>
-        <Text>
-          Don't have an account?{' '}
-          <TouchableOpacity onPress={() => navigation.navigate('signup')}>
-            <Text>Sign up</Text>
-          </TouchableOpacity>
-        </Text>
-      </Box>
     </Box>
   );
 };

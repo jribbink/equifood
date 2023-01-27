@@ -10,8 +10,6 @@ interface LoginViewProps {
 }
 
 export function LoginView({ allowedRoles }: LoginViewProps) {
-  const dispatch = useDispatch<AppDispatch>();
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const { authenticate } = useAuth();
@@ -22,39 +20,74 @@ export function LoginView({ allowedRoles }: LoginViewProps) {
       margin: 12,
       borderWidth: 1,
       padding: 10,
+      borderRadius: 50,
     },
   });
 
   return (
-    <Box flex={1}>
-      <Text testID="login" style={{ padding: 10, fontSize: 24 }}>
-        Login
-      </Text>
-      <TextInput
-        style={styles.input}
-        onChangeText={setEmail}
-        value={email}
-        testID="emailInput"
-        autoCapitalize="none"
-      />
-      <Text style={{ padding: 10, fontSize: 24 }}>Password</Text>
-      <TextInput
-        secureTextEntry={true}
-        style={styles.input}
-        onChangeText={setPassword}
-        value={password}
-        testID="pwInput"
-      />
-
-      <Button
-        onPress={() => {
-          authenticate({ email, password });
+    <Box flex={1} style={{ padding: 30 }}>
+      <Text
+        style={{
+          marginTop: 20,
+          fontSize: 40,
+          fontWeight: 'bold',
+          color: 'darkgreen',
         }}
-        color="#841584"
-        testID="loginButton"
       >
-        Login
-      </Button>
+        Sign In
+      </Text>
+      <Box flex={1} testID="login-screen">
+        <Text
+          testID="login"
+          style={{
+            fontSize: 18,
+            marginBottom: 20,
+            marginTop: 5,
+            color: 'forestgreen',
+          }}
+        >
+          Please sign in to continue.
+        </Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={setEmail}
+          placeholder="Email"
+          value={email}
+          testID="emailInput"
+          autoCapitalize="none"
+          placeholderTextColor={'yellowgreen'}
+        />
+        <TextInput
+          secureTextEntry={true}
+          style={styles.input}
+          placeholder="Password"
+          onChangeText={setPassword}
+          value={password}
+          testID="pwInput"
+          placeholderTextColor={'yellowgreen'}
+        />
+        <Box
+          style={{
+            marginTop: 15,
+            marginRight: 15,
+            width: '20%',
+            alignSelf: 'flex-end',
+          }}
+        >
+          <Button
+            style={{
+              borderRadius: 30,
+              backgroundColor: 'yellowgreen',
+            }}
+            onPress={() => {
+              authenticate({ email, password });
+            }}
+            testID="loginButton"
+          >
+            Sign In
+          </Button>
+        </Box>
+      </Box>
     </Box>
   );
 }
