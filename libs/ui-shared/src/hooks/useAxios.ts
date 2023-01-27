@@ -2,10 +2,10 @@ import axios, { AxiosInstance } from 'axios';
 import { useAuth } from './useAuth';
 import { useContext, useEffect, useState } from 'react';
 import { dateInterceptor } from '../util/date-interceptor';
-import { EquifoodContigContext } from '../context';
+import { EquifoodConfigContext } from '../context';
 
 export function useAxios() {
-  const config = useContext(EquifoodContigContext);
+  const config = useContext(EquifoodConfigContext);
   const { token } = useAuth();
   const [instance, setInstance] = useState<AxiosInstance>(() => {
     const instance = axios.create({
