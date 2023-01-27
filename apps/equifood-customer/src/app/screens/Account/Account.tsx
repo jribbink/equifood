@@ -1,81 +1,62 @@
 import React from 'react';
-import { Text, Button, ScrollView, Divider, View } from 'native-base';
-import { useDispatch } from 'react-redux';
-import { logout } from '../../redux/slices/auth-slice';
+import { Text, Button, ScrollView, Box, VStack } from 'native-base';
+import {
+  ProfileCard,
+  SocialCard,
+  useAuth,
+  useProfile,
+  useSavings,
+} from '@equifood/ui-shared';
 
 const Account = () => {
-  const dispatch = useDispatch();
+  const { user } = useProfile();
+  const { savings } = useSavings();
+  const { setJwt } = useAuth();
+
   function logoutUser() {
-    dispatch(logout());
+    setJwt(null);
   }
 
   return (
-    <ScrollView>
-      <Text
-        style={{
-          fontWeight: 'bold',
-          marginTop: 20,
-          fontSize: 40,
-          padding: 20,
-          textAlign: 'center',
-        }}
-      >
-        Account
-      </Text>
-      <Divider my={10} />
-      <Text
-        style={{
-          fontWeight: 'bold',
-          marginTop: 5,
-          fontSize: 20,
-          padding: 20,
-          color: 'gray',
-        }}
-      >
-        Name:
-      </Text>
-      <Text
-        style={{ fontWeight: 'bold', marginTop: 5, fontSize: 20, padding: 20 }}
-      >
-        User full name here
-      </Text>
-      <Text
-        style={{
-          fontWeight: 'bold',
-          marginTop: 5,
-          fontSize: 20,
-          padding: 20,
-          color: 'gray',
-        }}
-      >
-        Email:
-      </Text>
-      <Text
-        style={{ fontWeight: 'bold', marginTop: 5, fontSize: 20, padding: 20 }}
-      >
-        User email here
-      </Text>
-      <Text
-        style={{
-          fontWeight: 'bold',
-          marginTop: 5,
-          fontSize: 20,
-          padding: 20,
-          color: 'gray',
-        }}
-      >
-        Phone:
-      </Text>
-      <Text
-        style={{ fontWeight: 'bold', marginTop: 5, fontSize: 20, padding: 20 }}
-      >
-        User phone number here
-      </Text>
-      <View style={[{ width: '70%', margin: 60, backgroundColor: 'blue' }]}>
-        <Button color="cyan" onPress={logoutUser}>
+    <ScrollView p="3">
+      <VStack space="3">
+        {user ? <ProfileCard user={user}></ProfileCard> : null}
+        {savings ? (
+          <Box style={{ marginTop: 5 }}>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                fontSize: 20,
+                padding: 20,
+                color: 'black',
+              }}
+            >
+              Total Money Saved:{' '}
+              <Text
+                style={{
+                  color: 'green',
+                }}
+              >
+                ${savings}
+              </Text>
+            </Text>
+          </Box>
+        ) : null}
+        <SocialCard></SocialCard>
+
+        <Button
+          style={{
+            borderRadius: 20,
+            width: '90%',
+            marginTop: 30,
+            alignSelf: 'center',
+            backgroundColor: 'forestgreen',
+          }}
+          onPress={logoutUser}
+        >
           <Text>Logout</Text>
         </Button>
-      </View>
+      </VStack>
     </ScrollView>
   );
 };

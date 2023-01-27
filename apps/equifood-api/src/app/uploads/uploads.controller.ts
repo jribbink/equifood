@@ -44,7 +44,7 @@ export class UploadsController {
     return await this.uploadsService.uploadFile(file, req.upload_nonce);
   }
 
-  @Get(':id/:name')
+  @Get(':id/:name/')
   async getUpload(
     @Param('id') id: string,
     @Param('name') name: string,
@@ -52,6 +52,7 @@ export class UploadsController {
   ) {
     const upload = await this.uploadsService.find(id, name);
     const file = createReadStream(join(cwd(), upload.path));
+    res.setHeader('Content-Type', upload.mime_type);
     file.pipe(res);
   }
 }

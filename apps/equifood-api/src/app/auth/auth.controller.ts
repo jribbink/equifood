@@ -1,15 +1,53 @@
-import { Controller, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  Response,
+  UseGuards,
+} from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { User } from '../users/entities/user.entity';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './guards/local-auth.guard';
+import { AuthRoute } from './decorators/auth-route.decorator';
+import { AuthUser } from './decorators/auth-user.decorator';
+import { DynamicAuthGuard } from './guards/dynamic-auth.guard';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private jwtService: JwtService
+  ) {}
 
-  @UseGuards(LocalAuthGuard)
-  @Post('login')
-  async login(@Request() req) {
-    console.log('before');
-    return this.authService.login(req.user);
+  @Post('link')
+  @AuthRoute()
+  async linkSocial(
+    @AuthUser() user: User,
+    @Body('socialJwt') socialJwt: string
+  ) {
+    return this.authService.linkSocial(
+      user,
+      await this.authService.validateSocialJwt(socialJwt)
+    );
+  }
+
+  // Sign in using POST strategy, link account if JWT provided
+  @UseGuards(DynamicAuthGuard((req) => req.params.strategy))
+  @Post(':strategy')
+  async loginPost(@Request() req: any) {
+    // Create and return JWT auth
+    return req.socialJwt || (await this.authService.login(req.user));
+  }
+
+  // Sign in using GET strategy, link account if JWT provided
+  @Get(':strategy')
+  @UseGuards(DynamicAuthGuard((req) => req.params.strategy))
+  async loginGet(@Request() req: any, @Response() res: any) {
+    const jwt = req.socialJwt || (await this.authService.login(req.user));
+    const redirectURL = new URL(req.cookies.redirect_uri);
+    redirectURL.searchParams.set('jwt', jwt);
+    res.redirect(redirectURL.href);
   }
 }

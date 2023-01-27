@@ -24,7 +24,7 @@ export class Upload extends UuidEntity {
   upload_date: Date;
 
   @Column()
-  mine_type: string;
+  mime_type: string;
 
   @Column()
   size: number;

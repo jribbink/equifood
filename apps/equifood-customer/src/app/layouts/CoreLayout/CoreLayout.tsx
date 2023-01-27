@@ -9,11 +9,12 @@ import Map from '../../screens/Map/Map';
 import Orders from '../../screens/Orders/Orders';
 import Account from '../../screens/Account/Account';
 import MerchantScreen from '../../screens/MerchantScreen/MerchantScreen';
+import OrderConfirm from '../../screens/OrderConfirm/OrderConfirm';
 import Cart from '../../screens/Cart/Cart';
-import { View, Box } from 'native-base';
+import { View } from 'native-base';
 import { CoreStackParams, CoreTabParams } from './CoreNavigatorParams';
 import OrderScreen from '../../screens/OrderScreen/OrderScreen';
-import CartButton from '../../components/buttons/CartButton/CartButton';
+//import CartButton from '../../components/buttons/CartButton/CartButton';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator<CoreTabParams>();
@@ -30,9 +31,9 @@ function CoreNavigation() {
             iconName = focused ? 'md-person' : 'md-person-outline';
           } else if (route.name === 'home') {
             iconName = focused ? 'md-restaurant' : 'ios-restaurant-outline';
-          } else if (route.name === 'map') {
+          } /*else if (route.name === 'map') {
             iconName = focused ? 'md-map' : 'md-map-outline';
-          } else if (route.name === 'orders') {
+          }*/ else if (route.name === 'orders') {
             iconName = focused ? 'md-list' : 'md-list-outline';
           } else {
             return;
@@ -43,13 +44,23 @@ function CoreNavigation() {
         },
         tabBarActiveTintColor: 'green',
         tabBarInactiveTintColor: 'gray',
-        headerShown: false,
       })}
     >
-      <Tab.Screen name="home" component={Home} />
-      <Tab.Screen name="map" component={Map} />
-      <Tab.Screen name="orders" component={Orders} />
-      <Tab.Screen name="account" component={Account} />
+      <Tab.Screen
+        name="home"
+        component={Home}
+        options={{ title: 'Restaurants' }}
+      />
+      <Tab.Screen
+        name="orders"
+        component={Orders}
+        options={{ title: 'Orders' }}
+      />
+      <Tab.Screen
+        name="account"
+        component={Account}
+        options={{ title: 'Account' }}
+      />
     </Tab.Navigator>
   );
 }
@@ -69,13 +80,14 @@ function CoreLayout() {
             name="merchant"
             component={MerchantScreen}
           ></Stack.Screen>
+          <Stack.Screen
+            name="orderConfirm"
+            component={OrderConfirm}
+          ></Stack.Screen>
           <Stack.Screen name="cart" component={Cart}></Stack.Screen>
           <Stack.Screen name="order" component={OrderScreen}></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
-      <Box position="absolute" bottom={60} right={5}>
-        <CartButton navigation={navigation}></CartButton>
-      </Box>
     </View>
   );
 }

@@ -6,9 +6,10 @@
 import { INestApplication, Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { Role } from './app/common/types/role.enum';
 
 import { AppModule } from './app/app.module';
+import cookieParser from 'cookie-parser';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 function pipe<T>(target: T, modifiers: ((target: T) => T)[]): T {
   return modifiers.length == 0
@@ -47,9 +48,11 @@ function setupSwagger(app: INestApplication) {
 
 async function bootstrap() {
   // Initialize app
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const globalPrefix = 'api';
+  app.set('trust proxy', 'loopback');
   app.setGlobalPrefix(globalPrefix);
+  app.use(cookieParser());
 
   // Initialize swagger (API docs)
   setupSwagger(app);

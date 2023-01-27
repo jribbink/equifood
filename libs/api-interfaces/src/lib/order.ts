@@ -8,6 +8,6 @@ export interface Order {
   order_date: Date;
   status: 'completed' | 'pending' | 'cancelled';
   total: number;
-  item: OrderedItem;
+  items: OrderedItem[];
   merchant: Merchant;
 }

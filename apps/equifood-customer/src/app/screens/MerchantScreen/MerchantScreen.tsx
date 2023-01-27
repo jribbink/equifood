@@ -1,17 +1,20 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import { Box, Button, Text, ScrollView, VStack } from 'native-base';
+import {
+  Box,
+  Button,
+  Text,
+  ScrollView,
+  VStack,
+  Image,
+  Heading,
+  HStack,
+} from 'native-base';
+import { StyleSheet, Alert } from 'react-native';
 import { Merchant } from '@equifood/api-interfaces';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import React, { useState } from 'react';
-import { useMerchant } from '../../hooks/useMerchant';
-import ItemCard from '../../components/cards/ItemCard/ItemCard';
-import {
-  addItem,
-  removeItem,
-  setMerchant,
-} from '../../redux/slices/cart-slice';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../redux/store';
+import { useMerchant, useAxios } from '@equifood/ui-shared';
+import { ItemCard, BackButton } from '@equifood/ui-shared';
 
 export interface MerchantScreenParams {
   merchant: Merchant;
@@ -21,39 +24,157 @@ function RestaurantScreen({
   navigation,
   route,
 }: StackScreenProps<CoreStackParams, 'merchant'>) {
-  const dispatch = useDispatch<AppDispatch>();
+  const axios = useAxios();
   const { merchant } = useMerchant(route.params.merchant.id);
+  const [quantityMap, setQuantityMap] = useState<{ [itemId: string]: number }>(
+    {}
+  );
+
+  const styles = StyleSheet.create({
+    input: {
+      height: 40,
+      margin: 12,
+      borderWidth: 1,
+      padding: 10,
+    },
+  });
+
+  const cancelConfirmAlert = () => {
+    Alert.alert('Cancel?', 'Are you sure you want to go back?', [
+      {
+        text: 'Confirm',
+        onPress: () => navigation.navigate('core', { screen: 'home' }),
+        style: 'default',
+      },
+      {
+        text: 'Go Back',
+        onPress: () => console.log('staying on merchant screen'),
+        style: 'cancel',
+      },
+    ]);
+  };
 
   if (!merchant) return null;
 
-  const { items } = merchant;
+  const items = merchant.items;
 
   return (
-    <ScrollView testID="items" flex={1}>
-      {
-        // ItemCard is currently (nov 17/2022) mostly copied from MerchantCard
-        // please fix
-        (items || []).map((i) => (
-          <Box key={i.id} shadow="2">
-            <ItemCard
-              item={i}
-              onPress={() => {
-                dispatch(addItem(i));
-                // change cart merchant here
-              }}
-            ></ItemCard>
+    <Box height="full">
+      <ScrollView testID="view" flex={1}>
+        <BackButton
+          onPress={() => {
+            navigation.navigate('core', { screen: 'home' });
+          }}
+          confirmationString={
+            'Are you sure you want to go back? (This will cancel your order.)'
+          }
+        />
+        <Box h="200">
+          <Image
+            width="100%"
+            height="200"
+            source={{
+              uri: merchant.banner_url,
+            }}
+            alt={merchant.name}
+            position="absolute"
+            top="0"
+            left="0"
+            right="0"
+            bottom="0"
+            borderTopRadius="5"
+          />
+          <Box flex={1} justifyContent="flex-end" p="1.5">
+            <Image
+              source={{ uri: merchant.logo_url }}
+              alt={merchant.name}
+              backgroundColor="white"
+              borderRadius="full"
+              width="16"
+              height="16"
+            ></Image>
           </Box>
-        ))
-      }
-      <Box>
-        <Text>
-          {route.params.merchant.name + ': ' + route.params.merchant.inventory}
-        </Text>
-        <Button
-          onPress={() => navigation.navigate('core', { screen: 'map' })}
-        ></Button>
-      </Box>
-    </ScrollView>
+        </Box>
+        <VStack space="4" m="4">
+          <Box borderRadius="5" testID="desc" shadow="2">
+            <HStack
+              bgColor="white"
+              borderBottomRadius={5}
+              shadow="5"
+              p="1.5"
+              space="2"
+            >
+              <Text>
+                <Heading testID="merchant-name" fontSize="lg" fontWeight="bold">
+                  {merchant.name}
+                </Heading>
+                <Text>
+                  {'\nDescription: ' +
+                    merchant.description +
+                    '\nAddress:\n' +
+                    merchant.location.address +
+                    '\nPick up by:\n' +
+                    merchant.deadline?.toLocaleDateString(undefined, {
+                      hour: 'numeric',
+                      minute: '2-digit',
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric',
+                    })}
+                </Text>
+              </Text>
+            </HStack>
+          </Box>
+          {(items || []).map((item) => (
+            <ItemCard
+              key={item.id}
+              item={item}
+              quantity={quantityMap[item.id] ?? 0}
+              onQuantityChange={(newQuantity) =>
+                setQuantityMap((currentValue) => ({
+                  ...currentValue,
+                  [item.id]: newQuantity,
+                }))
+              }
+            ></ItemCard>
+          ))}
+          <Box borderRadius="5" testID="desc" shadow="2">
+            <HStack
+              bgColor="white"
+              borderBottomRadius={5}
+              shadow="5"
+              p="1.5"
+              space="2"
+            >
+              <Text>
+                <Heading testID="reviews" fontSize="lg" fontWeight="bold">
+                  Reviews:
+                </Heading>
+              </Text>
+            </HStack>
+          </Box>
+        </VStack>
+      </ScrollView>
+      <Button
+        onPress={async () => {
+          // check if all values are 0
+          if (Object.entries(quantityMap).every((item) => item[1] === 0)) {
+            alert('Please choose at least one item before continuing.');
+          } else {
+            navigation.navigate('orderConfirm', {
+              merchant: merchant,
+              items: items,
+              /*quantities: Object.entries(quantityMap).map(([id, quantity]) => ({
+                [id]: quantity
+              })),*/
+              quantities: quantityMap,
+            });
+          }
+        }}
+      >
+        Order
+      </Button>
+    </Box>
   );
 }
 

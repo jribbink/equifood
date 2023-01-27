@@ -7,6 +7,21 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { UsersModule } from '../users/users.module';
+import { GoogleStrategy } from './strategies/google.strategy';
+import { FacebookStrategy } from './strategies/facebook.strategy';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthProvider } from './entities/auth-provider';
+import { AppleStrategy } from './strategies/apple.strategy';
+import { SocialJwtStrategy } from './strategies/social-jwt.strategy';
+
+const strategies: any[] = [
+  LocalStrategy,
+  JwtStrategy,
+  GoogleStrategy,
+  FacebookStrategy,
+  AppleStrategy,
+  SocialJwtStrategy,
+];
 
 @Module({
   imports: [
@@ -16,11 +31,13 @@ import { UsersModule } from '../users/users.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        secret: configService.get('auth.secret'),
+        secret: configService.getOrThrow('auth.secret'),
       }),
     }),
+    TypeOrmModule.forFeature([AuthProvider]),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  exports: [AuthService],
+  providers: [...strategies, AuthService],
   controllers: [AuthController],
 })
 export class AuthModule {}
