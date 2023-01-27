@@ -107,7 +107,7 @@ export class Seeder {
     });
 
     const banner2 = await this.uploadRepository.save(<Upload>{
-      id: '6e8043ff-282e-44ae-af8b-90b5930a78d4',
+      id: '6e8043ff-282e-44ae-af8b-90b5930a78d5',
       name: 'Shoreline Banner',
       filename: 'shoreline-banner.jpg',
       ext: '.jpg',
@@ -118,7 +118,7 @@ export class Seeder {
     });
 
     const banner3 = await this.uploadRepository.save(<Upload>{
-      id: '6e8043ff-282e-44ae-af8b-90b5930a78d4',
+      id: '6e8043ff-282e-44ae-af8b-90b5930a78d6',
       name: 'Hillcrest Cafe',
       filename: 'hillcrest-banner.jpeg',
       ext: '.jpeg',
@@ -140,7 +140,7 @@ export class Seeder {
     });
 
     const logo2 = await this.uploadRepository.save(<Upload>{
-      id: 'a31389d3-8fbf-48d8-99a6-85b53edbef1d',
+      id: 'a31389d3-8fbf-48d8-99a6-85b53edbef1e',
       name: 'Shoreline Brewing Logo',
       filename: 'shoreline-logo.png',
       ext: '.png',
@@ -151,7 +151,7 @@ export class Seeder {
     });
 
     const logo3 = await this.uploadRepository.save(<Upload>{
-      id: 'a31389d3-8fbf-48d8-99a6-85b53edbef1d',
+      id: 'a31389d3-8fbf-48d8-99a6-85b53edbef1f',
       name: 'Hillcrest Cafe Logo',
       filename: 'hillcrest-logo.png',
       ext: '.png',
