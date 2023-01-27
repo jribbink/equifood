@@ -1,10 +1,9 @@
 import React from 'react';
 import { Text, Button, ScrollView, Box, VStack } from 'native-base';
-import { useDispatch } from 'react-redux';
-import { logout } from '@equifood/ui-shared';
 import {
   ProfileCard,
   SocialCard,
+  useAuth,
   useProfile,
   useSavings,
 } from '@equifood/ui-shared';
@@ -12,9 +11,10 @@ import {
 const Account = () => {
   const { user } = useProfile();
   const { savings } = useSavings();
-  const dispatch = useDispatch();
+  const { setJwt } = useAuth();
+
   function logoutUser() {
-    dispatch(logout());
+    setJwt(null);
   }
 
   return (

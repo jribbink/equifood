@@ -5,11 +5,8 @@ import {
   PreloadedState,
   ThunkAction,
 } from '@reduxjs/toolkit';
-import { authReducer } from './slices/auth-slice';
 
-const rootReducer = combineReducers({
-  auth: authReducer,
-});
+const rootReducer = combineReducers({});
 
 export function setupStore(preloadedState?: PreloadedState<RootState>) {
   return configureStore({

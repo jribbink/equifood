@@ -1,4 +1,3 @@
-import { authReducer } from '@equifood/ui-shared';
 import {
   Action,
   combineReducers,
@@ -9,7 +8,6 @@ import {
 import cartReducer from './slices/cart-slice';
 
 const rootReducer = combineReducers({
-  auth: authReducer,
   cart: cartReducer,
 });
 
