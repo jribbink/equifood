@@ -36,7 +36,7 @@ export function LoginView({ allowedRoles }: LoginViewProps) {
       >
         Sign In
       </Text>
-      <Box flex={1} testID="login-screen">
+      <Box flex={1}>
         <Text
           testID="login"
           style={{
