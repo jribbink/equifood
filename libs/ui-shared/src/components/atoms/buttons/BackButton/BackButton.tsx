@@ -27,7 +27,7 @@ export function BackButton({ onPress, confirmationString }: BackButtonProps) {
   const onPressHandler = confirmationString ? confirmThenBack : onPress;
   return (
     <TouchableOpacity onPress={onPressHandler}>
-      <Box backgroundColor="green.500" p="3" px="4" rounded="full">
+      <Box backgroundColor="green.500" p="3" px="4">
         <HStack space="2" alignItems="center">
           <Ionicons name="arrow-back-circle-outline" size={32} color="black" />
           <Text>Back</Text>

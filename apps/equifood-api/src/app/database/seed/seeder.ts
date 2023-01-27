@@ -118,11 +118,11 @@ export class Seeder {
     });
 
     const item1 = await this.itemRepository.save(<Item>{
-      name: 'Example item',
-      price: 10.99,
-      originalPrice: 20.0,
-      quantity: 20,
-      description: 'An ordinary item of food.',
+      name: 'Pepperoni pizza',
+      price: 6.99,
+      originalPrice: 11.99,
+      quantity: 1,
+      description: 'Classic pepperoni pizza.',
     });
 
     const item2 = await this.itemRepository.save(<Item>{
@@ -146,7 +146,7 @@ export class Seeder {
       name: 'Fresh Slice',
       banner: banner1,
       logo: logo1,
-      description: 'Order pizza',
+      description: 'Freshest pizza in Okanagan Since 1999',
       deadline: new Date(2022, 11, 8, 23),
       phone_number: '(123) 456-7890',
       location: {
@@ -162,7 +162,7 @@ export class Seeder {
       name: 'Fresh Slice',
       banner: banner1,
       logo: logo1,
-      description: 'Order pizza',
+      description: 'Freshest pizza in Okanagan Since 1999',
       deadline: new Date(2022, 11, 8, 23),
       phone_number: '(123) 456-7890',
       location: {
@@ -178,7 +178,7 @@ export class Seeder {
       name: 'Fresh Slice',
       banner: banner1,
       logo: logo1,
-      description: 'Order pizza',
+      description: 'Freshest pizza in Okanagan Since 1999',
       deadline: new Date(2022, 11, 8, 23),
       phone_number: '(123) 456-7890',
       location: {

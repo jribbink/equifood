@@ -85,46 +85,95 @@ function RestaurantScreen({
             borderTopRadius="5"
           />
           <Box flex={1} justifyContent="flex-end" p="1.5">
-            <Image
-              source={{ uri: merchant.logo_url }}
-              alt={merchant.name}
-              backgroundColor="white"
-              borderRadius="full"
-              width="16"
-              height="16"
-            ></Image>
-          </Box>
-        </Box>
-        <VStack space="4" m="4">
-          <Box borderRadius="5" testID="desc" shadow="2">
-            <HStack
-              bgColor="white"
-              borderBottomRadius={5}
-              shadow="5"
-              p="1.5"
-              space="2"
-            >
-              <Text>
-                <Heading testID="merchant-name" fontSize="lg" fontWeight="bold">
-                  {merchant.name}
-                </Heading>
-                <Text>
-                  {'\nDescription: ' +
-                    merchant.description +
-                    '\nAddress:\n' +
-                    merchant.location.address +
-                    '\nPick up by:\n' +
-                    merchant.deadline?.toLocaleDateString(undefined, {
-                      hour: 'numeric',
-                      minute: '2-digit',
-                      day: 'numeric',
-                      month: 'short',
-                      year: 'numeric',
-                    })}
+            <HStack>
+              <Image
+                source={{ uri: merchant.logo_url }}
+                alt={merchant.name}
+                backgroundColor="white"
+                borderRadius="full"
+                width="16"
+                height="16"
+              ></Image>
+              <VStack padding="0">
+                <HStack>
+                  <Text
+                    style={{
+                      textShadowColor: 'black',
+                      textShadowOffset: { width: -3, height: 3 },
+                      textShadowRadius: 3,
+                    }}
+                    color="white"
+                    testID="merchant-name"
+                    fontWeight="bold"
+                    fontSize="30"
+                    marginTop="3"
+                    marginLeft="5"
+                  >
+                    {merchant.name}
+                  </Text>
+                </HStack>
+
+                <Text
+                  style={{
+                    textShadowColor: 'black',
+                    textShadowOffset: { width: -1, height: 1 },
+                    textShadowRadius: 3,
+                  }}
+                  color="white"
+                  fontSize="15"
+                  marginLeft="5"
+                >
+                  {merchant.description}
                 </Text>
-              </Text>
+              </VStack>
             </HStack>
           </Box>
+        </Box>
+        <Box>
+          <VStack bgColor="white" p="1">
+            <Text fontSize="15" marginLeft="1">
+              {merchant.location.address}
+            </Text>
+            <Text fontSize="20" marginLeft="1" fontWeight="bold">
+              {'LATEST PICK UP: ' +
+                merchant.deadline?.toLocaleDateString(undefined, {
+                  hour: 'numeric',
+                  minute: '2-digit',
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+                })}
+            </Text>
+          </VStack>
+        </Box>
+
+        <VStack space="4" m="4">
+          {(items || []).map((item) => (
+            <ItemCard
+              key={item.id}
+              item={item}
+              quantity={quantityMap[item.id] ?? 0}
+              onQuantityChange={(newQuantity) =>
+                setQuantityMap((currentValue) => ({
+                  ...currentValue,
+                  [item.id]: newQuantity,
+                }))
+              }
+            ></ItemCard>
+          ))}
+          {(items || []).map((item) => (
+            <ItemCard
+              key={item.id}
+              item={item}
+              quantity={quantityMap[item.id] ?? 0}
+              onQuantityChange={(newQuantity) =>
+                setQuantityMap((currentValue) => ({
+                  ...currentValue,
+                  [item.id]: newQuantity,
+                }))
+              }
+            ></ItemCard>
+          ))}
           {(items || []).map((item) => (
             <ItemCard
               key={item.id}
@@ -146,16 +195,15 @@ function RestaurantScreen({
               p="1.5"
               space="2"
             >
-              <Text>
-                <Heading testID="reviews" fontSize="lg" fontWeight="bold">
-                  Reviews:
-                </Heading>
+              <Text style={{ textAlign: 'center' }}>
+                You have reached the end
               </Text>
             </HStack>
           </Box>
         </VStack>
       </ScrollView>
       <Button
+        style={{ backgroundColor: 'forestgreen' }}
         onPress={async () => {
           // check if all values are 0
           if (Object.entries(quantityMap).every((item) => item[1] === 0)) {
