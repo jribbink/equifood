@@ -37,7 +37,7 @@ export async function render(
   await bootstrapApp(store);
 
   const $token = new BehaviorSubject<string | null>(null);
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/no-empty-function
   let setJwtFn: Function = () => {};
 
   function Wrapper({ children }: PropsWithChildren<unknown>): JSX.Element {

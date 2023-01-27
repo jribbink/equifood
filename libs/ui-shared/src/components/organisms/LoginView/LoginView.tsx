@@ -1,9 +1,7 @@
-import { AppDispatch } from '../../../redux/store';
 import { Box, Button, Text } from 'native-base';
 import { useState } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { useAuth } from 'libs/ui-shared/src/hooks';
+import { useAuth } from '../../../hooks';
 
 interface LoginViewProps {
   allowedRoles: string[];
