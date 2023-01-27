@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useStore } from 'react-redux';
-import { RootState } from '../../redux/store';
 
 import CoreLayout from '../CoreLayout/CoreLayout';
 import { Animated, Dimensions } from 'react-native';
 import { Box } from 'native-base';
 import AuthLayout from '../AuthLayout/AuthLayout';
+import { useAuth } from '@equifood/ui-shared';
 
 const RootLayout = () => {
-  const store = useStore<RootState>();
-  const jwt = useSelector<RootState, string | null>(
-    () => store.getState().auth.jwt
-  );
-  const [loggedIn, setLoggedIn] = useState(!!jwt);
+  const { token } = useAuth();
+  const [loggedIn, setLoggedIn] = useState(!!token);
   useEffect(() => {
-    setLoggedIn(!!jwt);
-  }, [jwt]);
+    setLoggedIn(!!token);
+  }, [token]);
 
   const [showLogin, setShowLogin] = useState(false);
   const [showCore, setShowCore] = useState(false);

@@ -1,13 +1,18 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useEffect } from 'react';
 import { render as defaultRender } from '@testing-library/react-native';
 import type { RenderOptions } from '@testing-library/react';
 import { Provider } from 'react-redux';
 
 // As a basic setup, import your same slice reducers
 import { NativeBaseProvider } from 'native-base';
-import { PreloadedState, Store } from '@reduxjs/toolkit';
+import { PreloadedState } from '@reduxjs/toolkit';
 import { bootstrapApp } from '../util/bootstrap';
 import { AppStore, RootState, setupStore } from '../redux/store';
+import { EquifoodCoreContext } from '../context';
+import appConfig from '../config/app-config';
+import { useAuth } from '../hooks';
+
+import { BehaviorSubject } from 'rxjs';
 
 // This type interface extends the default options for render from RTL, as well
 // as allows the user to specify other things such as initialState, store.
@@ -31,11 +36,33 @@ export async function render(
 ) {
   await bootstrapApp(store);
 
+  const $token = new BehaviorSubject<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/no-empty-function
+  let setJwtFn: Function = () => {};
+
   function Wrapper({ children }: PropsWithChildren<unknown>): JSX.Element {
+    function InnerWrapper({
+      children,
+    }: PropsWithChildren<unknown>): JSX.Element {
+      const { setJwt, token } = useAuth();
+
+      useEffect(() => {
+        $token.next(token);
+      }, [token]);
+
+      useEffect(() => {
+        setJwtFn = setJwt;
+      }, [setJwt]);
+
+      return <>{children}</>;
+    }
+
     return (
       <Provider store={store}>
         <NativeBaseProvider initialWindowMetrics={inset}>
-          {children}
+          <EquifoodCoreContext config={{ apiUrl: appConfig?.['apiUrl'] }}>
+            <InnerWrapper>{children}</InnerWrapper>
+          </EquifoodCoreContext>
         </NativeBaseProvider>
       </Provider>
     );
@@ -45,6 +72,10 @@ export async function render(
   return {
     ui,
     store,
+    auth: {
+      setJwt: setJwtFn,
+      $token,
+    },
     ...defaultRender(ui, { wrapper: Wrapper, ...renderOptions }),
   };
 }
