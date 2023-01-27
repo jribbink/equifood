@@ -1,6 +1,5 @@
-import { NavigationProp } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { Box, HStack, Text, VStack } from 'native-base';
+import { Box, HStack, Text } from 'native-base';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { Alert, GestureResponderEvent } from 'react-native';
 
@@ -18,7 +17,7 @@ export function BackButton({ onPress, confirmationString }: BackButtonProps) {
         style: 'default',
       },
       {
-        text: 'Go Back',
+        text: 'No, thanks',
         onPress: () => console.log('staying on merchant screen'),
         style: 'cancel',
       },
@@ -26,7 +25,7 @@ export function BackButton({ onPress, confirmationString }: BackButtonProps) {
   };
   const onPressHandler = confirmationString ? confirmThenBack : onPress;
   return (
-    <TouchableOpacity onPress={onPressHandler}>
+    <TouchableOpacity style={{ width: 100 }} onPress={onPressHandler}>
       <Box backgroundColor="green.500" p="3" px="4" rounded="full">
         <HStack space="2" alignItems="center">
           <Ionicons name="arrow-back-circle-outline" size={32} color="black" />
