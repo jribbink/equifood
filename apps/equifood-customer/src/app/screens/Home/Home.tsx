@@ -3,6 +3,7 @@ import { Box, ScrollView, View, VStack } from 'native-base';
 import { Merchant } from '@equifood/api-interfaces';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import { MerchantCard } from '@equifood/ui-shared';
+import { Appearance, StyleSheet, TextInput } from 'react-native';
 import {
   useLocation,
   MerchantMap,
@@ -13,6 +14,7 @@ import {
 import { Animated, LayoutRectangle } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useHeaderHeight } from '@react-navigation/elements';
+import { serialize } from 'v8';
 
 const MerchantFilters: { [key: string]: MenuItem } = {
   burgers: {
@@ -29,10 +31,13 @@ const MerchantFilters: { [key: string]: MenuItem } = {
 const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
   const [selectedItemKey, setSelectedItemKey] = useState<string | null>(null);
   const { merchants } = useMerchants();
+  const [filteredMerchants, setFilteredMerchants] = useState<Merchant[]>();
 
   function onChangeFilter(filter: keyof typeof MerchantFilters) {
     setSelectedItemKey(filter ? String(filter) : null);
   }
+
+  const [searchFilter, setSearchFilter] = useState('');
 
   function onMerchantPress(merchant: Merchant) {
     navigation.navigate('merchant', { merchant });
@@ -49,6 +54,22 @@ const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
   const headerHeight = useHeaderHeight();
 
   const mapBottom = useRef(new Animated.Value(0)).current;
+
+  const searchMerchants = (text: string) => {
+    setSearchFilter(text);
+    if (text && merchants != undefined) {
+      const newMerchants = merchants.filter(function (merchant) {
+        const merchantName = merchant.name
+          ? merchant.name.toUpperCase()
+          : ''.toUpperCase();
+        const textData = text.toUpperCase();
+        return merchantName.indexOf(textData) > -1;
+      });
+      setFilteredMerchants(newMerchants);
+    } else {
+      setFilteredMerchants(merchants);
+    }
+  };
 
   useEffect(() => {
     navigation.setOptions({
@@ -78,6 +99,22 @@ const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
     }).start();
   }, [point, headerHeight, headerOffset]);
 
+  useEffect(() => {
+    searchMerchants('');
+  }, []);
+
+  const colorScheme = Appearance.getColorScheme();
+
+  const styles = StyleSheet.create({
+    input: {
+      height: 40,
+      margin: 12,
+      borderWidth: 1,
+      padding: 10,
+      borderRadius: 50,
+    },
+  });
+
   return (
     <View
       style={{
@@ -93,6 +130,7 @@ const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
       {userLocation ? (
         <MerchantMap
           merchants={merchants}
+          darkMode={colorScheme == 'dark'}
           initialRegion={{
             latitude: userLocation.latitude,
             longitude: userLocation.longitude,
@@ -111,7 +149,6 @@ const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
           }
         ></MerchantMap>
       ) : null}
-
       {layout?.height ? (
         <Box
           position="absolute"
@@ -148,13 +185,23 @@ const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
               testID="home-screen"
               bounces={false}
             >
-              {/*<ScrollingMenu
+              {
+                <TextInput
+                  style={styles.input}
+                  onChangeText={searchMerchants}
+                  placeholder="Search"
+                  value={searchFilter}
+                  testID="searchInput"
+                  autoCapitalize="none"
+                />
+                /*<ScrollingMenu
                 items={MerchantFilters}
                 selectedKey={selectedItemKey}
                 onChange={onChangeFilter}
-          ></ScrollingMenu>*/}
+          ></ScrollingMenu>*/
+              }
               <VStack space="4" m="4">
-                {(merchants || []).map((m) => (
+                {(filteredMerchants || []).map((m) => (
                   <Box key={m.id} shadow="2">
                     <MerchantCard
                       merchant={m}
