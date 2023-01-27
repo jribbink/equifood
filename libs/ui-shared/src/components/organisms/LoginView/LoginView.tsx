@@ -27,36 +27,34 @@ export function LoginView({ allowedRoles }: LoginViewProps) {
 
   return (
     <Box flex={1}>
-      <Box flex={1} testID="login-screen">
-        <Text testID="login" style={{ padding: 10, fontSize: 24 }}>
-          Login
-        </Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setEmail}
-          value={email}
-          testID="emailInput"
-          autoCapitalize="none"
-        />
-        <Text style={{ padding: 10, fontSize: 24 }}>Password</Text>
-        <TextInput
-          secureTextEntry={true}
-          style={styles.input}
-          onChangeText={setPassword}
-          value={password}
-          testID="pwInput"
-        />
+      <Text testID="login" style={{ padding: 10, fontSize: 24 }}>
+        Login
+      </Text>
+      <TextInput
+        style={styles.input}
+        onChangeText={setEmail}
+        value={email}
+        testID="emailInput"
+        autoCapitalize="none"
+      />
+      <Text style={{ padding: 10, fontSize: 24 }}>Password</Text>
+      <TextInput
+        secureTextEntry={true}
+        style={styles.input}
+        onChangeText={setPassword}
+        value={password}
+        testID="pwInput"
+      />
 
-        <Button
-          onPress={() => {
-            authenticate({ email, password });
-          }}
-          color="#841584"
-          testID="loginButton"
-        >
-          Login
-        </Button>
-      </Box>
+      <Button
+        onPress={() => {
+          authenticate({ email, password });
+        }}
+        color="#841584"
+        testID="loginButton"
+      >
+        Login
+      </Button>
     </Box>
   );
 }

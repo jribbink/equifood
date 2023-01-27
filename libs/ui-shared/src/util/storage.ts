@@ -40,6 +40,4 @@ class AppStorage<T> {
   }
 }
 
-const storage = new AppStorage<StorageState>();
-
-export default storage;
+export const storage = new AppStorage<StorageState>();

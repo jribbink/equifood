@@ -7,6 +7,7 @@ import { fireEvent, act, waitFor } from '@testing-library/react-native';
 import { afterAll, afterEach, beforeAll, expect } from '@jest/globals';
 import { login_handlers } from '../../../test-utils/mocks/handlers';
 import { setupServer } from 'msw/node';
+import { useAuth } from '@equifood/ui-shared';
 
 const server = setupServer(...login_handlers);
 
@@ -26,7 +27,21 @@ test('renders correctly', async () => {
 });
 
 test('logs in properly', async () => {
-  const { store, getByTestId } = await render(<Login></Login>);
+  let tokenVal: string | null;
+
+  function Wrapper({ children }: any) {
+    const { token } = useAuth();
+    React.useEffect(() => {
+      tokenVal = token;
+    }, [token]);
+    return children;
+  }
+
+  const { store, getByTestId } = await render(
+    <Wrapper>
+      <Login></Login>
+    </Wrapper>
+  );
 
   // input email
   act(() => {
@@ -53,7 +68,7 @@ test('logs in properly', async () => {
   // test that redux has changed
   await waitFor(
     () =>
-      expect(store.getState().auth.jwt).toEqual(
+      expect(tokenVal).toEqual(
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozjgNryP4J3jVmNHl0w5N_XgL0n3I9PlFUP0THsR8U'
       ),
     { timeout: 1000 }
