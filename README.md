@@ -91,6 +91,8 @@ Shared types for the frontend and backend can be found in the `lib/api-interface
 
 These types are shared between all of the TypeScript apps within this project for easy code reuse,
 
+Additionally, shared UI/UX components + React hooks, etc. can be found in `lib/ui-shared`
+
 ## License
 
 Copyright © 2022 Equifood.
