@@ -12,12 +12,12 @@ export function BackButton({ onPress, confirmationString }: BackButtonProps) {
   const confirmThenBack = () => {
     Alert.alert('Back?', confirmationString, [
       {
-        text: 'Confirm',
+        text: 'Leave',
         onPress: onPress,
         style: 'default',
       },
       {
-        text: 'No, thanks',
+        text: 'Stay',
         onPress: () => console.log('staying on merchant screen'),
         style: 'cancel',
       },
