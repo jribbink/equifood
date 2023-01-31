@@ -1,1 +1,1 @@
-export * from './equifood-config-context';
+export * from './equifood-context';
