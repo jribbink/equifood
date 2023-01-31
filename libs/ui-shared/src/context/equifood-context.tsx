@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import storage from '../util/storage';
+import { storage } from '../util/storage';
 
 export interface IEquifoodConfig {
   apiUrl: string;
