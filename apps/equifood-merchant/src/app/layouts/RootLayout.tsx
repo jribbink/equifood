@@ -42,7 +42,9 @@ function RootLayout() {
   return (
     <View flex={1} testID="core-layout">
       <NavigationContainer ref={navigation}>
-        <Stack.Navigator>
+        <Stack.Navigator
+          screenOptions={{ gestureEnabled: false, headerShown: false }}
+        >
           <Stack.Screen name="login" component={LoginScreen}></Stack.Screen>
           <Stack.Screen name="core" component={CoreLayout}></Stack.Screen>
         </Stack.Navigator>
