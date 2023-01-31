@@ -34,8 +34,6 @@ function RootLayout() {
   const navigation = createNavigationContainerRef<RootNavigationParams>();
   const { token } = useAuth();
 
-  console.log(token);
-
   useEffect(() => {
     if (token) navigation.navigate('core', { screen: 'home' });
     else navigation.navigate('login');
