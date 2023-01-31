@@ -8,5 +8,4 @@ export type AppConfig = {
 
 export type ExpoConfig = Omit<BaseExpoConfig, 'extra'> & { extra: AppConfig };
 
-const appConfig = Constants.expoConfig.extra;
-export default appConfig;
+export const appConfig = Constants.expoConfig?.extra;
