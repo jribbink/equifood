@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export interface StorageState {
-  jwt: string;
+  jwt: string | null;
 }
 
 type Callback = (error?: Error | null) => void;
@@ -21,7 +21,7 @@ class AppStorage<T> {
     );
   }
 
-  async set(key: keyof T, value: object | null, callback?: Callback) {
+  async set<K extends keyof T>(key: K, value: T[K], callback?: Callback) {
     if (value)
       return AsyncStorage.setItem(String(key), JSON.stringify(value), callback);
     else return this.remove(key);
