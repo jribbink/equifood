@@ -39,23 +39,30 @@ function RestaurantScreen({
     },
   });
 
-  const cancelConfirmAlert = () => {
-    Alert.alert('Cancel?', 'Are you sure you want to go back?', [
-      {
-        text: 'Confirm',
-        onPress: () => navigation.navigate('core', { screen: 'home' }),
-        style: 'default',
-      },
-      {
-        text: 'Go Back',
-        onPress: () => console.log('staying on merchant screen'),
-        style: 'cancel',
-      },
-    ]);
-  };
+  React.useEffect(
+    () =>
+      navigation.addListener('beforeRemove', (e) => {
+        // Prevent default behavior of leaving the screen
+        e.preventDefault();
+
+        // Prompt the user before leaving the screen
+        Alert.alert('Cancel?', 'Are you sure you want to go back?', [
+          {
+            text: 'Confirm',
+            onPress: () => navigation.dispatch(e.data.action),
+            style: 'default',
+          },
+          {
+            text: 'Go Back',
+            onPress: () => console.log('staying on merchant screen'),
+            style: 'cancel',
+          },
+        ]);
+      }),
+    [navigation]
+  );
 
   if (!merchant) return null;
-
   const items = merchant.items;
 
   return (
