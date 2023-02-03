@@ -12,5 +12,5 @@ export interface Merchant {
   inventory: number;
   items: Item[];
   price: number | null;
-  deadline: Date | null;
+  deadline:  | null;
 }
