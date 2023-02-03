@@ -14,7 +14,7 @@ import { Merchant } from '@equifood/api-interfaces';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import React, { useState } from 'react';
 import { useMerchant, useAxios } from '@equifood/ui-shared';
-import { ItemCard, BackButton } from '@equifood/ui-shared';
+import { ItemCard } from '@equifood/ui-shared';
 
 export interface MerchantScreenParams {
   merchant: Merchant;
