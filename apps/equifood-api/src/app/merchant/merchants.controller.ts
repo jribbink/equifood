@@ -6,8 +6,12 @@ export class MerchantsController {
   constructor(private merchantService: MerchantsService) {}
 
   @Get()
-  getMechants() {
-    return this.merchantService.getAll();
+  getMechants(@Param('searchQuery') searchQuery: string) {
+    if(searchQuery){
+      return this.merchantService.search(searchQuery);
+    }else{
+      return this.merchantService.getAll();
+    }
   }
 
   @Get(':merchantId')

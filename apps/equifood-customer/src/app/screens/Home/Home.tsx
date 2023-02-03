@@ -29,15 +29,13 @@ const MerchantFilters: { [key: string]: MenuItem } = {
 };
 
 const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
+  const [searchFilter, setSearchFilter] = useState('');
   const [selectedItemKey, setSelectedItemKey] = useState<string | null>(null);
-  const { merchants } = useMerchants();
-  const [filteredMerchants, setFilteredMerchants] = useState<Merchant[]>();
+  const {merchants}=useMerchants(searchFilter);
 
   function onChangeFilter(filter: keyof typeof MerchantFilters) {
     setSelectedItemKey(filter ? String(filter) : null);
   }
-
-  const [searchFilter, setSearchFilter] = useState('');
 
   function onMerchantPress(merchant: Merchant) {
     navigation.navigate('merchant', { merchant });
@@ -54,22 +52,6 @@ const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
   const headerHeight = useHeaderHeight();
 
   const mapBottom = useRef(new Animated.Value(0)).current;
-
-  const searchMerchants = (text: string) => {
-    setSearchFilter(text);
-    if (text && merchants != undefined) {
-      const newMerchants = merchants.filter(function (merchant) {
-        const merchantName = merchant.name
-          ? merchant.name.toUpperCase()
-          : ''.toUpperCase();
-        const textData = text.toUpperCase();
-        return merchantName.indexOf(textData) > -1;
-      });
-      setFilteredMerchants(newMerchants);
-    } else {
-      setFilteredMerchants(merchants);
-    }
-  };
 
   useEffect(() => {
     navigation.setOptions({
@@ -98,10 +80,6 @@ const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
       duration: 500,
     }).start();
   }, [point, headerHeight, headerOffset]);
-
-  useEffect(() => {
-    searchMerchants('');
-  }, []);
 
   const colorScheme = Appearance.getColorScheme();
 
@@ -188,7 +166,7 @@ const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
               {
                 <TextInput
                   style={styles.input}
-                  onChangeText={searchMerchants}
+                  onChangeText={setSearchFilter}
                   placeholder="Search"
                   value={searchFilter}
                   testID="searchInput"
@@ -201,7 +179,7 @@ const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
           ></ScrollingMenu>*/
               }
               <VStack space="4" m="4">
-                {(filteredMerchants || []).map((m) => (
+                {(merchants || []).map((m) => (
                   <Box key={m.id} shadow="2">
                     <MerchantCard
                       merchant={m}
