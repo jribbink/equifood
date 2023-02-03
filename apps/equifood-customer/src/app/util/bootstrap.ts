@@ -1,9 +1,7 @@
 import axios from 'axios';
 import { Animated } from 'react-native';
-import { stopCoverage } from 'v8';
 import appConfig from '../config/app-config';
 import { setupStore } from '../../app/redux/store';
-import storage from './storage';
 
 export async function bootstrapApp(store = setupStore()) {
   // Assign axios base URL

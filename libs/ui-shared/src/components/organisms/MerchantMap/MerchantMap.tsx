@@ -10,7 +10,7 @@ interface MerchantMapProps extends React.ComponentProps<typeof Animated.View> {
   mapViewProps?: MapViewProps;
   onMerchantChange?: (merchant: Merchant | null) => void;
   onMerchantPress?: (merchant: Merchant) => void;
-  darkMode: boolean | undefined;
+  darkMode: boolean;
 }
 
 export function MerchantMap({

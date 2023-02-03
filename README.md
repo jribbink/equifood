@@ -6,7 +6,7 @@ This is a capstone (COSC 499) project for the Equifood App.
 
 ### Installation & Configuration
 
-1. Install [Node JS](https://nodejs.org/en/) v16 or later
+1. Install [Node JS](https://nodejs.org/en/) v16
 2. Run `npm install`
 3. Install and configure [MariaDB](https://mariadb.org/)
 4. Create a configuration file `.env` in the `apps/equifood-api` and `apps/equifood-customer` directory (use `example.env` for reference)
@@ -90,6 +90,8 @@ The backend for the project (NestJS) can be found in the `apps/equifood-api` dir
 Shared types for the frontend and backend can be found in the `lib/api-interfaces` directory.
 
 These types are shared between all of the TypeScript apps within this project for easy code reuse,
+
+Additionally, shared UI/UX components + React hooks, etc. can be found in `lib/ui-shared`
 
 ## License
 
