@@ -17,11 +17,14 @@ export class MerchantsService {
     return this.merchantRepository.find();
   }
 
-  search(searchQuery: string){
-    return this.merchantRepository.createQueryBuilder().select()
-    .where('name ILIKE :searchQuery', {searchQuery: `%${searchQuery}%`})
-    .orWhere('description ILIKE :searchQuery', {searchQuery: `%${searchQuery}%`})
-    .getMany();
+  search(searchQuery: string) {
+    return this.merchantRepository.find({
+      where: [
+        {
+          name: Like(`%${searchQuery}%`),
+        },
+      ],
+    });
   }
 
   async get(merchantId: string) {

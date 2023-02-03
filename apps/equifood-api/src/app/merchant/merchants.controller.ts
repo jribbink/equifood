@@ -5,11 +5,11 @@ import { MerchantsService } from './merchants.service';
 export class MerchantsController {
   constructor(private merchantService: MerchantsService) {}
 
-  @Get()
+  @Get(':searchQuery|')
   getMechants(@Param('searchQuery') searchQuery: string) {
-    if(searchQuery){
+    if (searchQuery) {
       return this.merchantService.search(searchQuery);
-    }else{
+    } else {
       return this.merchantService.getAll();
     }
   }
