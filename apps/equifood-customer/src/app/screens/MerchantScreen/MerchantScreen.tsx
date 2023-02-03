@@ -48,12 +48,12 @@ function RestaurantScreen({
         // Prompt the user before leaving the screen
         Alert.alert('Cancel?', 'Are you sure you want to go back?', [
           {
-            text: 'Confirm',
+            text: "I'm Sure",
             onPress: () => navigation.dispatch(e.data.action),
             style: 'default',
           },
           {
-            text: 'Go Back',
+            text: 'Cancel',
             onPress: () => console.log('staying on merchant screen'),
             style: 'cancel',
           },
@@ -68,14 +68,6 @@ function RestaurantScreen({
   return (
     <Box height="full">
       <ScrollView testID="view" flex={1}>
-        <BackButton
-          onPress={() => {
-            navigation.navigate('core', { screen: 'home' });
-          }}
-          confirmationString={
-            'Are you sure you want to go back? (This will cancel your order.)'
-          }
-        />
         <Box h="200">
           <Image
             width="100%"

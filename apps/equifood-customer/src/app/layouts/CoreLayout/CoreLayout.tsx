@@ -74,12 +74,19 @@ function CoreLayout() {
           <Stack.Screen
             name="core"
             component={CoreNavigation}
-            options={{ headerShown: true, title: 'Back' }}
+            options={{ headerShown: false }}
           ></Stack.Screen>
           <Stack.Screen
             name="merchant"
             component={MerchantScreen}
-            options={{ headerBackTitleVisible: true }}
+            options={{
+              headerBackTitleVisible: true,
+              headerBackTitle: 'Back',
+              headerTitle: '',
+              headerStyle: { backgroundColor: 'forestgreen' },
+              headerTintColor: '#ffffff',
+              headerBackTitleStyle: { fontWeight: 'bold' },
+            }}
           ></Stack.Screen>
           <Stack.Screen
             name="orderConfirm"
