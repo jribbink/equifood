@@ -12,8 +12,8 @@ import {
 import { StyleSheet, Alert } from 'react-native';
 import { Merchant } from '@equifood/api-interfaces';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
-import React, { useState } from 'react';
-import { useMerchant, useAxios } from '@equifood/ui-shared';
+import React, { useEffect, useRef, useState } from 'react';
+import { useMerchant } from '@equifood/ui-shared';
 import { ItemCard } from '@equifood/ui-shared';
 
 export interface MerchantScreenParams {
@@ -24,40 +24,40 @@ function RestaurantScreen({
   navigation,
   route,
 }: StackScreenProps<CoreStackParams, 'merchant'>) {
-  const axios = useAxios();
   const { merchant } = useMerchant(route.params.merchant.id);
   const [quantityMap, setQuantityMap] = useState<{ [itemId: string]: number }>(
     {}
   );
 
-  const styles = StyleSheet.create({
-    input: {
-      height: 40,
-      margin: 12,
-      borderWidth: 1,
-      padding: 10,
-    },
-  });
+  // State reference for beforeRemove callback
+  const quantityMapRef = useRef<{ [itemId: string]: number }>({});
+  quantityMapRef.current = quantityMap;
 
-  React.useEffect(
+  useEffect(
     () =>
       navigation.addListener('beforeRemove', (e) => {
+        // Don't halt navigation if empty order
+        if (Object.values(quantityMapRef.current).every((v) => !v)) return;
+
         // Prevent default behavior of leaving the screen
         e.preventDefault();
 
         // Prompt the user before leaving the screen
-        Alert.alert('Cancel?', 'Are you sure you want to go back?', [
-          {
-            text: "I'm Sure",
-            onPress: () => navigation.dispatch(e.data.action),
-            style: 'default',
-          },
-          {
-            text: 'Cancel',
-            onPress: () => console.log('staying on merchant screen'),
-            style: 'cancel',
-          },
-        ]);
+        Alert.alert(
+          'Discard order?',
+          'Are you sure you want to discard this order?',
+          [
+            {
+              text: "I'm Sure",
+              onPress: () => navigation.dispatch(e.data.action),
+              style: 'default',
+            },
+            {
+              text: 'Cancel',
+              style: 'cancel',
+            },
+          ]
+        );
       }),
     [navigation]
   );
@@ -163,9 +163,6 @@ function RestaurantScreen({
             navigation.navigate('orderConfirm', {
               merchant: merchant,
               items: items,
-              /*quantities: Object.entries(quantityMap).map(([id, quantity]) => ({
-                [id]: quantity
-              })),*/
               quantities: quantityMap,
             });
           }
