@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { instanceToPlain, serialize } from 'class-transformer';
 import { Repository } from 'typeorm';
+import { User } from '../users/entities/user.entity';
 import { Item } from './entities/item.entity';
 import { Merchant } from './entities/merchant.entity';
 
@@ -24,5 +25,9 @@ export class MerchantsService {
     });
     if (!merchant) throw new NotFoundException();
     return merchant;
+  }
+
+  async getMerchantFromUser(user: User) {
+    return this.merchantRepository.findOneBy({ user: { id: user.id } });
   }
 }
