@@ -5,13 +5,15 @@ import { MerchantsService } from './merchants.service';
 export class MerchantsController {
   constructor(private merchantService: MerchantsService) {}
 
-  @Get(':searchQuery|')
-  getMechants(@Param('searchQuery') searchQuery: string) {
-    if (searchQuery) {
-      return this.merchantService.search(searchQuery);
-    } else {
-      return this.merchantService.getAll();
-    }
+  @Get()
+  getAllMechants() {
+    console.log('help');
+    return this.merchantService.getAll();
+  }
+
+  @Get(':searchQuery')
+  getFilteredMechants(@Param('searchQuery') searchQuery: string) {
+    return this.merchantService.search(searchQuery);
   }
 
   @Get(':merchantId')
