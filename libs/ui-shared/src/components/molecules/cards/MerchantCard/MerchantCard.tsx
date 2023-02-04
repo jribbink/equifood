@@ -1,7 +1,7 @@
 import { Box, Heading, HStack, Image, Text } from 'native-base';
 import { Merchant } from '@equifood/api-interfaces';
 import { GestureResponderEvent, TouchableHighlight } from 'react-native';
-import { useLocation } from 'libs/ui-shared/src/hooks';
+import { useLocation, useMerchant } from 'libs/ui-shared/src/hooks';
 
 interface Props {
   merchant: Merchant;
@@ -35,6 +35,12 @@ export const MerchantCard = ({ merchant, onPress }: Props) => {
     distance=Math.round(getDistanceFromLatLonInKm(merchant.location.latitude, merchant.location.longitude, userLocation.latitude, userLocation.longitude));
   }
 
+  const items=useMerchant(merchant.id).merchant?.items;
+  var numItems=items?.reduce((s)=>s=s+1, 0);
+  var price=items?.reduce(function(prev, curr) {
+    return prev.price < curr.price ? prev : curr;
+}).price;
+
   return (
     <TouchableHighlight
       onPress={onPress}
@@ -55,16 +61,30 @@ export const MerchantCard = ({ merchant, onPress }: Props) => {
             bottom="0"
             borderTopRadius="5"
           />
-          <Box flex={1} justifyContent="flex-end" p="1.5">
-            <Image
-              source={{ uri: merchant.logo_url }}
-              alt={merchant.name}
-              backgroundColor="white"
-              borderRadius="full"
-              width="16"
-              height="16"
-            ></Image>
-          </Box>
+          <HStack flex={1} justifyContent="flex-end" p="1.5">
+            <Box flex={1} justifyContent="flex-end" p="1.5">
+            <Box backgroundColor={'white'} width="16" height="8" borderRadius="5" margin={"2"}>
+                <Text fontSize="md" fontWeight="bold" margin="auto">
+                  {numItems} left
+                </Text>
+              </Box>
+              <Image
+                source={{ uri: merchant.logo_url }}
+                alt={merchant.name}
+                backgroundColor="white"
+                borderRadius="full"
+                width="16"
+                height="16"
+              ></Image>
+            </Box>
+            <Box justifyContent="flex-end">
+              <Box backgroundColor={'white'} width="16" height="8" margin="auto" borderRadius="5">
+                <Text fontSize="md" fontWeight="bold" margin="auto">
+                  ${price}
+                </Text>
+              </Box>
+            </Box>
+          </HStack>
         </Box>
 
         <HStack
