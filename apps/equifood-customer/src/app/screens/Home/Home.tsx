@@ -31,7 +31,7 @@ const MerchantFilters: { [key: string]: MenuItem } = {
 const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
   const [searchFilter, setSearchFilter] = useState('');
   const [selectedItemKey, setSelectedItemKey] = useState<string | null>(null);
-  const {merchants}=useMerchants(searchFilter);
+  const { merchants } = useMerchants(searchFilter);
 
   function onChangeFilter(filter: keyof typeof MerchantFilters) {
     setSelectedItemKey(filter ? String(filter) : null);
