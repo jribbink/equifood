@@ -1,5 +1,5 @@
 import { Box } from 'native-base';
-import { ReactElement, ReactNode, useEffect, useRef } from 'react';
+import { ReactElement, ReactNode, useCallback, useEffect, useRef } from 'react';
 import { Animated, PanResponder } from 'react-native';
 import Svg, { Rect, RectProps } from 'react-native-svg';
 
@@ -12,6 +12,7 @@ type ArgumentTypes<F extends (props: any) => ReactElement | null> = F extends (
 interface ActionSheetProps extends ArgumentTypes<typeof Box> {
   point: number;
   points: number[];
+  enabled: boolean;
   onPointChange: (point: number) => void;
   children: ReactNode | undefined;
   grabIndicatorProps?: RectProps;
@@ -22,6 +23,7 @@ interface ActionSheetProps extends ArgumentTypes<typeof Box> {
 export function ActionSheet({
   point,
   points,
+  enabled,
   onPointChange,
   children,
   grabIndicatorProps,
@@ -34,6 +36,23 @@ export function ActionSheet({
   const translateY = useRef(Animated.add(start, pan)).current;
   const _pan = useRef(0);
   const _start = useRef(points[point]);
+  const enabledRef = useRef(enabled);
+  enabledRef.current = enabled;
+
+  const panToPoint = useCallback(
+    (point: number) => {
+      Animated.timing(start, {
+        toValue: points[point],
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+    },
+    [start, points]
+  );
+
+  useEffect(() => {
+    panToPoint(point);
+  }, [point, panToPoint]);
 
   useEffect(() => {
     start.addListener(({ value }) => {
@@ -44,7 +63,7 @@ export function ActionSheet({
 
   const panResponder = useRef(
     PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
+      onStartShouldSetPanResponder: () => enabledRef.current,
       onPanResponderStart: (e, gestureState) => {
         start.stopAnimation();
       },
@@ -62,20 +81,16 @@ export function ActionSheet({
         pan.setValue(0);
 
         const goal = startVal;
-        const [closest, closest_idx] = points.reduce(
+        const closest_idx = points.reduce(
           ([best, best_idx], curr, idx) => {
             return Math.abs(curr - goal) < Math.abs(best - goal)
               ? [curr, idx]
               : [best, best_idx];
           },
           [Infinity, -1]
-        );
+        )[1];
 
-        Animated.timing(start, {
-          toValue: closest,
-          duration: 500,
-          useNativeDriver: true,
-        }).start();
+        panToPoint(closest_idx);
         onPointChange(closest_idx);
       },
     })
