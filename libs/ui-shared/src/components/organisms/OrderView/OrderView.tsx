@@ -1,4 +1,4 @@
-import { Text, VStack } from 'native-base';
+import { Text, HStack, VStack } from 'native-base';
 import { Item, Merchant } from '@equifood/api-interfaces';
 import { CheckoutItemCard } from '../../molecules/cards/CheckoutItemCard/CheckoutItemCard';
 
@@ -37,14 +37,20 @@ export function OrderView({ items, quantities, merchant }: OrderViewProps) {
           ></CheckoutItemCard>
         ))}
       </VStack>
-      <Text testID="totalPrice" fontSize="20" alignSelf="center" padding="3">
-        Total Price: {totalPrice}$
-      </Text>
+      <HStack>
+        <Text alignSelf="center" fontSize={20}>
+          Order Total:
+        </Text>
+        <Text testID="totalPrice" fontSize="20" alignSelf="center" padding="3">
+          $ {totalPrice}
+        </Text>
+      </HStack>
+
       <Text testID="address" fontSize="20" alignSelf="center" padding="3">
-        Address: {merchant?.location?.address}
+        Pick up at: {merchant?.location?.address}
       </Text>
       <Text testID="pickup" fontSize="20" alignSelf="center" padding="3">
-        PickupTime: now-15 min
+        PickupTime: Now - 15 min
       </Text>
     </VStack>
   );

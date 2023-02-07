@@ -16,25 +16,48 @@ export const CheckoutItemCard = ({ item, quantity }: Props) => {
         p="1.5"
         space="5"
       >
-        <Box flexShrink={1}>
-          <Heading testID="item-name" fontSize="md" fontWeight="bold">
-            {item.name}
-          </Heading>
-          <Text testID="new-price" fontSize="sm">
-            {'Price: ' + item.price}
-          </Text>
-          <Text
-            testID="old-price"
-            fontSize="xs"
-            fontStyle="italic"
-            style={{ textDecorationLine: 'line-through' }}
-          >
-            {'Old: ' + item.originalPrice}
-          </Text>
-        </Box>
-        <Box>
-          <Text>{quantity}</Text>
-        </Box>
+        <HStack>
+          <Box flexShrink={1}>
+            <HStack>
+              <Heading
+                alignSelf="center"
+                marginLeft="4"
+                fontSize="20"
+                fontWeight="bold"
+              >
+                {quantity}{' '}
+              </Heading>
+              <Heading
+                alignSelf="center"
+                testID="item-name"
+                fontSize="20"
+                fontWeight={'normal'}
+              >
+                x {item.name}
+              </Heading>
+              <Text
+                alignSelf="center"
+                marginLeft="3"
+                testID="new-price"
+                fontSize="20"
+              >
+                {'$ ' + item.price.toFixed(2)}
+              </Text>
+              <Text
+                marginLeft="2"
+                testID="old-price"
+                fontSize="15"
+                fontStyle="italic"
+                color={'#ff0000'}
+                style={{ textDecorationLine: 'line-through' }}
+              >
+                {'$ ' + item.originalPrice.toFixed(2)}
+              </Text>
+            </HStack>
+
+            <HStack></HStack>
+          </Box>
+        </HStack>
       </HStack>
     </Box>
   );
