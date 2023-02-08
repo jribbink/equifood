@@ -160,32 +160,6 @@ function RestaurantScreen({
               }
             ></ItemCard>
           ))}
-          {(items || []).map((item) => (
-            <ItemCard
-              key={item.id}
-              item={item}
-              quantity={quantityMap[item.id] ?? 0}
-              onQuantityChange={(newQuantity) =>
-                setQuantityMap((currentValue) => ({
-                  ...currentValue,
-                  [item.id]: newQuantity,
-                }))
-              }
-            ></ItemCard>
-          ))}
-          {(items || []).map((item) => (
-            <ItemCard
-              key={item.id}
-              item={item}
-              quantity={quantityMap[item.id] ?? 0}
-              onQuantityChange={(newQuantity) =>
-                setQuantityMap((currentValue) => ({
-                  ...currentValue,
-                  [item.id]: newQuantity,
-                }))
-              }
-            ></ItemCard>
-          ))}
           <Box borderRadius="5" testID="desc" shadow="2">
             <HStack
               bgColor="white"
