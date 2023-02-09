@@ -19,23 +19,45 @@ export function OrderView({ items, quantities, merchant }: OrderViewProps) {
   }
   return (
     <VStack>
-      <HStack><Text fontSize="20" padding={3} minWidth='35%'>
-      Pick up from
-    </Text>
-      <Text testID="restaurant" fontWeight="extrabold" fontSize="20" paddingTop={3} backgroundColor="green" maxWidth={'30%'} >
-        {merchant.name}
-      </Text></HStack>
-<HStack>
-      <Text fontSize="20" padding={3} minWidth='35%'>Located at</Text>
-      <Text fontWeight='bold' testID="address" fontSize="20" alignSelf="center" width={'60%'}>
-      {merchant?.location?.address}
-    </Text></HStack>
-    
       <HStack>
-      <Text fontSize='20' paddingTop={3} paddingLeft={3} minWidth='35%'>By</Text>
-      <Text fontSize='20' marginTop='3' fontWeight={'bold'} width={'60%'}>Now - 15 min</Text>
+        <Text fontSize="20" padding={3} minWidth="35%">
+          Pick up from
+        </Text>
+        <Text
+          testID="restaurant"
+          fontWeight="extrabold"
+          fontSize="20"
+          paddingTop={3}
+          backgroundColor="green"
+          maxWidth={'30%'}
+        >
+          {merchant.name}
+        </Text>
       </HStack>
-      
+      <HStack>
+        <Text fontSize="20" padding={3} minWidth="35%">
+          Located at
+        </Text>
+        <Text
+          fontWeight="bold"
+          testID="address"
+          fontSize="20"
+          alignSelf="center"
+          width={'60%'}
+        >
+          {merchant?.location?.address}
+        </Text>
+      </HStack>
+
+      <HStack>
+        <Text fontSize="20" paddingTop={3} paddingLeft={3} minWidth="35%">
+          By
+        </Text>
+        <Text fontSize="20" marginTop="3" fontWeight={'bold'} width={'60%'}>
+          Now - 15 min
+        </Text>
+      </HStack>
+
       <VStack paddingTop={5}>
         {(items || []).map((item) => (
           <CheckoutItemCard
@@ -45,15 +67,20 @@ export function OrderView({ items, quantities, merchant }: OrderViewProps) {
           ></CheckoutItemCard>
         ))}
       </VStack>
-      <HStack alignSelf={"flex-end"}>
+      <HStack alignSelf={'flex-end'}>
         <Text textAlign={'right'} alignSelf="center" fontSize={20}>
           Total:
         </Text>
-        <Text testID="totalPrice" fontWeight='bold' fontSize="25" alignSelf="center" padding="3">
+        <Text
+          testID="totalPrice"
+          fontWeight="bold"
+          fontSize="25"
+          alignSelf="center"
+          padding="3"
+        >
           $ {totalPrice.toFixed(2)}
         </Text>
       </HStack>
     </VStack>
-
   );
 }

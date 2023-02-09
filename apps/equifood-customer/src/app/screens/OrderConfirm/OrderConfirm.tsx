@@ -36,7 +36,7 @@ function OrderConfirm({
           navigation.navigate('order', { order: data });
         }}
       >
-        <Text fontSize="24" color='white' fontWeight="bold">
+        <Text fontSize="24" color="white" fontWeight="bold">
           Confirm & Place Order
         </Text>
       </Button>
