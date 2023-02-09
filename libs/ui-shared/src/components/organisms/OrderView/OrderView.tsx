@@ -1,4 +1,4 @@
-import { Text, HStack, VStack } from 'native-base';
+import { Text, HStack, VStack, Box } from 'native-base';
 import { Item, Merchant } from '@equifood/api-interfaces';
 import { CheckoutItemCard } from '../../molecules/cards/CheckoutItemCard/CheckoutItemCard';
 
@@ -19,16 +19,24 @@ export function OrderView({ items, quantities, merchant }: OrderViewProps) {
   }
   return (
     <VStack>
-      <Text
-        testID="restaurant"
-        fontWeight="bold"
-        fontSize="24"
-        alignSelf="center"
-        padding={3}
-      >
+      <HStack><Text fontSize="20" padding={3} minWidth='35%'>
+      Pick up from
+    </Text>
+      <Text testID="restaurant" fontWeight="extrabold" fontSize="20" paddingTop={3} backgroundColor="green" maxWidth={'30%'} >
         {merchant.name}
-      </Text>
-      <VStack paddingBottom={5}>
+      </Text></HStack>
+<HStack>
+      <Text fontSize="20" padding={3} minWidth='35%'>Located at</Text>
+      <Text fontWeight='bold' testID="address" fontSize="20" alignSelf="center" width={'60%'}>
+      {merchant?.location?.address}
+    </Text></HStack>
+    
+      <HStack>
+      <Text fontSize='20' paddingTop={3} paddingLeft={3} minWidth='35%'>By</Text>
+      <Text fontSize='20' marginTop='3' fontWeight={'bold'} width={'60%'}>Now - 15 min</Text>
+      </HStack>
+      
+      <VStack paddingTop={5}>
         {(items || []).map((item) => (
           <CheckoutItemCard
             key={item.id}
@@ -37,21 +45,15 @@ export function OrderView({ items, quantities, merchant }: OrderViewProps) {
           ></CheckoutItemCard>
         ))}
       </VStack>
-      <HStack>
-        <Text alignSelf="center" fontSize={20}>
-          Order Total:
+      <HStack alignSelf={"flex-end"}>
+        <Text textAlign={'right'} alignSelf="center" fontSize={20}>
+          Total:
         </Text>
-        <Text testID="totalPrice" fontSize="20" alignSelf="center" padding="3">
-          $ {totalPrice}
+        <Text testID="totalPrice" fontWeight='bold' fontSize="25" alignSelf="center" padding="3">
+          $ {totalPrice.toFixed(2)}
         </Text>
       </HStack>
-
-      <Text testID="address" fontSize="20" alignSelf="center" padding="3">
-        Pick up at: {merchant?.location?.address}
-      </Text>
-      <Text testID="pickup" fontSize="20" alignSelf="center" padding="3">
-        PickupTime: Now - 15 min
-      </Text>
     </VStack>
+
   );
 }
