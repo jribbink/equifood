@@ -2,6 +2,7 @@ import { Box, Heading, HStack, Image, Text } from 'native-base';
 import { Merchant } from '@equifood/api-interfaces';
 import { GestureResponderEvent, TouchableHighlight } from 'react-native';
 import { useLocation, useMerchant } from 'libs/ui-shared/src/hooks';
+import { getDistanceFromLatLonInKm } from 'libs/ui-shared/src/util/distance-calculator';
 
 interface Props {
   merchant: Merchant;
@@ -9,37 +10,25 @@ interface Props {
 }
 
 export const MerchantCard = ({ merchant, onPress }: Props) => {
+  const userLocation = useLocation();
 
-  function getDistanceFromLatLonInKm(lat1:number, lon1:number, lat2:number, lon2:number) {
-    var R = 6371; // Radius of the earth in km
-    var dLat = deg2rad(lat2-lat1);  // deg2rad below
-    var dLon = deg2rad(lon2-lon1); 
-    var a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-      Math.sin(dLon/2) * Math.sin(dLon/2)
-      ; 
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    var d = R * c; // Distance in km
-    return d;
-  }
-  
-  function deg2rad(deg :number) {
-    return deg * (Math.PI/180)
+  var distance = 0;
+  if (userLocation) {
+    distance = Math.round(
+      getDistanceFromLatLonInKm(
+        merchant.location.latitude,
+        merchant.location.longitude,
+        userLocation.latitude,
+        userLocation.longitude
+      )
+    );
   }
 
-  const userLocation=useLocation();
-
-  var distance=0;
-  if(userLocation){
-    distance=Math.round(getDistanceFromLatLonInKm(merchant.location.latitude, merchant.location.longitude, userLocation.latitude, userLocation.longitude));
-  }
-
-  const items=useMerchant(merchant.id).merchant?.items;
-  var numItems=items?.reduce((s)=>s=s+1, 0);
-  var price=items?.reduce(function(prev, curr) {
+  const items = useMerchant(merchant.id).merchant?.items;
+  var numItems = items?.reduce((s) => (s = s + 1), 0);
+  var price = items?.reduce(function (prev, curr) {
     return prev.price < curr.price ? prev : curr;
-}).price;
+  }).price;
 
   return (
     <TouchableHighlight
@@ -63,7 +52,13 @@ export const MerchantCard = ({ merchant, onPress }: Props) => {
           />
           <HStack flex={1} justifyContent="flex-end" p="1.5">
             <Box flex={1} justifyContent="flex-end" p="1.5">
-            <Box backgroundColor={'white'} width="16" height="8" borderRadius="5" margin={"2"}>
+              <Box
+                backgroundColor="yellow.200"
+                width="16"
+                height="6"
+                borderRadius="5"
+                margin={'2'}
+              >
                 <Text fontSize="md" fontWeight="bold" margin="auto">
                   {numItems} left
                 </Text>
@@ -77,10 +72,16 @@ export const MerchantCard = ({ merchant, onPress }: Props) => {
                 height="16"
               ></Image>
             </Box>
-            <Box justifyContent="flex-end">
-              <Box backgroundColor={'white'} width="16" height="8" margin="auto" borderRadius="5">
+            <Box justifyContent="flex-end" paddingTop={'20'}>
+              <Box
+                backgroundColor="forestgreen"
+                width="16"
+                height="7"
+                margin="auto"
+                borderRadius="5"
+              >
                 <Text fontSize="md" fontWeight="bold" margin="auto">
-                  ${price}
+                  ${price?.toFixed(2)}
                 </Text>
               </Box>
             </Box>
