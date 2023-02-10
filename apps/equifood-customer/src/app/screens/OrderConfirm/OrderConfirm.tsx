@@ -24,7 +24,7 @@ function OrderConfirm({
         merchant={params.merchant}
       ></OrderView>
       <Button
-        style={{ backgroundColor: 'cyan', borderRadius: 30 }}
+        style={{ backgroundColor: 'forestgreen', borderRadius: 30 }}
         padding="3"
         accessibilityLabel="Confirm Order"
         onPress={async () => {
@@ -39,12 +39,19 @@ function OrderConfirm({
           navigation.navigate('order', { order: data });
         }}
       >
-        <Text fontSize="24" fontWeight="bold">
+        <Text fontSize="24" color="white" fontWeight="bold">
           Confirm & Place Order
         </Text>
       </Button>
 
-      <Button onPress={onBackPress}>Go Back</Button>
+      <Button
+        style={{ backgroundColor: 'yellowgreen', borderRadius: 30 }}
+        onPress={onBackPress}
+      >
+        <Text fontSize="20" color="white">
+          Go Back
+        </Text>
+      </Button>
     </ScrollView>
   );
 }
