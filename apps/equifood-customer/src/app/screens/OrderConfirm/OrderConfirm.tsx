@@ -10,6 +10,11 @@ function OrderConfirm({
 }: StackScreenProps<CoreStackParams, 'orderConfirm'>) {
   const axios = useAxios();
   const params = route.params; //merchant, items, quantities
+  const merchant = params.merchant; //need this for onBackPress because react is stupid
+
+  function onBackPress() {
+    navigation.navigate('merchant', { merchant });
+  }
 
   return (
     <ScrollView>
@@ -39,11 +44,7 @@ function OrderConfirm({
         </Text>
       </Button>
 
-      <Button
-        onPress={(merchant) => navigation.navigate('merchant', { merchant })}
-      >
-        Go Back
-      </Button>
+      <Button onPress={onBackPress}>Go Back</Button>
     </ScrollView>
   );
 }
