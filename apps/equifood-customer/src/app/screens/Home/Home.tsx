@@ -125,7 +125,7 @@ const Home = ({ navigation, route }: CoreNavigationProps<'home'>) => {
         toValue: state ? 0 : -headerHeight,
         useNativeDriver: false,
         duration: 500,
-      }).start(() => {});
+      }).start();
     },
     [headerHeight, headerOffset]
   );
