@@ -1,9 +1,15 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Box, ScrollView, View, VStack } from 'native-base';
 import { Merchant } from '@equifood/api-interfaces';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
-import { MerchantCard } from '@equifood/ui-shared';
-import { Appearance, StyleSheet, TextInput } from 'react-native';
+import { MerchantCard, SearchBar } from '@equifood/ui-shared';
+import { Appearance } from 'react-native';
 import {
   useLocation,
   MerchantMap,
@@ -12,8 +18,33 @@ import {
   MenuItem,
 } from '@equifood/ui-shared';
 import { Animated, LayoutRectangle } from 'react-native';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import {
+  BottomTabHeaderProps,
+  useBottomTabBarHeight,
+} from '@react-navigation/bottom-tabs';
 import { useHeaderHeight } from '@react-navigation/elements';
+import {
+  Header as BaseHeader,
+  getHeaderTitle,
+} from '@react-navigation/elements';
+import { StackHeaderProps } from '@react-navigation/stack';
+
+const Header: ((props: BottomTabHeaderProps) => ReactNode) &
+  ((props: StackHeaderProps) => ReactNode) = ({
+  layout,
+  options,
+  route,
+}: BottomTabHeaderProps & StackHeaderProps) => {
+  return (
+    <View pointerEvents="none">
+      <BaseHeader
+        {...options}
+        layout={layout}
+        title={getHeaderTitle(options, route.name)}
+      />
+    </View>
+  );
+};
 
 const MerchantFilters: { [key: string]: MenuItem } = {
   burgers: {
@@ -27,7 +58,11 @@ const MerchantFilters: { [key: string]: MenuItem } = {
   },
 };
 
-const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
+let i = 0;
+
+const Home = ({ navigation, route }: CoreNavigationProps<'home'>) => {
+  console.log('hello ' + i++);
+
   const [searchFilter, setSearchFilter] = useState('');
   const [selectedItemKey, setSelectedItemKey] = useState<string | null>(null);
   const { merchants } = useMerchants(searchFilter);
@@ -37,21 +72,14 @@ const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
   }
 
   function onMerchantPress(merchant: Merchant) {
+    if (oldPoint) {
+      setPoint(oldPoint);
+      setSearchFilter('');
+    }
     navigation.navigate('merchant', { merchant });
   }
 
   const [oldPoint, setOldPoint] = useState<number | null>(null);
-
-  function handleSearchFocus() {
-    setOldPoint(point);
-    setPoint(0);
-  }
-
-  function handleSearchBlur() {
-    if (!oldPoint) return;
-    setPoint(oldPoint);
-    setOldPoint(null);
-  }
 
   const userLocation = useLocation();
 
@@ -65,6 +93,12 @@ const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
   const headerHeight = useHeaderHeight();
 
   const mapBottom = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    navigation.setOptions({
+      header: Header,
+    });
+  }, []);
 
   useEffect(() => {
     navigation.setOptions({
@@ -95,7 +129,7 @@ const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
         toValue: state ? 0 : -headerHeight,
         useNativeDriver: false,
         duration: 500,
-      }).start();
+      }).start(() => {});
     },
     [headerHeight, headerOffset]
   );
@@ -117,15 +151,16 @@ const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
 
   const colorScheme = Appearance.getColorScheme();
 
-  const styles = StyleSheet.create({
-    input: {
-      height: 40,
-      margin: 12,
-      borderWidth: 1,
-      padding: 10,
-      borderRadius: 50,
-    },
-  });
+  function handleSearchFocus() {
+    setOldPoint(point);
+    setPoint(0);
+  }
+
+  function handleSearchBlur() {
+    if (!oldPoint) return;
+    setPoint(oldPoint);
+    setOldPoint(null);
+  }
 
   return (
     <View
@@ -199,16 +234,6 @@ const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
               testID="home-screen"
               bounces={false}
             >
-              <TextInput
-                style={styles.input}
-                onChangeText={setSearchFilter}
-                onFocus={handleSearchFocus}
-                onBlur={handleSearchBlur}
-                placeholder="Search"
-                value={searchFilter}
-                testID="searchInput"
-                autoCapitalize="none"
-              />
               {/*
                   <ScrollingMenu
                     items={MerchantFilters}
@@ -216,7 +241,13 @@ const Home = ({ navigation }: CoreNavigationProps<'home'>) => {
                     onChange={onChangeFilter}
                   ></ScrollingMenu>
               */}
-              <VStack space="4" m="4">
+              <VStack space="4" px={4}>
+                <SearchBar
+                  value={searchFilter}
+                  onChangeText={setSearchFilter}
+                  onFocus={handleSearchFocus}
+                  onBlur={handleSearchBlur}
+                ></SearchBar>
                 {(merchants || []).map((m) => (
                   <Box key={m.id} shadow="2">
                     <MerchantCard
