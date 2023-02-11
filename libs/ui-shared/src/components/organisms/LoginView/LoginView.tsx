@@ -70,7 +70,6 @@ export function LoginView({ allowedRoles }: LoginViewProps) {
           style={{
             marginTop: 15,
             marginRight: 15,
-            width: '20%',
             alignSelf: 'flex-end',
           }}
         >
