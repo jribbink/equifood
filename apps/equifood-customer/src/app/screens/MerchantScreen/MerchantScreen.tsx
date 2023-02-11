@@ -67,7 +67,6 @@ function RestaurantScreen({
       navigation.addListener('beforeRemove', backConfirmFunc);
       return () => {
         navigation.removeListener('beforeRemove', backConfirmFunc);
-        console.log('removed listener');
       };
     }, [navigation, backConfirmFunc])
   );
