@@ -14,7 +14,6 @@ import {
 import { Animated, LayoutRectangle } from 'react-native';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useHeaderHeight } from '@react-navigation/elements';
-import { serialize } from 'v8';
 
 const MerchantFilters: { [key: string]: MenuItem } = {
   burgers: {
