@@ -1,8 +1,8 @@
 import { Box, Heading, HStack, Image, Text } from 'native-base';
 import { Merchant } from '@equifood/api-interfaces';
 import { GestureResponderEvent, TouchableHighlight } from 'react-native';
-import { useLocation, useMerchant } from 'libs/ui-shared/src/hooks';
-import { getDistanceFromLatLonInKm } from 'libs/ui-shared/src/util/distance-calculator';
+import { useLocation, useMerchant } from '../../../../hooks';
+import { getDistanceFromLatLonInKm } from '../../../../util/distance-calculator';
 
 interface Props {
   merchant: Merchant;
@@ -12,7 +12,7 @@ interface Props {
 export const MerchantCard = ({ merchant, onPress }: Props) => {
   const userLocation = useLocation();
 
-  var distance = 0;
+  let distance = 0;
   if (userLocation) {
     distance = Math.round(
       getDistanceFromLatLonInKm(
@@ -25,8 +25,8 @@ export const MerchantCard = ({ merchant, onPress }: Props) => {
   }
 
   const items = useMerchant(merchant.id).merchant?.items;
-  var numItems = items?.reduce((s) => (s = s + 1), 0);
-  var price = items?.reduce(function (prev, curr) {
+  const numItems = items?.reduce((s) => (s = s + 1), 0);
+  const price = items?.reduce(function (prev, curr) {
     return prev.price < curr.price ? prev : curr;
   }).price;
 
