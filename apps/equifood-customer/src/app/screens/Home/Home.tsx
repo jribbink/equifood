@@ -36,7 +36,7 @@ const Header: ((props: BottomTabHeaderProps) => ReactNode) &
   route,
 }: BottomTabHeaderProps & StackHeaderProps) => {
   return (
-    <View pointerEvents="none">
+    <View>
       <BaseHeader
         {...options}
         layout={layout}

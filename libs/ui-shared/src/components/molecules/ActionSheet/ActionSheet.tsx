@@ -39,8 +39,6 @@ export function ActionSheet({
   const enabledRef = useRef(enabled);
   enabledRef.current = enabled;
 
-  console.log('as ' + enabled);
-
   const panToPoint = useCallback(
     (point: number) => {
       Animated.timing(start, {
@@ -77,7 +75,6 @@ export function ActionSheet({
         })(e, gestureState);
       },
       onPanResponderRelease: (_e, gestureState) => {
-        console.log('HELLO WORLD');
         const startVal = _start.current + _pan.current;
 
         start.setValue(startVal);

@@ -25,7 +25,7 @@ const Tab = createBottomTabNavigator<CoreTabParams>();
 const Stack = createStackNavigator<CoreStackParams>();
 
 const TabBar = (props: BottomTabBarProps) => (
-  <Box pointerEvents="none">
+  <Box>
     <BottomTabBar {...props} />
   </Box>
 );
