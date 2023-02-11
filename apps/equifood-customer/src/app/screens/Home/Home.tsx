@@ -58,11 +58,7 @@ const MerchantFilters: { [key: string]: MenuItem } = {
   },
 };
 
-let i = 0;
-
 const Home = ({ navigation, route }: CoreNavigationProps<'home'>) => {
-  console.log('hello ' + i++);
-
   const [searchFilter, setSearchFilter] = useState('');
   const [selectedItemKey, setSelectedItemKey] = useState<string | null>(null);
   const { merchants } = useMerchants(searchFilter);

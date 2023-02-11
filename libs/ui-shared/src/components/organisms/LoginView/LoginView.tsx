@@ -26,6 +26,8 @@ export function LoginView({ allowedRoles }: LoginViewProps) {
     <Box flex={1} style={{ padding: 30 }}>
       <Text
         style={{
+          padding: 20,
+          marginLeft: -20,
           marginTop: 20,
           fontSize: 40,
           fontWeight: 'bold',

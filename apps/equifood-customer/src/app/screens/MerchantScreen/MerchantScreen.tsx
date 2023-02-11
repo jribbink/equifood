@@ -12,9 +12,10 @@ import {
 import { StyleSheet, Alert } from 'react-native';
 import { Merchant } from '@equifood/api-interfaces';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useMerchant } from '@equifood/ui-shared';
 import { ItemCard } from '@equifood/ui-shared';
+import { useFocusEffect } from '@react-navigation/native';
 
 export interface MerchantScreenParams {
   merchant: Merchant;
@@ -33,33 +34,42 @@ function RestaurantScreen({
   const quantityMapRef = useRef<{ [itemId: string]: number }>({});
   quantityMapRef.current = quantityMap;
 
-  useEffect(
-    () =>
-      navigation.addListener('beforeRemove', (e) => {
-        // Don't halt navigation if empty order
-        if (Object.values(quantityMapRef.current).every((v) => !v)) return;
+  const backConfirmFunc = useCallback(
+    (e: any) => {
+      // Don't halt navigation if empty order
+      if (Object.values(quantityMapRef.current).every((v) => !v)) return;
 
-        // Prevent default behavior of leaving the screen
-        e.preventDefault();
+      // Prevent default behavior of leaving the screen
+      e.preventDefault();
 
-        // Prompt the user before leaving the screen
-        Alert.alert(
-          'Discard order?',
-          'Are you sure you want to discard this order?',
-          [
-            {
-              text: "I'm Sure",
-              onPress: () => navigation.dispatch(e.data.action),
-              style: 'default',
-            },
-            {
-              text: 'Cancel',
-              style: 'cancel',
-            },
-          ]
-        );
-      }),
+      // Prompt the user before leaving the screen
+      Alert.alert(
+        'Discard order?',
+        'Are you sure you want to discard this order?',
+        [
+          {
+            text: "I'm Sure",
+            onPress: () => navigation.dispatch(e.data.action),
+            style: 'default',
+          },
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+        ]
+      );
+    },
     [navigation]
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      navigation.addListener('beforeRemove', backConfirmFunc);
+      return () => {
+        navigation.removeListener('beforeRemove', backConfirmFunc);
+        console.log('removed listener');
+      };
+    }, [navigation, backConfirmFunc])
   );
 
   if (!merchant) return null;
@@ -147,32 +157,6 @@ function RestaurantScreen({
         </Box>
 
         <VStack space="4" m="4">
-          {(items || []).map((item) => (
-            <ItemCard
-              key={item.id}
-              item={item}
-              quantity={quantityMap[item.id] ?? 0}
-              onQuantityChange={(newQuantity) =>
-                setQuantityMap((currentValue) => ({
-                  ...currentValue,
-                  [item.id]: newQuantity,
-                }))
-              }
-            ></ItemCard>
-          ))}
-          {(items || []).map((item) => (
-            <ItemCard
-              key={item.id}
-              item={item}
-              quantity={quantityMap[item.id] ?? 0}
-              onQuantityChange={(newQuantity) =>
-                setQuantityMap((currentValue) => ({
-                  ...currentValue,
-                  [item.id]: newQuantity,
-                }))
-              }
-            ></ItemCard>
-          ))}
           {(items || []).map((item) => (
             <ItemCard
               key={item.id}
