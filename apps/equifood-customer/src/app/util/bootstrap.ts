@@ -1,9 +1,7 @@
 import axios from 'axios';
 import { Animated } from 'react-native';
 import appConfig from '../config/app-config';
-import { setJWT } from '@equifood/ui-shared';
 import { setupStore } from '../../app/redux/store';
-import storage from './storage';
 
 export async function bootstrapApp(store = setupStore()) {
   // Assign axios base URL
@@ -24,9 +22,6 @@ export async function bootstrapApp(store = setupStore()) {
       });
     };
   }
-
-  // bootstrap store
-  store.dispatch(setJWT(await storage.get('jwt')));
 
   return { store };
 }

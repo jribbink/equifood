@@ -8,8 +8,8 @@ import { bootstrapApp } from './util/bootstrap';
 import { Store } from '@reduxjs/toolkit';
 import LoadingScreen from './screens/LoadingScreen/LoadingScreen';
 import { SWRConfig } from 'swr';
-import { EquifoodContigContext } from '@equifood/ui-shared';
 import appConfig from './config/app-config';
+import { EquifoodCoreContext } from '@equifood/ui-shared';
 
 const App = () => {
   const [store, setStore] = useState<Store<RootState>>();
@@ -54,8 +54,8 @@ const App = () => {
 
   return (
     <NativeBaseProvider>
-      <EquifoodContigContext.Provider
-        value={{
+      <EquifoodCoreContext
+        config={{
           apiUrl: appConfig.apiUrl,
         }}
       >
@@ -68,7 +68,7 @@ const App = () => {
             <LoadingScreen></LoadingScreen>
           )}
         </SWRConfig>
-      </EquifoodContigContext.Provider>
+      </EquifoodCoreContext>
     </NativeBaseProvider>
   );
 };

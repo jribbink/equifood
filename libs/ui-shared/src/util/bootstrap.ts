@@ -1,9 +1,4 @@
 import { Store } from '@reduxjs/toolkit';
-import axios from 'axios';
-import { Animated } from 'react-native';
-import appConfig from '../config/app-config';
-import { setJWT } from '../redux';
-import storage from './storage';
 
 export async function bootstrapApp(store: Store) {
   // Assign axios base URL
@@ -24,9 +19,6 @@ export async function bootstrapApp(store: Store) {
       });
     };
   }*/
-
-  // bootstrap store
-  store.dispatch(setJWT(await storage.get('jwt')));
 
   return { store };
 }
