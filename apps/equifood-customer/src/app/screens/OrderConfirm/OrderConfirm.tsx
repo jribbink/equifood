@@ -25,8 +25,8 @@ function OrderConfirm({
       ></OrderView>
       <Button
         style={{ backgroundColor: 'green', borderRadius: 30 }}
-        paddingLeft='10'
-        paddingRight='10'
+        paddingLeft="10"
+        paddingRight="10"
         alignSelf="center"
         accessibilityLabel="Confirm Order"
         onPress={async () => {
@@ -41,7 +41,7 @@ function OrderConfirm({
           navigation.navigate('order', { order: data });
         }}
       >
-        <Text fontSize="24" color='white' fontWeight="bold">
+        <Text fontSize="24" color="white" fontWeight="bold">
           Confirm & Place Order
         </Text>
       </Button>
