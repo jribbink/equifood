@@ -20,7 +20,7 @@ export function OrderView({ items, quantities, merchant }: OrderViewProps) {
   return (
     <VStack>
       <HStack>
-        <Text fontSize="20" padding={3} minWidth="35%">
+        <Text fontSize="20" padding={3} flex={1}>
           Pick up from
         </Text>
         <Text
@@ -29,13 +29,13 @@ export function OrderView({ items, quantities, merchant }: OrderViewProps) {
           fontSize="20"
           paddingTop={3}
           backgroundColor="green"
-          maxWidth={'30%'}
+          flex={2}
         >
           {merchant.name}
         </Text>
       </HStack>
       <HStack>
-        <Text fontSize="20" padding={3} minWidth="35%">
+        <Text fontSize="20" padding={3} flex={1}>
           Located at
         </Text>
         <Text
@@ -43,17 +43,17 @@ export function OrderView({ items, quantities, merchant }: OrderViewProps) {
           testID="address"
           fontSize="20"
           alignSelf="center"
-          width={'60%'}
+          flex={2}
         >
           {merchant?.location?.address}
         </Text>
       </HStack>
 
       <HStack>
-        <Text fontSize="20" paddingTop={3} paddingLeft={3} minWidth="35%">
+        <Text fontSize="20" paddingTop={3} paddingLeft={3} paddingRight={3} flex={1}>
           By
         </Text>
-        <Text fontSize="20" marginTop="3" fontWeight={'bold'} width={'60%'}>
+        <Text fontSize="20" marginTop="3" fontWeight={'bold'} flex={2}>
           Now - 15 min
         </Text>
       </HStack>
