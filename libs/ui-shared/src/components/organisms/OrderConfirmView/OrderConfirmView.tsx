@@ -2,13 +2,17 @@ import { Text, VStack } from 'native-base';
 import { Item, Merchant } from '@equifood/api-interfaces';
 import { CheckoutItemCard } from '../../molecules/cards/CheckoutItemCard/CheckoutItemCard';
 
-interface OrderViewProps {
+interface OrderConfirmViewProps {
   items: Item[];
   quantities: { [itemId: string]: number };
   merchant: Merchant;
 }
 
-export function OrderView({ items, quantities, merchant }: OrderViewProps) {
+export function OrderConfirmView({
+  items,
+  quantities,
+  merchant,
+}: OrderConfirmViewProps) {
   let totalPrice = 0;
   for (const itemId in quantities) {
     const item = items.find((item) => item.id === itemId);
