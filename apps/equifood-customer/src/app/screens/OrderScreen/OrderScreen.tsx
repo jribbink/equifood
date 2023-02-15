@@ -3,7 +3,13 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { Box, Divider, Heading, HStack, Text } from 'native-base';
 import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
-import { ProgressStep, ProgressSteps, MerchantMap } from '@equifood/ui-shared';
+import {
+  ProgressStep,
+  ProgressSteps,
+  MerchantMap,
+  OrderView,
+} from '@equifood/ui-shared';
+import { Item, OrderedItem } from '@equifood/api-interfaces';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 
 function OrderScreen({
@@ -17,6 +23,20 @@ function OrderScreen({
       headerTitle: `Order #${order.id}`,
     });
   }, [navigation, order]);
+
+  const [quantityMap, setQuantityMap] = useState<{ [itemId: string]: number }>(
+    {}
+  );
+
+  const items: Item[] = [];
+  // this is hacky but it works
+  order.items.map((ordItem) => {
+    setQuantityMap((currentValue) => ({
+      ...currentValue,
+      [ordItem.item.id]: ordItem.quantity,
+    }));
+    items.push(ordItem.item);
+  });
 
   const steps: ProgressStep[] = [
     {
@@ -74,29 +94,11 @@ function OrderScreen({
           <Divider></Divider>
 
           <Box p="4">
-            <Text fontSize="md" pb="2">
-              Order Info
-            </Text>
-            <Box width="full" flexDirection="column">
-              {order.items.map((item) => (
-                <Box key={item.item.id}>
-                  <Box flexDirection="row" width="full" backgroundColor="red">
-                    <Text>{`${item.quantity}x ${item.item.name}`}</Text>
-                    <Text ml="auto" strikeThrough={true} color="red.600">
-                      ${(item.item.originalPrice * item.quantity).toFixed(2)}
-                    </Text>
-                    <Text ml="2">
-                      ${(item.item.price * item.quantity).toFixed(2)}
-                    </Text>
-                  </Box>
-                  {item.item.description ? (
-                    <Box pl="5">
-                      <Text lineBreakMode="tail">{item.item.description}</Text>
-                    </Box>
-                  ) : null}
-                </Box>
-              ))}
-            </Box>
+            <OrderView
+              items={items}
+              quantities={quantityMap}
+              merchant={order.merchant}
+            ></OrderView>
           </Box>
 
           <Divider></Divider>
