@@ -50,7 +50,13 @@ export function OrderView({ items, quantities, merchant }: OrderViewProps) {
       </HStack>
 
       <HStack>
-        <Text fontSize="20" paddingTop={3} paddingLeft={3} paddingRight={3} flex={1}>
+        <Text
+          fontSize="20"
+          paddingTop={3}
+          paddingLeft={3}
+          paddingRight={3}
+          flex={1}
+        >
           By
         </Text>
         <Text fontSize="20" marginTop="3" fontWeight={'bold'} flex={2}>
