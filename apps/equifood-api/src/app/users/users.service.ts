@@ -7,6 +7,7 @@ import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
+  private validator
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
@@ -40,7 +41,7 @@ export class UsersService {
   }
 
   async createUser(user: Partial<User>) {
-    return this.userRepository.save(user);
+    return this.userRepository.create(user);
   }
 
   async getProviders(whereUser: FindOptionsWhere<User>) {
