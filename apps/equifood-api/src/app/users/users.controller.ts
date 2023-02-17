@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthUser } from '../auth/decorators/auth-user.decorator';
 import { User } from './entities/user.entity';
@@ -29,14 +29,10 @@ export class UsersController {
     return this.usersService.getOrders(user);
   }
 
-  //Things to Figure out...
-  //Do I need to create a validation pipe to convert CreateUserDto to User object?
-  //Do I send all paramaters through query?
-  //What folder should I store a pipe if I need to create one?
-  //Should this @Post function go in a seperate file?
   @Post()
-  async create(@Body(new ValidationPipe()) userDto: CreateUserDto) {
-    return this.usersService.createUser(userDto);
+  async create(@Body(new ValidationPipe({transform:true})) createUserDto: CreateUserDto) {
+    console.log("test"+ createUserDto.email);
+    return this.usersService.createUser(createUserDto);
   }
 
   @UseGuards(TargetUserGuard)

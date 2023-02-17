@@ -1,9 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsWhere, Repository } from 'typeorm';
 import { AuthProvider } from '../auth/entities/auth-provider';
+import { hashPassword } from '../common/utils/crypto';
 import { Order } from '../orders/entities/order.entity';
 import { User } from './entities/user.entity';
+import { CreateUserDto } from './models/create-user.dto';
+import crypto from "crypto";
 
 @Injectable()
 export class UsersService {
@@ -40,8 +43,28 @@ export class UsersService {
     return savings;
   }
 
-  async createUser(user: Partial<User>) {
-    return this.userRepository.create(user);
+  async createUser(createUserDto: CreateUserDto) {
+
+    //check if user already exist vial something...
+    //If user already exist throw exception
+    const user = await this.userRepository.findOneBy({
+      email:createUserDto.email,
+    });
+    if (user){
+      throw new BadRequestException(`An account with the email ${createUserDto.email} already exists`);
+    }
+    const salt= crypto.randomBytes(32).toString('hex');
+
+    return this.userRepository.save(<User>{
+      id: '314d472d-7b35-4b22-b823-128a2ec10hy9', //Generate new
+      email:createUserDto.email,
+      passwordHash: hashPassword(createUserDto.password, salt),
+      passwordSalt: salt,
+      first_name:createUserDto.first_name,
+      last_name:createUserDto.last_name,
+      phone:createUserDto.phone,
+      roles: createUserDto.roles,
+    });
   }
 
   async getProviders(whereUser: FindOptionsWhere<User>) {

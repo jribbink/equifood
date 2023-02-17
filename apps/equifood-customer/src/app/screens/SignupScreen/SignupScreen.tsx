@@ -2,6 +2,7 @@ import { VStack, HStack, Text, Box, Button } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useState } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
+import { useAxios } from '@equifood/ui-shared';
 
 function SignupScreen({ navigation }) {
   const [first, setFirst] = useState('');
@@ -9,6 +10,8 @@ function SignupScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+
+  const axios = useAxios();
 
   const styles = StyleSheet.create({
     input: {
@@ -104,6 +107,16 @@ function SignupScreen({ navigation }) {
               backgroundColor: 'yellowgreen',
             }}
             testID="signUpButton"
+            onPress={async () => {
+              await axios.post('/users', {
+                email:email,
+                fist_name:first,
+                last_name: last,
+                phone: phone,
+                password:password,
+                roles:['customer'],
+              });
+            }}
           >
             Sign In
           </Button>
