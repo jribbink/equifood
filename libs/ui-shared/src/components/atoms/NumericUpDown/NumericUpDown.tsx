@@ -2,7 +2,7 @@ import { Box, Button, Text } from 'native-base';
 
 interface NumericUpDownProps {
   value: number;
-  onValueChange: (value: number) => void;
+  onValueChange?: (value: number) => void;
   maxValue?: number;
   minValue?: number;
 }
