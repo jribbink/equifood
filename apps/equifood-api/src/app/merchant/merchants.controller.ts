@@ -27,9 +27,4 @@ export class MerchantsController {
     }
     return this.merchantService.get(merchant.id);
   }
-
-  @Get(':merchantId')
-  getMerchant(@Param('merchantId') merchantId: string) {
-    return this.merchantService.get(merchantId);
-  }
 }

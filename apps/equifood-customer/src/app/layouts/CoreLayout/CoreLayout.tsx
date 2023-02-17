@@ -31,9 +31,7 @@ function CoreNavigation() {
             iconName = focused ? 'md-person' : 'md-person-outline';
           } else if (route.name === 'home') {
             iconName = focused ? 'md-restaurant' : 'ios-restaurant-outline';
-          } /*else if (route.name === 'map') {
-            iconName = focused ? 'md-map' : 'md-map-outline';
-          }*/ else if (route.name === 'orders') {
+          } else if (route.name === 'orders') {
             iconName = focused ? 'md-list' : 'md-list-outline';
           } else {
             return;

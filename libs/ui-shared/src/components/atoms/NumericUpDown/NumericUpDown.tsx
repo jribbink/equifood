@@ -2,7 +2,7 @@ import { Box, Button, Text } from 'native-base';
 
 interface NumericUpDownProps {
   value: number;
-  onValueChange: (value: number) => void;
+  onValueChange?: (value: number) => void;
   maxValue?: number;
   minValue?: number;
 }
@@ -21,7 +21,7 @@ export function NumericUpDown({
             backgroundColor: 'blue',
             borderRadius: 30,
           }}
-          onPress={() => onValueChange(Math.max(value - 1, minValue))}
+          onPress={() => onValueChange?.(Math.max(value - 1, minValue))}
         >
           -
         </Button>
