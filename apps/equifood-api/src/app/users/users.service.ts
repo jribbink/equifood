@@ -44,9 +44,9 @@ export class UsersService {
   }
 
   async createUser(createUserDto: CreateUserDto) {
-
-    //check if user already exist vial something...
-    //If user already exist throw exception
+    if(!createUserDto.roles.every((r)=> r==='customer')){
+      throw new BadRequestException('Invalid roles');
+    }
     const user = await this.userRepository.findOneBy({
       email:createUserDto.email,
     });
@@ -56,7 +56,6 @@ export class UsersService {
     const salt= crypto.randomBytes(32).toString('hex');
 
     return this.userRepository.save(<User>{
-      id: '314d472d-7b35-4b22-b823-128a2ec10hy9', //Generate new
       email:createUserDto.email,
       passwordHash: hashPassword(createUserDto.password, salt),
       passwordSalt: salt,

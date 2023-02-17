@@ -6,6 +6,7 @@ import {
   Request,
   Response,
   UseGuards,
+  ValidationPipe,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../users/entities/user.entity';
@@ -13,11 +14,14 @@ import { AuthService } from './auth.service';
 import { AuthRoute } from './decorators/auth-route.decorator';
 import { AuthUser } from './decorators/auth-user.decorator';
 import { DynamicAuthGuard } from './guards/dynamic-auth.guard';
+import { UsersService } from '../users/users.service';
+import { CreateUserDto } from '../users/models/create-user.dto';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private authService: AuthService,
+    private usersService: UsersService,
     private jwtService: JwtService
   ) {}
 
@@ -39,6 +43,14 @@ export class AuthController {
   async loginPost(@Request() req: any) {
     // Create and return JWT auth
     return req.socialJwt || (await this.authService.login(req.user));
+  }
+
+  @Post()
+  async create(@Body(new ValidationPipe({transform:true})) createUserDto: CreateUserDto) {
+    console.log("test"+ createUserDto.email);
+    const user= await this.usersService.createUser(createUserDto);
+    const jwt=await this.authService.login(user);
+    return jwt;
   }
 
   // Sign in using GET strategy, link account if JWT provided
