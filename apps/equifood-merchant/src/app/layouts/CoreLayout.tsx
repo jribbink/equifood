@@ -53,7 +53,11 @@ function CoreLayout() {
         component={OrderListScreen}
         options={{ title: 'Restaurant Orders' }}
       ></Tab.Screen>
-      <Tab.Screen name="menu" component={MenuScreen}></Tab.Screen>
+      <Tab.Screen
+        name="menu"
+        component={MenuScreen}
+        options={{ title: 'Menu Editor' }}
+      ></Tab.Screen>
       <Tab.Screen
         name="account"
         component={AccountScreen}
