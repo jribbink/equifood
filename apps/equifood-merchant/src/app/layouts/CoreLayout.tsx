@@ -6,8 +6,8 @@ import {
 import { CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import AccountScreen from '../screens/AccountScreen/AccountScreen';
-import HomeScreen from '../screens/OrdersScreen/OrdersScreen';
 import MenuScreen from '../screens/MenuScreen/MenuScreen';
+import OrderListScreen from '../screens/OrderListScreen/OrderListScreen';
 import type { RootNavigationParams } from './RootLayout';
 
 export type CoreNavigationParams = {
@@ -48,8 +48,8 @@ function CoreLayout() {
         tabBarInactiveTintColor: 'gray',
       })}
     >
-      <Tab.Screen name="orders" component={HomeScreen}></Tab.Screen>
       <Tab.Screen name="menu" component={MenuScreen}></Tab.Screen>
+      <Tab.Screen name="orders" component={OrderListScreen}></Tab.Screen>
       <Tab.Screen name="account" component={AccountScreen}></Tab.Screen>
     </Tab.Navigator>
   );
