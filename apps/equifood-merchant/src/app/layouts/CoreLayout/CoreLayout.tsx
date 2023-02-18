@@ -8,12 +8,9 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import Home from '../../screens/Home/Home';
-import Map from '../../screens/Map/Map';
-import Orders from '../../screens/Orders/Orders';
-import Account from '../../screens/Account/Account';
-import MerchantScreen from '../../screens/MerchantScreen/MerchantScreen';
-import OrderConfirm from '../../screens/OrderConfirm/OrderConfirm';
+import HomeScreen from '../../screens/HomeScreen/HomeScreen';
+import OrderListScreen from '../../screens/OrderListScreen/OrderListScreen';
+import AccountScreen from '../../screens/AccountScreen/AccountScreen';
 //import Cart from '../../screens/Cart/Cart';
 import { Box, View } from 'native-base';
 import { CoreStackParams, CoreTabParams } from './CoreNavigatorParams';
@@ -42,7 +39,9 @@ function CoreNavigation() {
             iconName = focused ? 'md-person' : 'md-person-outline';
           } else if (route.name === 'home') {
             iconName = focused ? 'md-restaurant' : 'ios-restaurant-outline';
-          } else if (route.name === 'orders') {
+          } /*else if (route.name === 'map') {
+            iconName = focused ? 'md-map' : 'md-map-outline';
+          }*/ else if (route.name === 'orders') {
             iconName = focused ? 'md-list' : 'md-list-outline';
           } else {
             return;
@@ -57,17 +56,17 @@ function CoreNavigation() {
     >
       <Tab.Screen
         name="home"
-        component={Home}
+        component={HomeScreen}
         options={{ title: 'Restaurants' }}
       />
       <Tab.Screen
         name="orders"
-        component={Orders}
-        options={{ title: 'Orders' }}
+        component={OrderListScreen}
+        options={{ title: 'Order List' }}
       />
       <Tab.Screen
         name="account"
-        component={Account}
+        component={AccountScreen}
         options={{ title: 'Account' }}
       />
     </Tab.Navigator>
@@ -85,23 +84,6 @@ function CoreLayout() {
             component={CoreNavigation}
             options={{ headerShown: false }}
           ></Stack.Screen>
-          <Stack.Screen
-            name="merchant"
-            component={MerchantScreen}
-            options={{
-              headerBackTitleVisible: true,
-              headerBackTitle: 'Back',
-              headerTitle: '',
-              headerStyle: { backgroundColor: 'forestgreen' },
-              headerTintColor: '#ffffff',
-              headerBackTitleStyle: { fontWeight: 'bold' },
-            }}
-          ></Stack.Screen>
-          <Stack.Screen
-            name="orderConfirm"
-            component={OrderConfirm}
-          ></Stack.Screen>
-          {/*<Stack.Screen name="cart" component={Cart}></Stack.Screen>*/}
           <Stack.Screen name="order" component={OrderScreen}></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
