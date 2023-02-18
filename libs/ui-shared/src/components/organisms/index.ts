@@ -1,3 +1,4 @@
 export * from './MerchantMap/MerchantMap';
-export * from './OrderView/OrderView';
+export * from './OrderConfirmView/OrderConfirmView';
 export * from './LoginView/LoginView';
+export * from './OrderView/OrderView';
