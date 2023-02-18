@@ -1,8 +1,14 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {
+  BottomTabScreenProps,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { StackScreenProps } from '@react-navigation/stack';
 import AccountScreen from '../screens/AccountScreen/AccountScreen';
 import HomeScreen from '../screens/HomeScreen/HomeScreen';
 import MenuScreen from '../screens/MenuScreen/MenuScreen';
 import OrderListScreen from '../screens/OrderListScreen/OrderListScreen';
+import type { RootNavigationParams } from './RootLayout';
 
 export type CoreNavigationParams = {
   home: undefined;
@@ -10,6 +16,12 @@ export type CoreNavigationParams = {
   account: undefined;
   orders: undefined;
 };
+
+export type CoreNavigationProps<T extends keyof CoreNavigationParams> =
+  CompositeScreenProps<
+    BottomTabScreenProps<CoreNavigationParams, T>,
+    StackScreenProps<RootNavigationParams, 'core'>
+  >;
 
 const Tab = createBottomTabNavigator<CoreNavigationParams>();
 

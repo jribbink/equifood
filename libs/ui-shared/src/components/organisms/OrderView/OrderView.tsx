@@ -1,5 +1,6 @@
-import { Text, Box, Divider, HStack } from 'native-base';
-import { Order } from '@equifood/api-interfaces';
+import { Text, Divider, HStack, VStack, Box } from 'native-base';
+import { Item, Merchant, Order } from '@equifood/api-interfaces';
+import { CheckoutItemCard } from '../../molecules/cards/CheckoutItemCard/CheckoutItemCard';
 import { FontAwesome } from '@expo/vector-icons';
 import { MerchantMap } from '../MerchantMap/MerchantMap';
 
