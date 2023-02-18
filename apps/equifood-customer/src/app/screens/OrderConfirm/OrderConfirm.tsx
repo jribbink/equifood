@@ -1,6 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { Button, ScrollView, Text } from 'native-base';
-import { OrderView, useAxios } from '@equifood/ui-shared';
+import { OrderConfirmView, useAxios } from '@equifood/ui-shared';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import { Order } from '@equifood/api-interfaces';
 
@@ -18,11 +18,11 @@ function OrderConfirm({
 
   return (
     <ScrollView>
-      <OrderView
+      <OrderConfirmView
         items={params.items}
         quantities={params.quantities}
         merchant={params.merchant}
-      ></OrderView>
+      ></OrderConfirmView>
       <Button
         style={{ backgroundColor: 'green', borderRadius: 30 }}
         paddingLeft="10"

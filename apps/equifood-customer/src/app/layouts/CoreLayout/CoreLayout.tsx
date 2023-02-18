@@ -14,7 +14,7 @@ import Orders from '../../screens/Orders/Orders';
 import Account from '../../screens/Account/Account';
 import MerchantScreen from '../../screens/MerchantScreen/MerchantScreen';
 import OrderConfirm from '../../screens/OrderConfirm/OrderConfirm';
-import Cart from '../../screens/Cart/Cart';
+//import Cart from '../../screens/Cart/Cart';
 import { Box, View } from 'native-base';
 import { CoreStackParams, CoreTabParams } from './CoreNavigatorParams';
 import OrderScreen from '../../screens/OrderScreen/OrderScreen';
@@ -101,7 +101,7 @@ function CoreLayout() {
             name="orderConfirm"
             component={OrderConfirm}
           ></Stack.Screen>
-          <Stack.Screen name="cart" component={Cart}></Stack.Screen>
+          {/*<Stack.Screen name="cart" component={Cart}></Stack.Screen>*/}
           <Stack.Screen name="order" component={OrderScreen}></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>

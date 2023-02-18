@@ -1,13 +1,11 @@
 import { Item } from '@equifood/api-interfaces';
 import { ItemCard, NewItemButton, useMerchant } from '@equifood/ui-shared';
 import { HStack, VStack } from 'native-base';
-import { useState } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { CoreNavigationProps } from '../../layouts/CoreLayout';
 
 function MenuScreen({ navigation }: CoreNavigationProps<'menu'>) {
   const { merchant } = useMerchant('self');
-  const [editItem, setEditItem] = useState<Item | null>(null);
 
   function handleItemPress(item: Item) {
     navigation.navigate('itemEditor', { item });
