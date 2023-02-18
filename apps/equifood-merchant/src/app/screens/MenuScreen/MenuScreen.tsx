@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { CoreNavigationProps } from '../../layouts/CoreLayout';
 
-function MenuScreen({ navigation }: CoreNavigationProps<'menu'>) 
+function MenuScreen({ navigation }: CoreNavigationProps<'menu'>) {
   const { merchant } = useMerchant('self');
   const [editItem, setEditItem] = useState<Item | null>(null);
 
