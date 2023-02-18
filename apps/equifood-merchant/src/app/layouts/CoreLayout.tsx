@@ -50,7 +50,11 @@ function CoreLayout() {
     >
       <Tab.Screen name="orders" component={OrderListScreen}></Tab.Screen>
       <Tab.Screen name="menu" component={MenuScreen}></Tab.Screen>
-      <Tab.Screen name="account" component={AccountScreen}></Tab.Screen>
+      <Tab.Screen
+        name="account"
+        component={AccountScreen}
+        options={{ title: 'Your account' }}
+      ></Tab.Screen>
     </Tab.Navigator>
   );
 }
