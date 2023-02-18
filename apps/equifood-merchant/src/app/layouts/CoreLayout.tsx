@@ -1,3 +1,4 @@
+import Ionicons from '@expo/vector-icons/Ionicons';
 import {
   BottomTabScreenProps,
   createBottomTabNavigator,
@@ -5,12 +6,12 @@ import {
 import { CompositeScreenProps } from '@react-navigation/native';
 import { StackScreenProps } from '@react-navigation/stack';
 import AccountScreen from '../screens/AccountScreen/AccountScreen';
-import HomeScreen from '../screens/HomeScreen/HomeScreen';
+import HomeScreen from '../screens/OrdersScreen/OrdersScreen';
 import MenuScreen from '../screens/MenuScreen/MenuScreen';
 import type { RootNavigationParams } from './RootLayout';
 
 export type CoreNavigationParams = {
-  home: undefined;
+  orders: undefined;
   menu: undefined;
   account: undefined;
 };
@@ -25,8 +26,29 @@ const Tab = createBottomTabNavigator<CoreNavigationParams>();
 
 function CoreLayout() {
   return (
-    <Tab.Navigator>
-      <Tab.Screen name="home" component={HomeScreen}></Tab.Screen>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName: React.ComponentProps<typeof Ionicons>['name'];
+
+          if (route.name === 'account') {
+            iconName = focused ? 'md-person' : 'md-person-outline';
+          } else if (route.name === 'menu') {
+            iconName = focused ? 'restaurant' : 'restaurant-outline';
+          } else if (route.name === 'orders') {
+            iconName = focused ? 'md-list' : 'md-list-outline';
+          } else {
+            return;
+          }
+
+          // You can return any component that you like here!
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        tabBarActiveTintColor: 'green',
+        tabBarInactiveTintColor: 'gray',
+      })}
+    >
+      <Tab.Screen name="orders" component={HomeScreen}></Tab.Screen>
       <Tab.Screen name="menu" component={MenuScreen}></Tab.Screen>
       <Tab.Screen name="account" component={AccountScreen}></Tab.Screen>
     </Tab.Navigator>
