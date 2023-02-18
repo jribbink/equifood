@@ -24,8 +24,10 @@ function OrderConfirm({
         merchant={params.merchant}
       ></OrderConfirmView>
       <Button
-        style={{ backgroundColor: 'forestgreen', borderRadius: 30 }}
-        padding="3"
+        style={{ backgroundColor: 'green', borderRadius: 30 }}
+        paddingLeft="10"
+        paddingRight="10"
+        alignSelf="center"
         accessibilityLabel="Confirm Order"
         onPress={async () => {
           const { data } = await axios.post<Order>('/orders', {
@@ -41,15 +43,6 @@ function OrderConfirm({
       >
         <Text fontSize="24" color="white" fontWeight="bold">
           Confirm & Place Order
-        </Text>
-      </Button>
-
-      <Button
-        style={{ backgroundColor: 'yellowgreen', borderRadius: 30 }}
-        onPress={onBackPress}
-      >
-        <Text fontSize="20" color="white">
-          Go Back
         </Text>
       </Button>
     </ScrollView>

@@ -1,16 +1,16 @@
-import { Box, Modal, Text } from 'native-base';
+import { Item } from '@equifood/api-interfaces';
+import { Box, Text } from 'native-base';
+import { useState } from 'react';
+import { RootNavigationProps } from '../../layouts/RootLayout';
 
-interface ItemEditorModalProps {
-  isOpen?: boolean;
-  onClose?: () => void;
-}
+function ItemEditorScreen({ route }: RootNavigationProps<'itemEditor'>) {
+  const [item, setItem] = useState<Partial<Item>>(route.params?.item ?? {});
 
-function ItemEditorModal({ isOpen, onClose }: ItemEditorModalProps) {
   return (
     <Box>
-      <Text>Hello world</Text>
+      <Text>{item.id}</Text>
     </Box>
   );
 }
 
-export default ItemEditorModal;
+export default ItemEditorScreen;

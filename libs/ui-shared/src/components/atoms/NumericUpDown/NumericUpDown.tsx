@@ -25,7 +25,7 @@ export function NumericUpDown({
             backgroundColor: 'green',
             borderRadius: 5,
           }}
-          onPress={() => onValueChange(Math.min(value + 1, maxValue))}
+          onPress={() => onValueChange?.(Math.min(value + 1, maxValue))}
         >
           <Text fontWeight={'bold'} fontSize={'15'} color={'white'}>
             +
@@ -54,7 +54,7 @@ export function NumericUpDown({
             backgroundColor: 'green',
             borderRadius: 5,
           }}
-          onPress={() => onValueChange(Math.max(value - 1, minValue))}
+          onPress={() => onValueChange?.(Math.max(value - 1, minValue))}
         >
           <Text fontWeight={'bold'} fontSize={'15'} color={'white'}>
             -
