@@ -48,7 +48,11 @@ function CoreLayout() {
         tabBarInactiveTintColor: 'gray',
       })}
     >
-      <Tab.Screen name="orders" component={OrderListScreen}></Tab.Screen>
+      <Tab.Screen
+        name="orders"
+        component={OrderListScreen}
+        options={{ title: 'Restaurant Orders' }}
+      ></Tab.Screen>
       <Tab.Screen name="menu" component={MenuScreen}></Tab.Screen>
       <Tab.Screen
         name="account"
