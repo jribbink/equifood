@@ -35,12 +35,9 @@ export const CheckoutItemCard = ({ item, quantity }: Props) => {
               >
                 x {item.name}
               </Heading>
-              
-              
-             
             </HStack>
-            <HStack alignSelf={"flex-end"}>
-            <Text
+            <HStack alignSelf={'flex-end'}>
+              <Text
                 marginTop="-6"
                 marginLeft="2"
                 testID="old-price"
@@ -51,7 +48,7 @@ export const CheckoutItemCard = ({ item, quantity }: Props) => {
               >
                 {'$ ' + item.originalPrice.toFixed(2)}
               </Text>
-            <Text
+              <Text
                 marginTop="-7"
                 marginLeft="3"
                 marginRight="2"
@@ -60,7 +57,6 @@ export const CheckoutItemCard = ({ item, quantity }: Props) => {
               >
                 {'$ ' + item.price.toFixed(2)}
               </Text>
-              
             </HStack>
           </Box>
         </HStack>

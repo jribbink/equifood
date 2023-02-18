@@ -8,6 +8,7 @@ import {
   Image,
   Heading,
   HStack,
+  NativeBaseProvider,
 } from 'native-base';
 import { StyleSheet, Alert } from 'react-native';
 import { Merchant } from '@equifood/api-interfaces';
@@ -16,6 +17,8 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useMerchant } from '@equifood/ui-shared';
 import { ItemCard } from '@equifood/ui-shared';
 import { useFocusEffect } from '@react-navigation/native';
+import { extendTheme } from 'native-base';
+import { equifoodTheme } from '@equifood/api-interfaces/src/lib';
 
 export interface MerchantScreenParams {
   merchant: Merchant;
@@ -75,6 +78,7 @@ function RestaurantScreen({
   const items = merchant.items;
 
   return (
+    <NativeBaseProvider theme = {equifoodTheme}>
     <Box height="full">
       <ScrollView testID="view" flex={1}>
         <Box h="200">
@@ -202,6 +206,7 @@ function RestaurantScreen({
         Order
       </Button>
     </Box>
+    </NativeBaseProvider>
   );
 }
 
