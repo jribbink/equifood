@@ -13,7 +13,8 @@ import LoginScreen from '../screens/LoginScreen/LoginScreen';
 import ItemEditorScreen from '../screens/ItemEditorScreen/ItemEditorScreen';
 import { useEffect } from 'react';
 import { useAuth } from '@equifood/ui-shared';
-import { Item } from '@equifood/api-interfaces';
+import { Item, Order } from '@equifood/api-interfaces';
+import OrderScreen from '../screens/OrderScreen/OrderScreen';
 
 const Stack = createStackNavigator<RootNavigationParams>();
 
@@ -23,6 +24,9 @@ export type RootNavigationParams = {
     item: Item | undefined;
   };
   login: undefined;
+  order: {
+    order: Order;
+  };
 };
 
 export type RootNavigationProps<T extends keyof RootNavigationParams> =
@@ -33,7 +37,7 @@ function RootLayout() {
   const { token } = useAuth();
 
   useEffect(() => {
-    if (token) navigation.navigate('core', { screen: 'home' });
+    if (token) navigation.navigate('core', { screen: 'orders' });
     else navigation.navigate('login');
   }, [token, navigation]);
 
@@ -48,6 +52,13 @@ function RootLayout() {
           <Stack.Screen
             name="itemEditor"
             component={ItemEditorScreen}
+            options={{
+              headerShown: true,
+            }}
+          ></Stack.Screen>
+          <Stack.Screen
+            name="order"
+            component={OrderScreen}
             options={{
               headerShown: true,
             }}

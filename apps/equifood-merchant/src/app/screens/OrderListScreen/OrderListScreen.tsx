@@ -3,12 +3,12 @@ import { VStack, ScrollView, Heading, Text, Spacer } from 'native-base';
 import { OrderCard, useOrders } from '@equifood/ui-shared';
 import { Order } from '@equifood/api-interfaces';
 import { useNavigation } from '@react-navigation/native';
-import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
+import { CoreNavigationProps } from '../../layouts/CoreLayout';
 
-const Orders = () => {
+export default function OrdersListScreen({
+  navigation,
+}: CoreNavigationProps<'orders'>) {
   const { orders } = useOrders();
-  const navigation =
-    useNavigation<CoreNavigationProps<'orders'>['navigation']>();
 
   const currentOrders =
     orders?.filter((order) => order.status === 'pending') || [];
@@ -61,6 +61,4 @@ const Orders = () => {
       ) : null}
     </ScrollView>
   );
-};
-
-export default Orders;
+}
