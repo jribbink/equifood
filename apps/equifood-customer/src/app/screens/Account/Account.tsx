@@ -46,8 +46,8 @@ const Account = () => {
 
         <Button
           style={{
+            width: '100%',
             borderRadius: 20,
-            width: '90%',
             marginTop: 30,
             alignSelf: 'center',
             backgroundColor: 'forestgreen',

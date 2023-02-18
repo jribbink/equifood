@@ -10,6 +10,11 @@ function OrderConfirm({
 }: StackScreenProps<CoreStackParams, 'orderConfirm'>) {
   const axios = useAxios();
   const params = route.params; //merchant, items, quantities
+  const merchant = params.merchant; //need this for onBackPress because react is stupid
+
+  function onBackPress() {
+    navigation.navigate('merchant', { merchant });
+  }
 
   return (
     <ScrollView>
@@ -19,8 +24,10 @@ function OrderConfirm({
         merchant={params.merchant}
       ></OrderView>
       <Button
-        style={{ backgroundColor: 'cyan', borderRadius: 30 }}
-        padding="3"
+        style={{ backgroundColor: 'green', borderRadius: 30 }}
+        paddingLeft="10"
+        paddingRight="10"
+        alignSelf="center"
         accessibilityLabel="Confirm Order"
         onPress={async () => {
           const { data } = await axios.post<Order>('/orders', {
@@ -34,15 +41,9 @@ function OrderConfirm({
           navigation.navigate('order', { order: data });
         }}
       >
-        <Text fontSize="24" fontWeight="bold">
+        <Text fontSize="24" color="white" fontWeight="bold">
           Confirm & Place Order
         </Text>
-      </Button>
-
-      <Button
-        onPress={(merchant) => navigation.navigate('merchant', { merchant })}
-      >
-        Go Back
       </Button>
     </ScrollView>
   );

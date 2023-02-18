@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { instanceToPlain, serialize } from 'class-transformer';
 import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
 import { Item } from './entities/item.entity';
 import { Merchant } from './entities/merchant.entity';
+import { Like } from 'typeorm';
 
 @Injectable()
 export class MerchantsService {
@@ -16,6 +16,16 @@ export class MerchantsService {
 
   getAll() {
     return this.merchantRepository.find();
+  }
+
+  search(searchQuery: string) {
+    return this.merchantRepository.find({
+      where: [
+        {
+          name: Like(`%${searchQuery}%`),
+        },
+      ],
+    });
   }
 
   async get(merchantId: string) {

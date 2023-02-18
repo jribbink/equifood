@@ -2,7 +2,11 @@ import {
   NavigationContainer,
   createNavigationContainerRef,
 } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {
+  BottomTabBar,
+  BottomTabBarProps,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from '../../screens/Home/Home';
 import Map from '../../screens/Map/Map';
@@ -11,7 +15,7 @@ import Account from '../../screens/Account/Account';
 import MerchantScreen from '../../screens/MerchantScreen/MerchantScreen';
 import OrderConfirm from '../../screens/OrderConfirm/OrderConfirm';
 import Cart from '../../screens/Cart/Cart';
-import { View } from 'native-base';
+import { Box, View } from 'native-base';
 import { CoreStackParams, CoreTabParams } from './CoreNavigatorParams';
 import OrderScreen from '../../screens/OrderScreen/OrderScreen';
 //import CartButton from '../../components/buttons/CartButton/CartButton';
@@ -20,9 +24,16 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 const Tab = createBottomTabNavigator<CoreTabParams>();
 const Stack = createStackNavigator<CoreStackParams>();
 
+const TabBar = (props: BottomTabBarProps) => (
+  <Box>
+    <BottomTabBar {...props} />
+  </Box>
+);
+
 function CoreNavigation() {
   return (
     <Tab.Navigator
+      tabBar={TabBar}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName: React.ComponentProps<typeof Ionicons>['name'];
@@ -77,6 +88,14 @@ function CoreLayout() {
           <Stack.Screen
             name="merchant"
             component={MerchantScreen}
+            options={{
+              headerBackTitleVisible: true,
+              headerBackTitle: 'Back',
+              headerTitle: '',
+              headerStyle: { backgroundColor: 'forestgreen' },
+              headerTintColor: '#ffffff',
+              headerBackTitleStyle: { fontWeight: 'bold' },
+            }}
           ></Stack.Screen>
           <Stack.Screen
             name="orderConfirm"

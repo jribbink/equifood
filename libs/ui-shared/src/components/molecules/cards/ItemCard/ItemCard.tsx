@@ -21,20 +21,26 @@ export const ItemCard = ({ item, quantity, onQuantityChange }: Props) => {
         space="5"
       >
         <Box flexShrink={1}>
-          <Heading testID="item-name" fontSize="md" fontWeight="bold">
+          <Heading testID="item-name" fontSize="20" fontWeight="bold">
             {item.name}
           </Heading>
-          <Text testID="new-price" fontSize="sm">
-            {'Price: ' + item.price}
-          </Text>
-          <Text
-            testID="old-price"
-            fontSize="xs"
-            fontStyle="italic"
-            style={{ textDecorationLine: 'line-through' }}
-          >
-            {'Old: ' + item.originalPrice}
-          </Text>
+
+          <HStack>
+            <Text testID="new-price" fontSize="25">
+              {'$ ' + item.price.toFixed(2)}
+            </Text>
+            <Text
+              marginLeft="2"
+              testID="old-price"
+              fontSize="15"
+              fontStyle="italic"
+              color={'#ff0000'}
+              style={{ textDecorationLine: 'line-through' }}
+            >
+              {'$ ' + item.originalPrice.toFixed(2)}
+            </Text>
+          </HStack>
+
           <Text testID="purchase-limit" fontSize="sm" fontStyle="italic">
             {'Please note that you may only purchase ' +
               MAX_PER_PURCHASE +

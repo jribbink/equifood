@@ -13,7 +13,7 @@ This is a capstone (COSC 499) project for the Equifood App.
 
 ### Development
 
-Apps can be served using `nx serve APP_NAME` command.
+Apps can be served using `nx serve APP_NAME` command. Currently available apps are `equifood-api`, `equifood-customer`, and `equifood-merchant`.
 
 ### Testing
 

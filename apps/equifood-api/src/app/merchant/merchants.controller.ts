@@ -1,4 +1,10 @@
-import { BadRequestException, Controller, Get, Param } from '@nestjs/common';
+import {
+  BadRequestException,
+  Controller,
+  Get,
+  Param,
+  Query,
+} from '@nestjs/common';
 import { AuthRoute } from '../auth/decorators/auth-route.decorator';
 import { AuthUser } from '../auth/decorators/auth-user.decorator';
 import { User } from '../users/entities/user.entity';
@@ -9,7 +15,10 @@ export class MerchantsController {
   constructor(private merchantService: MerchantsService) {}
 
   @Get()
-  getMechants() {
+  getMerchants(@Query('q') searchQuery?: string) {
+    if (searchQuery) {
+      return this.merchantService.search(searchQuery);
+    }
     return this.merchantService.getAll();
   }
 

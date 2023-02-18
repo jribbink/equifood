@@ -84,6 +84,9 @@ export class OrdersService {
     );
 
     // update item quantities & create OrderedItem entities
+    // also calculate total price
+
+    let totalPrice = 0;
     const orderedItems = [];
     await Promise.all([
       ...[...quantityMap.entries()].map(async ([id, [quantity, itemRef]]) => {
@@ -100,6 +103,9 @@ export class OrdersService {
           })
         );
       }),
+      ...[...quantityMap.values()].map(([quantity, itemRef]) => {
+        totalPrice += quantity * itemRef.price;
+      }),
     ]);
 
     // save order
@@ -109,7 +115,7 @@ export class OrdersService {
       items: [...orderedItems],
       merchant: merchant,
       status: 'pending',
-      total: 1234,
+      total: totalPrice,
       user: user,
     });
   }
