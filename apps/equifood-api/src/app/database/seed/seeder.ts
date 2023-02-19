@@ -292,7 +292,7 @@ export class Seeder {
       quantity: 2,
     });
 
-    await this.orderRepository.save({
+    const order = await this.orderRepository.save({
       completed_date: new Date(2022, 11, 1, 22),
       deadline: new Date(2022, 11, 1, 22, 30),
       items: [orderedItem],

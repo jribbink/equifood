@@ -1,4 +1,4 @@
-import { Box, Divider, Heading, Text } from 'native-base';
+import { Box, Button, Divider, Heading, Text } from 'native-base';
 import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { ProgressStep, ProgressSteps, OrderView } from '@equifood/ui-shared';
@@ -59,7 +59,11 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
 
           <Divider></Divider>
 
-          <OrderView order={order} viewHeight={viewHeight}></OrderView>
+          <OrderView
+            order={order}
+            viewHeight={viewHeight}
+            merchantMode={true}
+          ></OrderView>
         </Box>
       </ScrollView>
     </Box>

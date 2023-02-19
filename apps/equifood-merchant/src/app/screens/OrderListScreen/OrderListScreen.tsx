@@ -2,13 +2,12 @@ import React from 'react';
 import { VStack, ScrollView, Heading, Text, Spacer } from 'native-base';
 import { OrderCard, useOrders } from '@equifood/ui-shared';
 import { Order } from '@equifood/api-interfaces';
-import { useNavigation } from '@react-navigation/native';
 import { CoreNavigationProps } from '../../layouts/CoreLayout';
 
 export default function OrdersListScreen({
   navigation,
 }: CoreNavigationProps<'orders'>) {
-  const { orders } = useOrders();
+  const { orders } = useOrders('self', true);
 
   const currentOrders =
     orders?.filter((order) => order.status === 'pending') || [];
