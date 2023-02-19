@@ -9,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Item } from '../merchant/entities/item.entity';
 import { Merchant } from '../merchant/entities/merchant.entity';
+import { MerchantsService } from '../merchant/merchants.service';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { Order } from './entities/order.entity';
@@ -36,9 +37,17 @@ export class OrdersService {
     else user = userIdOrUser;
 
     if (user.roles.includes('merchant')) {
-      throw new NotImplementedException('Does not support merchants yet');
+      return this.ordersRepository.find({
+        where: {
+          merchant: {
+            user: {
+              id: user.id,
+            },
+          },
+        },
+      });
     }
-    return await this.ordersRepository.find({
+    return this.ordersRepository.find({
       where: {
         user: { id: user.id },
       },
