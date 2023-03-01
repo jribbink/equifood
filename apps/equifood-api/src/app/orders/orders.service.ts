@@ -159,4 +159,9 @@ export class OrdersService {
 
     return item;
   }
+
+  async cancelOrder(user: User, orderId: number) {
+    const order = await this.getOrder(user, orderId);
+    this.ordersRepository.remove(order);
+  }
 }

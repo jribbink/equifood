@@ -89,7 +89,6 @@ function OrderScreen({
             onPress={async () => {
               if (user) {
                 // user should always be a thing if we got to this page but VSCode is complaining
-                console.log(user + ' : ' + order.id);
                 await axios.post('/orders/cancel/' + order.id);
               }
             }}
