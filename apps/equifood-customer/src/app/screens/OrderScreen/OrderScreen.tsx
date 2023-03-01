@@ -2,6 +2,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { Box, Divider, Heading, Button, Text } from 'native-base';
 import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Alert } from 'react-native';
 import {
   ProgressStep,
   ProgressSteps,
@@ -89,7 +90,22 @@ function OrderScreen({
             onPress={async () => {
               if (user) {
                 // user should always be a thing if we got to this page but VSCode is complaining
-                await axios.post('/orders/cancel/' + order.id);
+                Alert.alert(
+                  'Cancel order?',
+                  'Are you sure you want to cancel this order?',
+                  [
+                    {
+                      text: "I'm Sure",
+                      onPress: async () =>
+                        await axios.post('/orders/cancel/' + order.id),
+                      style: 'default',
+                    },
+                    {
+                      text: 'No, thanks',
+                      style: 'cancel',
+                    },
+                  ]
+                );
               }
             }}
           >
