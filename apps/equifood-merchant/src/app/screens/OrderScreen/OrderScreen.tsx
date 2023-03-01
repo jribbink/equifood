@@ -64,6 +64,14 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
             viewHeight={viewHeight}
             merchantMode={true}
           ></OrderView>
+
+          {
+            //confirm or complete button here
+          }
+
+          {
+            //cancel button here?
+          }
         </Box>
       </ScrollView>
     </Box>

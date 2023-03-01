@@ -1,8 +1,14 @@
 import { StackScreenProps } from '@react-navigation/stack';
-import { Box, Divider, Heading, HStack, Text } from 'native-base';
+import { Box, Divider, Heading, Button, Text } from 'native-base';
 import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
-import { ProgressStep, ProgressSteps, OrderView } from '@equifood/ui-shared';
+import {
+  ProgressStep,
+  ProgressSteps,
+  OrderView,
+  useProfile,
+  useAxios,
+} from '@equifood/ui-shared';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 
 function OrderScreen({
@@ -10,6 +16,8 @@ function OrderScreen({
   route,
 }: StackScreenProps<CoreStackParams, 'order'>) {
   const order = route.params.order;
+  const user = useProfile().user;
+  const axios = useAxios();
 
   useEffect(() => {
     navigation.setOptions({
@@ -63,7 +71,36 @@ function OrderScreen({
 
           <Divider></Divider>
 
-          <OrderView order={order} viewHeight={viewHeight}></OrderView>
+          <OrderView
+            order={order}
+            viewHeight={viewHeight}
+            merchantMode={false}
+          ></OrderView>
+
+          <Button
+            minWidth={'20'}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'red',
+              borderRadius: 5,
+            }}
+            onPress={async () => {
+              if (user) {
+                // user should always be a thing if we got to this page but VSCode is complaining
+                console.log(user + ' : ' + order.id);
+                await axios.post('/orders/cancel/' + order.id);
+              }
+            }}
+          >
+            <Text fontWeight={'bold'} fontSize={'15'} color={'white'}>
+              CANCEL ORDER
+            </Text>
+          </Button>
+          {
+            //cancel button here
+          }
         </Box>
       </ScrollView>
     </Box>
