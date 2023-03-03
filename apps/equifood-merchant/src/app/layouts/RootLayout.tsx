@@ -54,6 +54,7 @@ function RootLayout() {
             component={ItemEditorScreen}
             options={{
               headerShown: true,
+              title: 'Item Editor',
             }}
           ></Stack.Screen>
           <Stack.Screen
