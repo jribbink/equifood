@@ -34,6 +34,41 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
 
   const [viewHeight, setViewHeight] = useState<number>(0);
 
+  let updateButtonText = '';
+  const updateButtonOnPress = async () => {
+    Alert.alert(
+      'Order Completion',
+      'Please confirm that the order has been completed?',
+      [
+        {
+          text: 'Confirm',
+          onPress: () => {
+            order.status = 'completed';
+          },
+          style: 'default',
+        },
+        {
+          text: 'Not Yet',
+          style: 'cancel',
+        },
+      ]
+    );
+  };
+  switch (order.status) {
+    case 'pending':
+      updateButtonText = 'Complete Order';
+      break;
+    case 'cancelled':
+      updateButtonText = 'Order Cancelled';
+      break;
+    case 'completed':
+      updateButtonText = 'Order Completed';
+      break;
+    default:
+      updateButtonText = 'error';
+      break;
+  }
+
   return (
     <Box
       height="full"
@@ -73,7 +108,22 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
           ></OrderView>
 
           {
-            //confirm or complete button here
+            //ready/complete button here
+            <Button
+              minWidth={'20'}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'red',
+                borderRadius: 5,
+              }}
+              onPress={updateButtonOnPress}
+            >
+              <Text fontWeight={'bold'} fontSize={'15'} color={'white'}>
+                {updateButtonText}
+              </Text>
+            </Button>
           }
 
           {
