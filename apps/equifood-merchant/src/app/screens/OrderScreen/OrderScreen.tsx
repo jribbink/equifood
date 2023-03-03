@@ -1,11 +1,18 @@
 import { Box, Button, Divider, Heading, Text } from 'native-base';
 import { useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { ProgressStep, ProgressSteps, OrderView } from '@equifood/ui-shared';
+import {
+  ProgressStep,
+  ProgressSteps,
+  OrderView,
+  useAxios,
+} from '@equifood/ui-shared';
 import type { RootNavigationProps } from '../../layouts/RootLayout';
 
 function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
   const order = route.params.order;
+  const axios = useAxios();
 
   useEffect(() => {
     navigation.setOptions({
@@ -70,7 +77,38 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
           }
 
           {
-            //cancel button here?
+            <Button
+              minWidth={'20'}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'red',
+                borderRadius: 5,
+              }}
+              onPress={async () => {
+                Alert.alert(
+                  'Cancel order?',
+                  'Are you sure you want to cancel this order?',
+                  [
+                    {
+                      text: "I'm Sure",
+                      onPress: async () =>
+                        await axios.post('/orders/cancel/' + order.id),
+                      style: 'default',
+                    },
+                    {
+                      text: 'No, thanks',
+                      style: 'cancel',
+                    },
+                  ]
+                );
+              }}
+            >
+              <Text fontWeight={'bold'} fontSize={'15'} color={'white'}>
+                CANCEL ORDER
+              </Text>
+            </Button>
           }
         </Box>
       </ScrollView>
