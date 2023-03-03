@@ -59,11 +59,7 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
 
           <Divider></Divider>
 
-          <OrderView
-            order={order}
-            viewHeight={viewHeight}
-            merchantMode={true}
-          ></OrderView>
+          <OrderView order={order} viewHeight={viewHeight}></OrderView>
         </Box>
       </ScrollView>
     </Box>
