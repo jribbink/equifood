@@ -10,6 +10,7 @@ import LoadingScreen from './screens/LoadingScreen/LoadingScreen';
 import { SWRConfig } from 'swr';
 import appConfig from './config/app-config';
 import { EquifoodCoreContext } from '@equifood/ui-shared';
+import { equifoodTheme } from '@equifood/api-interfaces';
 
 const App = () => {
   const [store, setStore] = useState<Store<RootState>>();
@@ -53,7 +54,7 @@ const App = () => {
   };
 
   return (
-    <NativeBaseProvider>
+    <NativeBaseProvider theme={equifoodTheme}>
       <EquifoodCoreContext
         config={{
           apiUrl: appConfig.apiUrl,
