@@ -7,9 +7,10 @@ import { MerchantMap } from '../MerchantMap/MerchantMap';
 interface OrderViewProps {
   order: Order;
   viewHeight: number;
+  merchantMode: boolean;
 }
 
-export function OrderView({ order, viewHeight }: OrderViewProps) {
+export function OrderView({ order, viewHeight, merchantMode }: OrderViewProps) {
   // computation goes here
   const subtotal = order.items.reduce(
     (acc, item) => acc + item.item.price * item.quantity,

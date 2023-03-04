@@ -9,6 +9,12 @@ import { OrdersService } from './orders.service';
 export class OrdersController {
   constructor(private ordersService: OrdersService) {}
 
+  @AuthRoute('customer')
+  @Post('cancel/:orderId')
+  async cancelOrder(@AuthUser() user: User, @Param('orderId') orderId: number) {
+    await this.ordersService.cancelOrder(user, orderId);
+  }
+
   @AuthRoute()
   @Get(':orderId')
   async getOrder(@AuthUser() user: User, @Param('orderId') orderId: number) {
