@@ -11,7 +11,7 @@ function SignupScreen({ navigation }) {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
 
-  const {setJwt}=useAuth();
+  const { setJwt } = useAuth();
 
   const axios = useAxios();
 
@@ -28,19 +28,19 @@ function SignupScreen({ navigation }) {
   return (
     <Box flex={1} testID="login-screen">
       <Box flex={1} style={{ padding: 30 }}>
-      <Text 
-      style={{
-        padding: 20,
-        marginLeft: -20,
-        marginTop: 20,
-        fontSize: 40,
-        fontWeight: 'bold',
-        color: 'darkgreen',
-      }}
-      >
-        Sign up
-      </Text>
-      <Text
+        <Text
+          style={{
+            padding: 20,
+            marginLeft: -20,
+            marginTop: 20,
+            fontSize: 40,
+            fontWeight: 'bold',
+            color: 'darkgreen',
+          }}
+        >
+          Sign up
+        </Text>
+        <Text
           testID="login"
           style={{
             fontSize: 18,
@@ -51,7 +51,7 @@ function SignupScreen({ navigation }) {
         >
           Please sign up to create an account.
         </Text>
-      <TextInput
+        <TextInput
           style={styles.input}
           onChangeText={setFirst}
           placeholder="First Name"
@@ -110,13 +110,13 @@ function SignupScreen({ navigation }) {
             }}
             testID="signUpButton"
             onPress={async () => {
-              const {data:jwt}=await axios.post('/auth', {
-                email:email,
-                fist_name:first,
+              const { data: jwt } = await axios.post('/auth/create', {
+                email: email,
+                fist_name: first,
                 last_name: last,
                 phone: phone,
-                password:password,
-                roles:['customer'],
+                password: password,
+                roles: ['customer'],
               });
               setJwt(jwt);
             }}
@@ -125,16 +125,16 @@ function SignupScreen({ navigation }) {
           </Button>
         </Box>
       </Box>
-    <VStack flexDirection="column" p="3" space="3">
-      <Box>
-        <HStack>
+      <VStack flexDirection="column" p="3" space="3">
+        <Box>
+          <HStack>
             <Text style={{ fontSize: 15 }}>Already have an account? </Text>
             <TouchableOpacity onPress={() => navigation.navigate('login')}>
               <Text style={{ color: 'darkgreen' }}>Login</Text>
             </TouchableOpacity>
           </HStack>
-      </Box>
-    </VStack>
+        </Box>
+      </VStack>
     </Box>
   );
 }

@@ -45,7 +45,7 @@ export class AuthController {
     return req.socialJwt || (await this.authService.login(req.user));
   }
 
-  @Post()
+  @Post('create')
   async create(@Body(new ValidationPipe({transform:true})) createUserDto: CreateUserDto) {
     console.log("test"+ createUserDto.email);
     const user= await this.usersService.createUser(createUserDto);
