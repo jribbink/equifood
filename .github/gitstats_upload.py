@@ -63,7 +63,7 @@ group_name = "Equifood Group C" + (" " + week if week is not None else "")
 today = datetime.utcnow().astimezone(pytz.timezone('US/Pacific'))
 last_saturday = (today - timedelta(((today.weekday() - 5) % 7))).replace(hour=0, minute=0, second=0, microsecond=0).replace(tzinfo=None)
 
-if current_index == 0:
+if current_index != 0:
    last_saturday = datetime.strptime(gitstats_assignments[current_index - 1]["due_at"],"%Y-%m-%dT%H:%M:%SZ")
 
 
