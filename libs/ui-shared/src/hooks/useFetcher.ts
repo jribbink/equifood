@@ -19,6 +19,7 @@ export function useFetcher<T>(key: any) {
       .get(url)
       .then((res) => res.data)
       .catch((e: AxiosError) => {
+        console.log(JSON.stringify(e));
         if (e.response?.status === 401) {
           setJwt(null);
         }

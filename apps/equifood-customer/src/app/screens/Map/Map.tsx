@@ -41,7 +41,7 @@ const Map = ({ navigation }: CoreNavigationProps<'map'>) => {
     <Box height="full">
       <MerchantMap
         merchants={merchants}
-        darkMode={mode == 'dark'}
+        darkMode="dark"
         initialRegion={{
           latitude: userLocation.latitude,
           longitude: userLocation.longitude,

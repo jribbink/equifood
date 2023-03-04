@@ -39,12 +39,14 @@ gitstats_assignments = sorted([
 
 ### Get next due GitStats assignment
 
-current_assignment = gitstats_assignments[
-  bisect([
+current_index = bisect([
       datetime.strptime(a["due_at"],"%Y-%m-%dT%H:%M:%SZ")
       for a in gitstats_assignments
     ], datetime.utcnow()
   )
+
+current_assignment = gitstats_assignments[
+  current_index
 ]
 
 ### Generate GitStats report
@@ -60,6 +62,11 @@ group_name = "Equifood Group C" + (" " + week if week is not None else "")
 
 today = datetime.utcnow().astimezone(pytz.timezone('US/Pacific'))
 last_saturday = (today - timedelta(((today.weekday() - 5) % 7))).replace(hour=0, minute=0, second=0, microsecond=0).replace(tzinfo=None)
+
+if current_index == 0:
+   last_saturday = datetime.strptime(gitstats_assignments[current_index - 1]["due_at"],"%Y-%m-%dT%H:%M:%SZ")
+
+
 next_friday = (today + timedelta((today.weekday() - 4) % 7)).replace(hour=23, minute=59, second=59, microsecond=999).replace(tzinfo=None)
 
 gitstats_output = gitstats.report(GITHUB_TOKEN,

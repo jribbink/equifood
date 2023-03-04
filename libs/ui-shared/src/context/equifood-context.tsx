@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import storage from '../util/storage';
+import { storage } from '../util/storage';
 
 export interface IEquifoodConfig {
   apiUrl: string;
@@ -32,7 +32,7 @@ export function EquifoodCoreContext({
   config,
   children,
 }: EquifoodCoreContextProps) {
-  const [jwt, setJwt] = useState<string | null>(null);
+  const [jwt, setJwtRaw] = useState<string | null>(null);
 
   const authenticate = async ({
     email,
@@ -52,9 +52,14 @@ export function EquifoodCoreContext({
     setJwt(response.data);
   };
 
+  const setJwt = async (jwt: string | null) => {
+    await storage.set('jwt', jwt);
+    setJwtRaw(jwt);
+  };
+
   useEffect(() => {
     (async () => {
-      setJwt(await storage.get('jwt'));
+      setJwtRaw(await storage.get('jwt'));
     })();
   }, []);
 

@@ -14,6 +14,7 @@ import { UsersModule } from '../users/users.module';
     TypeOrmModule.forFeature([Order, Item, OrderedItem, Merchant]),
     UsersModule,
   ],
+  exports: [OrdersService],
   providers: [OrdersService, OrdersResolver],
   controllers: [OrdersController],
 })
