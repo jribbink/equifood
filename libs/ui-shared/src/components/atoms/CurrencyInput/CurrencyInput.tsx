@@ -8,7 +8,7 @@ interface CurrencyInputProps extends Omit<IInputProps, 'value'> {
 
 const formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
-  currency: 'USD',
+  currency: 'CAD',
 });
 
 export function CurrencyInput({
@@ -30,8 +30,10 @@ export function CurrencyInput({
 
   const handleChangeText = useCallback(
     (val: string) => {
-      const stripped = val.replace(/[^(0-9)]/, '');
-      const numeric = parseFloat(stripped);
+      const stripped = val.replace(/[^(0-9)]/g, '');
+      const numeric =
+        parseFloat(stripped) /
+        Math.pow(10, formatter.resolvedOptions().maximumFractionDigits);
       handleChangeValue(numeric);
     },
     [handleChangeValue]
@@ -47,6 +49,7 @@ export function CurrencyInput({
       onChangeText={(text) => {
         handleChangeText(text);
       }}
+      keyboardType="numeric"
       {...props}
     ></Input>
   );

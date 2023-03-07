@@ -1,7 +1,7 @@
 // This file is temporary until we solve how to get NestJS to resolve TypeORM entities automatically
 
 import { AuthProvider } from '../auth/entities/auth-provider';
-import { Item } from '../merchant/entities/item.entity';
+import { Item } from '../merchant/items/entities/item.entity';
 import { Merchant } from '../merchant/entities/merchant.entity';
 import { Order } from '../orders/entities/order.entity';
 import { OrderedItem } from '../orders/entities/ordered-item.entity';

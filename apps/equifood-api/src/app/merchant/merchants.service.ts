@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
-import { Item } from './entities/item.entity';
+import { Item } from './items/entities/item.entity';
 import { Merchant } from './entities/merchant.entity';
 import { Like } from 'typeorm';
 

@@ -1,14 +1,9 @@
-import {
-  BadRequestException,
-  Controller,
-  Get,
-  Param,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { AuthRoute } from '../auth/decorators/auth-route.decorator';
-import { AuthUser } from '../auth/decorators/auth-user.decorator';
 import { OrdersService } from '../orders/orders.service';
-import { User } from '../users/entities/user.entity';
+import { TargetMerchant } from './decorators/target-merchant.decorator';
+import { Merchant } from './entities/merchant.entity';
+import { TargetMerchantGuard } from './guards/target-merchant-guard';
 import { MerchantsService } from './merchants.service';
 
 @Controller('merchants')
@@ -26,24 +21,17 @@ export class MerchantsController {
     return this.merchantService.getAll();
   }
 
+  @UseGuards(TargetMerchantGuard('any'))
   @AuthRoute('merchant')
-  @Get('self')
-  async getSelfMerchant(
-    @Param('merchantId') merchantId: string,
-    @AuthUser() user: User
-  ) {
-    const merchant = await this.merchantService.getMerchantFromUser(user);
-    if (!merchant) {
-      return new BadRequestException(
-        'This account is not connected to a merchant!'
-      );
-    }
-    return this.merchantService.get(merchant.id);
+  @Get(':merchantId')
+  async getMerchant(@TargetMerchant() targetMerchant: Merchant) {
+    return targetMerchant;
   }
 
+  @UseGuards(TargetMerchantGuard('restricted'))
   @AuthRoute('merchant')
-  @Get('self/orders')
-  async getSelfOrders(@AuthUser() user: User) {
-    return this.ordersService.getOrders(user);
+  @Get(':merchantId/orders')
+  async getOrders(@TargetMerchant() targetMerchant: Merchant) {
+    return this.ordersService.getMerchantOrders({ id: targetMerchant.id });
   }
 }
