@@ -13,6 +13,8 @@ import {
   equifoodTheme,
 } from '@equifood/ui-shared';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
+import { HStack } from 'native-base';
+import { FontAwesome } from '@expo/vector-icons';
 
 function OrderScreen({
   navigation,
@@ -181,12 +183,12 @@ function OrderScreen({
               {(originalSubtotal - subtotal).toFixed(2)} today. Thank you for
               your contribution to reducing food waste across Canada.
             </Text>
-          <OrderView
-            order={order}
-            viewHeight={viewHeight}
-            merchantMode={false}
-          ></OrderView>
-
+            <OrderView
+              order={order}
+              viewHeight={viewHeight}
+              merchantMode={false}
+            ></OrderView>
+          </HStack>
           <Button
             minWidth={'20'}
             style={{
