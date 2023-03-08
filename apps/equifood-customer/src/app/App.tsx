@@ -10,7 +10,7 @@ import LoadingScreen from './screens/LoadingScreen/LoadingScreen';
 import { SWRConfig } from 'swr';
 import appConfig from './config/app-config';
 import { EquifoodCoreContext } from '@equifood/ui-shared';
-import { equifoodTheme } from '@equifood/api-interfaces';
+import { equifoodTheme } from '@equifood/ui-shared';
 
 const App = () => {
   const [store, setStore] = useState<Store<RootState>>();

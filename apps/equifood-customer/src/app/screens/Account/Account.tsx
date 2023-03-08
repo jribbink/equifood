@@ -6,6 +6,7 @@ import {
   useAuth,
   useProfile,
   useSavings,
+  equifoodTheme,
 } from '@equifood/ui-shared';
 
 const Account = () => {
@@ -34,7 +35,7 @@ const Account = () => {
               Total Money Saved:{' '}
               <Text
                 style={{
-                  color: 'green',
+                  color: equifoodTheme.colors.primary[600],
                 }}
               >
                 ${savings}
@@ -50,7 +51,7 @@ const Account = () => {
             borderRadius: 20,
             marginTop: 30,
             alignSelf: 'center',
-            backgroundColor: 'forestgreen',
+            backgroundColor: equifoodTheme.colors.primary[500],
           }}
           onPress={logoutUser}
         >

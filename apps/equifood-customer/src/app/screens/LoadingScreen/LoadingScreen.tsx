@@ -8,7 +8,7 @@ function LoadingScreen() {
         <ActivityIndicator
           style={styles.activityIndicatorWrapper}
           animating={true}
-          color="green"
+          color="primary.500"
         />
         <Text style={styles.activityIndicatorText}>Food for thought!</Text>
       </View>

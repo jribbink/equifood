@@ -17,8 +17,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useMerchant } from '@equifood/ui-shared';
 import { ItemCard } from '@equifood/ui-shared';
 import { useFocusEffect } from '@react-navigation/native';
-import { extendTheme } from 'native-base';
-import { equifoodTheme } from '@equifood/api-interfaces/src/lib';
+import { equifoodTheme } from '@equifood/ui-shared';
 
 export interface MerchantScreenParams {
   merchant: Merchant;
@@ -189,7 +188,7 @@ function RestaurantScreen({
           </VStack>
         </ScrollView>
         <Button
-          style={{ backgroundColor: 'forestgreen' }}
+          style={{ backgroundColor: equifoodTheme.colors.primary[700] }}
           onPress={async () => {
             // check if all values are 0
             if (Object.entries(quantityMap).every((item) => item[1] === 0)) {

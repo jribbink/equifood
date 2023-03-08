@@ -1,8 +1,7 @@
 import { Box, Heading, HStack, Text, Button } from 'native-base';
 import { Item } from '@equifood/api-interfaces';
 import { NumericUpDown } from '../../../atoms/NumericUpDown/NumericUpDown';
-import { equifoodTheme } from '@equifood/api-interfaces';
-import { AccessibilityInfo } from 'react-native';
+
 interface Props {
   item: Item;
   quantity: number;
@@ -35,7 +34,7 @@ export const ItemCard = ({ item, quantity, onQuantityChange }: Props) => {
               testID="old-price"
               fontSize="15"
               fontStyle="italic"
-              color={'#ff0000'}
+              color="primary.600"
               style={{ textDecorationLine: 'line-through' }}
             >
               {'$ ' + item.originalPrice.toFixed(2)}

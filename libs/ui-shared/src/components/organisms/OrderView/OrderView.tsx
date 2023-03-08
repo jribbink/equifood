@@ -28,7 +28,7 @@ export function OrderView({ items, quantities, merchant }: OrderViewProps) {
           fontWeight="extrabold"
           fontSize="20"
           paddingTop={3}
-          backgroundColor="green"
+          backgroundColor="primary.500"
           flex={2}
         >
           {merchant.name}

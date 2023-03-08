@@ -20,6 +20,7 @@ import { CoreStackParams, CoreTabParams } from './CoreNavigatorParams';
 import OrderScreen from '../../screens/OrderScreen/OrderScreen';
 //import CartButton from '../../components/buttons/CartButton/CartButton';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { equifoodTheme } from '@equifood/ui-shared';
 
 const Tab = createBottomTabNavigator<CoreTabParams>();
 const Stack = createStackNavigator<CoreStackParams>();
@@ -53,7 +54,7 @@ function CoreNavigation() {
           // You can return any component that you like here!
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'green',
+        tabBarActiveTintColor: equifoodTheme.colors.primary[900],
         tabBarInactiveTintColor: 'gray',
       })}
     >
@@ -94,7 +95,9 @@ function CoreLayout() {
               headerBackTitleVisible: true,
               headerBackTitle: 'Back',
               headerTitle: '',
-              headerStyle: { backgroundColor: 'forestgreen' },
+              headerStyle: {
+                backgroundColor: equifoodTheme.colors.primary[900],
+              },
               headerTintColor: '#ffffff',
               headerBackTitleStyle: { fontWeight: 'bold' },
             }}

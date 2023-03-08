@@ -3,7 +3,12 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { Box, Divider, Heading, HStack, Text } from 'native-base';
 import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
-import { ProgressStep, ProgressSteps, MerchantMap } from '@equifood/ui-shared';
+import {
+  ProgressStep,
+  ProgressSteps,
+  MerchantMap,
+  equifoodTheme,
+} from '@equifood/ui-shared';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 
 function OrderScreen({
@@ -82,7 +87,7 @@ function OrderScreen({
                 <Box key={item.item.id}>
                   <Box flexDirection="row" width="full" backgroundColor="red">
                     <Text>{`${item.quantity}x ${item.item.name}`}</Text>
-                    <Text ml="auto" strikeThrough={true} color="red.600">
+                    <Text ml="auto" strikeThrough={true} color="primary.600">
                       ${(item.item.originalPrice * item.quantity).toFixed(2)}
                     </Text>
                     <Text ml="2">
@@ -102,8 +107,8 @@ function OrderScreen({
           <Divider></Divider>
           <Box p="4">
             <Box flexDirection="row">
-              <Text color="red.600">Your savings</Text>
-              <Text color="red.600" ml="auto">
+              <Text color="primary.600">Your savings</Text>
+              <Text color="primary.600" ml="auto">
                 - ${(originalSubtotal - subtotal).toFixed(2)}
               </Text>
             </Box>
@@ -166,7 +171,7 @@ function OrderScreen({
           <HStack p="5" flexDirection="row" alignItems="center" space="3">
             <FontAwesome
               name="recycle"
-              color="green"
+              color="primary.500"
               style={{
                 fontSize: 50,
               }}

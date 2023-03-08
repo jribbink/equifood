@@ -2,6 +2,7 @@ import { Box, Button, Text } from 'native-base';
 import { useState } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import { useAuth } from '../../../hooks';
+import { equifoodTheme } from '../../atoms';
 
 interface LoginViewProps {
   allowedRoles: string[];
@@ -31,7 +32,7 @@ export function LoginView({ allowedRoles }: LoginViewProps) {
           marginTop: 20,
           fontSize: 40,
           fontWeight: 'bold',
-          color: 'darkgreen',
+          color: equifoodTheme.colors.primary[800],
         }}
       >
         Sign In
@@ -43,7 +44,7 @@ export function LoginView({ allowedRoles }: LoginViewProps) {
             fontSize: 18,
             marginBottom: 20,
             marginTop: 5,
-            color: 'forestgreen',
+            color: equifoodTheme.colors.primary[800],
           }}
         >
           Please sign in to continue.
@@ -55,7 +56,7 @@ export function LoginView({ allowedRoles }: LoginViewProps) {
           value={email}
           testID="emailInput"
           autoCapitalize="none"
-          placeholderTextColor={'yellowgreen'}
+          placeholderTextColor={'primary.500'}
         />
         <TextInput
           secureTextEntry={true}
@@ -64,7 +65,7 @@ export function LoginView({ allowedRoles }: LoginViewProps) {
           onChangeText={setPassword}
           value={password}
           testID="pwInput"
-          placeholderTextColor={'yellowgreen'}
+          placeholderTextColor={'primary.500'}
         />
         <Box
           style={{
@@ -76,7 +77,7 @@ export function LoginView({ allowedRoles }: LoginViewProps) {
           <Button
             style={{
               borderRadius: 30,
-              backgroundColor: 'yellowgreen',
+              backgroundColor: equifoodTheme.colors.primary[500],
             }}
             onPress={() => {
               authenticate({ email, password });

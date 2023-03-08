@@ -19,7 +19,7 @@ export function CartButton({
 
   return (
     <TouchableOpacity onPress={() => navigation.navigate('cart')}>
-      <Box backgroundColor="green.500" p="3" px="4" rounded="full">
+      <Box backgroundColor="primary.500.500" p="3" px="4" rounded="full">
         <HStack space="2" alignItems="center">
           <Ionicons name="md-cart" size={32} color="black" />
           <VStack>
