@@ -3,7 +3,7 @@ import { equifoodTheme } from '../theme/equifood-theme';
 
 interface NumericUpDownProps {
   value: number;
-  onValueChange: (value: number) => void;
+  onValueChange?: (value: number) => void;
   maxValue?: number;
   minValue?: number;
 }
@@ -26,7 +26,7 @@ export function NumericUpDown({
             backgroundColor: equifoodTheme.colors.primary[500],
             borderRadius: 5,
           }}
-          onPress={() => onValueChange(Math.min(value + 1, maxValue))}
+          onPress={() => onValueChange?.(Math.min(value + 1, maxValue))}
         >
           <Text fontWeight={'bold'} fontSize={'15'} color={'white'}>
             +
@@ -55,7 +55,7 @@ export function NumericUpDown({
             backgroundColor: equifoodTheme.colors.primary[500],
             borderRadius: 5,
           }}
-          onPress={() => onValueChange(Math.max(value - 1, minValue))}
+          onPress={() => onValueChange?.(Math.max(value - 1, minValue))}
         >
           <Text fontWeight={'bold'} fontSize={'15'} color={'white'}>
             -

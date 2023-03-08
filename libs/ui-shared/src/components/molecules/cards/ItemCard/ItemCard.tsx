@@ -4,8 +4,8 @@ import { NumericUpDown } from '../../../atoms/NumericUpDown/NumericUpDown';
 
 interface Props {
   item: Item;
-  quantity: number;
-  onQuantityChange: (n: number) => void;
+  quantity?: number;
+  onQuantityChange?: (n: number) => void;
 }
 
 const MAX_PER_PURCHASE = 3; //placeholder, maybe let merchants define this eventually
@@ -47,12 +47,14 @@ export const ItemCard = ({ item, quantity, onQuantityChange }: Props) => {
               ' of this item per order.'}
           </Text>
         </Box>
-        <NumericUpDown
-          value={quantity}
-          onValueChange={onQuantityChange}
-          maxValue={Math.min(MAX_PER_PURCHASE, item.quantity)}
-          minValue={0}
-        ></NumericUpDown>
+        {quantity ? (
+          <NumericUpDown
+            value={quantity}
+            onValueChange={onQuantityChange}
+            maxValue={Math.min(MAX_PER_PURCHASE, item.quantity)}
+            minValue={0}
+          ></NumericUpDown>
+        ) : null}
       </HStack>
     </Box>
   );

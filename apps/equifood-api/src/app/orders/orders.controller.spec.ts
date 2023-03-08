@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmSqlLiteTestingModule } from '../../test-utils/typeorm-test.module';
-import { Item } from '../merchant/entities/item.entity';
+import { Item } from '../merchant/items/entities/item.entity';
 import { Merchant } from '../merchant/entities/merchant.entity';
 import { Order } from './entities/order.entity';
 import { OrderedItem } from './entities/ordered-item.entity';

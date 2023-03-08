@@ -1,11 +1,14 @@
-import { FontAwesome } from '@expo/vector-icons';
 import { StackScreenProps } from '@react-navigation/stack';
-import { Box, Divider, Heading, HStack, Text } from 'native-base';
+import { Box, Divider, Heading, Button, Text } from 'native-base';
 import { useEffect, useState } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Alert } from 'react-native';
 import {
   ProgressStep,
   ProgressSteps,
+  OrderView,
+  useProfile,
+  useAxios,
   MerchantMap,
   equifoodTheme,
 } from '@equifood/ui-shared';
@@ -16,6 +19,8 @@ function OrderScreen({
   route,
 }: StackScreenProps<CoreStackParams, 'order'>) {
   const order = route.params.order;
+  const user = useProfile().user;
+  const axios = useAxios();
 
   useEffect(() => {
     navigation.setOptions({
@@ -36,15 +41,6 @@ function OrderScreen({
   ];
 
   const [viewHeight, setViewHeight] = useState<number>(0);
-
-  const subtotal = order.items.reduce(
-    (acc, item) => acc + item.item.price * item.quantity,
-    0
-  );
-  const originalSubtotal = order.items.reduce(
-    (acc, item) => acc + item.item.originalPrice * item.quantity,
-    0
-  );
 
   return (
     <Box
@@ -77,7 +73,6 @@ function OrderScreen({
           ></ProgressSteps>
 
           <Divider></Divider>
-
           <Box p="4">
             <Text fontSize="md" pb="2">
               Order Info
@@ -186,7 +181,50 @@ function OrderScreen({
               {(originalSubtotal - subtotal).toFixed(2)} today. Thank you for
               your contribution to reducing food waste across Canada.
             </Text>
-          </HStack>
+          <OrderView
+            order={order}
+            viewHeight={viewHeight}
+            merchantMode={false}
+          ></OrderView>
+
+          <Button
+            minWidth={'20'}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'red',
+              borderRadius: 5,
+            }}
+            onPress={async () => {
+              if (user) {
+                // user should always be a thing if we got to this page but VSCode is complaining
+                Alert.alert(
+                  'Cancel order?',
+                  'Are you sure you want to cancel this order?',
+                  [
+                    {
+                      text: "I'm Sure",
+                      onPress: async () =>
+                        await axios.post('/orders/cancel/' + order.id),
+                      style: 'default',
+                    },
+                    {
+                      text: 'No, thanks',
+                      style: 'cancel',
+                    },
+                  ]
+                );
+              }
+            }}
+          >
+            <Text fontWeight={'bold'} fontSize={'15'} color={'white'}>
+              CANCEL ORDER
+            </Text>
+          </Button>
+          {
+            //cancel button here
+          }
         </Box>
       </ScrollView>
     </Box>
