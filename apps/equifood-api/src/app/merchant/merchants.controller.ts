@@ -22,14 +22,12 @@ export class MerchantsController {
   }
 
   @UseGuards(TargetMerchantGuard('any'))
-  @AuthRoute('merchant')
   @Get(':merchantId')
   async getMerchant(@TargetMerchant() targetMerchant: Merchant) {
-    return targetMerchant;
+    return this.merchantService.get(targetMerchant.id);
   }
 
   @UseGuards(TargetMerchantGuard('restricted'))
-  @AuthRoute('merchant')
   @Get(':merchantId/orders')
   async getOrders(@TargetMerchant() targetMerchant: Merchant) {
     return this.ordersService.getMerchantOrders({ id: targetMerchant.id });

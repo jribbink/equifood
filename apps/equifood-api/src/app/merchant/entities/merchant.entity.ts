@@ -24,7 +24,7 @@ export class Merchant extends UuidEntity {
   name: string;
 
   @UploadColumn()
-  banner: Upload;
+  banner: Relation<Upload>;
 
   @UploadColumn()
   logo: Relation<Upload>;

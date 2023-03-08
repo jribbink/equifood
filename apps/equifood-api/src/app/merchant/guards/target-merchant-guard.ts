@@ -25,7 +25,10 @@ export function TargetMerchantGuard(access: 'any' | 'restricted') {
 
     async canActivate(context: ExecutionContext): Promise<boolean> {
       // Append authorized user to request
-      await this.jwtGuard.canActivate(context);
+      try {
+        await this.jwtGuard.canActivate(context);
+        // eslint-disable-next-line no-empty
+      } catch (e) {}
 
       const req = resolveContext(context).request;
       const user: User | undefined = req.user as User | undefined;
@@ -59,10 +62,11 @@ export function TargetMerchantGuard(access: 'any' | 'restricted') {
         });
       }
 
-      if (!req.targetMerhant) return false;
-      if ((req.user as User).roles.includes('admin')) return true;
+      if (!req.targetMerchant) return false;
+      if ((req.user as User)?.roles?.includes('admin')) return true;
       return (
-        access == 'any' || (req.targetMerchant as Merchant).user.id == user.id
+        access === 'any' ||
+        (user?.id && (req.targetMerchant as Merchant)?.user?.id === user?.id)
       );
     }
   }

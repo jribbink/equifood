@@ -1,5 +1,5 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 import { UuidEntity } from '../../../database/models/uuid-entity';
 import type { Merchant } from '../../../merchant/entities/merchant.entity';
 
@@ -35,4 +35,8 @@ export class Item extends UuidEntity {
   @Field((type) => [String])
   @Column({ default: '', type: 'simple-array' })
   allergies: string[];
+
+  @Field()
+  @Column({ default: false })
+  deleted?: boolean;
 }

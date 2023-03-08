@@ -14,12 +14,11 @@ import {
   HStack,
   Input,
   ScrollView,
-  Spacer,
   Text,
   TextArea,
   VStack,
 } from 'native-base';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   RootNavigationParams,
   RootNavigationProps,
@@ -35,15 +34,18 @@ function ItemEditorScreen({
   const [item, setItem] = useState<Partial<Item>>(
     route.params?.item ?? {
       quantity: 1,
+      description: '',
     }
   );
-  const [errors, setErrors] = useState({});
-  const [hasChanges, setHasChanges] = useState(false);
 
+  // Monitor whether form has changes
+  const [hasChanges, setHasChanges] = useState(false);
   useEffect(() => {
     setHasChanges(!_.isEqual(item, route.params?.item));
   }, [item, route]);
 
+  // Form validation
+  const [errors, setErrors] = useState({});
   useEffect(() => {
     let errors = {};
     if (!item.name) {
@@ -52,19 +54,24 @@ function ItemEditorScreen({
     setErrors(errors);
   }, [item]);
 
+  // Set title based on item name
   useEffect(() => {
     navigation.setOptions({
       title: item.id ? `Editing: ${item.name}` : 'Creating new item',
     });
   }, [navigation, item]);
 
+  // Ref to skip discard changes confirmation
+  const skipAlertRef = useRef(false);
+
+  // Discard changes confirmation
   useEffect(() => {
     const beforeRemoveListener: EventListenerCallback<
       StackNavigationEventMap &
         EventMapCore<StackNavigationState<RootNavigationParams>>,
       'beforeRemove'
     > = (e) => {
-      if (hasChanges) {
+      if (hasChanges && !skipAlertRef.current) {
         e.preventDefault();
 
         Alert.alert(
@@ -90,8 +97,46 @@ function ItemEditorScreen({
       navigation.removeListener('beforeRemove', beforeRemoveListener);
   }, [navigation, hasChanges]);
 
-  function handleSaveItem() {
-    axios.post('/');
+  async function handleSaveItem() {
+    if (item.id) await axios.patch(`/merchants/self/items/${item.id}`, item);
+    else await axios.post(`/merchants/self/items`, item);
+
+    // Set has changes to false to prevent dialog
+    skipAlertRef.current = true;
+
+    // Navigate back to menu
+    navigation.navigate('core', { screen: 'menu' });
+  }
+
+  async function handleDeleteItem() {
+    if (item.id) {
+      //Confirm delete
+      if (
+        !(await new Promise((resolve) =>
+          Alert.alert(
+            'Delete Item?',
+            'Are you sure you want to delete this item?',
+            [
+              {
+                text: "I'm Sure",
+                onPress: () => resolve(true),
+                style: 'default',
+              },
+              {
+                text: 'Cancel',
+                onPress: () => resolve(false),
+                style: 'cancel',
+              },
+            ]
+          )
+        ))
+      )
+        return;
+
+      // Delete and skip navigation confirm
+      await axios.delete(`/merchants/self/items/${item.id}`);
+      skipAlertRef.current = true;
+    }
 
     navigation.navigate('core', { screen: 'menu' });
   }
@@ -152,6 +197,8 @@ function ItemEditorScreen({
                 Description
               </FormControl.Label>
               <TextArea
+                value={item.description}
+                onChangeText={(v) => setItem({ ...item, description: v })}
                 autoCompleteType={true}
                 placeholder="Description"
                 size="2xl"
@@ -187,6 +234,7 @@ function ItemEditorScreen({
               ></Ionicons>
             }
             size="lg"
+            onPress={handleDeleteItem}
           >
             {item.id ? `Delete Item` : 'Discard Item'}
           </Button>
