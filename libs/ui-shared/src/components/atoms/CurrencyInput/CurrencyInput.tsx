@@ -1,5 +1,7 @@
 import { IInputProps, Input } from 'native-base';
 import { useCallback, useEffect, useState } from 'react';
+import 'intl';
+import 'intl/locale-data/jsonp/en';
 
 interface CurrencyInputProps extends Omit<IInputProps, 'value'> {
   value: number | undefined;
