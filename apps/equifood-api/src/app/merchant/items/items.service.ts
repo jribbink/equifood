@@ -54,7 +54,6 @@ export class ItemsService {
         }),
         this.deleteItem(merchantId, itemId),
       ]);
-      console.log(savedItem);
     } else {
       // Modifiy item since no dependents exist
       savedItem = await this.itemRepository.save({
