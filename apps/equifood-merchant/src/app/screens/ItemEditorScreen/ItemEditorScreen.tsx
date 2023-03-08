@@ -14,22 +14,25 @@ import {
   HStack,
   Input,
   ScrollView,
+  Spinner,
   Text,
   TextArea,
   VStack,
 } from 'native-base';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   RootNavigationParams,
   RootNavigationProps,
 } from '../../layouts/RootLayout';
 import _ from 'lodash';
 import { Alert } from 'react-native';
+import { useSWRConfig } from 'swr';
 
 function ItemEditorScreen({
   route,
   navigation,
 }: RootNavigationProps<'itemEditor'>) {
+  const { mutate } = useSWRConfig();
   const axios = useAxios();
   const [item, setItem] = useState<Partial<Item>>(
     route.params?.item ?? {
@@ -55,11 +58,20 @@ function ItemEditorScreen({
   }, [item]);
 
   // Set title based on item name
+  const setHeader = useMemo(
+    () =>
+      _.debounce(
+        (item: Partial<Item>) =>
+          navigation.setOptions({
+            title: item.id ? `Editing: ${item.name}` : 'Creating new item',
+          }),
+        500
+      ),
+    [navigation]
+  );
   useEffect(() => {
-    navigation.setOptions({
-      title: item.id ? `Editing: ${item.name}` : 'Creating new item',
-    });
-  }, [navigation, item]);
+    setHeader(item);
+  }, [navigation, item, setHeader]);
 
   // Ref to skip discard changes confirmation
   const skipAlertRef = useRef(false);
@@ -97,48 +109,69 @@ function ItemEditorScreen({
       navigation.removeListener('beforeRemove', beforeRemoveListener);
   }, [navigation, hasChanges]);
 
+  const [status, setStatus] = useState<'saving' | 'deleting' | 'idle'>('idle');
   async function handleSaveItem() {
-    if (item.id) await axios.patch(`/merchants/self/items/${item.id}`, item);
-    else await axios.post(`/merchants/self/items`, item);
+    if (status !== 'idle') return;
+    setStatus('saving');
+    try {
+      if (item.id) await axios.patch(`/merchants/self/items/${item.id}`, item);
+      else await axios.post(`/merchants/self/items`, item);
 
-    // Set has changes to false to prevent dialog
-    skipAlertRef.current = true;
+      // Set has changes to false to prevent dialog
+      skipAlertRef.current = true;
 
-    // Navigate back to menu
-    navigation.navigate('core', { screen: 'menu' });
+      // Refresh SWR
+      await mutate(`/merchants/self`);
+
+      // Navigate back to menu
+      navigation.navigate('core', { screen: 'menu' });
+    } finally {
+      setStatus('idle');
+    }
   }
 
   async function handleDeleteItem() {
-    if (item.id) {
-      //Confirm delete
-      if (
-        !(await new Promise((resolve) =>
-          Alert.alert(
-            'Delete Item?',
-            'Are you sure you want to delete this item?',
-            [
-              {
-                text: "I'm Sure",
-                onPress: () => resolve(true),
-                style: 'default',
-              },
-              {
-                text: 'Cancel',
-                onPress: () => resolve(false),
-                style: 'cancel',
-              },
-            ]
-          )
-        ))
-      )
-        return;
+    if (status !== 'idle') return;
+    setStatus('deleting');
 
-      // Delete and skip navigation confirm
-      await axios.delete(`/merchants/self/items/${item.id}`);
-      skipAlertRef.current = true;
+    try {
+      if (item.id) {
+        //Confirm delete
+        if (
+          !(await new Promise((resolve) =>
+            Alert.alert(
+              'Delete Item?',
+              'Are you sure you want to delete this item?',
+              [
+                {
+                  text: "I'm Sure",
+                  onPress: () => resolve(true),
+                  style: 'default',
+                },
+                {
+                  text: 'Cancel',
+                  onPress: () => resolve(false),
+                  style: 'cancel',
+                },
+              ]
+            )
+          ))
+        )
+          return;
+
+        // Delete and skip navigation confirm
+        await axios.delete(`/merchants/self/items/${item.id}`);
+        skipAlertRef.current = true;
+      }
+
+      // Refresh SWR
+      await mutate(`/merchants/self`);
+
+      // Navigate back to core
+      navigation.navigate('core', { screen: 'menu' });
+    } finally {
+      setStatus('idle');
     }
-
-    navigation.navigate('core', { screen: 'menu' });
   }
 
   return (
@@ -227,22 +260,34 @@ function ItemEditorScreen({
           <Button
             background="danger.500"
             leftIcon={
-              <Ionicons
-                size={20}
-                name={item.id ? 'trash' : 'arrow-undo'}
-                color="white"
-              ></Ionicons>
+              status === 'deleting' ? (
+                <Spinner></Spinner>
+              ) : (
+                <Ionicons
+                  size={20}
+                  name={item.id ? 'trash' : 'arrow-undo'}
+                  color="white"
+                ></Ionicons>
+              )
             }
             size="lg"
             onPress={handleDeleteItem}
+            isDisabled={status !== 'idle' && status !== 'deleting'}
           >
             {item.id ? `Delete Item` : 'Discard Item'}
           </Button>
           <Button
             background="success.500"
-            leftIcon={<Ionicons size={20} name="save" color="white"></Ionicons>}
-            size="lg"
-            isDisabled={!hasChanges}
+            leftIcon={
+              status === 'saving' ? (
+                <Spinner></Spinner>
+              ) : (
+                <Ionicons size={20} name="save" color="white"></Ionicons>
+              )
+            }
+            isDisabled={
+              (status !== 'idle' && status !== 'saving') || !hasChanges
+            }
             onPress={handleSaveItem}
           >
             Save Item
