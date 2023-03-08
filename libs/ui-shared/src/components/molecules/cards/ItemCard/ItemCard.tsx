@@ -1,7 +1,8 @@
 import { Box, Heading, HStack, Text, Button } from 'native-base';
 import { Item } from '@equifood/api-interfaces';
 import { NumericUpDown } from '../../../atoms/NumericUpDown/NumericUpDown';
-
+import { equifoodTheme } from '@equifood/api-interfaces';
+import { AccessibilityInfo } from 'react-native';
 interface Props {
   item: Item;
   quantity: number;
