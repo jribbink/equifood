@@ -6,10 +6,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Item } from '../merchant/entities/item.entity';
+import { FindOptionsWhere, Repository } from 'typeorm';
+import { Item } from '../merchant/items/entities/item.entity';
 import { Merchant } from '../merchant/entities/merchant.entity';
-import { MerchantsService } from '../merchant/merchants.service';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
 import { Order } from './entities/order.entity';
@@ -27,6 +26,14 @@ export class OrdersService {
     private merchantRepository: Repository<Merchant>,
     private usersService: UsersService
   ) {}
+
+  async getMerchantOrders(merchant: FindOptionsWhere<Merchant>) {
+    return this.ordersRepository.find({
+      where: {
+        merchant,
+      },
+    });
+  }
 
   async getOrders(userIdOrUser: string | User) {
     let user: User;

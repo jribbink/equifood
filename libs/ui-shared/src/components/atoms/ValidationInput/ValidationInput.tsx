@@ -5,12 +5,14 @@ interface ValidationInputProps extends IInputProps {
   regex: string | RegExp;
   value: string;
   onChangeText: (text: string) => void;
+  defaultValue?: string;
 }
 
 export function ValidationInput({
   onChangeText,
   value,
   regex: _regex,
+  defaultValue = '',
   ...props
 }: ValidationInputProps) {
   const [regex, setRegex] = useState<RegExp>(new RegExp(_regex));
@@ -18,17 +20,14 @@ export function ValidationInput({
     setRegex(new RegExp(_regex));
   }, [_regex]);
 
-  const [_value, _setValue] = useState<string>();
-
   const handleChangeText = useCallback(
     (val: string) => {
       if (val.match(regex)) {
-        _setValue(value);
-      } else {
-        onChangeText(_value ?? '');
+        const newValue = val && val !== '' ? val : defaultValue;
+        if (newValue !== value) onChangeText(newValue);
       }
     },
-    [value, regex, onChangeText, _value]
+    [regex, onChangeText, value, defaultValue]
   );
 
   useEffect(() => {
@@ -38,9 +37,7 @@ export function ValidationInput({
   return (
     <Input
       value={value}
-      onChangeText={(text) => {
-        handleChangeText(text);
-      }}
+      onChangeText={(text) => handleChangeText(text)}
       {...props}
     ></Input>
   );

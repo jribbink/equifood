@@ -12,7 +12,7 @@ import { DatabaseModule } from '../database/database.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Upload } from '../uploads/entities/upload.entity';
 import { Merchant } from '../merchant/entities/merchant.entity';
-import { Item } from '../merchant/entities/item.entity';
+import { Item } from '../merchant/items/entities/item.entity';
 import { componentLoader, Components, Pages } from './components';
 import path from 'path';
 
