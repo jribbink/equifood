@@ -3,6 +3,7 @@ import { Item, Merchant, Order } from '@equifood/api-interfaces';
 import { CheckoutItemCard } from '../../molecules/cards/CheckoutItemCard/CheckoutItemCard';
 import { FontAwesome } from '@expo/vector-icons';
 import { MerchantMap } from '../MerchantMap/MerchantMap';
+import { equifoodTheme } from '../../atoms';
 
 interface OrderViewProps {
   order: Order;
