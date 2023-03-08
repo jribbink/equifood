@@ -8,6 +8,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
+import { PartialBody } from '../../common/decorators/partial-body.decorator';
 import { TargetMerchant } from '../decorators/target-merchant.decorator';
 import { Merchant } from '../entities/merchant.entity';
 import { TargetMerchantGuard } from '../guards/target-merchant-guard';
@@ -27,6 +28,7 @@ export class ItemsController {
   @UseGuards(TargetMerchantGuard('restricted'))
   @Post()
   createItem(@TargetMerchant() targetMerchant: Merchant, @Body() item: Item) {
+    console.log(item);
     return this.itemsService.createItem(targetMerchant.id, item);
   }
 
@@ -35,8 +37,10 @@ export class ItemsController {
   updateItem(
     @TargetMerchant() targetMerchant: Merchant,
     @Param('itemId') itemId: string,
-    @Body() item: Partial<Item>
+    @Body() _item: Item
   ) {
+    const item = _item as Partial<Item>;
+    console.log(item.description);
     return this.itemsService.updateItem(targetMerchant.id, itemId, item);
   }
 

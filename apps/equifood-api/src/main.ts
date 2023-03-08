@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { INestApplication, Logger } from '@nestjs/common';
+import { INestApplication, Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -53,6 +53,17 @@ async function bootstrap() {
   app.set('trust proxy', 'loopback');
   app.setGlobalPrefix(globalPrefix);
   app.use(cookieParser());
+
+  // Use class validator
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      transformOptions: {
+        excludeExtraneousValues: true,
+      },
+      validateCustomDecorators: false,
+    })
+  );
 
   // Initialize swagger (API docs)
   setupSwagger(app);

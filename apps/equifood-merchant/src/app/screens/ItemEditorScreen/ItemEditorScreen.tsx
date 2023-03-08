@@ -114,8 +114,12 @@ function ItemEditorScreen({
     if (status !== 'idle') return;
     setStatus('saving');
     try {
-      if (item.id) await axios.patch(`/merchants/self/items/${item.id}`, item);
-      else await axios.post(`/merchants/self/items`, item);
+      if (item.id)
+        await axios.patch(`/merchants/self/items/${item.id}`, {
+          ...item,
+          shit: 'OK',
+        });
+      else await axios.post(`/merchants/self/items`, { item, id: 'damnit' });
 
       // Set has changes to false to prevent dialog
       skipAlertRef.current = true;
