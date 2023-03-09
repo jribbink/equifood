@@ -1,6 +1,4 @@
 import { Store } from '@reduxjs/toolkit';
-import 'intl';
-import 'intl/locale-data/jsonp/en';
 
 export async function bootstrapApp(store: Store) {
   // Assign axios base URL
