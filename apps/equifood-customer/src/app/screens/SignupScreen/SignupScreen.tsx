@@ -111,9 +111,9 @@ function SignupScreen({ navigation }) {
             testID="signUpButton"
             onPress={async () => {
               const { data: jwt } = await axios.post('/auth/create', {
-                email: email,
-                fist_name: first,
+                first_name: first,
                 last_name: last,
+                email: email,
                 phone: phone,
                 password: password,
                 roles: ['customer'],

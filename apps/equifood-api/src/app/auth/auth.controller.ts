@@ -6,6 +6,7 @@ import {
   Request,
   Response,
   UseGuards,
+  UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -37,20 +38,20 @@ export class AuthController {
     );
   }
 
+  @Post('/create')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async create(@Body() createUserDto: CreateUserDto) {
+    const user = await this.usersService.createUser(createUserDto);
+    const jwt = await this.authService.login(user);
+    return jwt;
+  }
+
   // Sign in using POST strategy, link account if JWT provided
   @UseGuards(DynamicAuthGuard((req) => req.params.strategy))
   @Post(':strategy')
   async loginPost(@Request() req: any) {
     // Create and return JWT auth
     return req.socialJwt || (await this.authService.login(req.user));
-  }
-
-  @Post('create')
-  async create(@Body(new ValidationPipe({transform:true})) createUserDto: CreateUserDto) {
-    console.log("test"+ createUserDto.email);
-    const user= await this.usersService.createUser(createUserDto);
-    const jwt=await this.authService.login(user);
-    return jwt;
   }
 
   // Sign in using GET strategy, link account if JWT provided
