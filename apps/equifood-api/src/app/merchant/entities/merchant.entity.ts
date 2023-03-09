@@ -11,7 +11,7 @@ import { UploadColumn } from '../../common/decorators/upload-column';
 import { UuidEntity } from '../../database/models/uuid-entity';
 import { Upload } from '../../uploads/entities/upload.entity';
 import { User } from '../../users/entities/user.entity';
-import type { Item } from './item.entity';
+import type { Item } from '../items/entities/item.entity';
 
 @Entity()
 @ObjectType()
@@ -24,7 +24,7 @@ export class Merchant extends UuidEntity {
   name: string;
 
   @UploadColumn()
-  banner: Upload;
+  banner: Relation<Upload>;
 
   @UploadColumn()
   logo: Relation<Upload>;

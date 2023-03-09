@@ -6,7 +6,7 @@ import { User } from '../../users/entities/user.entity';
 import { hashPassword } from '../../common/utils/crypto';
 import { Upload } from '../../uploads/entities/upload.entity';
 import { statSync } from 'fs';
-import { Item } from '../../merchant/entities/item.entity';
+import { Item } from '../../merchant/items/entities/item.entity';
 import { Order } from '../../orders/entities/order.entity';
 import { OrderedItem } from '../../orders/entities/ordered-item.entity';
 
@@ -292,7 +292,7 @@ export class Seeder {
       quantity: 2,
     });
 
-    await this.orderRepository.save({
+    const order = await this.orderRepository.save({
       completed_date: new Date(2022, 11, 1, 22),
       deadline: new Date(2022, 11, 1, 22, 30),
       items: [orderedItem],

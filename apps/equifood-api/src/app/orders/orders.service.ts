@@ -6,8 +6,8 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Item } from '../merchant/entities/item.entity';
+import { FindOptionsWhere, Repository } from 'typeorm';
+import { Item } from '../merchant/items/entities/item.entity';
 import { Merchant } from '../merchant/entities/merchant.entity';
 import { User } from '../users/entities/user.entity';
 import { UsersService } from '../users/users.service';
@@ -27,6 +27,14 @@ export class OrdersService {
     private usersService: UsersService
   ) {}
 
+  async getMerchantOrders(merchant: FindOptionsWhere<Merchant>) {
+    return this.ordersRepository.find({
+      where: {
+        merchant,
+      },
+    });
+  }
+
   async getOrders(userIdOrUser: string | User) {
     let user: User;
     if (!(userIdOrUser instanceof User))
@@ -36,9 +44,17 @@ export class OrdersService {
     else user = userIdOrUser;
 
     if (user.roles.includes('merchant')) {
-      throw new NotImplementedException('Does not support merchants yet');
+      return this.ordersRepository.find({
+        where: {
+          merchant: {
+            user: {
+              id: user.id,
+            },
+          },
+        },
+      });
     }
-    return await this.ordersRepository.find({
+    return this.ordersRepository.find({
       where: {
         user: { id: user.id },
       },
@@ -149,5 +165,10 @@ export class OrdersService {
     }
 
     return item;
+  }
+
+  async cancelOrder(user: User, orderId: number) {
+    const order = await this.getOrder(user, orderId);
+    this.ordersRepository.remove(order);
   }
 }

@@ -1,23 +1,17 @@
-import { StackScreenProps } from '@react-navigation/stack';
-import { Box, Divider, Heading, Button, Text } from 'native-base';
+import { Box, Button, Divider, Heading, Text } from 'native-base';
 import { useEffect, useState } from 'react';
-import { ScrollView } from 'react-native-gesture-handler';
 import { Alert } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import {
   ProgressStep,
   ProgressSteps,
   OrderView,
-  useProfile,
   useAxios,
 } from '@equifood/ui-shared';
-import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
+import type { RootNavigationProps } from '../../layouts/RootLayout';
 
-function OrderScreen({
-  navigation,
-  route,
-}: StackScreenProps<CoreStackParams, 'order'>) {
+function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
   const order = route.params.order;
-  const user = useProfile().user;
   const axios = useAxios();
 
   useEffect(() => {
@@ -39,6 +33,41 @@ function OrderScreen({
   ];
 
   const [viewHeight, setViewHeight] = useState<number>(0);
+
+  let updateButtonText = '';
+  const updateButtonOnPress = async () => {
+    Alert.alert(
+      'Order Completion',
+      'Please confirm that the order has been completed?',
+      [
+        {
+          text: 'Confirm',
+          onPress: () => {
+            order.status = 'completed';
+          },
+          style: 'default',
+        },
+        {
+          text: 'Not Yet',
+          style: 'cancel',
+        },
+      ]
+    );
+  };
+  switch (order.status) {
+    case 'pending':
+      updateButtonText = 'Complete Order';
+      break;
+    case 'cancelled':
+      updateButtonText = 'Order Cancelled';
+      break;
+    case 'completed':
+      updateButtonText = 'Order Completed';
+      break;
+    default:
+      updateButtonText = 'error';
+      break;
+  }
 
   return (
     <Box
@@ -75,21 +104,39 @@ function OrderScreen({
           <OrderView
             order={order}
             viewHeight={viewHeight}
-            merchantMode={false}
+            merchantMode={true}
           ></OrderView>
 
-          <Button
-            minWidth={'20'}
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: 'red',
-              borderRadius: 5,
-            }}
-            onPress={async () => {
-              if (user) {
-                // user should always be a thing if we got to this page but VSCode is complaining
+          {
+            //ready/complete button here
+            <Button
+              minWidth={'20'}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'red',
+                borderRadius: 5,
+              }}
+              onPress={updateButtonOnPress}
+            >
+              <Text fontWeight={'bold'} fontSize={'15'} color={'white'}>
+                {updateButtonText}
+              </Text>
+            </Button>
+          }
+
+          {
+            <Button
+              minWidth={'20'}
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'red',
+                borderRadius: 5,
+              }}
+              onPress={async () => {
                 Alert.alert(
                   'Cancel order?',
                   'Are you sure you want to cancel this order?',
@@ -106,15 +153,12 @@ function OrderScreen({
                     },
                   ]
                 );
-              }
-            }}
-          >
-            <Text fontWeight={'bold'} fontSize={'15'} color={'white'}>
-              CANCEL ORDER
-            </Text>
-          </Button>
-          {
-            //cancel button here
+              }}
+            >
+              <Text fontWeight={'bold'} fontSize={'15'} color={'white'}>
+                CANCEL ORDER
+              </Text>
+            </Button>
           }
         </Box>
       </ScrollView>

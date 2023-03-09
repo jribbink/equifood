@@ -1,9 +1,17 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { AuthRoute } from '../auth/decorators/auth-route.decorator';
+import { OrdersService } from '../orders/orders.service';
+import { TargetMerchant } from './decorators/target-merchant.decorator';
+import { Merchant } from './entities/merchant.entity';
+import { TargetMerchantGuard } from './guards/target-merchant-guard';
 import { MerchantsService } from './merchants.service';
 
 @Controller('merchants')
 export class MerchantsController {
-  constructor(private merchantService: MerchantsService) {}
+  constructor(
+    private merchantService: MerchantsService,
+    private ordersService: OrdersService
+  ) {}
 
   @Get()
   getMerchants(@Query('q') searchQuery?: string) {
@@ -13,8 +21,15 @@ export class MerchantsController {
     return this.merchantService.getAll();
   }
 
+  @UseGuards(TargetMerchantGuard('any'))
   @Get(':merchantId')
-  getItems(@Param('merchantId') merchantId: string) {
-    return this.merchantService.get(merchantId);
+  async getMerchant(@TargetMerchant() targetMerchant: Merchant) {
+    return this.merchantService.get(targetMerchant.id);
+  }
+
+  @UseGuards(TargetMerchantGuard('restricted'))
+  @Get(':merchantId/orders')
+  async getOrders(@TargetMerchant() targetMerchant: Merchant) {
+    return this.ordersService.getMerchantOrders({ id: targetMerchant.id });
   }
 }

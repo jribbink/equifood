@@ -1,7 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, ManyToOne } from 'typeorm';
-import { UuidEntity } from '../../database/models/uuid-entity';
-import type { Merchant } from './merchant.entity';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { UuidEntity } from '../../../database/models/uuid-entity';
+import type { Merchant } from '../../../merchant/entities/merchant.entity';
 
 // this entity should not be deleted to maintain order history
 // instead when changes are made, a new item should be created to replace this one
@@ -35,4 +35,8 @@ export class Item extends UuidEntity {
   @Field((type) => [String])
   @Column({ default: '', type: 'simple-array' })
   allergies: string[];
+
+  @Field()
+  @Column({ default: false })
+  deleted?: boolean;
 }

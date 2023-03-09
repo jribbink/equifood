@@ -1,6 +1,6 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { Button, ScrollView, Text } from 'native-base';
-import { OrderView, useAxios } from '@equifood/ui-shared';
+import { OrderConfirmView, useAxios } from '@equifood/ui-shared';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import { Order } from '@equifood/api-interfaces';
 
@@ -18,14 +18,16 @@ function OrderConfirm({
 
   return (
     <ScrollView>
-      <OrderView
+      <OrderConfirmView
         items={params.items}
         quantities={params.quantities}
         merchant={params.merchant}
-      ></OrderView>
+      ></OrderConfirmView>
       <Button
-        style={{ backgroundColor: 'forestgreen', borderRadius: 30 }}
-        padding="3"
+        style={{ backgroundColor: 'green', borderRadius: 30 }}
+        paddingLeft="10"
+        paddingRight="10"
+        alignSelf="center"
         accessibilityLabel="Confirm Order"
         onPress={async () => {
           const { data } = await axios.post<Order>('/orders', {
@@ -41,15 +43,6 @@ function OrderConfirm({
       >
         <Text fontSize="24" color="white" fontWeight="bold">
           Confirm & Place Order
-        </Text>
-      </Button>
-
-      <Button
-        style={{ backgroundColor: 'yellowgreen', borderRadius: 30 }}
-        onPress={onBackPress}
-      >
-        <Text fontSize="20" color="white">
-          Go Back
         </Text>
       </Button>
     </ScrollView>
