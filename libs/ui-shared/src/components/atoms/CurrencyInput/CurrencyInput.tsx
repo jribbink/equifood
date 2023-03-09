@@ -34,7 +34,7 @@ export function CurrencyInput({
     (val: string) => {
       const stripped = val.replace(/[^(0-9)]/g, '');
       const numeric =
-        parseFloat(stripped) /
+        (parseFloat(stripped) || 0) /
         Math.pow(10, formatter.resolvedOptions().maximumFractionDigits);
       handleChangeValue(numeric);
     },
@@ -48,9 +48,7 @@ export function CurrencyInput({
   return (
     <Input
       value={text}
-      onChangeText={(text) => {
-        handleChangeText(text);
-      }}
+      onChangeText={(text) => handleChangeText(text)}
       keyboardType="numeric"
       {...props}
     ></Input>
