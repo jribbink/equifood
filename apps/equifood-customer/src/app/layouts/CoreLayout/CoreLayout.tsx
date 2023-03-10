@@ -14,11 +14,9 @@ import Orders from '../../screens/Orders/Orders';
 import Account from '../../screens/Account/Account';
 import MerchantScreen from '../../screens/MerchantScreen/MerchantScreen';
 import OrderConfirm from '../../screens/OrderConfirm/OrderConfirm';
-//import Cart from '../../screens/Cart/Cart';
 import { Box, View } from 'native-base';
 import { CoreStackParams, CoreTabParams } from './CoreNavigatorParams';
 import OrderScreen from '../../screens/OrderScreen/OrderScreen';
-//import CartButton from '../../components/buttons/CartButton/CartButton';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator<CoreTabParams>();
@@ -101,7 +99,6 @@ function CoreLayout() {
             name="orderConfirm"
             component={OrderConfirm}
           ></Stack.Screen>
-          {/*<Stack.Screen name="cart" component={Cart}></Stack.Screen>*/}
           <Stack.Screen name="order" component={OrderScreen}></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
