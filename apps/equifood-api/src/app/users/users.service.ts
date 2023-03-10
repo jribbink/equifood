@@ -6,11 +6,11 @@ import { hashPassword } from '../common/utils/crypto';
 import { Order } from '../orders/entities/order.entity';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './models/create-user.dto';
-import crypto from "crypto";
+import crypto from 'crypto';
 
 @Injectable()
 export class UsersService {
-  private validator
+  private validator;
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
@@ -44,24 +44,26 @@ export class UsersService {
   }
 
   async createUser(createUserDto: CreateUserDto) {
-    if(!createUserDto.roles.every((r)=> r==='customer')){
+    if (!createUserDto.roles.every((r) => r === 'customer')) {
       throw new BadRequestException('Invalid roles');
     }
     const user = await this.userRepository.findOneBy({
-      email:createUserDto.email,
+      email: createUserDto.email,
     });
-    if (user){
-      throw new BadRequestException(`An account with the email ${createUserDto.email} already exists`);
+    if (user) {
+      throw new BadRequestException(
+        `An account with the email ${createUserDto.email} already exists`
+      );
     }
-    const salt= crypto.randomBytes(32).toString('hex');
+    const salt = crypto.randomBytes(32).toString('hex');
 
     return this.userRepository.save(<User>{
-      email:createUserDto.email,
+      email: createUserDto.email,
       passwordHash: hashPassword(createUserDto.password, salt),
       passwordSalt: salt,
-      first_name:createUserDto.first_name,
-      last_name:createUserDto.last_name,
-      phone:createUserDto.phone,
+      first_name: createUserDto.first_name,
+      last_name: createUserDto.last_name,
+      phone: createUserDto.phone,
       roles: createUserDto.roles,
     });
   }

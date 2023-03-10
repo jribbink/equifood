@@ -11,9 +11,54 @@ function SignupScreen({ navigation }) {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
 
+  const [validEmail, setValidEmail] = useState(true);
+  const [validFirst, setValidFirst] = useState(true);
+  const [validLast, setValidLast] = useState(true);
+  const [validPhone, setValidPhone] = useState(true);
+  const [validPassword, setValidPassword] = useState(true);
+
   const { setJwt } = useAuth();
 
   const axios = useAxios();
+
+  async function onSubmit() {
+    if (/\S+@\S+\.\S+/.test(email)) {
+      setValidEmail(true);
+    } else {
+      setValidEmail(false);
+    }
+    if (first != null && first != '') {
+      setValidFirst(true);
+    } else {
+      setValidFirst(false);
+    }
+    if (last != null && last != '') {
+      setValidLast(true);
+    } else {
+      setValidLast(false);
+    }
+    if (phone != null && phone.length == 10) {
+      setValidPhone(true);
+    } else {
+      setValidPhone(false);
+    }
+    if (password != null && password != '') {
+      setValidPassword(true);
+    } else {
+      setValidPassword(false);
+    }
+    if (validEmail && validFirst && validLast && validPassword && validPhone) {
+      const { data: jwt } = await axios.post('/auth/create', {
+        first_name: first,
+        last_name: last,
+        email: email,
+        phone: phone,
+        password: password,
+        roles: ['customer'],
+      });
+      setJwt(jwt);
+    }
+  }
 
   const styles = StyleSheet.create({
     input: {
@@ -22,6 +67,9 @@ function SignupScreen({ navigation }) {
       borderWidth: 1,
       padding: 10,
       borderRadius: 50,
+    },
+    error: {
+      color: 'red',
     },
   });
 
@@ -60,6 +108,9 @@ function SignupScreen({ navigation }) {
           autoCapitalize="none"
           placeholderTextColor={'yellowgreen'}
         />
+        {!validFirst && (
+          <Text style={styles.error}>Please enter your First name</Text>
+        )}
         <TextInput
           style={styles.input}
           onChangeText={setLast}
@@ -69,6 +120,9 @@ function SignupScreen({ navigation }) {
           autoCapitalize="none"
           placeholderTextColor={'yellowgreen'}
         />
+        {!validLast && (
+          <Text style={styles.error}>Please enter your Last name</Text>
+        )}
         <TextInput
           style={styles.input}
           onChangeText={setEmail}
@@ -78,6 +132,9 @@ function SignupScreen({ navigation }) {
           autoCapitalize="none"
           placeholderTextColor={'yellowgreen'}
         />
+        {!validEmail && (
+          <Text style={styles.error}>Please enter a valid Email</Text>
+        )}
         <TextInput
           style={styles.input}
           onChangeText={setPhone}
@@ -87,6 +144,9 @@ function SignupScreen({ navigation }) {
           autoCapitalize="none"
           placeholderTextColor={'yellowgreen'}
         />
+        {!validPhone && (
+          <Text style={styles.error}>Please enter a valid phone number</Text>
+        )}
         <TextInput
           secureTextEntry={true}
           style={styles.input}
@@ -96,6 +156,9 @@ function SignupScreen({ navigation }) {
           testID="pwInput"
           placeholderTextColor={'yellowgreen'}
         />
+        {!validPassword && (
+          <Text style={styles.error}>Please enter a password</Text>
+        )}
         <Box
           style={{
             marginTop: 15,
@@ -109,17 +172,7 @@ function SignupScreen({ navigation }) {
               backgroundColor: 'yellowgreen',
             }}
             testID="signUpButton"
-            onPress={async () => {
-              const { data: jwt } = await axios.post('/auth/create', {
-                first_name: first,
-                last_name: last,
-                email: email,
-                phone: phone,
-                password: password,
-                roles: ['customer'],
-              });
-              setJwt(jwt);
-            }}
+            onPress={onSubmit}
           >
             Sign In
           </Button>
