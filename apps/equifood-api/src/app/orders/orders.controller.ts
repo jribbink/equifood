@@ -4,6 +4,7 @@ import { AuthUser } from '../auth/decorators/auth-user.decorator';
 import { User } from '../users/entities/user.entity';
 import { OrderedItemDTO } from './models/ordered-item.dto';
 import { OrdersService } from './orders.service';
+import { Order } from './entities/order.entity';
 
 @Controller('orders')
 export class OrdersController {
@@ -12,7 +13,8 @@ export class OrdersController {
   @AuthRoute('customer')
   @Post('cancel/:orderId')
   async cancelOrder(@AuthUser() user: User, @Param('orderId') orderId: number) {
-    await this.ordersService.cancelOrder(user, orderId);
+    const ord = await this.ordersService.getOrder(user, orderId);
+    ord.status = 'cancelled';
   }
 
   @AuthRoute()
