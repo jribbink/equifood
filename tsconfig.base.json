@@ -15,7 +15,11 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@equifood/api-interfaces": ["libs/api-interfaces/src/index.ts"]
+      "@equifood/api-interfaces": ["libs/api-interfaces/src/index.ts"],
+      "@equifood/ui-shared": ["libs/ui-shared/src/index.ts"],
+      "@equifood/ui-shared/test-utils": [
+        "libs/ui-shared/src/test-utils/index.ts"
+      ]
     },
     "esModuleInterop": true
   },

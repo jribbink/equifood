@@ -10,7 +10,9 @@ import { DynamicPropertyInterceptor } from './common/interceptors/dynamic-proper
 import { OrdersModule } from './orders/orders.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { WebsocketValidator } from './auth/websocket-validator';
-
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { AdminModule } from './admin/admin.module';
 @Module({
   imports: [
     AuthModule,
@@ -27,6 +29,11 @@ import { WebsocketValidator } from './auth/websocket-validator';
       }),
       inject: [WebsocketValidator],
     }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: true,
+    }),
+    AdminModule,
   ],
   providers: [
     WebsocketValidator,

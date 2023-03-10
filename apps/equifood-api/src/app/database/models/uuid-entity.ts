@@ -1,7 +1,8 @@
-import { PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, PrimaryGeneratedColumn } from 'typeorm';
 
-export abstract class UuidEntity {
+export abstract class UuidEntity extends BaseEntity {
   constructor(id: string) {
+    super();
     this.id = id;
   }
 

@@ -6,14 +6,14 @@ This is a capstone (COSC 499) project for the Equifood App.
 
 ### Installation & Configuration
 
-1. Install [Node JS](https://nodejs.org/en/) v16 or later
+1. Install [Node JS](https://nodejs.org/en/) v16
 2. Run `npm install`
 3. Install and configure [MariaDB](https://mariadb.org/)
-4. Create a configuration file `.env` in the `apps/equifood-api` directory (use `example.env` for reference)
+4. Create a configuration file `.env` in the `apps/equifood-api` and `apps/equifood-customer` directory (use `example.env` for reference)
 
 ### Development
 
-Apps can be served using `nx serve APP_NAME` command.
+Apps can be served using `nx serve APP_NAME` command. Currently available apps are `equifood-api`, `equifood-customer`, and `equifood-merchant`.
 
 ### Testing
 
@@ -65,27 +65,33 @@ There are two frontend apps for this project.
 1. The customer facing app
 2. The merchant/restaurant facing app
 
+**NOTE** The frontend requires an `.env` file to be created (use `example.env` as reference)
+
 ##### Customer App
 
-The client-facing frontend for the project (React Native) can be found in the `customer_app` directory.
+The client-facing frontend for the project (React Native) can be found in the `apps/customer-app` directory.
 
 The app is supported as an IOS/Android application.
 
-##### Restaurant App
+**NOTE** The frontend requires an `.env` file to be created (use `example.env` as reference)
 
-The restaurant-facing frontend for the project (React Native) can be found in the `restaurant_app` directory.
+##### Merchant App
+
+The merchant-facing frontend for the project (React Native) can be found in the `apps/merchant-app` directory.
 
 The app is supported as an IOS/Android application.
 
 #### Backend
 
-The backend for the project (NestJS) can be found in the `backend` directory.
+The backend for the project (NestJS) can be found in the `apps/equifood-api` directory. Within the backend/API an admin portal endpoint is exposed for the administartor users (`/admin`).
 
 #### Shared
 
-Shared types for the frontend and backend can be found in the `shared` directory.
+Shared types for the frontend and backend can be found in the `lib/api-interfaces` directory.
 
 These types are shared between all of the TypeScript apps within this project for easy code reuse,
+
+Additionally, shared UI/UX components + React hooks, etc. can be found in `lib/ui-shared`
 
 ## License
 

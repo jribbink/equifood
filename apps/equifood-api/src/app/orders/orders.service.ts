@@ -6,10 +6,11 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Item } from '../merchant/entities/item.entity';
+import { FindOptionsWhere, Repository } from 'typeorm';
+import { Item } from '../merchant/items/entities/item.entity';
 import { Merchant } from '../merchant/entities/merchant.entity';
 import { User } from '../users/entities/user.entity';
+import { UsersService } from '../users/users.service';
 import { Order } from './entities/order.entity';
 import { OrderedItem } from './entities/ordered-item.entity';
 import { OrderedItemDTO } from './models/ordered-item.dto';
@@ -21,14 +22,39 @@ export class OrdersService {
     @InjectRepository(Item) private itemRepository: Repository<Item>,
     @InjectRepository(OrderedItem)
     private orderedItemRepository: Repository<OrderedItem>,
-    @InjectRepository(Merchant) private merchantRepository: Repository<Merchant>
+    @InjectRepository(Merchant)
+    private merchantRepository: Repository<Merchant>,
+    private usersService: UsersService
   ) {}
 
-  async getOrders(user: User) {
+  async getMerchantOrders(merchant: FindOptionsWhere<Merchant>) {
+    return this.ordersRepository.find({
+      where: {
+        merchant,
+      },
+    });
+  }
+
+  async getOrders(userIdOrUser: string | User) {
+    let user: User;
+    if (!(userIdOrUser instanceof User))
+      user = await this.usersService.findOne({
+        id: userIdOrUser,
+      });
+    else user = userIdOrUser;
+
     if (user.roles.includes('merchant')) {
-      throw new NotImplementedException('Does not support merchants yet');
+      return this.ordersRepository.find({
+        where: {
+          merchant: {
+            user: {
+              id: user.id,
+            },
+          },
+        },
+      });
     }
-    return await this.ordersRepository.find({
+    return this.ordersRepository.find({
       where: {
         user: { id: user.id },
       },
@@ -44,7 +70,7 @@ export class OrdersService {
         user: true,
       },
     });
-    if (!order) return new NotFoundException('Order does not exist');
+    if (!order) throw new NotFoundException('Order does not exist');
     if (user.roles.includes('customer') && order.user.id !== user.id)
       throw new UnauthorizedException();
     if (user.roles.includes('merchant')) {
@@ -74,6 +100,9 @@ export class OrdersService {
     );
 
     // update item quantities & create OrderedItem entities
+    // also calculate total price
+
+    let totalPrice = 0;
     const orderedItems = [];
     await Promise.all([
       ...[...quantityMap.entries()].map(async ([id, [quantity, itemRef]]) => {
@@ -90,6 +119,9 @@ export class OrdersService {
           })
         );
       }),
+      ...[...quantityMap.values()].map(([quantity, itemRef]) => {
+        totalPrice += quantity * itemRef.price;
+      }),
     ]);
 
     // save order
@@ -99,7 +131,7 @@ export class OrdersService {
       items: [...orderedItems],
       merchant: merchant,
       status: 'pending',
-      total: 1234,
+      total: totalPrice,
       user: user,
     });
   }
@@ -133,5 +165,10 @@ export class OrdersService {
     }
 
     return item;
+  }
+
+  async cancelOrder(user: User, orderId: number) {
+    const order = await this.getOrder(user, orderId);
+    this.ordersRepository.remove(order);
   }
 }

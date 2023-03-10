@@ -12,7 +12,6 @@ import { FacebookStrategy } from './strategies/facebook.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthProvider } from './entities/auth-provider';
 import { AppleStrategy } from './strategies/apple.strategy';
-import { AuthStrategy } from './types/auth-strategy';
 import { SocialJwtStrategy } from './strategies/social-jwt.strategy';
 import { WebsocketValidator } from './websocket-validator';
 
