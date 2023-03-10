@@ -8,7 +8,7 @@ import { SUBSCRIPTIONS_MODULE_OPTIONS } from './constants';
 @Module({
   controllers: [],
   imports: [],
-  providers: [SubscriptionGateway, SubscriptionService],
+  providers: [],
 })
 export class SubscriptionsCoreModule {
   static forRoot(options: SubscriptionsModuleConfig): DynamicModule {
@@ -18,11 +18,17 @@ export class SubscriptionsCoreModule {
         useFactory: options.useFactory,
         inject: options.inject,
       },
+      SubscriptionGateway,
+      SubscriptionService,
     ];
+
+    const exports = [SubscriptionService];
+
     return {
       imports: options.imports,
       module: SubscriptionsCoreModule,
-      providers: providers,
+      providers,
+      exports,
     };
   }
 }

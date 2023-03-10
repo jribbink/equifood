@@ -8,11 +8,13 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Merchant } from '../../merchant/entities/merchant.entity';
+import { RealtimeEntity } from '../../subscriptions/decorators/realtime-entity.decorator';
 import { User } from '../../users/entities/user.entity';
 import { OrderedItem } from './ordered-item.entity';
 
 @ObjectType()
 @Entity()
+@RealtimeEntity()
 export class Order {
   @PrimaryGeneratedColumn()
   @Field()
