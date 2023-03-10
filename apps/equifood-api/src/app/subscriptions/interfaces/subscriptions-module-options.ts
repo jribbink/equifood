@@ -1,3 +1,3 @@
-export interface SubscriptionsModuleOptions {
-  validator: (token: string) => Promise<any> | any;
+export interface SubscriptionsModuleOptions<T = any> {
+  validator: (token: string) => Promise<T> | T;
 }

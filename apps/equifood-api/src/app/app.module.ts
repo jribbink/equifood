@@ -22,7 +22,7 @@ import { AdminModule } from './admin/admin.module';
     MerchantsModule,
     UploadsModule,
     OrdersModule,
-    SubscriptionsModule.register({
+    SubscriptionsModule.forRoot({
       imports: [AuthModule],
       useFactory: (websocketValidator: WebsocketValidator) => ({
         validator: websocketValidator.validate,

@@ -1,28 +1,16 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { SubscriptionGateway } from './subscription.gateway';
-import { SubscriptionService } from './subscription.service';
 import { SubscriptionsModuleConfig } from './interfaces/subscriptions-module-config';
-
-export const SUBSCRIPTIONS_MODULE_OPTIONS = 'SUBSCRIPTIONS_MODULE_OPTIONS';
+import { SubscriptionsCoreModule } from './subscriptions-core.module';
 
 @Module({
   controllers: [],
   imports: [],
-  providers: [SubscriptionGateway, SubscriptionService],
 })
 export class SubscriptionsModule {
-  static register(options: SubscriptionsModuleConfig): DynamicModule {
-    const providers = [
-      {
-        provide: SUBSCRIPTIONS_MODULE_OPTIONS,
-        useFactory: options.useFactory,
-        inject: options.inject,
-      },
-    ];
+  static forRoot(options: SubscriptionsModuleConfig): DynamicModule {
     return {
-      imports: options.imports,
+      imports: [SubscriptionsCoreModule.forRoot(options)],
       module: SubscriptionsModule,
-      providers: providers,
     };
   }
 }
