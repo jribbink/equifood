@@ -22,7 +22,6 @@ export type CoreStackParams = {
   order: {
     order: Order;
   };
-  cart: undefined;
   orderConfirm: {
     merchant: Merchant;
     items: Item[];

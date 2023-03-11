@@ -1,7 +1,6 @@
 export * from './useAppleAuth';
 export * from './useAuth';
 export * from './useAxios';
-export * from './useCart';
 export * from './useFetcher';
 export * from './useLocation';
 export * from './useMerchant';
