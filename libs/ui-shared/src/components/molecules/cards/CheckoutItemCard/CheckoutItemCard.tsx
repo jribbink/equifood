@@ -26,7 +26,7 @@ export const CheckoutItemCard = ({ item, quantity }: Props) => {
           testID="old-price"
           fontSize="15"
           fontStyle="italic"
-          color={'#ff0000'}
+          color={'primary.600'}
           style={{ textDecorationLine: 'line-through' }}
         >
           {'$ ' + item.originalPrice.toFixed(2)}

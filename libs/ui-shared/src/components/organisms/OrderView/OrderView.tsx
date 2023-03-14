@@ -3,6 +3,7 @@ import { Item, Merchant, Order } from '@equifood/api-interfaces';
 import { CheckoutItemCard } from '../../molecules/cards/CheckoutItemCard/CheckoutItemCard';
 import { FontAwesome } from '@expo/vector-icons';
 import { MerchantMap } from '../MerchantMap/MerchantMap';
+import { equifoodTheme } from '../../atoms';
 
 interface OrderViewProps {
   order: Order;
@@ -52,8 +53,8 @@ export function OrderView({ order, viewHeight, merchantMode }: OrderViewProps) {
       <Divider></Divider>
       <Box p="4">
         <Box flexDirection="row">
-          <Text color="red.600">Your savings</Text>
-          <Text color="red.600" ml="auto">
+          <Text color="primary.600">Your savings</Text>
+          <Text color="primary.600" ml="auto">
             - ${(originalSubtotal - subtotal).toFixed(2)}
           </Text>
         </Box>
@@ -116,7 +117,7 @@ export function OrderView({ order, viewHeight, merchantMode }: OrderViewProps) {
       <HStack p="5" flexDirection="row" alignItems="center" space="3">
         <FontAwesome
           name="recycle"
-          color="green"
+          color="primary.500"
           style={{
             fontSize: 50,
           }}

@@ -3,6 +3,7 @@ import { Button, ScrollView, Text } from 'native-base';
 import { OrderConfirmView, useAxios } from '@equifood/ui-shared';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import { Order } from '@equifood/api-interfaces';
+import { equifoodTheme } from '@equifood/ui-shared';
 
 function OrderConfirm({
   navigation,
@@ -24,7 +25,10 @@ function OrderConfirm({
         merchant={params.merchant}
       ></OrderConfirmView>
       <Button
-        style={{ backgroundColor: 'green', borderRadius: 30 }}
+        style={{
+          backgroundColor: equifoodTheme.colors.primary[700],
+          borderRadius: 30,
+        }}
         paddingLeft="10"
         paddingRight="10"
         alignSelf="center"

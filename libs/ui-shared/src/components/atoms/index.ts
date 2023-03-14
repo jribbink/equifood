@@ -5,3 +5,4 @@ export * from './ScrollingMenuItem/ScrollingMenuItem';
 export * from './ValidationInput/ValidationInput';
 export * from './CurrencyInput/CurrencyInput';
 export * from './buttons';
+export * from './theme/equifood-theme';

@@ -81,7 +81,7 @@ Below are the level 0 and level 1 Data Flow Diagrams for this project. The color
 
 ## Legend
 
-- Items \textbf{\textcolor{green}{(green)}}\newline
+- Items \textbf{\textcolor{{green}}}{(green)}}\newline
 - Pickup orders \textbf{\textcolor{yellow}{(yellow)}}\newline
 - Customer accounts \textbf{\textcolor{blue}{(blue)}}\newline
 - Restaurant accounts and applications \textbf{\textcolor{red}{(red)}}\newline
