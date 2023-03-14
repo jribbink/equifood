@@ -1,5 +1,5 @@
 import { Box, Button, Text } from 'native-base';
-import { equifoodTheme } from '../theme/equifood-theme';
+import { equifoodTheme } from '../../../config/equifood-theme';
 
 interface NumericUpDownProps {
   value: number;
