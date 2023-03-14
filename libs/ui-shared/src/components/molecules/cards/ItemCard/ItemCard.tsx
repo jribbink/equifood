@@ -47,7 +47,7 @@ export const ItemCard = ({ item, quantity, onQuantityChange }: Props) => {
               ' of this item per order.'}
           </Text>
         </Box>
-        {quantity ? (
+        {quantity || quantity === 0 ? (
           <NumericUpDown
             value={quantity}
             onValueChange={onQuantityChange}
