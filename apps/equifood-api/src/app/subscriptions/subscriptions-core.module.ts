@@ -2,7 +2,9 @@ import { DynamicModule, Global, Module } from '@nestjs/common';
 import { SubscriptionGateway } from './subscription.gateway';
 import { SubscriptionService } from './subscription.service';
 import { SubscriptionsModuleConfig } from './interfaces/subscriptions-module-config';
-import { SUBSCRIPTIONS_MODULE_OPTIONS } from './constants';
+import { METADATA_REALTIME, SUBSCRIPTIONS_MODULE_OPTIONS } from './constants';
+import entities from '../database/entities';
+import _ from 'lodash';
 
 @Global()
 @Module({
@@ -24,11 +26,24 @@ export class SubscriptionsCoreModule {
 
     const exports = [SubscriptionService];
 
-    return {
-      imports: options.imports,
-      module: SubscriptionsCoreModule,
-      providers,
-      exports,
-    };
+    // Resolve dependencies for realtime authorization check
+    const realtimeDependencies = entities.reduce((acc, entity) => {
+      return _.merge(acc, this.getRealtimeDependencies(entity));
+    }, {});
+
+    return _.merge(
+      {
+        imports: options.imports,
+        module: SubscriptionsCoreModule,
+        providers,
+        exports,
+      },
+      realtimeDependencies
+    );
+  }
+
+  private static getRealtimeDependencies(entity: any) {
+    const realtimeMetadata = Reflect.getMetadata(METADATA_REALTIME, entity);
+    return realtimeMetadata.dependencies;
   }
 }

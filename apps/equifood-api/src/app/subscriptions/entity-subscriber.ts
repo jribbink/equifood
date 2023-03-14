@@ -12,7 +12,8 @@ export class EntitySubscriber implements EntitySubscriberInterface {
 
   constructor(
     readonly subscriptionService: SubscriptionService,
-    readonly metadata: EntityMetadata
+    readonly metadata: EntityMetadata,
+    readonly authFn: (user: any, entity: any) => boolean
   ) {
     console.log('HELLO World');
     this.pk_list = metadata.primaryColumns?.map((pk) => pk.propertyName) ?? [];

@@ -2,7 +2,16 @@
 import { METADATA_REALTIME } from '../constants';
 
 export const RealtimeEntity =
-  (opts = {}) =>
+  (
+    authFn: (
+      ...args: any[]
+    ) => (user: any, entity: any) => Promise<boolean> | boolean,
+    dependencies: any
+  ) =>
   (target: Function) => {
-    Reflect.metadata(METADATA_REALTIME, true)(target);
+    const metadata = {
+      authFn,
+      dependencies,
+    };
+    Reflect.metadata(METADATA_REALTIME, metadata)(target);
   };
