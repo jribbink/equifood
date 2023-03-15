@@ -10,7 +10,7 @@ import { Order } from './entities/order.entity';
 export class OrdersController {
   constructor(private ordersService: OrdersService) {}
 
-  @AuthRoute('customer')
+  @AuthRoute('customer', 'merchant')
   @Post('cancel/:orderId')
   async cancelOrder(@AuthUser() user: User, @Param('orderId') orderId: number) {
     const ord = await this.ordersService.getOrder(user, orderId);
