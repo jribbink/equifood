@@ -12,6 +12,7 @@ import passport from 'passport';
 import { ConfigService } from '@nestjs/config';
 import { SocialJwtPayload } from './types/social-jwt-payload';
 import { JwtAudience } from './types/jwt-audience';
+import { CreateUserDto } from '../users/models/create-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -70,7 +71,7 @@ export class AuthService {
       authProviders: { providerId: profile.id, providerType },
     });
     if (!user) {
-      user = await this.userService.createUser({
+      user = await this.userService.createUser(<CreateUserDto>{
         email: profile.emails[0].value,
         first_name: profile.name.givenName,
         last_name: profile.name.familyName,
