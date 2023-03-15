@@ -11,6 +11,9 @@ import { AppModule } from './app/app.module';
 import cookieParser from 'cookie-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
+import dotenv from 'dotenv';
+dotenv.config();
+
 function pipe<T>(target: T, modifiers: ((target: T) => T)[]): T {
   return modifiers.length == 0
     ? target
