@@ -1,14 +1,20 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { Button, ScrollView, Text } from 'native-base';
-import { OrderConfirmView, useAxios } from '@equifood/ui-shared';
+import {
+  OrderConfirmView,
+  SWR_KEY_ORDERS,
+  useAxios,
+} from '@equifood/ui-shared';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import { Order } from '@equifood/api-interfaces';
 import { equifoodTheme } from '@equifood/ui-shared';
+import useSWR, { useSWRConfig } from 'swr';
 
 function OrderConfirm({
   navigation,
   route,
 }: StackScreenProps<CoreStackParams, 'orderConfirm'>) {
+  const { mutate } = useSWRConfig();
   const axios = useAxios();
   const params = route.params; //merchant, items, quantities
   const merchant = params.merchant; //need this for onBackPress because react is stupid
@@ -43,6 +49,9 @@ function OrderConfirm({
           });
           navigation.navigate('core', { screen: 'orders' });
           navigation.navigate('order', { order: data });
+
+          // refresh orders
+          mutate(SWR_KEY_ORDERS('self', false));
         }}
       >
         <Text fontSize="24" color="white" fontWeight="bold">
