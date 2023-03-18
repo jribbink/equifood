@@ -45,7 +45,7 @@ const Login = ({ navigation }) => {
             }}
           ></IconButton>
         ))}
-        <Box>
+        <Box style={{ padding: 30 }}>
           <HStack>
             <Text style={{ fontSize: 15 }}>Don't have an account? </Text>
             <TouchableOpacity onPress={() => navigation.navigate('signup')}>
