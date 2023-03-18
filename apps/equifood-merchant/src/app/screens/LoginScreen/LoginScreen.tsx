@@ -9,19 +9,6 @@ const LoginScreen = ({ navigation }) => {
   return (
     <Box flex={1} testID="login-screen">
       <LoginView allowedRoles={['merchant']}></LoginView>
-
-      <VStack flexDirection="column" p="3" space="3">
-        <Box style={{ padding: 30 }}>
-          <HStack>
-            <Text style={{ fontSize: 15 }}>Don't have an account? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('signup')}>
-              <Text style={{ color: equifoodTheme.colors.primary[500] }}>
-                Sign up
-              </Text>
-            </TouchableOpacity>
-          </HStack>
-        </Box>
-      </VStack>
     </Box>
   );
 };
