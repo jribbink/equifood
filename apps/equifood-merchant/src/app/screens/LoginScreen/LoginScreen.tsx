@@ -11,7 +11,7 @@ const LoginScreen = ({ navigation }) => {
       <LoginView allowedRoles={['merchant']}></LoginView>
 
       <VStack flexDirection="column" p="3" space="3">
-        <Box>
+        <Box style={{ padding: 30 }}>
           <HStack>
             <Text style={{ fontSize: 15 }}>Don't have an account? </Text>
             <TouchableOpacity onPress={() => navigation.navigate('signup')}>
