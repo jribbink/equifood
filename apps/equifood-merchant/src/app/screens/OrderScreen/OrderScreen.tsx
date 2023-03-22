@@ -9,6 +9,7 @@ import {
   useAxios,
 } from '@equifood/ui-shared';
 import type { RootNavigationProps } from '../../layouts/RootLayout';
+import { ORDER_STATUS } from '@equifood/api-interfaces';
 
 function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
   const order = route.params.order;
@@ -20,15 +21,18 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
     });
   }, [navigation, order]);
 
-  const steps: ProgressStep[] = [
+  const steps: ProgressStep<ORDER_STATUS>[] = [
     {
       text: 'Pending',
+      key: ORDER_STATUS.pending,
     },
     {
       text: 'Confirmed',
+      key: ORDER_STATUS.confirmed,
     },
     {
       text: 'Completed',
+      key: ORDER_STATUS.completed,
     },
   ];
 
@@ -42,8 +46,10 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
       [
         {
           text: 'Confirm',
-          onPress: () => {
-            order.status = 'completed';
+          onPress: async () => {
+            await axios.post('/orders/' + order.id + '/status', {
+              status: ORDER_STATUS.completed,
+            });
           },
           style: 'default',
         },
@@ -55,13 +61,13 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
     );
   };
   switch (order.status) {
-    case 'pending':
+    case ORDER_STATUS.pending:
       updateButtonText = 'Complete Order';
       break;
-    case 'cancelled':
+    case ORDER_STATUS.cancelled:
       updateButtonText = 'Order Cancelled';
       break;
-    case 'completed':
+    case ORDER_STATUS.completed:
       updateButtonText = 'Order Completed';
       break;
     default:
@@ -92,8 +98,7 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
           <ProgressSteps
             steps={steps}
             currentIndex={
-              (steps.findIndex((s) => s.text.toLowerCase() === order.status) ??
-                -2) + 1
+              (steps.findIndex((s) => s.key === order.status) ?? -2) + 1
             }
             cancelled={true}
             my="3"
@@ -144,7 +149,9 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
                     {
                       text: "I'm Sure",
                       onPress: async () =>
-                        await axios.post('/orders/cancel/' + order.id),
+                        await axios.post('/orders/' + order.id + '/status', {
+                          status: ORDER_STATUS.cancelled,
+                        }),
                       style: 'default',
                     },
                     {

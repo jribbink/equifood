@@ -1,4 +1,4 @@
-import { Order } from '@equifood/api-interfaces';
+import { Order, ORDER_STATUS } from '@equifood/api-interfaces';
 import { Text, Image, HStack, VStack } from 'native-base';
 import { useState } from 'react';
 import { TouchableHighlight } from 'react-native-gesture-handler';
@@ -13,9 +13,10 @@ export function OrderCard({ order, onPress }: OrderCardProps) {
     Order['status'],
     string
   >([
-    ['completed', 'green'],
-    ['pending', 'blue'],
-    ['cancelled', 'red'],
+    [ORDER_STATUS.completed, 'green'],
+    [ORDER_STATUS.confirmed, 'yellow'],
+    [ORDER_STATUS.pending, 'blue'],
+    [ORDER_STATUS.cancelled, 'red'],
   ]);
 
   const [imageWidth, setImageWidth] = useState<number>(0);
@@ -58,7 +59,7 @@ export function OrderCard({ order, onPress }: OrderCardProps) {
               textTransform="uppercase"
               style={{ color: colorMap.get(order.status), fontWeight: 'bold' }}
             >
-              {order.status}
+              {ORDER_STATUS[order.status]}
             </Text>
             <Text>${order.total.toFixed(2)}</Text>
           </VStack>
