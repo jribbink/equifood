@@ -9,8 +9,12 @@ import {
   OrderView,
   useProfile,
   useAxios,
+  MerchantMap,
+  equifoodTheme,
 } from '@equifood/ui-shared';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
+import { HStack } from 'native-base';
+import { FontAwesome } from '@expo/vector-icons';
 
 function OrderScreen({
   navigation,
@@ -77,7 +81,6 @@ function OrderScreen({
             viewHeight={viewHeight}
             merchantMode={false}
           ></OrderView>
-
           <Button
             minWidth={'20'}
             style={{

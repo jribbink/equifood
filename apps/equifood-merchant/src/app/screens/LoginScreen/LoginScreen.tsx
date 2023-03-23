@@ -1,12 +1,16 @@
-import { LoginView } from '@equifood/ui-shared';
-import { Box } from 'native-base';
+import React from 'react';
 
-function LoginScreen() {
+import { Box, HStack, VStack } from 'native-base';
+import { Text, TouchableOpacity } from 'react-native';
+import { LoginView } from '@equifood/ui-shared';
+import { equifoodTheme } from '@equifood/ui-shared';
+
+const LoginScreen = ({ navigation }) => {
   return (
-    <Box>
+    <Box flex={1} testID="login-screen">
       <LoginView allowedRoles={['merchant']}></LoginView>
     </Box>
   );
-}
+};
 
 export default LoginScreen;

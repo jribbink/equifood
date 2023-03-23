@@ -5,6 +5,7 @@ import { Text, TouchableOpacity } from 'react-native';
 import { LoginView, useAuth, useAxios } from '@equifood/ui-shared';
 import { authConfig, AuthProviderConfig } from '@equifood/ui-shared';
 import { IconButton } from '@equifood/ui-shared';
+import { equifoodTheme } from '@equifood/ui-shared';
 
 const Login = ({ navigation }) => {
   const axios = useAxios();
@@ -44,11 +45,13 @@ const Login = ({ navigation }) => {
             }}
           ></IconButton>
         ))}
-        <Box>
+        <Box style={{ padding: 30 }}>
           <HStack>
             <Text style={{ fontSize: 15 }}>Don't have an account? </Text>
             <TouchableOpacity onPress={() => navigation.navigate('signup')}>
-              <Text style={{ color: 'darkgreen' }}>Sign up</Text>
+              <Text style={{ color: equifoodTheme.colors.primary[500] }}>
+                Sign up
+              </Text>
             </TouchableOpacity>
           </HStack>
         </Box>

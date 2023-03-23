@@ -34,7 +34,7 @@ export const ItemCard = ({ item, quantity, onQuantityChange }: Props) => {
               testID="old-price"
               fontSize="15"
               fontStyle="italic"
-              color={'#ff0000'}
+              color="primary.600"
               style={{ textDecorationLine: 'line-through' }}
             >
               {'$ ' + item.originalPrice.toFixed(2)}
@@ -47,7 +47,7 @@ export const ItemCard = ({ item, quantity, onQuantityChange }: Props) => {
               ' of this item per order.'}
           </Text>
         </Box>
-        {quantity ? (
+        {quantity || quantity === 0 ? (
           <NumericUpDown
             value={quantity}
             onValueChange={onQuantityChange}

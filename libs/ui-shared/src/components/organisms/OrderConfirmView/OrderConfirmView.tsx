@@ -69,13 +69,15 @@ export function OrderConfirmView({
       </HStack>
 
       <VStack paddingTop={5}>
-        {(items || []).map((item) => (
-          <CheckoutItemCard
-            key={item.id}
-            item={item}
-            quantity={quantities[item.id] ?? 0}
-          ></CheckoutItemCard>
-        ))}
+        {(items || [])
+          .filter((item) => quantities[item.id])
+          .map((item) => (
+            <CheckoutItemCard
+              key={item.id}
+              item={item}
+              quantity={quantities[item.id]}
+            ></CheckoutItemCard>
+          ))}
       </VStack>
       <HStack alignSelf={'flex-end'}>
         <Text textAlign={'right'} alignSelf="center" fontSize={20}>

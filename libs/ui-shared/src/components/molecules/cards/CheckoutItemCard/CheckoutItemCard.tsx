@@ -26,10 +26,10 @@ export const CheckoutItemCard = ({ item, quantity }: Props) => {
           testID="old-price"
           fontSize="15"
           fontStyle="italic"
-          color={'#ff0000'}
+          color={'primary.600'}
           style={{ textDecorationLine: 'line-through' }}
         >
-          {'$ ' + item.originalPrice.toFixed(2)}
+          {'$ ' + (item.originalPrice * quantity).toFixed(2)}
         </Text>
         <Text
           textAlign="right"
@@ -39,7 +39,7 @@ export const CheckoutItemCard = ({ item, quantity }: Props) => {
           fontSize="20"
           minWidth="20"
         >
-          {'$ ' + item.price.toFixed(2)}
+          {'$ ' + (item.price * quantity).toFixed(2)}
         </Text>
       </HStack>
     </Box>

@@ -1,4 +1,5 @@
 import { Box, Button, Text } from 'native-base';
+import { equifoodTheme } from '../../../config/equifood-theme';
 
 interface NumericUpDownProps {
   value: number;
@@ -22,7 +23,7 @@ export function NumericUpDown({
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: 'green',
+            backgroundColor: equifoodTheme.colors.primary[500],
             borderRadius: 5,
           }}
           onPress={() => onValueChange?.(Math.min(value + 1, maxValue))}
@@ -51,7 +52,7 @@ export function NumericUpDown({
         <Button
           minWidth={'20'}
           style={{
-            backgroundColor: 'green',
+            backgroundColor: equifoodTheme.colors.primary[500],
             borderRadius: 5,
           }}
           onPress={() => onValueChange?.(Math.max(value - 1, minValue))}

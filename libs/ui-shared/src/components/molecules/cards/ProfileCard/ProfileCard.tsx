@@ -1,5 +1,6 @@
 import { User } from '@equifood/api-interfaces';
 import { Text, View } from 'native-base';
+import { equifoodTheme } from '../../../atoms';
 
 export function ProfileCard({ user }: { user: User }) {
   return (
@@ -19,7 +20,7 @@ export function ProfileCard({ user }: { user: User }) {
           marginTop: 20,
           fontSize: 30,
           padding: 10,
-          color: 'darkgreen',
+          color: equifoodTheme.colors.primary[900],
         }}
       >
         {` `}
