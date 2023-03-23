@@ -14,6 +14,7 @@ import { UsersService } from '../users/users.service';
 import { Order } from './entities/order.entity';
 import { OrderedItem } from './entities/ordered-item.entity';
 import { OrderedItemDTO } from './models/ordered-item.dto';
+import { ORDER_STATUS } from '@equifood/api-interfaces';
 
 @Injectable()
 export class OrdersService {
@@ -130,7 +131,7 @@ export class OrdersService {
       deadline: new Date(),
       items: [...orderedItems],
       merchant: merchant,
-      status: 'pending',
+      status: ORDER_STATUS.pending,
       total: totalPrice,
       user: user,
     });
@@ -167,8 +168,23 @@ export class OrdersService {
     return item;
   }
 
-  async cancelOrder(user: User, orderId: number) {
+  async setOrderStatus(user: User, orderId: number, status: Order['status']) {
     const order = await this.getOrder(user, orderId);
-    this.ordersRepository.remove(order);
+    if (status !== ORDER_STATUS.cancelled) {
+      // Only merchant/admin can perform non-cancellation status updates
+      if (user.roles.includes('merchant') || user.roles.includes('admin')) {
+        throw new UnauthorizedException(
+          'Only merchants may perform this operation'
+        );
+      }
+
+      // Ensure that status is only moving in correct direction
+      if (order.status > status) {
+        throw new BadRequestException('Cannot modify status in reverse');
+      }
+    }
+
+    // Finally, update status
+    return this.ordersRepository.update({ id: order.id }, { status });
   }
 }

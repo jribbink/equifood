@@ -9,12 +9,9 @@ import {
   OrderView,
   useProfile,
   useAxios,
-  MerchantMap,
-  equifoodTheme,
 } from '@equifood/ui-shared';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
-import { HStack } from 'native-base';
-import { FontAwesome } from '@expo/vector-icons';
+import { ORDER_STATUS } from '@equifood/api-interfaces';
 
 function OrderScreen({
   navigation,
@@ -30,15 +27,18 @@ function OrderScreen({
     });
   }, [navigation, order]);
 
-  const steps: ProgressStep[] = [
+  const steps: ProgressStep<ORDER_STATUS>[] = [
     {
       text: 'Pending',
+      key: ORDER_STATUS.pending,
     },
     {
       text: 'Confirmed',
+      key: ORDER_STATUS.confirmed,
     },
     {
       text: 'Completed',
+      key: ORDER_STATUS.completed,
     },
   ];
 
@@ -67,8 +67,7 @@ function OrderScreen({
           <ProgressSteps
             steps={steps}
             currentIndex={
-              (steps.findIndex((s) => s.text.toLowerCase() === order.status) ??
-                -2) + 1
+              (steps.findIndex((s) => s.key === order.status) ?? -2) + 1
             }
             cancelled={true}
             my="3"
@@ -100,7 +99,9 @@ function OrderScreen({
                     {
                       text: "I'm Sure",
                       onPress: async () =>
-                        await axios.post('/orders/cancel/' + order.id),
+                        await axios.post('/orders/' + order.id + '/status', {
+                          status: ORDER_STATUS.cancelled,
+                        }),
                       style: 'default',
                     },
                     {

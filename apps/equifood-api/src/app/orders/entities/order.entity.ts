@@ -1,3 +1,4 @@
+import { ORDER_STATUS } from '@equifood/api-interfaces';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import {
@@ -11,7 +12,6 @@ import { Merchant } from '../../merchant/entities/merchant.entity';
 import { RealtimeEntity } from '../../subscriptions/decorators/realtime-entity.decorator';
 import { User } from '../../users/entities/user.entity';
 import { OrderedItem } from './ordered-item.entity';
-
 @ObjectType()
 @Entity()
 @RealtimeEntity(
@@ -45,9 +45,9 @@ export class Order {
   @Column()
   deadline: Date;
 
-  @Field()
-  @Column()
-  status: 'pending' | 'completed' | 'cancelled';
+  @Field(() => Number)
+  @Column({ type: 'integer' })
+  status: ORDER_STATUS;
 
   @Field(() => [OrderedItem])
   @OneToMany<OrderedItem>('OrderedItem', (orderedItem) => orderedItem.order, {
