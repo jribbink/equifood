@@ -5,7 +5,6 @@ import { SubscriptionsModuleConfig } from './interfaces/subscriptions-module-con
 import { METADATA_REALTIME, SUBSCRIPTIONS_MODULE_OPTIONS } from './constants';
 import entities from '../database/entities';
 import _ from 'lodash';
-
 @Global()
 @Module({
   controllers: [],
@@ -31,6 +30,18 @@ export class SubscriptionsCoreModule {
       return _.merge(acc, this.getRealtimeDependencies(entity));
     }, {});
 
+    console.log(
+      _.merge(
+        {
+          imports: options.imports,
+          module: SubscriptionsCoreModule,
+          providers,
+          exports,
+        },
+        realtimeDependencies
+      )
+    );
+
     return _.merge(
       {
         imports: options.imports,
@@ -44,6 +55,6 @@ export class SubscriptionsCoreModule {
 
   private static getRealtimeDependencies(entity: any) {
     const realtimeMetadata = Reflect.getMetadata(METADATA_REALTIME, entity);
-    return realtimeMetadata.dependencies;
+    return realtimeMetadata?.dependencies || {};
   }
 }

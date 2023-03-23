@@ -1,56 +1,90 @@
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
-import { ModuleRef } from '@nestjs/core';
+import {
+  Inject,
+  Injectable,
+  OnModuleInit,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
-import { METADATA_REALTIME } from './constants';
+import { DataSource, FindOptionsWhere } from 'typeorm';
+import { AuthService } from '../auth/auth.service';
+import { METADATA_REALTIME, SUBSCRIPTIONS_MODULE_OPTIONS } from './constants';
 import { EntitySubscriber } from './entity-subscriber';
-
-const SUBSCRIPTIONS_MODULE_OPTIONS = 'SUBSCRIPTIONS_MODULE_OPTIONS';
-
 @Injectable()
 export class SubscriptionService implements OnModuleInit {
-  private users: Map<object, any> = new Map();
-  private subscriptions: Map<string, Set<WebSocket>> = new Map();
+  private users: Map<WebSocket, any> = new Map();
+  private subscribers: Map<string, EntitySubscriber> = new Map();
+  private listenerInfo: Map<
+    any,
+    [total: number, entities: Set<EntitySubscriber>]
+  > = new Map();
 
   constructor(
-    @Inject(SUBSCRIPTIONS_MODULE_OPTIONS) private authValidator,
-    @InjectDataSource() readonly dataSource: DataSource,
-    private moduleRef: ModuleRef
+    @Inject(SUBSCRIPTIONS_MODULE_OPTIONS) private subscriptionsOptions,
+    @InjectDataSource() readonly dataSource: DataSource
   ) {}
 
   async onModuleInit() {
     // Add subscribers to entities
     await Promise.all(
       this.dataSource.entityMetadatas.map(async (metadata) => {
-        const authFn = Reflect.getMetadata(METADATA_REALTIME, metadata.target);
-        if (authFn)
-          this.dataSource.subscribers.push(
-            new EntitySubscriber(
-              this,
-              metadata,
-              await this.moduleRef.resolve(authFn)
-            )
-          );
+        const authFn = Reflect.getMetadata(
+          METADATA_REALTIME,
+          metadata.target
+        )?.authFn;
+        if (authFn) {
+          const subscriber = new EntitySubscriber(this, metadata, authFn);
+          this.dataSource.subscribers.push(subscriber);
+          this.subscribers.set(metadata.name, subscriber);
+        }
       })
     );
   }
 
-  subscribe(client: WebSocket, endpoint: string) {
-    const subscribers = this.subscriptions.get(endpoint) ?? new Set();
-    subscribers.add(client);
-    this.subscriptions.set(endpoint, subscribers);
+  subscribe(
+    client: WebSocket,
+    entity: string,
+    criteria: FindOptionsWhere<any>
+  ) {
+    // If entity does not exist abort.  Do not return anything verbose to user to reveal entities which exist in DB
+    if (!this.subscribers.has(entity)) return;
+
+    const subscriber = this.subscribers.get(entity);
+    const user = this.users.get(client);
+    if (!user) return;
+
+    // If listener added, add to global listener map
+    if (subscriber.addListener(user, criteria)) {
+      const userListeners = this.listenerInfo.get(user) ?? [0, new Set()];
+      userListeners[0] += 1;
+      userListeners[1].add(subscriber);
+    }
   }
 
-  async authenticateUser(client: object, jwt: string) {
-    const user = await this.authValidator.validate(jwt);
+  unsubscribe(
+    client: WebSocket,
+    entity?: string,
+    criteria?: FindOptionsWhere<any>
+  ) {
+    const user = this.users.get(client);
+    if (!user) return;
+
+    if (entity) {
+      const subscriber = this.subscribers.get(entity);
+      if (!subscriber) return;
+      subscriber.removeListener(user, criteria);
+    } else {
+      // Remove all listeners
+      const userListenerInfo = this.listenerInfo.get(user);
+      if (!userListenerInfo) return;
+      userListenerInfo[1].forEach((subscriber) => {
+        subscriber.removeListener(user);
+      });
+    }
+  }
+
+  async authenticateUser(client: WebSocket, jwt: string) {
+    const user = await this.subscriptionsOptions.validate(jwt);
     this.users.set(client, user);
-  }
-
-  dispatch(endpoint: string, message: string) {
-    (this.subscriptions.get(endpoint) ?? []).forEach(
-      async (client: WebSocket) => {
-        client.send(message);
-      }
-    );
+    return user;
   }
 }

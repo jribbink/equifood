@@ -13,6 +13,7 @@ import { WebsocketValidator } from './auth/websocket-validator';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { AdminModule } from './admin/admin.module';
+
 @Module({
   imports: [
     AuthModule,
@@ -24,9 +25,11 @@ import { AdminModule } from './admin/admin.module';
     OrdersModule,
     SubscriptionsModule.forRoot({
       imports: [AuthModule],
-      useFactory: (websocketValidator: WebsocketValidator) => ({
-        validator: websocketValidator.validate,
-      }),
+      useFactory: (websocketValidator: WebsocketValidator) => {
+        return {
+          validate: websocketValidator.validate.bind(websocketValidator),
+        };
+      },
       inject: [WebsocketValidator],
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -36,7 +39,6 @@ import { AdminModule } from './admin/admin.module';
     AdminModule,
   ],
   providers: [
-    WebsocketValidator,
     {
       provide: APP_INTERCEPTOR,
       useClass: DynamicPropertyInterceptor,
