@@ -1,7 +1,7 @@
 import React from 'react';
 import { VStack, ScrollView, Heading, Text, Spacer } from 'native-base';
 import { OrderCard, useOrders } from '@equifood/ui-shared';
-import { Order } from '@equifood/api-interfaces';
+import { Order, ORDER_STATUS } from '@equifood/api-interfaces';
 import { CoreNavigationProps } from '../../layouts/CoreLayout';
 
 export default function OrdersListScreen({
@@ -10,10 +10,16 @@ export default function OrdersListScreen({
   const { orders } = useOrders('self', true);
 
   const currentOrders =
-    orders?.filter((order) => order.status === 'pending') || [];
+    orders?.filter(
+      (order) =>
+        order.status === ORDER_STATUS.pending ||
+        order.status === ORDER_STATUS.confirmed
+    ) || [];
   const completedOrders =
     orders?.filter(
-      (order) => order.status === 'completed' || order.status === 'cancelled'
+      (order) =>
+        order.status === ORDER_STATUS.completed ||
+        order.status === ORDER_STATUS.cancelled
     ) || [];
 
   function onOrderPress(order: Order) {
