@@ -73,13 +73,6 @@ function OrderScreen({
             my="3"
           ></ProgressSteps>
 
-          <Divider></Divider>
-
-          <OrderView
-            order={order}
-            viewHeight={viewHeight}
-            merchantMode={false}
-          ></OrderView>
           <Button
             minWidth={'20'}
             style={{
@@ -117,9 +110,14 @@ function OrderScreen({
               CANCEL ORDER
             </Text>
           </Button>
-          {
-            //cancel button here
-          }
+
+          <Divider></Divider>
+
+          <OrderView
+            order={order}
+            viewHeight={viewHeight}
+            merchantMode={false}
+          ></OrderView>
         </Box>
       </ScrollView>
     </Box>
