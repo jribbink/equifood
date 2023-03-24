@@ -91,10 +91,22 @@ function OrderScreen({
                   [
                     {
                       text: "I'm Sure",
-                      onPress: async () =>
-                        await axios.post('/orders/' + order.id + '/status', {
-                          status: ORDER_STATUS.cancelled,
-                        }),
+                      onPress: async () => {
+                        try {
+                          await axios.post('/orders/' + order.id + '/status', {
+                            status: ORDER_STATUS.cancelled,
+                          });
+                          Alert.alert(
+                            'Success!',
+                            'Order cancelled successfully.'
+                          );
+                        } catch (e) {
+                          Alert.alert(
+                            'Failed',
+                            'The order could not be cancelled.'
+                          );
+                        }
+                      },
                       style: 'default',
                     },
                     {
