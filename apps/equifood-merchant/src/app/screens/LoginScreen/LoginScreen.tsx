@@ -9,7 +9,7 @@ const LoginScreen = ({ navigation }) => {
   return (
     <Box flex={1} testID="login-screen">
       <Text style={{ fontSize: 36, color: equifoodTheme.colors.primary[500] }}>
-        EquiFood
+        EquiFood Merchant
       </Text>
       <LoginView allowedRoles={['merchant']}></LoginView>
     </Box>
