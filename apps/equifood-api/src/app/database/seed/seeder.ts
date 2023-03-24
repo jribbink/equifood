@@ -9,6 +9,7 @@ import { statSync } from 'fs';
 import { Item } from '../../merchant/items/entities/item.entity';
 import { Order } from '../../orders/entities/order.entity';
 import { OrderedItem } from '../../orders/entities/ordered-item.entity';
+import { ORDER_STATUS } from '@equifood/api-interfaces';
 
 const SEED_ASSET_PATH = './src/app/database/seed/assets/';
 @Injectable()
@@ -298,7 +299,7 @@ export class Seeder {
       items: [orderedItem],
       merchant: merchant,
       order_date: new Date(2022, 11, 1, 21, 45),
-      status: 'completed',
+      status: ORDER_STATUS.completed,
       total: 123,
       user: customer,
     });

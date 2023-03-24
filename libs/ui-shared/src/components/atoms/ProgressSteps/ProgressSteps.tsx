@@ -4,12 +4,13 @@ import React, { useEffect, useState } from 'react';
 import { Animated, Easing } from 'react-native';
 import Svg, { Circle, Rect, Text as SvgText } from 'react-native-svg';
 
-export interface ProgressStep {
+export interface ProgressStep<T> {
   text: string;
+  key: T;
 }
 
-interface ProgressStepsProps extends InterfaceBoxProps {
-  steps: ProgressStep[];
+interface ProgressStepsProps<T> extends InterfaceBoxProps {
+  steps: ProgressStep<T>[];
   currentIndex: number;
   cancelled?: boolean;
   stepRadius?: number;
@@ -19,7 +20,7 @@ interface ProgressStepsProps extends InterfaceBoxProps {
   secondaryColor?: string;
 }
 
-export function ProgressSteps({
+export function ProgressSteps<T>({
   steps,
   currentIndex,
   cancelled = false,
@@ -29,7 +30,7 @@ export function ProgressSteps({
   primaryColor = 'green',
   secondaryColor = '#BBBBBB',
   ...props
-}: ProgressStepsProps) {
+}: ProgressStepsProps<T>) {
   const [dims, setDims] = useState<[number, number]>([0, 0]);
 
   function resolveStatus(i: number) {
@@ -123,7 +124,7 @@ export function ProgressSteps({
   );
 }
 
-export function ProgressStep({
+export function ProgressStep<T>({
   radius,
   cx,
   cy,
@@ -137,7 +138,7 @@ export function ProgressStep({
   radius: number;
   cx: number;
   cy: number;
-  step: ProgressStep;
+  step: ProgressStep<T>;
   index: number;
   primaryColor: string;
   secondaryColor: string;

@@ -1,5 +1,4 @@
-import React from 'react';
-import { NativeBaseProvider, extendTheme } from 'native-base';
+import { extendTheme } from 'native-base';
 
 export const equifoodTheme = extendTheme({
   colors: {

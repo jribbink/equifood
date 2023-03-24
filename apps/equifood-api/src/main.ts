@@ -10,6 +10,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
 import cookieParser from 'cookie-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { ConfigService } from '@nestjs/config';
 
 function pipe<T>(target: T, modifiers: ((target: T) => T)[]): T {
   return modifiers.length == 0
@@ -58,7 +59,7 @@ async function bootstrap() {
   setupSwagger(app);
 
   // Listen on HTTP port
-  const port = process.env.PORT || 3333;
+  const port = app.get(ConfigService).get('runtime.port');
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
