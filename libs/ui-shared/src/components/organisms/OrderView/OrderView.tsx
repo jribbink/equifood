@@ -4,6 +4,7 @@ import { CheckoutItemCard } from '../../molecules/cards/CheckoutItemCard/Checkou
 import { FontAwesome } from '@expo/vector-icons';
 import { MerchantMap } from '../MerchantMap/MerchantMap';
 import { equifoodTheme } from '../../atoms';
+import React, { useState, useEffect } from 'react';
 
 interface OrderViewProps {
   order: Order;
@@ -21,6 +22,19 @@ export function OrderView({ order, viewHeight, merchantMode }: OrderViewProps) {
     (acc, item) => acc + item.item.originalPrice * item.quantity,
     0
   );
+
+  const [timeRemaining, setTimeRemaining] = useState<number>(15 * 60);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeRemaining((prevTime) => prevTime - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const minutes = Math.floor(timeRemaining / 60);
+  const seconds = timeRemaining % 60;
 
   return (
     <Box>
@@ -78,14 +92,15 @@ export function OrderView({ order, viewHeight, merchantMode }: OrderViewProps) {
             Pickup Instructions
           </Text>
           <Text>
-            Please pickup at {order.merchant.location.address} before{' '}
-            {order.deadline.toLocaleDateString(undefined, {
+            Please pickup at {order.merchant.location.address} within{' '}
+            {minutesseconds)}
+            {/* {order.deadline.toLocaleDateString(undefined, {
               hour: 'numeric',
               minute: '2-digit',
               day: 'numeric',
               month: 'short',
               year: 'numeric',
-            })}
+            })} */}
           </Text>
           <Text pb="4">Payment: In-person</Text>
           {viewHeight ? (
