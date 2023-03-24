@@ -22,41 +22,41 @@ function SignupScreen({ navigation }) {
   const axios = useAxios();
 
   async function onSubmit() {
-    let valid=true;
-    let filteredPhone='';
-    if(phone!=null){
-      filteredPhone=phone.split('-').join("");
+    let valid = true;
+    let filteredPhone = '';
+    if (phone != null) {
+      filteredPhone = phone.split('-').join('');
     }
     if (/\S+@\S+\.\S+/.test(email)) {
       setValidEmail(true);
     } else {
       setValidEmail(false);
-      valid=false;
+      valid = false;
     }
     if (first != null && first !== '') {
       setValidFirst(true);
     } else {
       setValidFirst(false);
-      valid=false;
+      valid = false;
     }
     if (last != null && last !== '') {
       setValidLast(true);
     } else {
       setValidLast(false);
-      valid=false;
+      valid = false;
     }
     if (filteredPhone != null && filteredPhone.length === 10) {
       setValidPhone(true);
     } else {
-      console.log(filteredPhone.length+" "+phone.length);
+      console.log(filteredPhone.length + ' ' + phone.length);
       setValidPhone(false);
-      valid=false;
+      valid = false;
     }
     if (password != null && password !== '') {
       setValidPassword(true);
     } else {
       setValidPassword(false);
-      valid=false;
+      valid = false;
     }
     if (valid) {
       console.log(valid);
