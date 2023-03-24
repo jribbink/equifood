@@ -95,8 +95,8 @@ export function OrderView({ order, viewHeight, merchantMode }: OrderViewProps) {
               initialRegion={{
                 longitude: order.merchant.location.longitude,
                 latitude: order.merchant.location.latitude,
-                latitudeDelta: 2,
-                longitudeDelta: 2,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
               }}
               style={{ width: '100%', height: viewHeight * 0.5 }}
             ></MerchantMap>
