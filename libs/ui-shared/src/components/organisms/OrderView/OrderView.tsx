@@ -88,7 +88,7 @@ export function OrderView({ order, viewHeight, merchantMode }: OrderViewProps) {
             })}
           </Text>
           <Text pb="4">Payment: In-person</Text>
-          {viewHeight ? (
+          {viewHeight && !merchantMode ? (
             <MerchantMap
               darkMode={false}
               merchants={[order.merchant]}
