@@ -22,32 +22,44 @@ function SignupScreen({ navigation }) {
   const axios = useAxios();
 
   async function onSubmit() {
+    let valid=true;
+    let filteredPhone='';
+    if(phone!=null){
+      filteredPhone=phone.split('-').join("");
+    }
     if (/\S+@\S+\.\S+/.test(email)) {
       setValidEmail(true);
     } else {
       setValidEmail(false);
+      valid=false;
     }
-    if (first != null && first != '') {
+    if (first != null && first !== '') {
       setValidFirst(true);
     } else {
       setValidFirst(false);
+      valid=false;
     }
-    if (last != null && last != '') {
+    if (last != null && last !== '') {
       setValidLast(true);
     } else {
       setValidLast(false);
+      valid=false;
     }
-    if (phone != null && phone.length == 10) {
+    if (filteredPhone != null && filteredPhone.length === 10) {
       setValidPhone(true);
     } else {
+      console.log(filteredPhone.length+" "+phone.length);
       setValidPhone(false);
+      valid=false;
     }
-    if (password != null && password != '') {
+    if (password != null && password !== '') {
       setValidPassword(true);
     } else {
       setValidPassword(false);
+      valid=false;
     }
-    if (validEmail && validFirst && validLast && validPassword && validPhone) {
+    if (valid) {
+      console.log(valid);
       const { data: jwt } = await axios.post('/auth/create', {
         first_name: first,
         last_name: last,
@@ -56,7 +68,7 @@ function SignupScreen({ navigation }) {
         password: password,
         roles: ['customer'],
       });
-      setJwt(jwt);
+      navigation.navigate('login');
     }
   }
 
@@ -174,7 +186,7 @@ function SignupScreen({ navigation }) {
             testID="signUpButton"
             onPress={onSubmit}
           >
-            Sign In
+            Sign up
           </Button>
         </Box>
       </Box>

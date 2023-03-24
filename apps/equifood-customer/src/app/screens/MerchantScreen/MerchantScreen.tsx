@@ -194,7 +194,7 @@ function RestaurantScreen({
             if (Object.entries(quantityMap).every((item) => item[1] === 0)) {
               alert('Please choose at least one item before continuing.');
             } else {
-              navigation.navigate('orderConfirm', {
+              navigation.navigate('Order Confirm', {
                 merchant: merchant,
                 items: items,
                 quantities: quantityMap,
@@ -202,7 +202,7 @@ function RestaurantScreen({
             }
           }}
         >
-          Order
+          Checkout
         </Button>
       </Box>
     </NativeBaseProvider>

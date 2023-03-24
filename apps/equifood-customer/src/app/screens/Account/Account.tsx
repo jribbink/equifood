@@ -38,7 +38,7 @@ const Account = () => {
                   color: equifoodTheme.colors.primary[600],
                 }}
               >
-                ${savings}
+                ${Math.round((savings + Number.EPSILON) * 100) / 100}
               </Text>
             </Text>
           </Box>
