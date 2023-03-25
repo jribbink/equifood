@@ -91,17 +91,17 @@ export function OrderView({ order, viewHeight, merchantMode }: OrderViewProps) {
           <Text fontSize="md" pb="2">
             Pickup Instructions
           </Text>
-          <Text>
-            Please pickup at {order.merchant.location.address} within{' '}
-            {minutesseconds)}
-            {/* {order.deadline.toLocaleDateString(undefined, {
-              hour: 'numeric',
-              minute: '2-digit',
-              day: 'numeric',
-              month: 'short',
-              year: 'numeric',
-            })} */}
-          </Text>
+          <Text>Please pickup at</Text>
+          <Text fontWeight={'bold'}> {order.merchant.location.address} </Text>
+          <HStack>
+            <Text>You have </Text>
+            <Text fontWeight={'bold'}>
+              {' '}
+              {minutes}:{seconds}{' '}
+            </Text>
+            <Text> remaining </Text>
+          </HStack>
+
           <Text pb="4">Payment: In-person</Text>
           {viewHeight ? (
             <MerchantMap

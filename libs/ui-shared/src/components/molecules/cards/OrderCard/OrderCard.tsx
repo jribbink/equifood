@@ -1,8 +1,7 @@
 import { Order, ORDER_STATUS } from '@equifood/api-interfaces';
 import { Text, Image, HStack, VStack } from 'native-base';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TouchableHighlight } from 'react-native-gesture-handler';
-
 interface OrderCardProps {
   order: Order;
   onPress: (order: Order) => void;
@@ -20,6 +19,19 @@ export function OrderCard({ order, onPress }: OrderCardProps) {
   ]);
 
   const [imageWidth, setImageWidth] = useState<number>(0);
+
+  const [timeRemaining, setTimeRemaining] = useState<number>(15 * 60);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeRemaining((prevTime) => prevTime - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const minutes = Math.floor(timeRemaining / 60);
+  const seconds = timeRemaining % 60;
 
   return (
     <TouchableHighlight
@@ -59,7 +71,7 @@ export function OrderCard({ order, onPress }: OrderCardProps) {
               textTransform="uppercase"
               style={{ color: colorMap.get(order.status), fontWeight: 'bold' }}
             >
-              {ORDER_STATUS[order.status]}
+              {minutes}:{seconds} {ORDER_STATUS[order.status]}
             </Text>
             <Text>${order.total.toFixed(2)}</Text>
           </VStack>
