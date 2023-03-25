@@ -11,6 +11,8 @@ import { AuthUser } from '../auth/decorators/auth-user.decorator';
 import { User } from './entities/user.entity';
 import { TargetUserGuard } from './guards/target-user.guard';
 import { TargetUser } from './decorators/target-user.decorator';
+import { RealtimeRoute } from '../subscriptions/decorators/realtime-route.decorator';
+import { Order } from '../orders/entities/order.entity';
 
 @Controller('users')
 export class UsersController {
@@ -28,6 +30,7 @@ export class UsersController {
     return this.usersService.getProviders({ id: user.id });
   }
 
+  @RealtimeRoute(Order, { isArray: true })
   @UseGuards(TargetUserGuard)
   @Get(':userId/orders')
   async getOrders(@TargetUser() user: User) {

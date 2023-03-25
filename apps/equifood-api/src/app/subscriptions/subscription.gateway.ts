@@ -1,9 +1,5 @@
-import {
-  SubscribeMessage,
-  WebSocketGateway,
-  MessageBody,
-} from '@nestjs/websockets';
-import { FindOptionsWhere } from 'typeorm';
+import { RealtimeSubscriptionRequest } from '@equifood/api-interfaces';
+import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
 import { SubscriptionService } from './subscription.service';
 
 @WebSocketGateway(3026)
@@ -12,17 +8,19 @@ export class SubscriptionGateway {
 
   @SubscribeMessage('auth')
   async authenticate(client: WebSocket, jwt: string) {
-    await this.subscriptionService.authenticateUser(client, jwt);
+    const user = await this.subscriptionService.authenticateUser(client, jwt);
+    if (!user) client.send('UNAUTHORIZED');
   }
 
   @SubscribeMessage('subscribe')
   handleMessage(client: WebSocket, _payload: string) {
-    const payload: { entity: string; criteria: FindOptionsWhere<any> } =
-      JSON.parse(_payload);
+    const payload: RealtimeSubscriptionRequest = JSON.parse(_payload);
+
     this.subscriptionService.subscribe(
       client,
       payload.entity,
-      payload.criteria
+      payload.criteria,
+      payload.key
     );
   }
 }

@@ -1,6 +1,8 @@
+import { RestReponse } from '@equifood/api-interfaces';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { storage } from '../util/storage';
+import { RealtimeContextProvider } from './realtime-context';
 
 export interface IEquifoodConfig {
   apiUrl: string;
@@ -41,7 +43,7 @@ export function EquifoodCoreContext({
     email: string;
     password: string;
   }) => {
-    const response = await axios.post<string | null>(
+    const response = await axios.post<RestReponse<string | null>>(
       '/auth/local',
       {
         email,
@@ -49,7 +51,7 @@ export function EquifoodCoreContext({
       },
       { baseURL: config.apiUrl }
     );
-    setJwt(response.data);
+    setJwt(response.data.data);
   };
 
   const setJwt = async (jwt: string | null) => {
@@ -63,6 +65,8 @@ export function EquifoodCoreContext({
     })();
   }, []);
 
+  const ws = `ws://localhost:3026`;
+
   return (
     <EquifoodConfigContext.Provider value={config}>
       <EquifoodAuthContext.Provider
@@ -72,7 +76,7 @@ export function EquifoodCoreContext({
           authenticate,
         }}
       >
-        {children}
+        <RealtimeContextProvider url={ws}>{children}</RealtimeContextProvider>
       </EquifoodAuthContext.Provider>
     </EquifoodConfigContext.Provider>
   );

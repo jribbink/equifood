@@ -6,3 +6,5 @@ export * from './lib/order';
 export * from './lib/user';
 export * from './lib/auth-provider';
 export * from './types/auth-provider-type';
+export * from './lib/rest-response';
+export * from './lib/realtime/';

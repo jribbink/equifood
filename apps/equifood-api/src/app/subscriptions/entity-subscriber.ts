@@ -7,35 +7,52 @@ import {
   UpdateEvent,
 } from 'typeorm';
 import type { SubscriptionService } from './subscription.service';
+import { ColumnTrie } from './util/column-trie';
+
+type UserId = string | number;
 
 export class EntitySubscriber implements EntitySubscriberInterface {
   private pk_list: string[];
-  private listeners: Map<any, Set<FindOptionsWhere<any>>> = new Map();
+  private trie: ColumnTrie;
+  private listeners: Map<string, UserId> = new Map();
+  private listenersRev: Map<UserId, Set<string>> = new Map();
 
   constructor(
     readonly subscriptionService: SubscriptionService,
     readonly metadata: EntityMetadata,
     readonly authFn: (user: any, entity: any) => boolean
   ) {
+    this.trie = new ColumnTrie(metadata.columns.map((x) => x.propertyName));
     this.pk_list = metadata.primaryColumns?.map((pk) => pk.propertyName) ?? [];
   }
 
-  addListener(user: any, criteria: FindOptionsWhere<any>) {
-    let addedListener = true;
-    const userListeners = this.listeners.get(user) ?? new Set();
-    if (!userListeners.has(criteria)) addedListener = true;
-    userListeners.add(criteria);
-    this.listeners.set(user, userListeners);
-    return addedListener;
+  addListener(userId: UserId, criteria: FindOptionsWhere<any>, key: string) {
+    const userListeners = this.listenersRev.get(userId) ?? new Set();
+    userListeners.add(key);
+    this.listeners.set(key, userId);
+    this.listenersRev.set(userId, userListeners);
+    this.trie.insert(criteria, key);
+
+    return true;
   }
 
-  removeListener(user: any, criteria?: FindOptionsWhere<any>) {
-    if (!criteria) this.listeners.delete(user);
-    else {
-      const userListeners = this.listeners.get(user) ?? new Set();
-      userListeners.delete(criteria);
-      this.listeners.set(user, userListeners);
+  removeListener(userId: UserId, key?: string): string[] {
+    const removedKeys: string[] = [];
+    if (!key) {
+      this.listenersRev.get(userId).forEach((key) => {
+        this.listeners.delete(key);
+        this.trie.remove(key);
+        removedKeys.push(key);
+      });
+      this.listenersRev.delete(userId);
+    } else {
+      const userListeners = this.listenersRev.get(userId);
+      userListeners.delete(key);
+      this.listeners.delete(key);
+      this.trie.remove(key);
+      removedKeys.push(key);
     }
+    return removedKeys;
   }
 
   listenTo() {
@@ -43,14 +60,13 @@ export class EntitySubscriber implements EntitySubscriberInterface {
   }
 
   afterInsert(event: InsertEvent<any>) {
-    const pk_values = this.pk_list.reduce((obj, pk) => {
-      return {
-        ...obj,
-        pk: event.entity['pk'],
-      };
-    }, {});
-
-    console.log(event, pk_values);
+    const targetListeners = this.trie.lookup(event.entity);
+    targetListeners.forEach((listenerKey) => {
+      this.subscriptionService.dispatch(
+        this.listeners.get(listenerKey),
+        'HELLO WORLD'
+      );
+    });
   }
 
   afterRemove(event: RemoveEvent<any>): void | Promise<any> {
@@ -58,13 +74,13 @@ export class EntitySubscriber implements EntitySubscriberInterface {
   }
 
   afterUpdate(event: UpdateEvent<any>): void | Promise<any> {
-    const pk_values = this.pk_list.reduce((obj, pk) => {
-      return {
-        ...obj,
-        pk: event.entity['pk'],
-      };
-    }, {});
-
-    console.log(event, pk_values);
+    const targetListeners = this.trie.lookup(event.entity);
+    console.log(targetListeners);
+    targetListeners.forEach((listenerKey) => {
+      this.subscriptionService.dispatch(
+        this.listeners.get(listenerKey),
+        'HELLO WORLD'
+      );
+    });
   }
 }

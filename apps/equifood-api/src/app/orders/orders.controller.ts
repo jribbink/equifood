@@ -5,6 +5,8 @@ import { User } from '../users/entities/user.entity';
 import { ORDER_STATUS } from '@equifood/api-interfaces';
 import { OrderedItemDTO } from './models/ordered-item.dto';
 import { OrdersService } from './orders.service';
+import { RealtimeRoute } from '../subscriptions/decorators/realtime-route.decorator';
+import { Order } from './entities/order.entity';
 
 @Controller('orders')
 export class OrdersController {
@@ -20,6 +22,7 @@ export class OrdersController {
     this.ordersService.setOrderStatus(user, orderId, status);
   }
 
+  @RealtimeRoute(Order)
   @AuthRoute()
   @Get(':orderId')
   async getOrder(@AuthUser() user: User, @Param('orderId') orderId: number) {

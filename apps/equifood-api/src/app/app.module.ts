@@ -13,6 +13,8 @@ import { WebsocketValidator } from './auth/websocket-validator';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { AdminModule } from './admin/admin.module';
+import { RestInterceptor } from './common/interceptors/rest-interceptor';
+import { User } from './users/entities/user.entity';
 
 @Module({
   imports: [
@@ -28,6 +30,9 @@ import { AdminModule } from './admin/admin.module';
       useFactory: (websocketValidator: WebsocketValidator) => {
         return {
           validate: websocketValidator.validate.bind(websocketValidator),
+          resolveUserId: (user: User) => {
+            return user.id;
+          },
         };
       },
       inject: [WebsocketValidator],
@@ -39,6 +44,10 @@ import { AdminModule } from './admin/admin.module';
     AdminModule,
   ],
   providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: RestInterceptor,
+    },
     {
       provide: APP_INTERCEPTOR,
       useClass: DynamicPropertyInterceptor,
