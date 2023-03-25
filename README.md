@@ -7,9 +7,9 @@ This is a capstone (COSC 499) project for the Equifood App.
 ### Installation & Configuration
 
 1. Install [Node JS](https://nodejs.org/en/) v16
+2. Ensure you have C/C++ build tools installed on machine (i.e. gcc).  Bettersqlite uses node-gyp and is dependent on these.
 2. Run `npm install`
-3. Install and configure [MariaDB](https://mariadb.org/)
-4. Create a configuration file `.env` in the `apps/equifood-api` and `apps/equifood-customer` directory (use `example.env` for reference)
+3. Create a configuration file `.env` in the `apps/equifood-api` and `apps/equifood-customer` directory (use `example.env` for reference)
 
 ### Development
 
