@@ -95,6 +95,6 @@ Additionally, shared UI/UX components + React hooks, etc. can be found in `lib/u
 
 ## License
 
-Copyright © 2022 Equifood.
+Copyright © 2023 Equifood.
 
 Unauthorized copying or distribution of this software is prohibited without the expressed permission of Equifood.
