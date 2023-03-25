@@ -2,6 +2,8 @@ import { ORDER_STATUS } from '@equifood/api-interfaces';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import {
+  AfterUpdate,
+  BeforeUpdate,
   Column,
   Entity,
   ManyToOne,

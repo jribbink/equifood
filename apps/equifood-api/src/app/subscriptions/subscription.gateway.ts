@@ -1,9 +1,13 @@
 import { RealtimeSubscriptionRequest } from '@equifood/api-interfaces';
-import { SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
+import {
+  SubscribeMessage,
+  WebSocketGateway,
+  OnGatewayDisconnect,
+} from '@nestjs/websockets';
 import { SubscriptionService } from './subscription.service';
 
 @WebSocketGateway(3026)
-export class SubscriptionGateway {
+export class SubscriptionGateway implements OnGatewayDisconnect {
   constructor(private subscriptionService: SubscriptionService) {}
 
   @SubscribeMessage('auth')
@@ -22,5 +26,9 @@ export class SubscriptionGateway {
       payload.criteria,
       payload.key
     );
+  }
+
+  handleDisconnect(client: WebSocket) {
+    this.subscriptionService.unsubscribe(client);
   }
 }

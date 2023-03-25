@@ -1,9 +1,11 @@
+import { RealtimeUpdateMessage } from '@equifood/api-interfaces';
 import {
   EntityMetadata,
   EntitySubscriberInterface,
   FindOptionsWhere,
   InsertEvent,
   RemoveEvent,
+  TransactionStartEvent,
   UpdateEvent,
 } from 'typeorm';
 import type { SubscriptionService } from './subscription.service';
@@ -62,9 +64,15 @@ export class EntitySubscriber implements EntitySubscriberInterface {
   afterInsert(event: InsertEvent<any>) {
     const targetListeners = this.trie.lookup(event.entity);
     targetListeners.forEach((listenerKey) => {
+      const data: RealtimeUpdateMessage = {
+        type: 'insert',
+        data: event.entity,
+        key: listenerKey,
+      };
+
       this.subscriptionService.dispatch(
         this.listeners.get(listenerKey),
-        'HELLO WORLD'
+        JSON.stringify(data)
       );
     });
   }
@@ -73,13 +81,20 @@ export class EntitySubscriber implements EntitySubscriberInterface {
     console.log('removed');
   }
 
-  afterUpdate(event: UpdateEvent<any>): void | Promise<any> {
+  async afterUpdate(event: UpdateEvent<any>): Promise<any> {
     const targetListeners = this.trie.lookup(event.entity);
-    console.log(targetListeners);
+    const changedEntity = Object.assign({}, event.databaseEntity, event.entity); // hacky, but good enough for now
+
     targetListeners.forEach((listenerKey) => {
+      const data: RealtimeUpdateMessage = {
+        type: 'update',
+        data: changedEntity,
+        key: listenerKey,
+      };
+
       this.subscriptionService.dispatch(
         this.listeners.get(listenerKey),
-        'HELLO WORLD'
+        JSON.stringify(data)
       );
     });
   }

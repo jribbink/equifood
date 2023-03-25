@@ -185,6 +185,6 @@ export class OrdersService {
     }
 
     // Finally, update status
-    return this.ordersRepository.update({ id: order.id }, { status });
+    return this.ordersRepository.save({ id: order.id, status });
   }
 }

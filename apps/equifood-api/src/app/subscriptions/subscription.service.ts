@@ -50,7 +50,6 @@ export class SubscriptionService<User = any> implements OnModuleInit {
     criteria: FindOptionsWhere<any>,
     key: string
   ) {
-    console.log('SUBSCRIBE');
     // If entity does not exist abort.  Do not return anything verbose to user to reveal entities which exist in DB
     if (!this.subscribers.has(entity)) return;
 
@@ -59,11 +58,8 @@ export class SubscriptionService<User = any> implements OnModuleInit {
 
     const subscriber = this.subscribers.get(entity);
     const user = this.users.get(client);
-    console.log(user);
     if (!user) return;
     const userId = this.subscriptionsOptions.resolveUserId(user);
-
-    console.log(userId);
 
     const userListeners = this.listenerInfo.get(userId) ?? [0, new Set()];
     if (userListeners[0] >= MAX_SUBSCRIPTIONS_PER_USER) {
@@ -112,7 +108,6 @@ export class SubscriptionService<User = any> implements OnModuleInit {
       client
     );
     client.send('AUTHENTICATED');
-    console.log('AUTHN');
     return user;
   }
 
