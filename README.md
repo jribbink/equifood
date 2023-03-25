@@ -41,7 +41,7 @@ The system will involve three types of users:
 
 - Joonsik Kim - QA
 - Jordan College - Client Liason
-- Jordan Ribbink - Tech Lead
+- Jordan Ribbink - Tech Lead/DevOps
 - Riley Comer - Scrum Master
 
 ### Project Structure
