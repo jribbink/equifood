@@ -104,14 +104,6 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
             my="3"
           ></ProgressSteps>
 
-          <Divider></Divider>
-
-          <OrderView
-            order={order}
-            viewHeight={viewHeight}
-            merchantMode={true}
-          ></OrderView>
-
           {
             //ready/complete button here
             <Button
@@ -120,7 +112,7 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
-                backgroundColor: 'red',
+                backgroundColor: 'green',
                 borderRadius: 5,
               }}
               onPress={updateButtonOnPress}
@@ -167,6 +159,14 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
               </Text>
             </Button>
           }
+
+          <Divider></Divider>
+
+          <OrderView
+            order={order}
+            viewHeight={viewHeight}
+            merchantMode={true}
+          ></OrderView>
         </Box>
       </ScrollView>
     </Box>

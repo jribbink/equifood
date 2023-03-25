@@ -73,13 +73,6 @@ function OrderScreen({
             my="3"
           ></ProgressSteps>
 
-          <Divider></Divider>
-
-          <OrderView
-            order={order}
-            viewHeight={viewHeight}
-            merchantMode={false}
-          ></OrderView>
           <Button
             minWidth={'20'}
             style={{
@@ -98,10 +91,22 @@ function OrderScreen({
                   [
                     {
                       text: "I'm Sure",
-                      onPress: async () =>
-                        await axios.post('/orders/' + order.id + '/status', {
-                          status: ORDER_STATUS.cancelled,
-                        }),
+                      onPress: async () => {
+                        try {
+                          await axios.post('/orders/' + order.id + '/status', {
+                            status: ORDER_STATUS.cancelled,
+                          });
+                          Alert.alert(
+                            'Success!',
+                            'Order cancelled successfully.'
+                          );
+                        } catch (e) {
+                          Alert.alert(
+                            'Failed',
+                            'The order could not be cancelled.'
+                          );
+                        }
+                      },
                       style: 'default',
                     },
                     {
@@ -117,9 +122,14 @@ function OrderScreen({
               CANCEL ORDER
             </Text>
           </Button>
-          {
-            //cancel button here
-          }
+
+          <Divider></Divider>
+
+          <OrderView
+            order={order}
+            viewHeight={viewHeight}
+            merchantMode={false}
+          ></OrderView>
         </Box>
       </ScrollView>
     </Box>

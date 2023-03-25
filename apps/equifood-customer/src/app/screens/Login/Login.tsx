@@ -21,6 +21,9 @@ const Login = ({ navigation }) => {
 
   return (
     <Box flex={1} testID="login-screen">
+      <Text style={{ fontSize: 36, color: equifoodTheme.colors.primary[500] }}>
+        EquiFood Customer
+      </Text>
       <LoginView allowedRoles={['customer']}></LoginView>
 
       <VStack flexDirection="column" p="3" space="3">

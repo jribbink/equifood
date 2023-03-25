@@ -88,15 +88,15 @@ export function OrderView({ order, viewHeight, merchantMode }: OrderViewProps) {
             })}
           </Text>
           <Text pb="4">Payment: In-person</Text>
-          {viewHeight ? (
+          {viewHeight && !merchantMode ? (
             <MerchantMap
               darkMode={false}
               merchants={[order.merchant]}
               initialRegion={{
                 longitude: order.merchant.location.longitude,
                 latitude: order.merchant.location.latitude,
-                latitudeDelta: 2,
-                longitudeDelta: 2,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
               }}
               style={{ width: '100%', height: viewHeight * 0.5 }}
             ></MerchantMap>
