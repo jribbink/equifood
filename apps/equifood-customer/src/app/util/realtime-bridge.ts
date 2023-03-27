@@ -28,12 +28,11 @@ export class RealtimeBridge {
   connect() {
     this.socket = new WebSocket(this.url);
 
-    this.socket.onmessage = (e) =>  {
+    this.socket.onmessage = (e) => {
       const message: MessageType = JSON.parse(e.data);
       switch (message.type) {
         case 'SubscriptionResponse':
-          this.subscriptions.
-          break;
+          this.subscriptions.break;
       }
     };
 
@@ -51,7 +50,5 @@ export class RealtimeBridge {
       endpoint,
     };
     this.socket.send(JSON.stringify(message));
-
-    
   }
 }

@@ -1,7 +1,7 @@
-import { useRef } from "react"
+import { useRef } from 'react';
 
 function useSubscriber() {
-  const ws = useRef(new WebSocket()).current
+  const ws = useRef(new WebSocket()).current;
 }
 
-export default useSubscriber
+export default useSubscriber;
