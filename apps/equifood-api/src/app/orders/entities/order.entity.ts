@@ -14,13 +14,7 @@ import { User } from '../../users/entities/user.entity';
 import { OrderedItem } from './ordered-item.entity';
 @ObjectType()
 @Entity()
-@RealtimeEntity<Order>(
-  () => (user: User, order: Order) => {
-    return true;
-  },
-  { user: true, merchant: { user: true } },
-  {}
-)
+@RealtimeEntity<Order>({ user: true, merchant: { user: true } }, {})
 export class Order {
   @PrimaryGeneratedColumn()
   @Field()
