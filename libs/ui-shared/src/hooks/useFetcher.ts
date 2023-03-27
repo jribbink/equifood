@@ -37,7 +37,7 @@ export function useFetcher<T>(key: any, realtime = true) {
     const subscriptionToken = res?.headers['x-subscription-token'];
     if (realtime && subscriptionToken) {
       ctx?.subscribe(subscriptionToken, () => {
-        swr.mutate(null as any, { revalidate: true });
+        swr.mutate(_data.current, { revalidate: true });
       });
     }
 

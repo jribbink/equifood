@@ -7,17 +7,18 @@ import {
   ProgressSteps,
   OrderView,
   useAxios,
+  useOrder,
 } from '@equifood/ui-shared';
 import type { RootNavigationProps } from '../../layouts/RootLayout';
 import { ORDER_STATUS } from '@equifood/api-interfaces';
 
 function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
-  const order = route.params.order;
+  const { order } = useOrder(route.params.order.id);
   const axios = useAxios();
 
   useEffect(() => {
     navigation.setOptions({
-      headerTitle: `Order #${order.id}`,
+      headerTitle: `Order #${order?.id}`,
     });
   }, [navigation, order]);
 
@@ -37,6 +38,8 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
   ];
 
   const [viewHeight, setViewHeight] = useState<number>(0);
+
+  if (!order) return null;
 
   let updateButtonText = '';
   const updateButtonOnPress = async () => {

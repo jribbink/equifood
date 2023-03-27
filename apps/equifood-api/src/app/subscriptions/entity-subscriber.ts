@@ -2,6 +2,7 @@ import { RealtimeUpdateMessage } from '@equifood/api-interfaces';
 import {
   EntityMetadata,
   EntitySubscriberInterface,
+  FindOptionsRelations,
   FindOptionsWhere,
   InsertEvent,
   RemoveEvent,
@@ -30,37 +31,43 @@ export class EntitySubscriber implements EntitySubscriberInterface {
       relationsMap.set(x.propertyName, x);
     });
 
-    const relationColumns = Object.entries(
-      this.realtimeMetadata.relations
-    ).reduce((a, [k, v]) => {
-      if (v) {
-        if (!relationsMap.has(k))
-          throw new Error('Relation column does not exist');
+    const resolveRelations = (relations: FindOptionsRelations<any>) => {
+      const relationColumns = Object.entries(relations).reduce((a, [k, v]) => {
+        if (typeof v === 'object') {
+          a.push(...resolveRelations(v).map((path) => [k, ...path]));
+        } else if (v === true) {
+          if (!relationsMap.has(k))
+            throw new Error('Relation column does not exist');
 
-        const relation = relationsMap.get(k);
-        let relationName: string;
-        if (typeof relation.type === 'string') {
-          relationName = relation.type;
-        } else {
-          relationName = this.subscriptionService.entityNameMap.get(
-            relation.type
+          const relation = relationsMap.get(k);
+          let relationName: string;
+          if (typeof relation.type === 'string') {
+            relationName = relation.type;
+          } else {
+            relationName = this.subscriptionService.entityNameMap.get(
+              relation.type
+            );
+          }
+
+          const relationMetadata =
+            this.subscriptionService.entityMetadataMap.get(relationName);
+          const relationColumns = relationMetadata.columns.map(
+            (x) => x.propertyName
           );
+
+          a.push(...relationColumns.map((name) => [k, name]));
         }
+        return a;
+      }, []);
 
-        const relationMetadata =
-          this.subscriptionService.entityMetadataMap.get(relationName);
-        const relationColumns = relationMetadata.columns.map(
-          (x) => x.propertyName
-        );
+      const entityColumns = metadata.columns.map((x) => [x.propertyName]);
 
-        a.push(...relationColumns.map((name) => [k, name]));
-      }
-      return a;
-    }, []);
+      return [...entityColumns, ...relationColumns];
+    };
 
-    const entityColumns = metadata.columns.map((x) => [x.propertyName]);
-
-    this.trie = new ColumnTrie([...entityColumns, ...relationColumns]);
+    this.trie = new ColumnTrie(
+      resolveRelations(this.realtimeMetadata.relations)
+    );
     this.pk_list = metadata.primaryColumns?.map((pk) => pk.propertyName) ?? [];
   }
 

@@ -5,6 +5,7 @@ import { RealtimeContextProvider } from './realtime-context';
 
 export interface IEquifoodConfig {
   apiUrl: string;
+  wsUrl: string;
 }
 
 export interface IEquifoodAuthContext {
@@ -64,8 +65,6 @@ export function EquifoodCoreContext({
     })();
   }, []);
 
-  const ws = `ws://localhost:3026`;
-
   return (
     <EquifoodConfigContext.Provider value={config}>
       <EquifoodAuthContext.Provider
@@ -75,7 +74,9 @@ export function EquifoodCoreContext({
           authenticate,
         }}
       >
-        <RealtimeContextProvider url={ws}>{children}</RealtimeContextProvider>
+        <RealtimeContextProvider url={config.wsUrl}>
+          {children}
+        </RealtimeContextProvider>
       </EquifoodAuthContext.Provider>
     </EquifoodConfigContext.Provider>
   );

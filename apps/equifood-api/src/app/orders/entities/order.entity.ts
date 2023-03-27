@@ -2,8 +2,6 @@ import { ORDER_STATUS } from '@equifood/api-interfaces';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import {
-  AfterUpdate,
-  BeforeUpdate,
   Column,
   Entity,
   ManyToOne,
@@ -16,11 +14,11 @@ import { User } from '../../users/entities/user.entity';
 import { OrderedItem } from './ordered-item.entity';
 @ObjectType()
 @Entity()
-@RealtimeEntity(
+@RealtimeEntity<Order>(
   () => (user: User, order: Order) => {
     return true;
   },
-  {user: true},
+  { user: true, merchant: { user: true } },
   {}
 )
 export class Order {

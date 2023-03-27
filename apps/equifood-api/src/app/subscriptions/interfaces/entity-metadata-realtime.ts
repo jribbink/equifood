@@ -1,7 +1,9 @@
-export interface EntityMetadataRealtime {
+import { FindOptionsRelations } from 'typeorm';
+
+export interface EntityMetadataRealtime<T = any> {
   authFn: (
     ...args: any[]
   ) => (user: any, entity: any) => Promise<boolean> | boolean;
-  relations: { [property: string]: boolean };
+  relations: FindOptionsRelations<T>;
   dependencies: any;
 }

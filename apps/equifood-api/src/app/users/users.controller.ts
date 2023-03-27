@@ -33,7 +33,6 @@ export class UsersController {
             id: user.id,
           },
         },
-        relations: { merchant: true },
       };
     },
     { isArray: true }

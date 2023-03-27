@@ -69,13 +69,16 @@ export class OrdersService {
       },
       relations: {
         user: true,
+        merchant: {
+          user: true,
+        },
       },
     });
     if (!order) throw new NotFoundException('Order does not exist');
     if (user.roles.includes('customer') && order.user.id !== user.id)
       throw new UnauthorizedException();
-    if (user.roles.includes('merchant')) {
-      throw new NotImplementedException('Does not support merchants yet');
+    if (user.roles.includes('merchant') && order.merchant.user.id !== user.id) {
+      throw new UnauthorizedException();
     }
 
     return order;
