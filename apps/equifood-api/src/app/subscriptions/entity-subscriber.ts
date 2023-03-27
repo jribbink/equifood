@@ -125,7 +125,7 @@ export class EntitySubscriber implements EntitySubscriberInterface {
   }
 
   afterRemove(event: RemoveEvent<any>): void | Promise<any> {
-    console.log('removed');
+    // TODO: Implement after remove subscriptions
   }
 
   async afterUpdate(event: UpdateEvent<any>): Promise<any> {
