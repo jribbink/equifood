@@ -20,6 +20,7 @@ import { OrderedItem } from './ordered-item.entity';
   () => (user: User, order: Order) => {
     return true;
   },
+  {user: true},
   {}
 )
 export class Order {

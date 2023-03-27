@@ -3,28 +3,46 @@ type TrieNode = Map<string | number, TrieNode | Set<string>>;
 // Trie for matching subscriptions to entities
 export class ColumnTrie {
   public root: TrieNode;
-  private keyMap: Map<string, string[]> = new Map();
+  private keyMap: Map<string, (string | number)[]> = new Map();
 
-  constructor(private columns: string[]) {
+  constructor(private columns: (string[] | string)[]) {
     this.root = new Map();
   }
 
+  private matchColumn(obj, column) {
+    if (typeof column === 'string') {
+      return obj[column];
+    }
+
+    let x = obj;
+    for (const k of column) {
+      x = x[k];
+      if (x === undefined) break;
+    }
+
+    const value: string | number | undefined = x as any;
+    return value;
+  }
+
   insert(matcher: object, key: string) {
-    console.log('OK');
     let curr: TrieNode | Set<string> = this.root;
-    const path: string[] = [];
+    const path: (string | number)[] = [];
     for (let i = 0; i < this.columns.length; i++) {
       if (curr instanceof Set) return false;
 
       const column = this.columns[i];
-      if (matcher[column] !== undefined) {
-        if (!curr.has(matcher[column]))
+
+      // Recursively match column
+      const value = this.matchColumn(matcher, column);
+
+      if (value !== undefined) {
+        if (!curr.has(value))
           curr.set(
-            matcher[column],
+            value,
             i === this.columns.length - 1 ? new Set() : new Map()
           );
-        curr = curr.get(matcher[column]);
-        path.push(matcher[column]);
+        curr = curr.get(value);
+        path.push(value);
       } else {
         if (!curr.get('*'))
           curr.set('*', i === this.columns.length - 1 ? new Set() : new Map());
@@ -58,11 +76,11 @@ export class ColumnTrie {
     (curr as Set<string>).delete(key);
     this.keyMap.delete(key);
 
-    let prev: TrieNode | Set<string> = stack.pop();
+    let prev: TrieNode | Set<string | number> = stack.pop();
     for (let i = path.length - 1; i >= 0; i--) {
       curr = stack.pop();
       if (prev.size === 0) {
-        curr.delete(path[i]);
+        curr.delete(path[i] as string);
       }
       prev = curr;
     }
@@ -76,7 +94,9 @@ export class ColumnTrie {
         const column = this.columns[i];
         if (curr.has('*'))
           helper(i + 1, curr.get('*')).forEach((x) => res.add(x));
-        if (object[column]) curr = curr.get(object[column]);
+
+        const value = this.matchColumn(object, column);
+        if (value) curr = curr.get(value);
         else break;
         if (curr === undefined) break;
       }
