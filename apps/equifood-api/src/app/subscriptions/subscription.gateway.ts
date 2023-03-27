@@ -1,4 +1,3 @@
-import { RealtimeSubscriptionRequest } from '@equifood/api-interfaces';
 import {
   SubscribeMessage,
   WebSocketGateway,
@@ -17,15 +16,8 @@ export class SubscriptionGateway implements OnGatewayDisconnect {
   }
 
   @SubscribeMessage('subscribe')
-  handleMessage(client: WebSocket, _payload: string) {
-    const payload: RealtimeSubscriptionRequest = JSON.parse(_payload);
-
-    this.subscriptionService.subscribe(
-      client,
-      payload.entity,
-      payload.criteria,
-      payload.key
-    );
+  async handleMessage(client: WebSocket, token: string) {
+    await this.subscriptionService.subscribe(client, token);
   }
 
   handleDisconnect(client: WebSocket) {

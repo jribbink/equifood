@@ -1,10 +1,7 @@
-import {
-  RealtimeSubscriptionRequest,
-  RealtimeUpdateMessage,
-} from '@equifood/api-interfaces';
+import { RealtimeUpdateMessage } from '@equifood/api-interfaces';
 import React, { useEffect, useRef } from 'react';
 import { useAuth } from '../hooks';
-import uuid from 'react-native-uuid';
+import { parseJwt } from '../util';
 
 export const RealtimeContext = React.createContext<RealtimeManager | null>(
   null
@@ -36,10 +33,7 @@ class RealtimeManager {
   private socket: WebSocket | null = null;
   private listeners: Map<
     string,
-    [
-      request: RealtimeSubscriptionRequest,
-      callback: (msg: RealtimeUpdateMessage) => void
-    ]
+    [token: string, callback: (msg: RealtimeUpdateMessage) => void]
   > = new Map();
 
   private authToken: string | null = null;
@@ -84,7 +78,8 @@ class RealtimeManager {
     this.socket.onopen = function (event) {
       this.send(JSON.stringify({ event: 'auth', data: _this.authToken }));
 
-      _this.authenticationPromise
+      console.log('HANDLE RECONNECT');
+      /*_this.authenticationPromise
         ?.then(() => {
           for (const [, [req]] of _this.listeners) {
             this.send(
@@ -94,7 +89,7 @@ class RealtimeManager {
         })
         .catch(() => {
           throw new Error('Websocket unauthorized');
-        });
+        });*/
     };
     this.socket.onmessage = function (event) {
       if (event.data === 'UNAUTHORIZED') {
@@ -112,25 +107,16 @@ class RealtimeManager {
     };
   }
 
-  async subscribe(
-    entity: string,
-    criteria: object,
-    cb: (msg: RealtimeUpdateMessage) => void,
-    isArray = false
-  ) {
+  async subscribe(token: string, cb: (msg: RealtimeUpdateMessage) => void) {
+    const key: string = parseJwt(token).payload.key;
+
     // Add listener
-    const req: RealtimeSubscriptionRequest = {
-      entity,
-      criteria,
-      key: uuid.v4().toString(),
-    };
-    const data = JSON.stringify(req);
-    this.listeners.set(req.key, [req, cb]);
+    this.listeners.set(key, [token, cb]);
 
     // Wait for authentication
     await this.authenticationPromise;
 
     // Send listener to server
-    this.socket?.send(JSON.stringify({ event: 'subscribe', data }));
+    this.socket?.send(JSON.stringify({ event: 'subscribe', data: token }));
   }
 }

@@ -1,4 +1,3 @@
-import { RestReponse } from '@equifood/api-interfaces';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { storage } from '../util/storage';
@@ -43,7 +42,7 @@ export function EquifoodCoreContext({
     email: string;
     password: string;
   }) => {
-    const response = await axios.post<RestReponse<string | null>>(
+    const response = await axios.post<string | null>(
       '/auth/local',
       {
         email,
@@ -51,7 +50,7 @@ export function EquifoodCoreContext({
       },
       { baseURL: config.apiUrl }
     );
-    setJwt(response.data.data);
+    setJwt(response.data);
   };
 
   const setJwt = async (jwt: string | null) => {

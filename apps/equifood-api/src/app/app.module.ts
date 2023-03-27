@@ -1,4 +1,8 @@
-import { ClassSerializerInterceptor, Module } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  ExecutionContext,
+  Module,
+} from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { AppConfigModule } from './config/app-config.module';
 import { DatabaseModule } from './database/database.module';
@@ -13,8 +17,9 @@ import { WebsocketValidator } from './auth/websocket-validator';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { AdminModule } from './admin/admin.module';
-import { RestInterceptor } from './common/interceptors/rest-interceptor';
 import { User } from './users/entities/user.entity';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { RealtimeInterceptor } from './subscriptions/interceptors/realtime-interceptor';
 
 @Module({
   imports: [
@@ -26,16 +31,24 @@ import { User } from './users/entities/user.entity';
     UploadsModule,
     OrdersModule,
     SubscriptionsModule.forRoot({
-      imports: [AuthModule],
-      useFactory: (websocketValidator: WebsocketValidator) => {
+      imports: [AuthModule, ConfigModule],
+      useFactory: (
+        websocketValidator: WebsocketValidator,
+        configService: ConfigService
+      ) => {
         return {
           validate: websocketValidator.validate.bind(websocketValidator),
           resolveUserId: (user: User) => {
             return user.id;
           },
+          getContextUser: (context: ExecutionContext) => {
+            const { user } = context.switchToHttp().getRequest();
+            return user;
+          },
+          jwtSecret: configService.getOrThrow('auth.secret'),
         };
       },
-      inject: [WebsocketValidator],
+      inject: [WebsocketValidator, ConfigService],
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
@@ -46,7 +59,7 @@ import { User } from './users/entities/user.entity';
   providers: [
     {
       provide: APP_INTERCEPTOR,
-      useClass: RestInterceptor,
+      useClass: RealtimeInterceptor,
     },
     {
       provide: APP_INTERCEPTOR,

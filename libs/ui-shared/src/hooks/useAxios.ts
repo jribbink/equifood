@@ -3,7 +3,6 @@ import { useAuth } from './useAuth';
 import { useContext, useEffect, useState } from 'react';
 import { dateInterceptor } from '../util/date-interceptor';
 import { EquifoodConfigContext } from '../context';
-import { RestReponse } from '@equifood/api-interfaces';
 
 export function useAxios() {
   const config = useContext(EquifoodConfigContext);
@@ -13,9 +12,6 @@ export function useAxios() {
       baseURL: config?.apiUrl,
       headers: {
         common: { Authorization: `Bearer ${token}` },
-      },
-      transformResponse: (data: string) => {
-        return (JSON.parse(data) as RestReponse).data;
       },
     });
     instance.interceptors.response.use(dateInterceptor);

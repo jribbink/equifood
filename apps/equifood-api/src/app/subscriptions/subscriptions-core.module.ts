@@ -5,6 +5,12 @@ import { SubscriptionsModuleConfig } from './interfaces/subscriptions-module-con
 import { METADATA_REALTIME, SUBSCRIPTIONS_MODULE_OPTIONS } from './constants';
 import entities from '../database/entities';
 import _ from 'lodash';
+import { JwtModule } from '@nestjs/jwt';
+import { SubscriptionsModuleOptions } from './interfaces/subscriptions-module-options';
+import { SubscriptionsConfigModule } from './subscriptions-config.module';
+import { SubscriptionsConfigService } from './subscriptions-config.service';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { RealtimeInterceptor } from './interceptors/realtime-interceptor';
 @Global()
 @Module({
   controllers: [],
@@ -13,14 +19,20 @@ import _ from 'lodash';
 })
 export class SubscriptionsCoreModule {
   static forRoot(options: SubscriptionsModuleConfig): DynamicModule {
-    const providers = [
-      {
-        provide: SUBSCRIPTIONS_MODULE_OPTIONS,
-        useFactory: options.useFactory,
-        inject: options.inject,
-      },
-      SubscriptionGateway,
-      SubscriptionService,
+    const providers = [SubscriptionGateway, SubscriptionService];
+
+    const imports = [
+      SubscriptionsConfigModule.forRoot(options),
+      JwtModule.registerAsync({
+        imports: [SubscriptionsConfigModule.forRoot(options)],
+        inject: [SubscriptionsConfigService],
+        useFactory: (
+          subscriptionsConfigService: SubscriptionsConfigService
+        ) => ({
+          secret: subscriptionsConfigService.config.jwtSecret,
+        }),
+      }),
+      ...options.imports,
     ];
 
     const exports = [SubscriptionService];
@@ -30,21 +42,9 @@ export class SubscriptionsCoreModule {
       return _.merge(acc, this.getRealtimeDependencies(entity));
     }, {});
 
-    console.log(
-      _.merge(
-        {
-          imports: options.imports,
-          module: SubscriptionsCoreModule,
-          providers,
-          exports,
-        },
-        realtimeDependencies
-      )
-    );
-
     return _.merge(
       {
-        imports: options.imports,
+        imports,
         module: SubscriptionsCoreModule,
         providers,
         exports,

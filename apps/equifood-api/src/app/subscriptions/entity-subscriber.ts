@@ -5,9 +5,10 @@ import {
   FindOptionsWhere,
   InsertEvent,
   RemoveEvent,
-  TransactionStartEvent,
   UpdateEvent,
 } from 'typeorm';
+import { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
+import { EntityMetadataRealtime } from './interfaces/entity-metadata-realtime';
 import type { SubscriptionService } from './subscription.service';
 import { ColumnTrie } from './util/column-trie';
 
@@ -22,9 +23,44 @@ export class EntitySubscriber implements EntitySubscriberInterface {
   constructor(
     readonly subscriptionService: SubscriptionService,
     readonly metadata: EntityMetadata,
-    readonly authFn: (user: any, entity: any) => boolean
+    readonly realtimeMetadata: EntityMetadataRealtime
   ) {
-    this.trie = new ColumnTrie(metadata.columns.map((x) => x.propertyName));
+    const relationsMap = new Map<string, RelationMetadata>();
+    metadata.relations.forEach((x) => {
+      relationsMap.set(x.propertyName, x);
+    });
+
+    const relationColumns = Object.entries(
+      this.realtimeMetadata.relations
+    ).reduce((a, [k, v]) => {
+      if (v) {
+        if (!relationsMap.has(k))
+          throw new Error('Relation column does not exist');
+
+        const relation = relationsMap.get(k);
+        let relationName: string;
+        if (typeof relation.type === 'string') {
+          relationName = relation.type;
+        } else {
+          relationName = this.subscriptionService.entityNameMap.get(
+            relation.type
+          );
+        }
+
+        const relationMetadata =
+          this.subscriptionService.entityMetadataMap.get(relationName);
+        const relationColumns = relationMetadata.columns.map(
+          (x) => x.propertyName
+        );
+
+        a.push(...relationColumns.map((name) => [k, name]));
+      }
+      return a;
+    }, []);
+
+    const entityColumns = metadata.columns.map((x) => [x.propertyName]);
+
+    this.trie = new ColumnTrie([...entityColumns, ...relationColumns]);
     this.pk_list = metadata.primaryColumns?.map((pk) => pk.propertyName) ?? [];
   }
 

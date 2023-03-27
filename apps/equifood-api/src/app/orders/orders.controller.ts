@@ -22,7 +22,9 @@ export class OrdersController {
     this.ordersService.setOrderStatus(user, orderId, status);
   }
 
-  @RealtimeRoute(Order)
+  @RealtimeRoute(Order, (user: User, order: Order) => ({
+    where: { id: order.id },
+  }))
   @AuthRoute()
   @Get(':orderId')
   async getOrder(@AuthUser() user: User, @Param('orderId') orderId: number) {
