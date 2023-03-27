@@ -39,6 +39,10 @@ export class AuthService {
     return null;
   }
 
+  async verifyJwt(jwt: string) {
+    return this.jwtService.verify(jwt, { audience: JwtAudience.auth });
+  }
+
   async login(user: User) {
     const payload = {
       sub: user.id,

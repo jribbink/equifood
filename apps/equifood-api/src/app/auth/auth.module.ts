@@ -13,6 +13,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthProvider } from './entities/auth-provider';
 import { AppleStrategy } from './strategies/apple.strategy';
 import { SocialJwtStrategy } from './strategies/social-jwt.strategy';
+import { WebsocketValidator } from './websocket-validator';
 
 const strategies: any[] = [
   LocalStrategy,
@@ -36,8 +37,8 @@ const strategies: any[] = [
     }),
     TypeOrmModule.forFeature([AuthProvider]),
   ],
-  exports: [AuthService],
-  providers: [...strategies, AuthService],
+  exports: [AuthService, WebsocketValidator],
+  providers: [...strategies, AuthService, WebsocketValidator],
   controllers: [AuthController],
 })
 export class AuthModule {}

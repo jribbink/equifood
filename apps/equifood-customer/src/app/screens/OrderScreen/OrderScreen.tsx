@@ -9,6 +9,7 @@ import {
   OrderView,
   useProfile,
   useAxios,
+  useOrder,
 } from '@equifood/ui-shared';
 import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import { ORDER_STATUS } from '@equifood/api-interfaces';
@@ -17,13 +18,13 @@ function OrderScreen({
   navigation,
   route,
 }: StackScreenProps<CoreStackParams, 'order'>) {
-  const order = route.params.order;
+  const { order } = useOrder(route.params.order.id);
   const user = useProfile().user;
   const axios = useAxios();
 
   useEffect(() => {
     navigation.setOptions({
-      headerTitle: `Order #${order.id}`,
+      headerTitle: `Order #${order?.id}`,
     });
   }, [navigation, order]);
 
@@ -43,6 +44,8 @@ function OrderScreen({
   ];
 
   const [viewHeight, setViewHeight] = useState<number>(0);
+
+  if (!order) return null;
 
   return (
     <Box

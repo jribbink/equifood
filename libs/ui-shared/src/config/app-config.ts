@@ -3,6 +3,7 @@ import { ExpoConfig as BaseExpoConfig } from '@expo/config-types';
 
 export type AppConfig = {
   apiUrl: string;
+  wsUrl: string;
   skipAnimations?: boolean;
 };
 
