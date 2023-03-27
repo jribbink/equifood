@@ -5,7 +5,9 @@ import {
   FindOptionsRelations,
   FindOptionsWhere,
   InsertEvent,
+  ObjectLiteral,
   RemoveEvent,
+  Repository,
   UpdateEvent,
 } from 'typeorm';
 import { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
@@ -24,17 +26,29 @@ export class EntitySubscriber implements EntitySubscriberInterface {
   constructor(
     readonly subscriptionService: SubscriptionService,
     readonly metadata: EntityMetadata,
-    readonly realtimeMetadata: EntityMetadataRealtime
+    readonly realtimeMetadata: EntityMetadataRealtime,
+    readonly repository: Repository<any>
   ) {
-    const relationsMap = new Map<string, RelationMetadata>();
-    metadata.relations.forEach((x) => {
-      relationsMap.set(x.propertyName, x);
-    });
+    const resolveRelations = (
+      relations: FindOptionsRelations<any>,
+      metadata: EntityMetadata
+    ) => {
+      this.pk_list = metadata.columns
+        .filter((x) => x.isPrimary)
+        .map((x) => x.propertyName);
 
-    const resolveRelations = (relations: FindOptionsRelations<any>) => {
+      const relationsMap = new Map<string, RelationMetadata>();
+      metadata.relations.forEach((x) => {
+        relationsMap.set(x.propertyName, x);
+      });
+
       const relationColumns = Object.entries(relations).reduce((a, [k, v]) => {
         if (typeof v === 'object') {
-          a.push(...resolveRelations(v).map((path) => [k, ...path]));
+          a.push(
+            ...resolveRelations(v, relationsMap.get(k).entityMetadata).map(
+              (path) => [k, ...path]
+            )
+          );
         } else if (v === true) {
           if (!relationsMap.has(k))
             throw new Error('Relation column does not exist');
@@ -60,13 +74,15 @@ export class EntitySubscriber implements EntitySubscriberInterface {
         return a;
       }, []);
 
-      const entityColumns = metadata.columns.map((x) => [x.propertyName]);
+      const entityColumns = metadata.columns
+        .map((x) => [x.propertyName])
+        .filter((x) => !relationsMap.has(x[0]));
 
       return [...entityColumns, ...relationColumns];
     };
 
     this.trie = new ColumnTrie(
-      resolveRelations(this.realtimeMetadata.relations)
+      resolveRelations(this.realtimeMetadata.relations, metadata)
     );
     this.pk_list = metadata.primaryColumns?.map((pk) => pk.propertyName) ?? [];
   }
@@ -104,20 +120,8 @@ export class EntitySubscriber implements EntitySubscriberInterface {
     return this.metadata.target;
   }
 
-  afterInsert(event: InsertEvent<any>) {
-    const targetListeners = this.trie.lookup(event.entity);
-    targetListeners.forEach((listenerKey) => {
-      const data: RealtimeUpdateMessage = {
-        type: 'insert',
-        data: event.entity,
-        key: listenerKey,
-      };
-
-      this.subscriptionService.dispatch(
-        this.listeners.get(listenerKey),
-        JSON.stringify(data)
-      );
-    });
+  async afterInsert(event: InsertEvent<any>) {
+    await this.processEvent(event.entity);
   }
 
   afterRemove(event: RemoveEvent<any>): void | Promise<any> {
@@ -125,13 +129,27 @@ export class EntitySubscriber implements EntitySubscriberInterface {
   }
 
   async afterUpdate(event: UpdateEvent<any>): Promise<any> {
-    const targetListeners = this.trie.lookup(event.entity);
-    const changedEntity = Object.assign({}, event.databaseEntity, event.entity); // hacky, but good enough for now
+    await this.processEvent(event.entity);
+  }
+
+  private async processEvent(eventEntity: ObjectLiteral) {
+    const entities = await this.repository.find({
+      where: this.pk_list.reduce((a, pk) => {
+        a[pk] = eventEntity[pk];
+        return a;
+      }, {}),
+      relations: this.realtimeMetadata.relations,
+    });
+    const targetListeners = new Set<string>();
+
+    entities.forEach((entity) => {
+      this.trie.lookup(entity).forEach((x) => {
+        targetListeners.add(x);
+      });
+    });
 
     targetListeners.forEach((listenerKey) => {
       const data: RealtimeUpdateMessage = {
-        type: 'update',
-        data: changedEntity,
         key: listenerKey,
       };
 

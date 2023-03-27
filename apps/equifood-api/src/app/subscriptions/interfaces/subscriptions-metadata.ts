@@ -1,8 +1,8 @@
-import { FindManyOptions } from 'typeorm';
+import { FindOptionsWhere } from 'typeorm';
 
-export interface SubscriptionsMetadata {
+export interface SubscriptionsMetadata<T = any> {
   entity: string;
-  findOptions: FindManyOptions;
+  where: FindOptionsWhere<T>;
   isArray: boolean;
   key: string;
   userId: string | number;

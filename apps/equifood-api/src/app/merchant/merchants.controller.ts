@@ -34,11 +34,9 @@ export class MerchantsController {
     Order,
     (user: User, orders: Order[]) => {
       return {
-        where: {
-          merchant: {
-            user: {
-              id: user.id,
-            },
+        merchant: {
+          user: {
+            id: user.id,
           },
         },
       };

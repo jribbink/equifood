@@ -33,13 +33,14 @@ class RealtimeManager {
   private socket: WebSocket | null = null;
   private listeners: Map<
     string,
-    [token: string, callback: (msg: RealtimeUpdateMessage) => void]
+    [callback: (msg: RealtimeUpdateMessage) => void, resubscribe: () => void]
   > = new Map();
 
   private authToken: string | null = null;
   private authenticationPromise: Promise<void> | null = null;
   private resolveAuthentication: (() => void) | null = null;
   private rejectAuthentication: (() => void) | null = null;
+  public swrCache: Map<string, string> = new Map();
 
   constructor(private host: string) {
     this.connect();
@@ -78,18 +79,16 @@ class RealtimeManager {
     this.socket.onopen = function (event) {
       this.send(JSON.stringify({ event: 'auth', data: _this.authToken }));
 
-      console.log('HANDLE RECONNECT');
-      /*_this.authenticationPromise
+      _this.authenticationPromise
         ?.then(() => {
-          for (const [, [req]] of _this.listeners) {
-            this.send(
-              JSON.stringify({ event: 'subscribe', data: JSON.stringify(req) })
-            );
+          for (const [key, [, resubscribe]] of _this.listeners) {
+            resubscribe();
+            _this.listeners.delete(key);
           }
         })
         .catch(() => {
           throw new Error('Websocket unauthorized');
-        });*/
+        });
     };
     this.socket.onmessage = function (event) {
       if (event.data === 'UNAUTHORIZED') {
@@ -102,21 +101,32 @@ class RealtimeManager {
         _this.resolveAuthentication?.();
       } else {
         const data: RealtimeUpdateMessage = JSON.parse(event.data);
-        _this.listeners.get(data.key)?.[1]?.(data);
+        _this.listeners.get(data.key)?.[0]?.(data);
       }
     };
   }
 
-  async subscribe(token: string, cb: (msg: RealtimeUpdateMessage) => void) {
+  async subscribe(
+    token: string,
+    cb: (msg: RealtimeUpdateMessage) => void,
+    resubscribe: () => void
+  ) {
     const key: string = parseJwt(token).payload.key;
 
     // Add listener
-    this.listeners.set(key, [token, cb]);
+    this.listeners.set(key, [cb, resubscribe]);
 
     // Wait for authentication
     await this.authenticationPromise;
 
     // Send listener to server
     this.socket?.send(JSON.stringify({ event: 'subscribe', data: token }));
+  }
+
+  async unsubscribe(key: string) {
+    if (!this.listeners.has(key)) return;
+
+    this.listeners.delete(key);
+    this.socket?.send(JSON.stringify({ event: 'unsubscribe', data: key }));
   }
 }

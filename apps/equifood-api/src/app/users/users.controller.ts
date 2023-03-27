@@ -24,14 +24,12 @@ export class UsersController {
     return this.usersService.getProviders({ id: user.id });
   }
 
-  @RealtimeRoute(
+  @RealtimeRoute<Order>(
     Order,
     (user: User, orders: Order[]) => {
       return {
-        where: {
-          user: {
-            id: user.id,
-          },
+        user: {
+          id: user.id,
         },
       };
     },

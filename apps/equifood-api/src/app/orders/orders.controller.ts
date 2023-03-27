@@ -23,7 +23,7 @@ export class OrdersController {
   }
 
   @RealtimeRoute(Order, (user: User, order: Order) => ({
-    where: { id: order.id },
+    id: order.id,
   }))
   @AuthRoute()
   @Get(':orderId')

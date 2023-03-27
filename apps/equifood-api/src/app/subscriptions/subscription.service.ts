@@ -66,7 +66,8 @@ export class SubscriptionService<User = any> implements OnModuleInit {
         const subscriber = new EntitySubscriber(
           this,
           metadata,
-          realtimeMetadata
+          realtimeMetadata,
+          this.dataSource.getRepository(metadata.target)
         );
         this.dataSource.subscribers.push(subscriber);
         this.subscribers.set(metadata.name, subscriber);
@@ -75,12 +76,10 @@ export class SubscriptionService<User = any> implements OnModuleInit {
   }
 
   async subscribe(client: WebSocket, token: string) {
-    const { entity, key } =
+    const { entity, key, where, userId } =
       await this.jwtService.verifyAsync<SubscriptionsMetadata>(token, {
         audience: SUBSCRIPTIONS_JWT_AUDIENCE,
       });
-
-    console.log({ entity, key });
 
     // If entity does not exist abort.  Do not return anything verbose to user to reveal entities which exist in DB
     if (!this.subscribers.has(entity)) return;
@@ -89,9 +88,6 @@ export class SubscriptionService<User = any> implements OnModuleInit {
     if (this.keySet.has(key)) return;
 
     const subscriber = this.subscribers.get(entity);
-    const user = this.users.get(client);
-    if (!user) return;
-    const userId = this.subscriptionsOptions.resolveUserId(user);
 
     const userListeners = this.listenerInfo.get(userId) ?? [0, new Set()];
     if (userListeners[0] >= MAX_SUBSCRIPTIONS_PER_USER) {
@@ -101,7 +97,7 @@ export class SubscriptionService<User = any> implements OnModuleInit {
     }
 
     // If listener added, add to global listener map
-    if (subscriber.addListener(userId, {}, key)) {
+    if (subscriber.addListener(userId, where, key)) {
       userListeners[0] += 1;
       userListeners[1].add(subscriber);
     }

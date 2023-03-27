@@ -56,6 +56,14 @@ describe('column trie', () => {
     );
   });
 
+  it('looks up elements with deep objects correctly (incorrect matcher)', () => {
+    const trie = new ColumnTrie(['a', 'b', 'c', ['d', 'a']]);
+    trie.insert({ a: 'a', d: { a: 'abc' } }, 'foobar');
+    expect(trie.lookup({ a: 'a', b: 'b', c: 'c', d: { a: 'abcd' } })).toEqual(
+      new Set([])
+    );
+  });
+
   it('looks up elements with all wildcards', () => {
     const trie = new ColumnTrie(['a', 'b', 'c']);
     trie.insert({}, 'foobar');

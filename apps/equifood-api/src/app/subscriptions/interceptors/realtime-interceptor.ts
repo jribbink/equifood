@@ -6,10 +6,8 @@ import {
   NestInterceptor,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { InjectDataSource } from '@nestjs/typeorm';
 import { randomUUID } from 'crypto';
 import { map, Observable } from 'rxjs';
-import { DataSource } from 'typeorm';
 import {
   SUBSCRIPTIONS_HANDLER_METADATA,
   SUBSCRIPTIONS_MODULE_OPTIONS,
@@ -48,7 +46,7 @@ export class RealtimeInterceptor implements NestInterceptor {
           const user = this.subscriptionsOptions.getContextUser(context);
           subscriptionsMetadata = {
             entity,
-            findOptions: responseMetadata.resolveFindOptions(user, x),
+            where: responseMetadata.resolveFindOptions(user, x),
             isArray: responseMetadata?.opts?.isArray ?? false,
             key: randomUUID(),
             userId: this.subscriptionsOptions.resolveUserId(user),

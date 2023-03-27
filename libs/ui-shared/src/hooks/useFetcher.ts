@@ -2,6 +2,7 @@ import { AxiosError } from 'axios';
 import { useContext, useEffect, useRef } from 'react';
 import useSWR, { mutate } from 'swr';
 import { RealtimeContext } from '../context/realtime-context';
+import { parseJwt } from '../util';
 import { useAuth } from './useAuth';
 import { useAxios } from './useAxios';
 
@@ -14,6 +15,7 @@ export function useFetcher<T>(key: any, realtime = true) {
   useEffect(() => {
     _data.current = swr.data;
   }, [swr]);
+  const subscriptionKey = useRef<string | null>(null);
 
   useEffect(() => {
     mutate(key, null, {
@@ -36,9 +38,21 @@ export function useFetcher<T>(key: any, realtime = true) {
 
     const subscriptionToken = res?.headers['x-subscription-token'];
     if (realtime && subscriptionToken) {
-      ctx?.subscribe(subscriptionToken, () => {
-        swr.mutate(_data.current, { revalidate: true });
-      });
+      const subscriptionKey = parseJwt(subscriptionToken).payload.key;
+
+      if (!ctx?.swrCache.has(key)) {
+        ctx?.swrCache.set(key, subscriptionKey);
+        ctx?.subscribe(
+          subscriptionToken,
+          () => {
+            swr.mutate(_data.current, { revalidate: true });
+          },
+          () => {
+            ctx?.swrCache.delete(key);
+            swr.mutate(_data.current, { revalidate: true });
+          }
+        );
+      }
     }
 
     return res?.data;
