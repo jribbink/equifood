@@ -2,6 +2,10 @@ import { RealtimeUpdateMessage } from '@equifood/api-interfaces';
 import React, { useEffect, useRef } from 'react';
 import { parseJwt } from '../util';
 
+function areWeTestingWithJest() {
+  return process?.env?.['JEST_WORKER_ID'] !== undefined;
+}
+
 export const RealtimeContext = React.createContext<RealtimeManager | null>(
   null
 );
@@ -15,6 +19,7 @@ export function RealtimeContextProvider({
 }) {
   const manager = useRef(new RealtimeManager(url));
   useEffect(() => {
+    if (areWeTestingWithJest()) return;
     manager.current.connect();
   }, []);
 
