@@ -1,5 +1,4 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
-import { GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
 import { resolveContext } from '../../common/utils/resolve-context';
 

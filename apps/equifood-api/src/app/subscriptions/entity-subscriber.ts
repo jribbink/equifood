@@ -11,27 +11,28 @@ import {
   UpdateEvent,
 } from 'typeorm';
 import { RelationMetadata } from 'typeorm/metadata/RelationMetadata';
-import { EntityMetadataRealtime } from './interfaces/entity-metadata-realtime';
 import type { SubscriptionService } from './subscription.service';
 import { ColumnTrie } from './util/column-trie';
-
-type UserId = string | number;
 
 export class EntitySubscriber implements EntitySubscriberInterface {
   private pk_list: string[];
   private trie: ColumnTrie;
-  private listeners: Map<string, UserId> = new Map();
-  private listenersRev: Map<UserId, Set<string>> = new Map();
+  private listeners: Map<string, string> = new Map();
+  private listenersRev: Map<string, Set<string>> = new Map();
+  public relationDependencies: [depName: string, path: string[]][] = [];
+  private relationDependents: [dependent: EntitySubscriber, path: string[]][] =
+    [];
 
   constructor(
     readonly subscriptionService: SubscriptionService,
     readonly metadata: EntityMetadata,
-    readonly realtimeMetadata: EntityMetadataRealtime,
+    readonly relations: FindOptionsRelations<any>,
     readonly repository: Repository<any>
   ) {
     const resolveRelations = (
       relations: FindOptionsRelations<any>,
-      metadata: EntityMetadata
+      metadata: EntityMetadata,
+      currentPath: string[]
     ) => {
       this.pk_list = metadata.columns
         .filter((x) => x.isPrimary)
@@ -43,26 +44,33 @@ export class EntitySubscriber implements EntitySubscriberInterface {
       });
 
       const relationColumns = Object.entries(relations).reduce((a, [k, v]) => {
-        if (typeof v === 'object') {
-          a.push(
-            ...resolveRelations(v, relationsMap.get(k).entityMetadata).map(
-              (path) => [k, ...path]
-            )
+        if (!relationsMap.has(k))
+          throw new Error('Relation column does not exist');
+
+        const relation = relationsMap.get(k);
+        let relationName: string;
+        if (typeof relation.type === 'string') {
+          relationName = relation.type;
+        } else {
+          relationName = this.subscriptionService.entityNameMap.get(
+            relation.type
           );
+        }
+
+        // Add dependency
+        this.relationDependencies.push([relationName, [...currentPath, k]]);
+
+        if (typeof v === 'object') {
+          currentPath.push(k);
+          a.push(
+            ...resolveRelations(
+              v,
+              relationsMap.get(k).entityMetadata,
+              currentPath
+            ).map((path) => [k, ...path])
+          );
+          currentPath.pop();
         } else if (v === true) {
-          if (!relationsMap.has(k))
-            throw new Error('Relation column does not exist');
-
-          const relation = relationsMap.get(k);
-          let relationName: string;
-          if (typeof relation.type === 'string') {
-            relationName = relation.type;
-          } else {
-            relationName = this.subscriptionService.entityNameMap.get(
-              relation.type
-            );
-          }
-
           const relationMetadata =
             this.subscriptionService.entityMetadataMap.get(relationName);
           const relationColumns = relationMetadata.columns.map(
@@ -81,33 +89,34 @@ export class EntitySubscriber implements EntitySubscriberInterface {
       return [...entityColumns, ...relationColumns];
     };
 
-    this.trie = new ColumnTrie(
-      resolveRelations(this.realtimeMetadata.relations, metadata)
-    );
+    this.trie = new ColumnTrie(resolveRelations(relations, metadata, []));
     this.pk_list = metadata.primaryColumns?.map((pk) => pk.propertyName) ?? [];
   }
 
-  addListener(userId: UserId, criteria: FindOptionsWhere<any>, key: string) {
-    const userListeners = this.listenersRev.get(userId) ?? new Set();
-    userListeners.add(key);
-    this.listeners.set(key, userId);
-    this.listenersRev.set(userId, userListeners);
-    this.trie.insert(criteria, key);
+  registerDependent(dependent: EntitySubscriber, path: string[]) {
+    this.relationDependents.push([dependent, path]);
+  }
 
+  addListener(clientId: string, criteria: FindOptionsWhere<any>, key: string) {
+    const clientListeners = this.listenersRev.get(clientId) ?? new Set();
+    clientListeners.add(key);
+    this.listeners.set(key, clientId);
+    this.listenersRev.set(clientId, clientListeners);
+    this.trie.insert(criteria, key);
     return true;
   }
 
-  removeListener(userId: UserId, key?: string): string[] {
+  removeListener(clientId: string, key?: string): string[] {
     const removedKeys: string[] = [];
     if (!key) {
-      this.listenersRev.get(userId).forEach((key) => {
+      this.listenersRev.get(clientId).forEach((key) => {
         this.listeners.delete(key);
         this.trie.remove(key);
         removedKeys.push(key);
       });
-      this.listenersRev.delete(userId);
+      this.listenersRev.delete(clientId);
     } else {
-      const userListeners = this.listenersRev.get(userId);
+      const userListeners = this.listenersRev.get(clientId);
       userListeners.delete(key);
       this.listeners.delete(key);
       this.trie.remove(key);
@@ -121,7 +130,7 @@ export class EntitySubscriber implements EntitySubscriberInterface {
   }
 
   async afterInsert(event: InsertEvent<any>) {
-    await this.processEvent(event.entity);
+    this.processEvent(event.entity);
   }
 
   afterRemove(event: RemoveEvent<any>): void | Promise<any> {
@@ -129,7 +138,17 @@ export class EntitySubscriber implements EntitySubscriberInterface {
   }
 
   async afterUpdate(event: UpdateEvent<any>): Promise<any> {
-    await this.processEvent(event.entity);
+    this.processEvent(event.entity);
+  }
+
+  public processDependencyEvent(entity: ObjectLiteral, path: string[]) {
+    const obj = {};
+    let curr = obj;
+    for (const prop of path.slice(undefined, -1)) {
+      curr = curr[prop];
+    }
+    curr[path.at(-1)] = entity;
+    this.processEvent(obj);
   }
 
   private async processEvent(eventEntity: ObjectLiteral) {
@@ -138,11 +157,16 @@ export class EntitySubscriber implements EntitySubscriberInterface {
         a[pk] = eventEntity[pk];
         return a;
       }, {}),
-      relations: this.realtimeMetadata.relations,
+      relations: this.relations,
     });
+
     const targetListeners = new Set<string>();
 
     entities.forEach((entity) => {
+      this.relationDependents.forEach(([dependent, path]) => {
+        dependent.processDependencyEvent(entity, path);
+      });
+
       this.trie.lookup(entity).forEach((x) => {
         targetListeners.add(x);
       });

@@ -49,7 +49,7 @@ export class RealtimeInterceptor implements NestInterceptor {
             where: responseMetadata.resolveFindOptions(user, x),
             isArray: responseMetadata?.opts?.isArray ?? false,
             key: randomUUID(),
-            userId: this.subscriptionsOptions.resolveUserId(user),
+            userId: user ? this.subscriptionsOptions.resolveUserId(user) : null,
           };
 
           // add subscription token as jwt

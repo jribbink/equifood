@@ -194,7 +194,7 @@ function RestaurantScreen({
             if (Object.entries(quantityMap).every((item) => item[1] === 0)) {
               alert('Please choose at least one item before continuing.');
             } else {
-              navigation.navigate('Order Confirm', {
+              navigation.navigate('orderConfirm', {
                 merchant: merchant,
                 items: items,
                 quantities: quantityMap,

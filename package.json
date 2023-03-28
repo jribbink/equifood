@@ -146,6 +146,7 @@
     "jest-circus": "28.1.1",
     "jest-environment-jsdom": "28.1.1",
     "jest-expo": "46.0.1",
+    "jest-websocket-mock": "^2.4.0",
     "metro-resolver": "0.72.3",
     "msw": "^0.47.4",
     "nx": "15.0.1",
