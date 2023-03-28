@@ -18,10 +18,6 @@ export function RealtimeContextProvider({
   url: string;
 }) {
   const manager = useRef(new RealtimeManager(url));
-  useEffect(() => {
-    if (areWeTestingWithJest()) return;
-    manager.current.connect();
-  }, []);
 
   return (
     <RealtimeContext.Provider value={manager.current}>
@@ -43,6 +39,7 @@ class RealtimeManager {
   }
 
   connect() {
+    if (areWeTestingWithJest()) return;
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const _this = this;
     this.socket?.close();
