@@ -56,7 +56,6 @@ class RealtimeManager {
     };
     this.socket.onmessage = function (event) {
       const data: RealtimeUpdateMessage = JSON.parse(event.data);
-      console.log(data.key);
       _this.listeners.get(data.key)?.[0]?.(data);
     };
   }

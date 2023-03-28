@@ -18,7 +18,6 @@ export function useFetcher<T>(key: any, realtime = true) {
 
   // Fetcher for SWR
   async function fetcher(url: string) {
-    console.log('FETCH ' + url);
     let res;
     try {
       res = await axios.get(url);
@@ -39,7 +38,6 @@ export function useFetcher<T>(key: any, realtime = true) {
         ctx?.subscribe(
           subscriptionToken,
           () => {
-            console.log(key);
             swr.mutate(_data.current, { revalidate: true });
           },
           () => {
