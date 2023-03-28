@@ -2,18 +2,15 @@ import {
   SubscribeMessage,
   WebSocketGateway,
   OnGatewayDisconnect,
+  OnGatewayConnection,
 } from '@nestjs/websockets';
 import { SubscriptionService } from './subscription.service';
 
 @WebSocketGateway(3026)
-export class SubscriptionGateway implements OnGatewayDisconnect {
+export class SubscriptionGateway
+  implements OnGatewayDisconnect, OnGatewayConnection
+{
   constructor(private subscriptionService: SubscriptionService) {}
-
-  @SubscribeMessage('auth')
-  async authenticate(client: WebSocket, jwt: string) {
-    const user = await this.subscriptionService.authenticateUser(client, jwt);
-    if (!user) client.send('UNAUTHORIZED');
-  }
 
   @SubscribeMessage('subscribe')
   async handleMessage(client: WebSocket, token: string) {
@@ -22,5 +19,10 @@ export class SubscriptionGateway implements OnGatewayDisconnect {
 
   handleDisconnect(client: WebSocket) {
     this.subscriptionService.unsubscribe(client);
+    this.subscriptionService.removeSocket(client);
+  }
+
+  handleConnection(client: any) {
+    this.subscriptionService.addSocket(client);
   }
 }

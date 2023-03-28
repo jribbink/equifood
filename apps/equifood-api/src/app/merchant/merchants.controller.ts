@@ -1,5 +1,4 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
-import { AuthRoute } from '../auth/decorators/auth-route.decorator';
 import { Order } from '../orders/entities/order.entity';
 import { OrdersService } from '../orders/orders.service';
 import { RealtimeRoute } from '../subscriptions/decorators/realtime-route.decorator';
@@ -16,6 +15,7 @@ export class MerchantsController {
     private ordersService: OrdersService
   ) {}
 
+  @RealtimeRoute(Merchant, () => ({}), { isArray: true })
   @Get()
   getMerchants(@Query('q') searchQuery?: string) {
     if (searchQuery) {
@@ -24,6 +24,13 @@ export class MerchantsController {
     return this.merchantService.getAll();
   }
 
+  @RealtimeRoute(
+    Merchant,
+    (_, merchant: Merchant) => ({
+      id: merchant.id,
+    }),
+    { isArray: true }
+  )
   @UseGuards(TargetMerchantGuard('any'))
   @Get(':merchantId')
   async getMerchant(@TargetMerchant() targetMerchant: Merchant) {

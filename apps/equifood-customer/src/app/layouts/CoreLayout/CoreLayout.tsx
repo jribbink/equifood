@@ -99,7 +99,7 @@ function CoreLayout() {
             }}
           ></Stack.Screen>
           <Stack.Screen
-            name="Order Confirm"
+            name="orderConfirm"
             component={OrderConfirm}
           ></Stack.Screen>
           <Stack.Screen name="order" component={OrderScreen}></Stack.Screen>

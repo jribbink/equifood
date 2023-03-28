@@ -1,6 +1,5 @@
 import { RealtimeUpdateMessage } from '@equifood/api-interfaces';
 import React, { useEffect, useRef } from 'react';
-import { useAuth } from '../hooks';
 import { parseJwt } from '../util';
 
 export const RealtimeContext = React.createContext<RealtimeManager | null>(
@@ -15,12 +14,9 @@ export function RealtimeContextProvider({
   url: string;
 }) {
   const manager = useRef(new RealtimeManager(url));
-  const auth = useAuth();
   useEffect(() => {
-    (async () => {
-      await manager.current.authenticate(auth.token);
-    })();
-  }, [auth]);
+    manager.current.connect();
+  }, []);
 
   return (
     <RealtimeContext.Provider value={manager.current}>
@@ -35,74 +31,33 @@ class RealtimeManager {
     string,
     [callback: (msg: RealtimeUpdateMessage) => void, resubscribe: () => void]
   > = new Map();
-
-  private authToken: string | null = null;
-  private authenticationPromise: Promise<void> | null = null;
-  private resolveAuthentication: (() => void) | null = null;
-  private rejectAuthentication: (() => void) | null = null;
   public swrCache: Map<string, string> = new Map();
 
   constructor(private host: string) {
     this.connect();
   }
 
-  async authenticate(token: string | null) {
-    this.authToken = token;
-    this.connect();
-
-    // Wait for authentication
-    await this.authenticationPromise;
-  }
-
-  private resetAuth() {
-    this.authenticationPromise = new Promise<void>((resolve, reject) => {
-      this.resolveAuthentication = resolve;
-      this.rejectAuthentication = reject;
-    });
-  }
-
-  async connect() {
-    if (!this.authToken) return;
-
-    this.resetAuth();
+  connect() {
     // eslint-disable-next-line @typescript-eslint/no-this-alias
     const _this = this;
     this.socket?.close();
     this.socket = new WebSocket(this.host);
-    this.socket.onclose = function (event) {
+    this.socket.onclose = function () {
       _this.socket = null;
-      _this.resetAuth();
       setTimeout(() => {
         _this.connect();
       }, 1000);
     };
-    this.socket.onopen = function (event) {
-      this.send(JSON.stringify({ event: 'auth', data: _this.authToken }));
-
-      _this.authenticationPromise
-        ?.then(() => {
-          for (const [key, [, resubscribe]] of _this.listeners) {
-            resubscribe();
-            _this.listeners.delete(key);
-          }
-        })
-        .catch(() => {
-          throw new Error('Websocket unauthorized');
-        });
+    this.socket.onopen = function () {
+      for (const [key, [, resubscribe]] of _this.listeners) {
+        resubscribe();
+        _this.listeners.delete(key);
+      }
     };
     this.socket.onmessage = function (event) {
-      if (event.data === 'UNAUTHORIZED') {
-        _this.authToken = null;
-        _this.rejectAuthentication?.();
-        _this.socket?.close();
-        _this.socket = null;
-        return;
-      } else if (event.data === 'AUTHENTICATED') {
-        _this.resolveAuthentication?.();
-      } else {
-        const data: RealtimeUpdateMessage = JSON.parse(event.data);
-        _this.listeners.get(data.key)?.[0]?.(data);
-      }
+      const data: RealtimeUpdateMessage = JSON.parse(event.data);
+      console.log(data.key);
+      _this.listeners.get(data.key)?.[0]?.(data);
     };
   }
 
@@ -115,9 +70,6 @@ class RealtimeManager {
 
     // Add listener
     this.listeners.set(key, [cb, resubscribe]);
-
-    // Wait for authentication
-    await this.authenticationPromise;
 
     // Send listener to server
     this.socket?.send(JSON.stringify({ event: 'subscribe', data: token }));

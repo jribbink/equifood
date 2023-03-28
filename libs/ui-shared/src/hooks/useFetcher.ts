@@ -1,6 +1,6 @@
 import { AxiosError } from 'axios';
 import { useContext, useEffect, useRef } from 'react';
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 import { RealtimeContext } from '../context/realtime-context';
 import { parseJwt } from '../util';
 import { useAuth } from './useAuth';
@@ -15,16 +15,10 @@ export function useFetcher<T>(key: any, realtime = true) {
   useEffect(() => {
     _data.current = swr.data;
   }, [swr]);
-  const subscriptionKey = useRef<string | null>(null);
-
-  useEffect(() => {
-    mutate(key, null, {
-      revalidate: true,
-    });
-  }, [axios, key]);
 
   // Fetcher for SWR
   async function fetcher(url: string) {
+    console.log('FETCH ' + url);
     let res;
     try {
       res = await axios.get(url);
@@ -45,6 +39,7 @@ export function useFetcher<T>(key: any, realtime = true) {
         ctx?.subscribe(
           subscriptionToken,
           () => {
+            console.log(key);
             swr.mutate(_data.current, { revalidate: true });
           },
           () => {

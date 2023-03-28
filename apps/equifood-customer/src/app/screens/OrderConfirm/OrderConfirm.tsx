@@ -8,7 +8,7 @@ import { equifoodTheme } from '@equifood/ui-shared';
 function OrderConfirm({
   navigation,
   route,
-}: StackScreenProps<CoreStackParams, 'Order Confirm'>) {
+}: StackScreenProps<CoreStackParams, 'orderConfirm'>) {
   const axios = useAxios();
   const params = route.params; //merchant, items, quantities
   const merchant = params.merchant; //need this for onBackPress because react is stupid
