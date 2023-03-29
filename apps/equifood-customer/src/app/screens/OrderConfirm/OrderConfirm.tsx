@@ -49,6 +49,11 @@ function OrderConfirm({
           Confirm & Place Order
         </Text>
       </Button>
+      <Text fontSize="20" color="black" fontWeight="bold">
+        NOTE: You will not be asked for a payment method. Payment is processed
+        by the merchant when you pick up the order. On pressing this button, the
+        order will be set to the merchant. You may cancel the order at any time.
+      </Text>
     </ScrollView>
   );
 }
