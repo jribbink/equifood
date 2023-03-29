@@ -208,7 +208,6 @@ export function ProgressStep<T>({
         fill={styles.fill}
       />
       <SvgText
-        ref={_textRef}
         fill={styles.textFill}
         stroke="none"
         fontSize="20"
