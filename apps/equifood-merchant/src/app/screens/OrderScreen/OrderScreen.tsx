@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Heading, Text } from 'native-base';
+import { Box, Button, Divider, HStack, Text, useTheme } from 'native-base';
 import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -8,13 +8,21 @@ import {
   OrderView,
   useAxios,
   useOrder,
+  CircleButton,
 } from '@equifood/ui-shared';
 import type { RootNavigationProps } from '../../layouts/RootLayout';
 import { ORDER_STATUS } from '@equifood/api-interfaces';
 
 function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
-  const { order } = useOrder(route.params.order.id);
+  const { order, mutate } = useOrder(route.params.order.id);
+  const theme = useTheme();
   const axios = useAxios();
+
+  async function setStatus(status: ORDER_STATUS) {
+    if (!order) return;
+    mutate({ ...order, status }, { revalidate: false });
+    return await axios.post(`/orders/${order?.id}/status`, { status });
+  }
 
   useEffect(() => {
     navigation.setOptions({
@@ -87,81 +95,87 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
       <ScrollView scrollEventThrottle={0.1}>
         <Box
           position="relative"
-          top="-10"
           minH={(viewHeight ?? 0) + 10}
           borderRadius="10px"
           backgroundColor="white"
-          pt="5"
         >
-          <Box flexDirection="row" mx="4" my="2" alignItems="center">
-            <Heading>{order.merchant.name}</Heading>
-            <Text ml="auto">Order #{order.id}</Text>
-          </Box>
+          {order.status === ORDER_STATUS.pending ? (
+            <HStack space="10" justifyContent="center" py="4">
+              <CircleButton
+                color={theme.colors.danger[500]}
+                iconName="close-circle"
+                text="Reject"
+                onPress={() => setStatus(ORDER_STATUS.cancelled)}
+              ></CircleButton>
+              <CircleButton
+                color={theme.colors.success[500]}
+                iconName="checkmark-circle"
+                text="Accept"
+                onPress={() => setStatus(ORDER_STATUS.confirmed)}
+              ></CircleButton>
+            </HStack>
+          ) : (
+            <>
+              <ProgressSteps
+                steps={steps}
+                currentIndex={
+                  (steps.findIndex((s) => s.key === order.status) ?? -2) + 1
+                }
+                cancelled={true}
+                my="3"
+              ></ProgressSteps>
 
-          <ProgressSteps
-            steps={steps}
-            currentIndex={
-              (steps.findIndex((s) => s.key === order.status) ?? -2) + 1
-            }
-            cancelled={true}
-            my="3"
-          ></ProgressSteps>
-
-          {
-            //ready/complete button here
-            <Button
-              minWidth={'20'}
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'green',
-                borderRadius: 5,
-              }}
-              onPress={updateButtonOnPress}
-            >
-              <Text fontWeight={'bold'} fontSize={'15'} color={'white'}>
-                {updateButtonText}
-              </Text>
-            </Button>
-          }
-
-          {
-            <Button
-              minWidth={'20'}
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: 'red',
-                borderRadius: 5,
-              }}
-              onPress={async () => {
-                Alert.alert(
-                  'Cancel order?',
-                  'Are you sure you want to cancel this order?',
-                  [
-                    {
-                      text: "I'm Sure",
-                      onPress: async () =>
-                        await axios.post('/orders/' + order.id + '/status', {
-                          status: ORDER_STATUS.cancelled,
-                        }),
-                      style: 'default',
-                    },
-                    {
-                      text: 'No, thanks',
-                      style: 'cancel',
-                    },
-                  ]
-                );
-              }}
-            >
-              <Text fontWeight={'bold'} fontSize={'15'} color={'white'}>
-                CANCEL ORDER
-              </Text>
-            </Button>
-          }
+              <Button
+                minWidth={'20'}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'green',
+                  borderRadius: 5,
+                }}
+                onPress={updateButtonOnPress}
+              >
+                <Text fontWeight={'bold'} fontSize={'15'} color={'white'}>
+                  {updateButtonText}
+                </Text>
+              </Button>
+              <Button
+                minWidth={'20'}
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: 'red',
+                  borderRadius: 5,
+                }}
+                onPress={async () => {
+                  Alert.alert(
+                    'Cancel order?',
+                    'Are you sure you want to cancel this order?',
+                    [
+                      {
+                        text: "I'm Sure",
+                        onPress: async () =>
+                          await axios.post('/orders/' + order.id + '/status', {
+                            status: ORDER_STATUS.cancelled,
+                          }),
+                        style: 'default',
+                      },
+                      {
+                        text: 'No, thanks',
+                        style: 'cancel',
+                      },
+                    ]
+                  );
+                }}
+              >
+                <Text fontWeight={'bold'} fontSize={'15'} color={'white'}>
+                  CANCEL ORDER
+                </Text>
+              </Button>
+            </>
+          )}
 
           <Divider></Divider>
 

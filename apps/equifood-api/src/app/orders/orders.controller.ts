@@ -12,14 +12,14 @@ import { Order } from './entities/order.entity';
 export class OrdersController {
   constructor(private ordersService: OrdersService) {}
 
-  @AuthRoute('customer')
+  @AuthRoute('customer', 'merchant')
   @Post(':orderId/status')
-  async cancelOrder(
+  async setOrderStatus(
     @AuthUser() user: User,
     @Param('orderId') orderId: number,
     @Body('status') status: ORDER_STATUS
   ) {
-    this.ordersService.setOrderStatus(user, orderId, status);
+    await this.ordersService.setOrderStatus(user, orderId, status);
   }
 
   @RealtimeRoute(Order, (user: User, order: Order) => ({

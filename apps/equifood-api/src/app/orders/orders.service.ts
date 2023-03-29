@@ -171,11 +171,11 @@ export class OrdersService {
     return item;
   }
 
-  async setOrderStatus(user: User, orderId: number, status: Order['status']) {
+  async setOrderStatus(user: User, orderId: number, status: ORDER_STATUS) {
     const order = await this.getOrder(user, orderId);
     if (status !== ORDER_STATUS.cancelled) {
       // Only merchant/admin can perform non-cancellation status updates
-      if (user.roles.includes('merchant') || user.roles.includes('admin')) {
+      if (!user.roles.includes('merchant') && !user.roles.includes('admin')) {
         throw new UnauthorizedException(
           'Only merchants may perform this operation'
         );
