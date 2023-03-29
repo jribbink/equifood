@@ -1,8 +1,19 @@
 import { Box } from 'native-base';
 import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primitives/Box';
-import React, { useEffect, useState } from 'react';
-import { Animated, Easing } from 'react-native';
-import Svg, { Circle, Rect, Text as SvgText } from 'react-native-svg';
+import React, {
+  Component,
+  RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { Animated, View } from 'react-native';
+import Svg, {
+  Circle,
+  CircleProps,
+  Rect,
+  Text as SvgText,
+} from 'react-native-svg';
 
 export interface ProgressStep<T> {
   text: string;
@@ -43,27 +54,6 @@ export function ProgressSteps<T>({
     }
   }
 
-  const [pendingScale, setPendingScale] = useState<number>(1);
-  useEffect(() => {
-    const animation = new Animated.Value(0.95);
-
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(animation, {
-          duration: 750,
-          toValue: 1.05,
-          useNativeDriver: false,
-        }),
-        Animated.timing(animation, {
-          duration: 750,
-          toValue: 0.95,
-          useNativeDriver: false,
-        }),
-      ])
-    ).start();
-    animation.addListener(({ value }) => setPendingScale(value));
-  }, []);
-
   const height = stepRadius * 2 + lineWidth + 25;
 
   return (
@@ -93,9 +83,7 @@ export function ProgressSteps<T>({
           return (
             <React.Fragment key={i}>
               <ProgressStep
-                radius={
-                  status === 'pending' ? stepRadius * pendingScale : stepRadius
-                }
+                radius={stepRadius}
                 cx={dims[0] * ((i + 0.5) / steps.length)}
                 cy={stepRadius + lineWidth / 2}
                 step={step}
@@ -104,11 +92,12 @@ export function ProgressSteps<T>({
                 secondaryColor={secondaryColor}
                 status={status}
                 cancelled={cancelled}
+                animated={currentIndex - 1 === i}
               ></ProgressStep>
               <SvgText
                 fill={status === 'idle' ? secondaryColor : primaryColor}
                 stroke="none"
-                fontSize={status === 'pending' ? pendingScale * 15 : 15}
+                fontSize={15}
                 x={dims[0] * ((i + 0.5) / steps.length)}
                 y={stepRadius * 2 + lineWidth + 7}
                 alignmentBaseline="top"
@@ -134,6 +123,7 @@ export function ProgressStep<T>({
   secondaryColor,
   status,
   cancelled,
+  animated,
 }: {
   radius: number;
   cx: number;
@@ -144,7 +134,38 @@ export function ProgressStep<T>({
   secondaryColor: string;
   status: 'idle' | 'pending' | 'complete' | 'cancelled';
   cancelled: boolean;
+  animated: boolean;
 }) {
+  const _circleRef: RefObject<View> = React.createRef();
+  useEffect(() => {
+    if (!animated) return;
+
+    const animation = new Animated.Value(0.95);
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(animation, {
+          duration: 750,
+          toValue: 1.05,
+          useNativeDriver: false,
+        }),
+        Animated.timing(animation, {
+          duration: 750,
+          toValue: 0.95,
+          useNativeDriver: false,
+        }),
+      ])
+    );
+    loop.start();
+
+    animation.addListener(({ value }) => {
+      _circleRef.current?.setNativeProps({
+        r: value * radius,
+      });
+    });
+
+    return () => loop.stop();
+  }, []);
+
   let styles: {
     fill: string;
     stroke: string;
@@ -188,6 +209,7 @@ export function ProgressStep<T>({
   return (
     <>
       <Circle
+        ref={_circleRef}
         cx={cx}
         cy={cy}
         r={radius}
