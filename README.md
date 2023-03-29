@@ -7,8 +7,8 @@ This is a capstone (COSC 499) project for the Equifood App.
 ### Installation & Configuration
 
 1. Install [Node JS](https://nodejs.org/en/) v16
-2. Run `npm install`
-3. Install and configure [MariaDB](https://mariadb.org/)
+2. Ensure you have C/C++ build tools installed on machine (i.e. gcc). Bettersqlite uses node-gyp and is dependent on these.
+3. Run `npm install`
 4. Create a configuration file `.env` in the `apps/equifood-api` and `apps/equifood-customer` directory (use `example.env` for reference)
 
 ### Development
@@ -29,19 +29,19 @@ Project Equifood tries to reduce food wastage and promotes sustainable food syst
 
 A mobile app that would connect restaurants with individuals in order to allow the individuals to obtain the restaurants' food leftovers for free or at a significantly reduced price.
 
-The app will also streamline EquiFood's current donations tracking process, as it will automatically keep track of the money amount worth of food that EquiFood has contributed to donating via its restaurant partners, which is currently done manually.
+The app will also streamline Equifood's current donations tracking process, as it will automatically keep track of the money amount worth of food that Equifood has contributed to donating via its restaurant partners, which is currently done manually.
 
 The system will involve three types of users:
 
 - **Individuals**: anyone who signs up on the app to be connected to restaurants and obtain food donations.
-- **Restaurant representatives**: restaurant managers or their delegate who are able to post donations onto the system and manage their restaurant’s information in the EquiFood app. These users must be vetted by the administrators.
-- **Administrators**: members of the EquiFood team who can approve restaurant managers and view the donation amounts.
+- **Restaurant representatives**: restaurant managers or their delegate who are able to post donations onto the system and manage their restaurant’s information in the Equifood app. These users must be vetted by the administrators.
+- **Administrators**: members of the Equifood team who can approve restaurant managers and view the donation amounts.
 
 ### Group Members
 
 - Joonsik Kim - QA
 - Jordan College - Client Liason
-- Jordan Ribbink - Tech Lead
+- Jordan Ribbink - Tech Lead/DevOps
 - Riley Comer - Scrum Master
 
 ### Project Structure
@@ -95,6 +95,6 @@ Additionally, shared UI/UX components + React hooks, etc. can be found in `lib/u
 
 ## License
 
-Copyright © 2022 Equifood.
+Copyright © 2023 Equifood.
 
 Unauthorized copying or distribution of this software is prohibited without the expressed permission of Equifood.

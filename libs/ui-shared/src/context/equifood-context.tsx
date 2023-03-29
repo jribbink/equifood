@@ -1,9 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { storage } from '../util/storage';
+import { RealtimeContextProvider } from './realtime-context';
 
 export interface IEquifoodConfig {
   apiUrl: string;
+  wsUrl: string;
 }
 
 export interface IEquifoodAuthContext {
@@ -72,7 +74,9 @@ export function EquifoodCoreContext({
           authenticate,
         }}
       >
-        {children}
+        <RealtimeContextProvider url={config.wsUrl}>
+          {children}
+        </RealtimeContextProvider>
       </EquifoodAuthContext.Provider>
     </EquifoodConfigContext.Provider>
   );

@@ -25,7 +25,7 @@ export const MerchantCard = ({ merchant, onPress }: Props) => {
   }
 
   const items = useMerchant(merchant.id).merchant?.items;
-  const numItems = items?.reduce((s) => (s = s + 1), 0);
+  const numItems = items?.reduce((s, item) => s + item.quantity, 0);
   const price = items?.reduce(function (prev, curr) {
     return prev.price < curr.price ? prev : curr;
   }).price;

@@ -43,6 +43,7 @@ const App = () => {
       <EquifoodCoreContext
         config={{
           apiUrl: appConfig?.apiUrl,
+          wsUrl: appConfig?.wsUrl,
         }}
       >
         <SWRConfig value={swrConfig}>

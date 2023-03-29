@@ -10,6 +10,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
 import cookieParser from 'cookie-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { WsAdapter } from '@nestjs/platform-ws';
 import { ConfigService } from '@nestjs/config';
 
 function pipe<T>(target: T, modifiers: ((target: T) => T)[]): T {
@@ -52,6 +53,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   const globalPrefix = 'api';
   app.set('trust proxy', 'loopback');
+  app.useWebSocketAdapter(new WsAdapter(app));
   app.setGlobalPrefix(globalPrefix);
   app.use(cookieParser());
 

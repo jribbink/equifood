@@ -19,6 +19,11 @@ const LoginScreen = ({ navigation }) => {
         >
           Food
         </Text>
+        <Text
+          style={{ fontSize: 36, color: equifoodTheme.colors.primary[500] }}
+        >
+          Merchant
+        </Text>
       </HStack>
       <LoginView allowedRoles={['merchant']}></LoginView>
     </Box>

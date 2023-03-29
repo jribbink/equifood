@@ -32,6 +32,11 @@ const Login = ({ navigation }) => {
         >
           Food
         </Text>
+        <Text
+          style={{ fontSize: 36, color: equifoodTheme.colors.primary[500] }}
+        >
+          Customer
+        </Text>
       </HStack>
       <LoginView allowedRoles={['customer']}></LoginView>
 

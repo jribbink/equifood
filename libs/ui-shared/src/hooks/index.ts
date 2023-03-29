@@ -6,6 +6,7 @@ export * from './useLocation';
 export * from './useMerchant';
 export * from './useMerchants';
 export * from './useOrders';
+export * from './useOrder';
 export * from './useProfile';
 export * from './useProviders';
 export * from './useSavings';

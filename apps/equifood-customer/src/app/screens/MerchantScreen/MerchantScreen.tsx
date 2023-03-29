@@ -202,7 +202,7 @@ function RestaurantScreen({
             }
           }}
         >
-          Order
+          Checkout
         </Button>
       </Box>
     </NativeBaseProvider>
