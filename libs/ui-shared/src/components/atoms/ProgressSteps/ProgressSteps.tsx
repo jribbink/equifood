@@ -1,19 +1,8 @@
 import { Box } from 'native-base';
 import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primitives/Box';
-import React, {
-  Component,
-  RefObject,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { RefObject, useEffect, useState } from 'react';
 import { Animated, View } from 'react-native';
-import Svg, {
-  Circle,
-  CircleProps,
-  Rect,
-  Text as SvgText,
-} from 'react-native-svg';
+import Svg, { Circle, Rect, Text as SvgText } from 'react-native-svg';
 
 export interface ProgressStep<T> {
   text: string;
@@ -137,6 +126,7 @@ export function ProgressStep<T>({
   animated: boolean;
 }) {
   const _circleRef: RefObject<View> = React.createRef();
+
   useEffect(() => {
     if (!animated) return;
 
@@ -164,7 +154,7 @@ export function ProgressStep<T>({
     });
 
     return () => loop.stop();
-  }, []);
+  }, [animated, _circleRef, radius]);
 
   let styles: {
     fill: string;
@@ -218,6 +208,7 @@ export function ProgressStep<T>({
         fill={styles.fill}
       />
       <SvgText
+        ref={_textRef}
         fill={styles.textFill}
         stroke="none"
         fontSize="20"
