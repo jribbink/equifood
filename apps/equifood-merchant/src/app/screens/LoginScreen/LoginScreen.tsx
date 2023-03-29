@@ -8,9 +8,18 @@ import { equifoodTheme } from '@equifood/ui-shared';
 const LoginScreen = ({ navigation }) => {
   return (
     <Box flex={1} testID="login-screen">
-      <Text style={{ fontSize: 36, color: equifoodTheme.colors.primary[500] }}>
-        EquiFood Merchant
-      </Text>
+      <HStack>
+        <Text
+          style={{ fontSize: 36, color: equifoodTheme.colors.primary[500] }}
+        >
+          Equi
+        </Text>
+        <Text
+          style={{ fontSize: 36, color: equifoodTheme.colors.primary[800] }}
+        >
+          Food
+        </Text>
+      </HStack>
       <LoginView allowedRoles={['merchant']}></LoginView>
     </Box>
   );
