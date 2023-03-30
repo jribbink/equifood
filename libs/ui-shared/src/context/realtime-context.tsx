@@ -1,5 +1,4 @@
-import { RealtimeUpdateMessage } from '@equifood/api-interfaces';
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { parseJwt } from '../util';
 
 function areWeTestingWithJest() {
@@ -30,7 +29,7 @@ class RealtimeManager {
   private socket: WebSocket | null = null;
   private listeners: Map<
     string,
-    [callback: (msg: RealtimeUpdateMessage) => void, resubscribe: () => void]
+    [callback: () => void, resubscribe: () => void]
   > = new Map();
   public swrCache: Map<string, string> = new Map();
 
@@ -57,16 +56,12 @@ class RealtimeManager {
       }
     };
     this.socket.onmessage = function (event) {
-      const data: RealtimeUpdateMessage = JSON.parse(event.data);
-      _this.listeners.get(data.key)?.[0]?.(data);
+      const data: string = event.data.toString();
+      _this.listeners.get(data)?.[0]?.();
     };
   }
 
-  async subscribe(
-    token: string,
-    cb: (msg: RealtimeUpdateMessage) => void,
-    resubscribe: () => void
-  ) {
+  async subscribe(token: string, cb: () => void, resubscribe: () => void) {
     const key: string = parseJwt(token).payload.key;
 
     // Add listener
