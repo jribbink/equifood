@@ -54,7 +54,7 @@ const Orders = () => {
       {completedOrders.length > 0 ? (
         <>
           <Heading pb="4">Completed Orders</Heading>
-          <VStack>
+          <VStack space={3}>
             {completedOrders.map((order) => (
               <OrderCard
                 key={order.id}
