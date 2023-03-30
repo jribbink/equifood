@@ -1,4 +1,3 @@
-import { RealtimeUpdateMessage } from '@equifood/api-interfaces';
 import {
   EntityMetadata,
   EntitySubscriberInterface,
@@ -174,13 +173,9 @@ export class EntitySubscriber implements EntitySubscriberInterface {
     });
 
     targetListeners.forEach((listenerKey) => {
-      const data: RealtimeUpdateMessage = {
-        key: listenerKey,
-      };
-
       this.subscriptionService.dispatch(
         this.listeners.get(listenerKey),
-        JSON.stringify(data)
+        listenerKey
       );
     });
   }

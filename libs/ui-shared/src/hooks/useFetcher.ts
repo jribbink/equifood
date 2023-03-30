@@ -31,7 +31,7 @@ export function useFetcher<T>(key: any, realtime = true) {
 
     const subscriptionToken = res?.headers['x-subscription-token'];
     if (realtime && subscriptionToken) {
-      const subscriptionKey = parseJwt(subscriptionToken).payload.key;
+      const subscriptionKey = parseJwt(subscriptionToken).payload;
 
       if (!ctx?.swrCache.has(key)) {
         ctx?.swrCache.set(key, subscriptionKey);

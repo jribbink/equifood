@@ -1,27 +1,17 @@
-import {
-  Inject,
-  Injectable,
-  OnModuleInit,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource, EntityMetadata, FindOptionsRelations } from 'typeorm';
-import {
-  METADATA_REALTIME,
-  SUBSCRIPTIONS_JWT_AUDIENCE,
-  SUBSCRIPTIONS_MODULE_OPTIONS,
-} from './constants';
+import { DataSource, EntityMetadata } from 'typeorm';
+import { METADATA_REALTIME, SUBSCRIPTIONS_JWT_AUDIENCE } from './constants';
 import { EntitySubscriber } from './entity-subscriber';
 import { SubscriptionsMetadata } from './interfaces/subscriptions-metadata';
-import { SubscriptionsModuleOptions } from './interfaces/subscriptions-module-options';
 import { EntityMetadataRealtime } from './interfaces/entity-metadata-realtime';
 import { randomUUID } from 'crypto';
+import { SubscriptionMessageBuffer } from './subscription-message-queue';
 
 const MAX_SUBSCRIPTIONS_PER_USER = 100;
-
 @Injectable()
-export class SubscriptionService<User = any> {
+export class SubscriptionService {
   private clients: Map<WebSocket, string> = new Map();
   private reverseClients: Map<string, WebSocket> = new Map();
   private subscribers: Map<string, EntitySubscriber> = new Map();
@@ -30,7 +20,8 @@ export class SubscriptionService<User = any> {
     [total: number, entities: Set<EntitySubscriber>]
   > = new Map();
   private keySet: Set<string> = new Set();
-
+  private messageQueue: SubscriptionMessageBuffer =
+    new SubscriptionMessageBuffer();
   public entityNameMap: Map<any, string> = new Map();
   public entityClassMap: Map<string, any> = new Map();
   public entityMetadataMap: Map<string, EntityMetadata> = new Map();
@@ -163,10 +154,10 @@ export class SubscriptionService<User = any> {
     });
   }
 
-  dispatch(clientId: string, message: string) {
+  dispatch(clientId: string, key: string) {
     const socket: WebSocket = this.reverseClients.get(clientId);
     if (socket) {
-      socket.send(message);
+      this.messageQueue.enqueue(socket, key);
     } else {
       this.removeSocket(socket);
     }
