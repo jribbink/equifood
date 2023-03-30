@@ -2,7 +2,6 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
-  NotImplementedException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -162,13 +161,20 @@ export class OrdersService {
     if (quantityMap.has(item.id)) {
       throw new BadRequestException('Duplicate item id exists');
     }
-    quantityMap.set(item.id, [itemDto.quantity, item]);
 
     if (item.quantity < itemDto.quantity) {
       throw new BadRequestException(`Insufficient quantity of item ${item.id}`);
     }
 
-    return item;
+    if (item.quantity < 0) {
+      throw new BadRequestException(
+        `Cannot order negative quantity of item ${item.id}`
+      );
+    }
+
+    // Add item if quantity > 0
+    if (itemDto.quantity > 0)
+      quantityMap.set(item.id, [itemDto.quantity, item]);
   }
 
   async setOrderStatus(user: User, orderId: number, status: ORDER_STATUS) {

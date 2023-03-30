@@ -18,6 +18,7 @@ interface ProgressStepsProps<T> extends InterfaceBoxProps {
   lineSpacing?: number;
   primaryColor?: string;
   secondaryColor?: string;
+  cancelledColor?: string;
 }
 
 export function ProgressSteps<T>({
@@ -29,6 +30,7 @@ export function ProgressSteps<T>({
   lineSpacing = 0,
   primaryColor = 'green',
   secondaryColor = '#BBBBBB',
+  cancelledColor = 'red',
   ...props
 }: ProgressStepsProps<T>) {
   const [dims, setDims] = useState<[number, number]>([0, 0]);
@@ -36,8 +38,6 @@ export function ProgressSteps<T>({
   function resolveStatus(i: number) {
     if (currentIndex > i) {
       return 'complete';
-    } else if (currentIndex === i) {
-      return 'pending';
     } else {
       return 'idle';
     }
@@ -63,12 +63,18 @@ export function ProgressSteps<T>({
             y={stepRadius + lineWidth / 2 - lineWidth / 2}
             width={dims[0] / steps.length - stepRadius * 2 - lineSpacing * 2}
             height={lineWidth}
-            fill={i >= currentIndex ? secondaryColor : primaryColor}
+            fill={i + 1 >= currentIndex ? secondaryColor : primaryColor}
           ></Rect>
         ))}
 
         {steps.map((step, i) => {
-          const status = resolveStatus(i);
+          let status: 'idle' | 'pending' | 'complete' | 'cancelled';
+          if (cancelled) {
+            if (i === 0) status = 'cancelled';
+            else status = 'idle';
+          } else {
+            status = resolveStatus(i);
+          }
           return (
             <React.Fragment key={i}>
               <ProgressStep
@@ -79,20 +85,28 @@ export function ProgressSteps<T>({
                 index={i}
                 primaryColor={primaryColor}
                 secondaryColor={secondaryColor}
+                cancelledColor={cancelledColor}
                 status={status}
                 cancelled={cancelled}
                 animated={currentIndex - 1 === i}
               ></ProgressStep>
               <SvgText
-                fill={status === 'idle' ? secondaryColor : primaryColor}
+                fill={
+                  status === 'cancelled'
+                    ? cancelledColor
+                    : status === 'idle'
+                    ? secondaryColor
+                    : primaryColor
+                }
                 stroke="none"
                 fontSize={15}
                 x={dims[0] * ((i + 0.5) / steps.length)}
                 y={stepRadius * 2 + lineWidth + 7}
                 alignmentBaseline="top"
                 textAnchor="middle"
+                fontWeight={800}
               >
-                {step.text}
+                {status === 'cancelled' ? 'CANCELLED' : step.text}
               </SvgText>
             </React.Fragment>
           );
@@ -112,6 +126,7 @@ export function ProgressStep<T>({
   secondaryColor,
   status,
   cancelled,
+  cancelledColor,
   animated,
 }: {
   radius: number;
@@ -121,6 +136,7 @@ export function ProgressStep<T>({
   index: number;
   primaryColor: string;
   secondaryColor: string;
+  cancelledColor: string;
   status: 'idle' | 'pending' | 'complete' | 'cancelled';
   cancelled: boolean;
   animated: boolean;
@@ -130,17 +146,17 @@ export function ProgressStep<T>({
   useEffect(() => {
     if (!animated) return;
 
-    const animation = new Animated.Value(0.95);
+    const animation = new Animated.Value(0.9);
     const loop = Animated.loop(
       Animated.sequence([
         Animated.timing(animation, {
-          duration: 750,
-          toValue: 1.05,
+          duration: 600,
+          toValue: 1.0,
           useNativeDriver: false,
         }),
         Animated.timing(animation, {
-          duration: 750,
-          toValue: 0.95,
+          duration: 600,
+          toValue: 0.9,
           useNativeDriver: false,
         }),
       ])
@@ -189,10 +205,10 @@ export function ProgressStep<T>({
       break;
     case 'cancelled':
       styles = {
-        fill: primaryColor,
-        stroke: 'none',
-        innerText: '✓',
-        textFill: 'white',
+        fill: 'none',
+        stroke: cancelledColor,
+        innerText: 'X',
+        textFill: cancelledColor,
       };
   }
 
