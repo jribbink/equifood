@@ -193,6 +193,12 @@ export class OrdersService {
       }
     }
 
+    if (status === order.status) return;
+
+    if (order.status === ORDER_STATUS.completed) {
+      throw new BadRequestException('Cannot modify status of completed order');
+    }
+
     // Finally, update status
     return this.ordersRepository.save({ id: order.id, status });
   }
