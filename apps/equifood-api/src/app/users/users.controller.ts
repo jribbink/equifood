@@ -41,6 +41,13 @@ export class UsersController {
     return this.usersService.getOrders(user);
   }
 
+  @RealtimeRoute(Order, (user: User) => {
+    return {
+      user: {
+        id: user.id,
+      },
+    };
+  })
   @UseGuards(TargetUserGuard)
   @Get(':userId/savings')
   async getSavings(@TargetUser() user: User) {
