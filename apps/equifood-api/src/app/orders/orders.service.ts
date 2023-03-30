@@ -179,6 +179,18 @@ export class OrdersService {
 
   async setOrderStatus(user: User, orderId: number, status: ORDER_STATUS) {
     const order = await this.getOrder(user, orderId);
+
+    // Pending promises to await before returning
+    const pendingPromises: Promise<any>[] = [];
+
+    // Don't change if status is already the same
+    if (status === order.status) return;
+
+    // Disallow changing status from completed
+    if (order.status === ORDER_STATUS.completed) {
+      throw new BadRequestException('Cannot modify status of completed order');
+    }
+
     if (status !== ORDER_STATUS.cancelled) {
       // Only merchant/admin can perform non-cancellation status updates
       if (!user.roles.includes('merchant') && !user.roles.includes('admin')) {
@@ -191,15 +203,21 @@ export class OrdersService {
       if (order.status > status) {
         throw new BadRequestException('Cannot modify status in reverse');
       }
-    }
-
-    if (status === order.status) return;
-
-    if (order.status === ORDER_STATUS.completed) {
-      throw new BadRequestException('Cannot modify status of completed order');
+    } else {
+      // Restore items to merchant inventory
+      pendingPromises.push(
+        ...order.items.map(async (orderedItem) => {
+          await this.itemRepository.save({
+            id: orderedItem.item.id,
+            quantity: orderedItem.item.quantity + orderedItem.quantity,
+          });
+        })
+      );
     }
 
     // Finally, update status
-    return this.ordersRepository.save({ id: order.id, status });
+    pendingPromises.push(this.ordersRepository.save({ id: order.id, status }));
+
+    await Promise.all(pendingPromises);
   }
 }

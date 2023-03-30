@@ -7,6 +7,7 @@ import { Order } from '../orders/entities/order.entity';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './models/create-user.dto';
 import crypto from 'crypto';
+import { ORDER_STATUS } from '@equifood/api-interfaces';
 
 @Injectable()
 export class UsersService {
@@ -35,6 +36,9 @@ export class UsersService {
       .leftJoin('order.items', 'orderedItem')
       .leftJoin('orderedItem.item', 'item')
       .where('user.id = :id', { id: user.id })
+      .where('order.status != :cancelled', {
+        cancelled: ORDER_STATUS.cancelled,
+      })
       .select(
         'SUM(item.originalPrice * orderedItem.quantity) - SUM(item.price * orderedItem.quantity)',
         'savings'
