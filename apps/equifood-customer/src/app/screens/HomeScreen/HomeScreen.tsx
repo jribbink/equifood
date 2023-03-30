@@ -58,7 +58,7 @@ const MerchantFilters: { [key: string]: MenuItem } = {
   },
 };
 
-const Home = ({ navigation, route }: CoreNavigationProps<'home'>) => {
+function HomeScreen({ navigation, route }: CoreNavigationProps<'home'>) {
   const [searchFilter, setSearchFilter] = useState('');
   const [selectedItemKey, setSelectedItemKey] = useState<string | null>(null);
   const { merchants } = useMerchants(searchFilter);
@@ -259,6 +259,6 @@ const Home = ({ navigation, route }: CoreNavigationProps<'home'>) => {
       ) : null}
     </View>
   );
-};
+}
 
-export default Home;
+export default HomeScreen;

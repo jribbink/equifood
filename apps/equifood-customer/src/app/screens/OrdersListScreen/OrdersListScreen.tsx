@@ -5,7 +5,7 @@ import { Order, ORDER_STATUS } from '@equifood/api-interfaces';
 import { useNavigation } from '@react-navigation/native';
 import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
 
-const Orders = () => {
+function OrdersListScreen() {
   const { orders } = useOrders();
   const navigation =
     useNavigation<CoreNavigationProps<'orders'>['navigation']>();
@@ -67,6 +67,6 @@ const Orders = () => {
       ) : null}
     </ScrollView>
   );
-};
+}
 
-export default Orders;
+export default OrdersListScreen;

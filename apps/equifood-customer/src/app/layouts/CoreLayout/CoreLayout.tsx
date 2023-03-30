@@ -8,9 +8,9 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import Home from '../../screens/Home/Home';
-import Orders from '../../screens/Orders/Orders';
-import Account from '../../screens/Account/Account';
+import Home from '../../screens/HomeScreen/HomeScreen';
+import Orders from '../../screens/OrdersListScreen/OrdersListScreen';
+import Account from '../../screens/AccountScreen/AccountScreen';
 import MerchantScreen from '../../screens/MerchantScreen/MerchantScreen';
 import OrderConfirm from '../../screens/OrderConfirm/OrderConfirm';
 import { Box, View } from 'native-base';
