@@ -72,7 +72,7 @@ function OrderScreen({
             currentIndex={
               (steps.findIndex((s) => s.key === order.status) ?? -2) + 1
             }
-            cancelled={true}
+            cancelled={order.status === ORDER_STATUS.cancelled}
             my="3"
           ></ProgressSteps>
 
