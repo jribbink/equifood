@@ -9,7 +9,6 @@ import {
 } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from '../../screens/Home/Home';
-import Map from '../../screens/Map/Map';
 import Orders from '../../screens/Orders/Orders';
 import Account from '../../screens/Account/Account';
 import MerchantScreen from '../../screens/MerchantScreen/MerchantScreen';
