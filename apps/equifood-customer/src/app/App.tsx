@@ -3,14 +3,14 @@ import { NativeBaseProvider } from 'native-base';
 import { Provider as ReduxProvider } from 'react-redux';
 import { RootState } from './redux/store';
 import { AppState, AppStateStatus } from 'react-native';
-import RootLayout from './layouts/RootLayout/RootLayout';
 import { bootstrapApp } from './util/bootstrap';
 import { Store } from '@reduxjs/toolkit';
-import LoadingScreen from './screens/LoadingScreen/LoadingScreen';
+import LoadingScreen from './screens/core/LoadingScreen/LoadingScreen';
 import { SWRConfig } from 'swr';
 import appConfig from './config/app-config';
 import { EquifoodCoreContext } from '@equifood/ui-shared';
 import { equifoodTheme } from '@equifood/ui-shared';
+import RootLayout from './screens/RootLayout';
 
 const App = () => {
   const [store, setStore] = useState<Store<RootState>>();

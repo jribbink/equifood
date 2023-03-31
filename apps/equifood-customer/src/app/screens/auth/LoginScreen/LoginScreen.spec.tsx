@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { render } from '../../../test-utils/render';
+import { render } from '../../../../test-utils/render';
 
 import LoginScreen from './LoginScreen';
 import { fireEvent, act, waitFor } from '@testing-library/react-native';
 
 import { afterAll, afterEach, beforeAll, expect } from '@jest/globals';
-import { login_handlers } from '../../../test-utils/mocks/handlers';
+import { login_handlers } from '../../../../test-utils/mocks/handlers';
 import { setupServer } from 'msw/node';
 import { useAuth } from '@equifood/ui-shared';
 
