@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { render } from '../../../test-utils/render';
+import { render } from '../../../../test-utils/render';
 
-import Login from './Login';
+import LoginScreen from './LoginScreen';
 import { fireEvent, act, waitFor } from '@testing-library/react-native';
 
 import { afterAll, afterEach, beforeAll, expect } from '@jest/globals';
-import { login_handlers } from '../../../test-utils/mocks/handlers';
+import { login_handlers } from '../../../../test-utils/mocks/handlers';
 import { setupServer } from 'msw/node';
 import { useAuth } from '@equifood/ui-shared';
 
@@ -22,7 +22,7 @@ afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
 test('renders correctly', async () => {
-  const { getByTestId } = await render(<Login />);
+  const { getByTestId } = await render(<LoginScreen />);
   expect(getByTestId('login')).toHaveTextContent('sign in');
 });
 
@@ -39,7 +39,7 @@ test('logs in properly', async () => {
 
   const { store, getByTestId } = await render(
     <Wrapper>
-      <Login></Login>
+      <LoginScreen></LoginScreen>
     </Wrapper>
   );
 

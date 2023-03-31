@@ -3,8 +3,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useState } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import { useAuth, useAxios } from '@equifood/ui-shared';
+import { AuthNavigationProps } from '../AuthLayout';
 
-function SignupScreen({ navigation }) {
+function SignupScreen({ navigation }: AuthNavigationProps<'signup'>) {
   const [first, setFirst] = useState('');
   const [last, setLast] = useState('');
   const [email, setEmail] = useState('');
@@ -16,8 +17,6 @@ function SignupScreen({ navigation }) {
   const [validLast, setValidLast] = useState(true);
   const [validPhone, setValidPhone] = useState(true);
   const [validPassword, setValidPassword] = useState(true);
-
-  const { setJwt } = useAuth();
 
   const axios = useAxios();
 

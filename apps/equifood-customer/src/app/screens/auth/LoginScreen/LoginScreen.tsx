@@ -6,8 +6,9 @@ import { LoginView, useAuth, useAxios } from '@equifood/ui-shared';
 import { authConfig, AuthProviderConfig } from '@equifood/ui-shared';
 import { IconButton } from '@equifood/ui-shared';
 import { equifoodTheme } from '@equifood/ui-shared';
+import { AuthNavigationProps } from '../AuthLayout';
 
-const Login = ({ navigation }) => {
+function LoginScreen({ navigation }: AuthNavigationProps<'login'>) {
   const axios = useAxios();
   const { setJwt } = useAuth();
 
@@ -61,6 +62,6 @@ const Login = ({ navigation }) => {
       </VStack>
     </Box>
   );
-};
+}
 
-export default Login;
+export default LoginScreen;

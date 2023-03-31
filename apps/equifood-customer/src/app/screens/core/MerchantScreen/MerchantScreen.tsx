@@ -6,27 +6,26 @@ import {
   ScrollView,
   VStack,
   Image,
-  Heading,
   HStack,
   NativeBaseProvider,
 } from 'native-base';
-import { StyleSheet, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import { Merchant } from '@equifood/api-interfaces';
-import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import { useMerchant } from '@equifood/ui-shared';
 import { ItemCard } from '@equifood/ui-shared';
 import { useFocusEffect } from '@react-navigation/native';
 import { equifoodTheme } from '@equifood/ui-shared';
+import { CoreNavigationProps } from '../CoreLayout';
 
 export interface MerchantScreenParams {
   merchant: Merchant;
 }
 
-function RestaurantScreen({
+function MerchantScreen({
   navigation,
   route,
-}: StackScreenProps<CoreStackParams, 'merchant'>) {
+}: CoreNavigationProps<'merchant'>) {
   const { merchant } = useMerchant(route.params.merchant.id);
   const [quantityMap, setQuantityMap] = useState<{ [itemId: string]: number }>(
     {}
@@ -209,4 +208,4 @@ function RestaurantScreen({
   );
 }
 
-export default RestaurantScreen;
+export default MerchantScreen;
