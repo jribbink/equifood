@@ -20,18 +20,20 @@ export function OrderCard({ order, onPress }: OrderCardProps) {
 
   const [imageWidth, setImageWidth] = useState<number>(0);
 
-  const [timeRemaining, setTimeRemaining] = useState<number>(15 * 60);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeRemaining((prevTime) => prevTime - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const minutes = Math.floor(timeRemaining / 60);
-  const seconds = timeRemaining % 60;
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  };
+  
+  const [seconds, setSeconds] = useState(900);
+  
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setSeconds((prevSeconds) => prevSeconds - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }, []);
 
   return (
     <TouchableHighlight
@@ -71,7 +73,7 @@ export function OrderCard({ order, onPress }: OrderCardProps) {
               textTransform="uppercase"
               style={{ color: colorMap.get(order.status), fontWeight: 'bold' }}
             >
-              {minutes}:{seconds} {ORDER_STATUS[order.status]}
+              {formatTime(seconds)} {ORDER_STATUS[order.status]}
             </Text>
             <Text>${order.total.toFixed(2)}</Text>
           </VStack>

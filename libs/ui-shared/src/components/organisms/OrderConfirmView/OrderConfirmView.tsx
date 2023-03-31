@@ -1,6 +1,7 @@
 import { Text, HStack, VStack, Box } from 'native-base';
 import { Item, Merchant } from '@equifood/api-interfaces';
 import { CheckoutItemCard } from '../../molecules/cards/CheckoutItemCard/CheckoutItemCard';
+import React, { useState, useEffect } from 'react';
 
 interface OrderViewProps {
   items: Item[];
@@ -21,6 +22,23 @@ export function OrderConfirmView({
       totalPrice += qt * item.price;
     }
   }
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  };
+  
+  const [seconds, setSeconds] = useState(900);
+  
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setSeconds((prevSeconds) => prevSeconds - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }, []);
+
+
   return (
     <VStack>
       <HStack>
@@ -61,12 +79,14 @@ export function OrderConfirmView({
           paddingRight={3}
           flex={1}
         >
-          By
+          By 
         </Text>
         <Text fontSize="20" marginTop="3" fontWeight={'bold'} flex={2}>
-          Now - 15 min
+          Time remaining: {formatTime(seconds)}
         </Text>
       </HStack>
+
+        
 
       <VStack paddingTop={5}>
         {(items || [])

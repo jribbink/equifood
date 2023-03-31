@@ -22,20 +22,24 @@ export function OrderView({ order, viewHeight, merchantMode }: OrderViewProps) {
     (acc, item) => acc + item.item.originalPrice * item.quantity,
     0
   );
+  
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  };
 
-  const [timeRemaining, setTimeRemaining] = useState<number>(15 * 60);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeRemaining((prevTime) => prevTime - 1);
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const minutes = Math.floor(timeRemaining / 60);
-  const seconds = timeRemaining % 60;
-
+    const [seconds, setSeconds] = useState(900);
+  
+    useEffect(() => {
+      const interval = setInterval(() => {
+        setSeconds((prevSeconds) => prevSeconds - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }, []);
+  
+  
   return (
     <Box>
       <Box p="4">
@@ -91,17 +95,16 @@ export function OrderView({ order, viewHeight, merchantMode }: OrderViewProps) {
           <Text fontSize="md" pb="2">
             Pickup Instructions
           </Text>
-          <Text>Please pickup at</Text>
-          <Text fontWeight={'bold'}> {order.merchant.location.address} </Text>
-          <HStack>
-            <Text>You have </Text>
-            <Text fontWeight={'bold'}>
-              {' '}
-              {minutes}:{seconds}{' '}
-            </Text>
-            <Text> remaining </Text>
-          </HStack>
-
+          <Text>
+            Please pickup at {order.merchant.location.address} within {formatTime(seconds)}
+            {/* {order.deadline.toLocaleDateString(undefined, {
+              hour: 'numeric',
+              minute: '2-digit',
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric',
+            })} */}
+          </Text>
           <Text pb="4">Payment: In-person</Text>
           {viewHeight ? (
             <MerchantMap
