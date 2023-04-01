@@ -25,8 +25,11 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
   }
 
   useEffect(() => {
+    if (!order) return;
     navigation.setOptions({
-      headerTitle: `Order #${order?.id}`,
+      headerTitle: `Order #${order?.id} (${ORDER_STATUS[
+        order?.status
+      ].toUpperCase()})`,
     });
   }, [navigation, order]);
 
@@ -48,43 +51,6 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
   const [viewHeight, setViewHeight] = useState<number>(0);
 
   if (!order) return null;
-
-  let updateButtonText = '';
-  const updateButtonOnPress = async () => {
-    Alert.alert(
-      'Order Completion',
-      'Please confirm that the order has been completed?',
-      [
-        {
-          text: 'Confirm',
-          onPress: async () => {
-            await axios.post('/orders/' + order.id + '/status', {
-              status: ORDER_STATUS.completed,
-            });
-          },
-          style: 'default',
-        },
-        {
-          text: 'Not Yet',
-          style: 'cancel',
-        },
-      ]
-    );
-  };
-  switch (order.status) {
-    case ORDER_STATUS.pending:
-      updateButtonText = 'Complete Order';
-      break;
-    case ORDER_STATUS.cancelled:
-      updateButtonText = 'Order Cancelled';
-      break;
-    case ORDER_STATUS.completed:
-      updateButtonText = 'Order Completed';
-      break;
-    default:
-      updateButtonText = 'error';
-      break;
-  }
 
   return (
     <Box
@@ -121,59 +87,13 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
                 currentIndex={
                   (steps.findIndex((s) => s.key === order.status) ?? -2) + 1
                 }
-                cancelled={true}
+                cancelled={order.status === ORDER_STATUS.cancelled}
                 my="3"
               ></ProgressSteps>
-
-              <Button
-                minWidth={'20'}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: 'green',
-                  borderRadius: 5,
-                }}
-                onPress={updateButtonOnPress}
-              >
-                <Text fontWeight={'bold'} fontSize={'15'} color={'white'}>
-                  {updateButtonText}
-                </Text>
-              </Button>
-              <Button
-                minWidth={'20'}
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  backgroundColor: 'red',
-                  borderRadius: 5,
-                }}
-                onPress={async () => {
-                  Alert.alert(
-                    'Cancel order?',
-                    'Are you sure you want to cancel this order?',
-                    [
-                      {
-                        text: "I'm Sure",
-                        onPress: async () =>
-                          await axios.post('/orders/' + order.id + '/status', {
-                            status: ORDER_STATUS.cancelled,
-                          }),
-                        style: 'default',
-                      },
-                      {
-                        text: 'No, thanks',
-                        style: 'cancel',
-                      },
-                    ]
-                  );
-                }}
-              >
-                <Text fontWeight={'bold'} fontSize={'15'} color={'white'}>
-                  CANCEL ORDER
-                </Text>
-              </Button>
+              <StatusButtonGroup
+                onStatusChange={setStatus}
+                status={order.status}
+              ></StatusButtonGroup>
             </>
           )}
 
@@ -187,6 +107,99 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
         </Box>
       </ScrollView>
     </Box>
+  );
+}
+
+interface StatusButtonGroupProps {
+  onStatusChange: (status: ORDER_STATUS) => void;
+  status: ORDER_STATUS;
+}
+
+function StatusButtonGroup({ onStatusChange, status }: StatusButtonGroupProps) {
+  let updateButtonText = '';
+  const updateButtonOnPress = async () => {
+    Alert.alert(
+      'Order Completion',
+      'Please confirm that the order has been completed?',
+      [
+        {
+          text: 'Confirm',
+          onPress: () => onStatusChange(ORDER_STATUS.completed),
+          style: 'default',
+        },
+        {
+          text: 'Not Yet',
+          style: 'cancel',
+        },
+      ]
+    );
+  };
+  switch (status) {
+    case ORDER_STATUS.pending:
+      updateButtonText = 'Complete Order';
+      break;
+    case ORDER_STATUS.cancelled:
+      updateButtonText = 'Order Cancelled';
+      break;
+    case ORDER_STATUS.completed:
+      updateButtonText = 'Order Completed';
+      break;
+    default:
+      updateButtonText = 'error';
+      break;
+  }
+
+  if (status === ORDER_STATUS.cancelled) return null;
+
+  return (
+    <>
+      <Button
+        minWidth={'20'}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'green',
+          borderRadius: 5,
+        }}
+        onPress={updateButtonOnPress}
+      >
+        <Text fontWeight={'bold'} fontSize={'15'} color={'white'}>
+          {updateButtonText}
+        </Text>
+      </Button>
+      <Button
+        minWidth={'20'}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backgroundColor: 'red',
+          borderRadius: 5,
+        }}
+        onPress={async () => {
+          Alert.alert(
+            'Cancel order?',
+            'Are you sure you want to cancel this order?',
+            [
+              {
+                text: "I'm Sure",
+                onPress: () => onStatusChange(ORDER_STATUS.cancelled),
+                style: 'default',
+              },
+              {
+                text: 'No, thanks',
+                style: 'cancel',
+              },
+            ]
+          );
+        }}
+      >
+        <Text fontWeight={'bold'} fontSize={'15'} color={'white'}>
+          CANCEL ORDER
+        </Text>
+      </Button>
+    </>
   );
 }
 

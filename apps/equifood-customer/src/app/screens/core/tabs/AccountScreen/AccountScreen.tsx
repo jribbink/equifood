@@ -9,7 +9,7 @@ import {
   equifoodTheme,
 } from '@equifood/ui-shared';
 
-const Account = () => {
+function AccountScreen() {
   const { user } = useProfile();
   const { savings } = useSavings();
   const { setJwt } = useAuth();
@@ -60,6 +60,6 @@ const Account = () => {
       </VStack>
     </ScrollView>
   );
-};
+}
 
-export default Account;
+export default AccountScreen;

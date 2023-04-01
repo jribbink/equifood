@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import { Box, ScrollView, View, VStack } from 'native-base';
 import { Merchant } from '@equifood/api-interfaces';
-import { CoreNavigationProps } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import { MerchantCard, SearchBar } from '@equifood/ui-shared';
 import { Appearance } from 'react-native';
 import {
@@ -28,6 +27,7 @@ import {
   getHeaderTitle,
 } from '@react-navigation/elements';
 import { StackHeaderProps } from '@react-navigation/stack';
+import { TabNavigationProps } from '../TabLayout';
 
 const Header: ((props: BottomTabHeaderProps) => ReactNode) &
   ((props: StackHeaderProps) => ReactNode) = ({
@@ -58,7 +58,7 @@ const MerchantFilters: { [key: string]: MenuItem } = {
   },
 };
 
-const Home = ({ navigation, route }: CoreNavigationProps<'home'>) => {
+function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
   const [searchFilter, setSearchFilter] = useState('');
   const [selectedItemKey, setSelectedItemKey] = useState<string | null>(null);
   const { merchants } = useMerchants(searchFilter);
@@ -259,6 +259,6 @@ const Home = ({ navigation, route }: CoreNavigationProps<'home'>) => {
       ) : null}
     </View>
   );
-};
+}
 
-export default Home;
+export default HomeScreen;

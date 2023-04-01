@@ -1,4 +1,4 @@
-import { render } from '../../../test-utils/render';
+import { render } from '../../test-utils/render';
 import { storage } from '@equifood/ui-shared';
 import RootLayout from './RootLayout';
 import { act } from '@testing-library/react-native';

@@ -1,21 +1,15 @@
-import { StackScreenProps } from '@react-navigation/stack';
 import { Button, ScrollView, Text } from 'native-base';
 import { OrderConfirmView, useAxios } from '@equifood/ui-shared';
-import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import { Order } from '@equifood/api-interfaces';
 import { equifoodTheme } from '@equifood/ui-shared';
+import { CoreNavigationProps } from '../CoreLayout';
 
-function OrderConfirm({
+function OrderConfirmScreen({
   navigation,
   route,
-}: StackScreenProps<CoreStackParams, 'orderConfirm'>) {
+}: CoreNavigationProps<'orderConfirm'>) {
   const axios = useAxios();
   const params = route.params; //merchant, items, quantities
-  const merchant = params.merchant; //need this for onBackPress because react is stupid
-
-  function onBackPress() {
-    navigation.navigate('merchant', { merchant });
-  }
 
   return (
     <ScrollView>
@@ -41,7 +35,7 @@ function OrderConfirm({
               quantity,
             })),
           });
-          navigation.navigate('core', { screen: 'orders' });
+          navigation.navigate('tabs', { screen: 'orders' });
           navigation.navigate('order', { order: data });
         }}
       >
@@ -58,4 +52,4 @@ function OrderConfirm({
   );
 }
 
-export default OrderConfirm;
+export default OrderConfirmScreen;

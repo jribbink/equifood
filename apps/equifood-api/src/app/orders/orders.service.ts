@@ -2,7 +2,6 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
-  NotImplementedException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -162,17 +161,36 @@ export class OrdersService {
     if (quantityMap.has(item.id)) {
       throw new BadRequestException('Duplicate item id exists');
     }
-    quantityMap.set(item.id, [itemDto.quantity, item]);
 
     if (item.quantity < itemDto.quantity) {
       throw new BadRequestException(`Insufficient quantity of item ${item.id}`);
     }
 
-    return item;
+    if (item.quantity < 0) {
+      throw new BadRequestException(
+        `Cannot order negative quantity of item ${item.id}`
+      );
+    }
+
+    // Add item if quantity > 0
+    if (itemDto.quantity > 0)
+      quantityMap.set(item.id, [itemDto.quantity, item]);
   }
 
   async setOrderStatus(user: User, orderId: number, status: ORDER_STATUS) {
     const order = await this.getOrder(user, orderId);
+
+    // Pending promises to await before returning
+    const pendingPromises: Promise<any>[] = [];
+
+    // Don't change if status is already the same
+    if (status === order.status) return;
+
+    // Disallow changing status from completed
+    if (order.status === ORDER_STATUS.completed) {
+      throw new BadRequestException('Cannot modify status of completed order');
+    }
+
     if (status !== ORDER_STATUS.cancelled) {
       // Only merchant/admin can perform non-cancellation status updates
       if (!user.roles.includes('merchant') && !user.roles.includes('admin')) {
@@ -185,9 +203,21 @@ export class OrdersService {
       if (order.status > status) {
         throw new BadRequestException('Cannot modify status in reverse');
       }
+    } else {
+      // Restore items to merchant inventory
+      pendingPromises.push(
+        ...order.items.map(async (orderedItem) => {
+          await this.itemRepository.save({
+            id: orderedItem.item.id,
+            quantity: orderedItem.item.quantity + orderedItem.quantity,
+          });
+        })
+      );
     }
 
     // Finally, update status
-    return this.ordersRepository.save({ id: order.id, status });
+    pendingPromises.push(this.ordersRepository.save({ id: order.id, status }));
+
+    await Promise.all(pendingPromises);
   }
 }
