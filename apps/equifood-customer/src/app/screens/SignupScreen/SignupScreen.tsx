@@ -59,7 +59,6 @@ function SignupScreen({ navigation }) {
       valid = false;
     }
     if (valid) {
-      console.log(valid);
       const { data: jwt } = await axios.post('/auth/create', {
         first_name: first,
         last_name: last,

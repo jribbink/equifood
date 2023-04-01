@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
@@ -6,6 +6,7 @@ import { Item } from './items/entities/item.entity';
 import { Merchant } from './entities/merchant.entity';
 import { Like } from 'typeorm';
 import { Upload } from '../uploads/entities/upload.entity';
+import { UpdateMerchantDto } from './models/update-merchant.dto';
 
 @Injectable()
 export class MerchantsService {
@@ -17,6 +18,25 @@ export class MerchantsService {
 
   getAll() {
     return this.merchantRepository.find();
+  }
+
+  async update(updateMerchantDto: UpdateMerchantDto){
+    const merchant = await this.merchantRepository.findOneBy({
+      id: updateMerchantDto.id,
+    });
+    if (!merchant) {
+      throw new BadRequestException(
+        `No merchant with the id ${updateMerchantDto.id} exists`
+      );
+    }
+
+    return this.merchantRepository.update({id:merchant.id},<unknown>
+      {
+        name:updateMerchantDto.name,
+        description: updateMerchantDto.description,
+        phone_number: updateMerchantDto.phone_number,
+        location: updateMerchantDto.location,
+      });
   }
 
   search(searchQuery: string) {

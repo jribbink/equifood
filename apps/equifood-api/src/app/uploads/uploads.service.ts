@@ -121,4 +121,8 @@ export class UploadsService {
       where: { id, filename },
     });
   }
+
+  async deleteFile(id: string) {
+    return this.uploadRepository.delete({id:id});
+  }
 }

@@ -1,4 +1,4 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { Order } from '../orders/entities/order.entity';
 import { OrdersService } from '../orders/orders.service';
 import { RealtimeRoute } from '../subscriptions/decorators/realtime-route.decorator';
@@ -7,6 +7,7 @@ import { TargetMerchant } from './decorators/target-merchant.decorator';
 import { Merchant } from './entities/merchant.entity';
 import { TargetMerchantGuard } from './guards/target-merchant-guard';
 import { MerchantsService } from './merchants.service';
+import { UpdateMerchantDto } from './models/update-merchant.dto';
 
 @Controller('merchants')
 export class MerchantsController {
@@ -14,6 +15,13 @@ export class MerchantsController {
     private merchantService: MerchantsService,
     private ordersService: OrdersService
   ) {}
+
+  @Post(':merchantId/update')
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async update(@Body() updateMerchantDto: UpdateMerchantDto) {
+    this.merchantService.update(updateMerchantDto);
+    return null;
+  }
 
   @RealtimeRoute(Merchant, () => ({}), { isArray: true })
   @Get()

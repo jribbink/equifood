@@ -1,11 +1,132 @@
-import { useAuth } from '@equifood/ui-shared';
-import { Button, VStack } from 'native-base';
+import { useAuth, useAxios, useMerchant } from '@equifood/ui-shared';
+import { Button, VStack, Text } from 'native-base';
+import { useEffect, useState } from 'react';
+import { StyleSheet, TextInput } from 'react-native';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 function AccountScreen() {
   const { setJwt } = useAuth();
+  const axios = useAxios();
+  const { merchant } = useMerchant('self');
+
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+
+  const [logo, setLogo] = useState('');
+
+  const styles = StyleSheet.create({
+    input: {
+      height: 40,
+      margin: 12,
+      borderWidth: 1,
+      padding: 10,
+      borderRadius: 50,
+    },
+    error: {
+      color: 'red',
+    },
+  });
+
+  useEffect(() => {
+    setName(""+merchant?.name);
+    setDescription(""+merchant?.description);
+    setPhone(""+merchant?.phone_number);
+    setAddress(""+merchant?.location.address);
+  }, [merchant]);
+
+  const options = {
+    title: 'Select Image',
+    customButtons: [
+      { name: 'customOptionKey', title: 'Choose Photo from Custom Option' },
+    ],
+    storageOptions: {
+      skipBackup: true,
+      path: 'images',
+    },
+  };
+
+  async function changeLogo(){
+    const url=await axios.post('/uploads/'+/*imageID*/+'/'+/* imageName*/+'/update',
+    {id:merchant?.id});
+    await axios.post('/merchants/$'+merchant?.id+'/update',
+    {
+      id: merchant?.id,
+      name: merchant?.name,
+      banner: merchant?.banner_url,
+      logo: url,
+      description: merchant?.description,
+      phone_number: merchant?.phone_number,
+      location: merchant?.location
+    });
+  }
+
+  async function changeMerchant() {
+    await axios.post('/merchants/$'+merchant?.id+'/update',
+    {
+      id: merchant?.id,
+      name: name,
+      banner: merchant?.banner_url,
+      logo: merchant?.logo_url,
+      description: description,
+      phone_number: phone,
+      location: {
+        address: address,
+        latitude: merchant?.location.latitude,
+        longitude: merchant?.location.longitude,
+      },
+    });
+  }
 
   return (
     <VStack>
+
+      <Text>Name</Text>
+      <TextInput
+        style={styles.input}
+        onChangeText={setName}
+        placeholder="Change merchant name?"
+        value={name}
+        testID="nameInput"
+        autoCapitalize="none"
+        placeholderTextColor={'yellowgreen'}
+      />
+
+      <Text>Description</Text>
+      <TextInput
+        style={styles.input}
+        onChangeText={setDescription}
+        placeholder="Change merchant description?"
+        value={description}
+        testID="descriptionInput"
+        autoCapitalize="none"
+        placeholderTextColor={'yellowgreen'}
+      />
+
+      <Text>phone</Text>
+      <TextInput
+        style={styles.input}
+        onChangeText={setPhone}
+        placeholder="Change merchant phone number?"
+        value={phone}
+        testID="phoneInput"
+        autoCapitalize="none"
+        placeholderTextColor={'yellowgreen'}
+      />
+
+      <Text>Address</Text>
+      <TextInput
+        style={styles.input}
+        onChangeText={setAddress}
+        placeholder="Change address?"
+        value={address}
+        testID="addressInput"
+        autoCapitalize="none"
+        placeholderTextColor={'yellowgreen'}
+      />
+      <Button onPress={() => changeMerchant()}>Change user information</Button>
+
       <Button onPress={() => setJwt(null)}>Logout</Button>
     </VStack>
   );
