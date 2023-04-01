@@ -23,22 +23,6 @@ export function OrderConfirmView({
     }
   }
 
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-  };
-  
-  const [seconds, setSeconds] = useState(900);
-  
-    useEffect(() => {
-      const interval = setInterval(() => {
-        setSeconds((prevSeconds) => prevSeconds - 1);
-      }, 1000);
-      return () => clearInterval(interval);
-    }, []);
-
-
   return (
     <VStack>
       <HStack>
@@ -82,7 +66,7 @@ export function OrderConfirmView({
           By 
         </Text>
         <Text fontSize="20" marginTop="3" fontWeight={'bold'} flex={2}>
-          Time remaining: {formatTime(seconds)}
+          Time remaining: 15 minutes
         </Text>
       </HStack>
 
