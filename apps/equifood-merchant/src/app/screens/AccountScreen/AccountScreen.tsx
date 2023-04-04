@@ -2,7 +2,7 @@ import { useAuth, useAxios, useMerchant } from '@equifood/ui-shared';
 import { Button, VStack, Text, Box } from 'native-base';
 import { useEffect, useState } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 
 function AccountScreen() {
   const { setJwt } = useAuth();
@@ -28,15 +28,14 @@ function AccountScreen() {
   });
 
   useEffect(() => {
-    setName(""+merchant?.name);
-    setDescription(""+merchant?.description);
-    setPhone(""+merchant?.phone_number);
-    setAddress(""+merchant?.location.address);
+    setName('' + merchant?.name);
+    setDescription('' + merchant?.description);
+    setPhone('' + merchant?.phone_number);
+    setAddress('' + merchant?.location.address);
   }, [merchant]);
 
   async function updateMerchant() {
-    await axios.post('/merchants/$'+merchant?.id+'/update',
-    {
+    await axios.post('/merchants/$' + merchant?.id + '/update', {
       id: merchant?.id,
       name: name,
       banner: merchant?.banner_url,
@@ -99,14 +98,16 @@ function AccountScreen() {
         />
       </Box>
       <Button
-      backgroundColor={'green.900'}
-      margin={10}
-      onPress={() => updateMerchant()}>Update information</Button>
+        backgroundColor={'green.900'}
+        margin={10}
+        onPress={() => updateMerchant()}
+      >
+        Update information
+      </Button>
 
-      <Button
-      margin={5}
-      marginTop={100}
-      onPress={() => setJwt(null)}>Logout</Button>
+      <Button margin={5} marginTop={100} onPress={() => setJwt(null)}>
+        Logout
+      </Button>
     </VStack>
   );
 }

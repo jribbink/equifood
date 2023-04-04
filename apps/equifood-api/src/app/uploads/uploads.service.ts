@@ -123,6 +123,6 @@ export class UploadsService {
   }
 
   async deleteFile(id: string) {
-    return this.uploadRepository.delete({id:id});
+    return this.uploadRepository.delete({ id: id });
   }
 }

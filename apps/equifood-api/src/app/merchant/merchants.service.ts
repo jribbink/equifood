@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
@@ -20,7 +24,7 @@ export class MerchantsService {
     return this.merchantRepository.find();
   }
 
-  async update(updateMerchantDto: UpdateMerchantDto){
+  async update(updateMerchantDto: UpdateMerchantDto) {
     const merchant = await this.merchantRepository.findOneBy({
       id: updateMerchantDto.id,
     });
@@ -30,13 +34,12 @@ export class MerchantsService {
       );
     }
 
-    return this.merchantRepository.update({id:merchant.id},<unknown>
-      {
-        name:updateMerchantDto.name,
-        description: updateMerchantDto.description,
-        phone_number: updateMerchantDto.phone_number,
-        location: updateMerchantDto.location,
-      });
+    return this.merchantRepository.update({ id: merchant.id }, <unknown>{
+      name: updateMerchantDto.name,
+      description: updateMerchantDto.description,
+      phone_number: updateMerchantDto.phone_number,
+      location: updateMerchantDto.location,
+    });
   }
 
   search(searchQuery: string) {
