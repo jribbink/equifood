@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NativeBaseProvider } from 'native-base';
+import { NativeBaseProvider, Text } from 'native-base';
 import { Provider as ReduxProvider } from 'react-redux';
 import { RootState } from './redux/store';
 import { AppState, AppStateStatus } from 'react-native';
@@ -11,6 +11,7 @@ import appConfig from './config/app-config';
 import { EquifoodCoreContext } from '@equifood/ui-shared';
 import { equifoodTheme } from '@equifood/ui-shared';
 import RootLayout from './screens/RootLayout';
+import ScrollingSheet from './screens/core/tabs/HomeScreen/ScrollingSheet';
 
 const App = () => {
   const [store, setStore] = useState<Store<RootState>>();

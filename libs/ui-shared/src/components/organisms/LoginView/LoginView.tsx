@@ -56,7 +56,6 @@ export function LoginView({ allowedRoles }: LoginViewProps) {
           value={email}
           testID="emailInput"
           autoCapitalize="none"
-          placeholderTextColor={'primary.500'}
         />
         <TextInput
           secureTextEntry={true}
@@ -65,7 +64,6 @@ export function LoginView({ allowedRoles }: LoginViewProps) {
           onChangeText={setPassword}
           value={password}
           testID="pwInput"
-          placeholderTextColor={'primary.500'}
         />
         <Box
           style={{

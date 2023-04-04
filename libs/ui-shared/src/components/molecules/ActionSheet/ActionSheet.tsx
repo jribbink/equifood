@@ -9,13 +9,27 @@ import {
   useRef,
 } from 'react';
 import {
-  Animated,
   GestureResponderEvent,
   PanResponder,
   PanResponderGestureState,
   View,
 } from 'react-native';
 import Svg, { Rect, RectProps } from 'react-native-svg';
+import Animated, {
+  cancelAnimation,
+  runOnJS,
+  useAnimatedReaction,
+  useDerivedValue,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
+import {
+  Gesture,
+  GestureDetector,
+  ScrollView,
+} from 'react-native-gesture-handler';
+
+const AScrollView = Animated.createAnimatedComponent(ScrollView);
 
 type ArgumentTypes<F extends (props: any) => ReactElement | null> = F extends (
   args: infer A
@@ -31,7 +45,7 @@ interface ActionSheetProps extends ArgumentTypes<typeof Box> {
   children: ReactNode | undefined;
   grabIndicatorProps?: RectProps;
   offset?: number;
-  onTranslateYChange?: (value: number) => void;
+  onTranslateYChange: (value: number) => void;
   handleShouldSetPanResponder: (
     e: GestureResponderEvent,
     gestureState: PanResponderGestureState
@@ -54,21 +68,22 @@ export const ActionSheet = forwardRef<View, ActionSheetProps>(
     },
     ref
   ) => {
-    const start = useRef(new Animated.Value(points[point])).current;
-    const pan = useRef(new Animated.Value(0)).current;
-    const translateY = useRef(Animated.add(start, pan)).current;
-    const _pan = useRef(0);
-    const _start = useRef(points[point]);
-    const enabledRef = useRef(enabled);
-    enabledRef.current = enabled;
+    console.log('RELOADAS');
+    const start = useSharedValue(points[point]);
+    const pan = useSharedValue(0);
+    const translateY = useDerivedValue(
+      () => start.value + pan.value,
+      [start, pan]
+    );
+    const _pan = useSharedValue(0);
+    const _start = useSharedValue(points[point]);
+    const enabledRef = useSharedValue(enabled);
+    const scrollRef = useRef();
 
     const panToPoint = useCallback(
       (point: number) => {
-        Animated.timing(start, {
-          toValue: points[point],
-          duration: 500,
-          useNativeDriver: true,
-        }).start();
+        start.value = withTiming(points[point]);
+        //start.value = withTiming(points[point], { duration: 500 });
       },
       [start, points]
     );
@@ -77,86 +92,90 @@ export const ActionSheet = forwardRef<View, ActionSheetProps>(
       panToPoint(point);
     }, [point, panToPoint]);
 
-    useEffect(() => {
+    //useAnimatedReaction()
+
+    /*useEffect(() => {
       start.addListener(({ value }) => {
         _start.current = value;
         onTranslateYChange?.(value);
       });
-    }, [start, onTranslateYChange]);
+    }, [start, onTranslateYChange]);*/
 
-    const panResponder = useRef(
-      PanResponder.create({
-        onStartShouldSetPanResponder: (e, gestureState) => {
-          return (
-            handleShouldSetPanResponder(e, gestureState) && enabledRef.current
-          );
+    const animationEnd = useCallback(() => {
+      const goal = _start.value;
+      const closest_idx = points.reduce(
+        ([best, best_idx], curr, idx) => {
+          return Math.abs(curr - goal) < Math.abs(best - goal)
+            ? [curr, idx]
+            : [best, best_idx];
         },
-        onPanResponderStart: (e, gestureState) => {
-          start.stopAnimation();
-        },
-        onPanResponderMove: (e, gestureState) => {
-          onTranslateYChange?.(_start.current + gestureState.dy);
-          _pan.current = gestureState.dy;
-          Animated.event([null, { dy: pan }], {
-            useNativeDriver: false,
-          })(e, gestureState);
-        },
-        onPanResponderRelease: (_e, gestureState) => {
-          const startVal = _start.current + _pan.current;
+        [Infinity, -1]
+      )[1];
 
-          start.setValue(startVal);
-          pan.setValue(0);
+      panToPoint(closest_idx);
+      //onPointChange(closest_idx);
+    }, [panToPoint, onPointChange, points, _start]);
+    const consoleLog = console.log;
 
-          const goal = startVal;
-          const closest_idx = points.reduce(
-            ([best, best_idx], curr, idx) => {
-              return Math.abs(curr - goal) < Math.abs(best - goal)
-                ? [curr, idx]
-                : [best, best_idx];
-            },
-            [Infinity, -1]
-          )[1];
-
-          panToPoint(closest_idx);
-          onPointChange(closest_idx);
-        },
+    const gesture = Gesture.Pan()
+      .onBegin(() => {
+        // touching screen
+        cancelAnimation(start);
       })
-    ).current;
+      .onUpdate((e) => {
+        //runOnJS(onTranslateYChange)(_start.value + e.translationY);
+        _pan.value = e.translationY;
+      })
+      .onEnd((e) => {
+        const startVal = _start.value + _pan.value;
+
+        _start.value = startVal;
+        _pan.value = 0;
+
+        runOnJS(animationEnd)();
+        //runOnJS(consoleLog)(translateY.value);
+      })
+      .simultaneousWithExternalGesture(scrollRef);
 
     return (
-      <Animated.View
-        style={{
-          transform: [{ translateY: translateY }],
-          width: '100%',
-          padding: 0,
-          overflow: 'hidden',
-        }}
-        {...panResponder.panHandlers}
-      >
-        <Box
-          backgroundColor="gray.50"
-          roundedTop={25}
-          padding={25}
-          width="full"
-          height="full"
-          ref={ref}
-          {...props}
+      <GestureDetector gesture={gesture}>
+        <Animated.View
+          style={{
+            transform: [{ translateY: translateY.value }],
+            width: '100%',
+            padding: 0,
+            overflow: 'hidden',
+          }}
         >
-          {children}
-        </Box>
-        <Svg width="100%" height="25" style={{ position: 'absolute', top: 0 }}>
-          <Rect
-            x="45%"
-            y="13"
-            fill="#666666"
-            height="4"
-            width="10%"
-            rx={2}
-            ry={2}
-            {...grabIndicatorProps}
-          ></Rect>
-        </Svg>
-      </Animated.View>
+          <Box
+            backgroundColor="gray.50"
+            roundedTop={25}
+            padding={25}
+            width="full"
+            height="full"
+            ref={ref}
+            {...props}
+          >
+            <ScrollView>{children}</ScrollView>
+          </Box>
+          <Svg
+            width="100%"
+            height="25"
+            style={{ position: 'absolute', top: 0 }}
+          >
+            <Rect
+              x="45%"
+              y="13"
+              fill="#666666"
+              height="4"
+              width="10%"
+              rx={2}
+              ry={2}
+              {...grabIndicatorProps}
+            ></Rect>
+          </Svg>
+        </Animated.View>
+      </GestureDetector>
     );
   }
 );

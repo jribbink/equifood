@@ -9,8 +9,7 @@ import React, {
 import { Box, VStack } from 'native-base';
 import { Merchant } from '@equifood/api-interfaces';
 import { MerchantCard, SearchBar } from '@equifood/ui-shared';
-import { Appearance, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { Appearance, LayoutChangeEvent, ScrollView, View } from 'react-native';
 import {
   useLocation,
   MerchantMap,
@@ -31,6 +30,11 @@ import {
 import { StackHeaderProps } from '@react-navigation/stack';
 import { TabNavigationProps } from '../TabLayout';
 import ScrollingSheet from './ScrollingSheet';
+import {
+  useAnimatedProps,
+  useAnimatedReaction,
+  useSharedValue,
+} from 'react-native-reanimated';
 
 interface PageLayout {
   x: number;
@@ -113,7 +117,6 @@ function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
 
   const mapBottom = useRef(new Animated.Value(0)).current;
 
-  const scrollView = React.createRef<ScrollView & View>();
   const actionSheet = React.createRef<View>();
 
   const actionSheetLayout = useRef<PageLayout | null>();
@@ -187,6 +190,10 @@ function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
     setOldPoint(null);
   }
 
+  console.log('RELOADHS');
+
+  const paddingBottom = useSharedValue(0);
+
   return (
     <View
       style={{
@@ -201,6 +208,7 @@ function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
     >
       {userLocation ? (
         <MerchantMap
+          paddingBottom={paddingBottom}
           merchants={merchants}
           darkMode={colorScheme === 'dark'}
           initialRegion={{
@@ -209,36 +217,51 @@ function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
-          style={{
-            position: 'absolute',
-            top: headerOffset,
-            bottom: mapBottom,
-            left: 0,
-            right: 0,
-          }}
           onMerchantPress={(merchant) =>
             navigation.navigate('merchant', { merchant })
           }
         ></MerchantMap>
       ) : null}
-      <ScrollingSheet>
-        <VStack space="4" px={4} height={10000}>
-          <SearchBar
-            value={searchFilter}
-            onChangeText={setSearchFilter}
-            onFocus={handleSearchFocus}
-            onBlur={handleSearchBlur}
-          ></SearchBar>
-          {(merchants || []).map((m) => (
-            <Box key={m.id} shadow="2">
-              <MerchantCard
-                merchant={m}
-                onPress={() => onMerchantPress(m)}
-              ></MerchantCard>
-            </Box>
-          ))}
-        </VStack>
-      </ScrollingSheet>
+      {layout?.height ? (
+        <Box
+          position="absolute"
+          top="0"
+          right="0"
+          left="0"
+          bottom="0"
+          flexDirection="column"
+          justifyContent="flex-end"
+          overflow="visible"
+        >
+          <ScrollingSheet paddingBottom={paddingBottom}>
+            <View>
+              {/*
+                  <ScrollingMenu
+                    items={MerchantFilters}
+                    selectedKey={selectedItemKey}
+                    onChange={onChangeFilter}
+                  ></ScrollingMenu>
+              */}
+              <VStack space="4" px={4}>
+                <SearchBar
+                  value={searchFilter}
+                  onChangeText={setSearchFilter}
+                  onFocus={handleSearchFocus}
+                  onBlur={handleSearchBlur}
+                ></SearchBar>
+                {(merchants || []).map((m) => (
+                  <Box key={m.id} shadow="2">
+                    <MerchantCard
+                      merchant={m}
+                      onPress={() => onMerchantPress(m)}
+                    ></MerchantCard>
+                  </Box>
+                ))}
+              </VStack>
+            </View>
+          </ScrollingSheet>
+        </Box>
+      ) : null}
     </View>
   );
 }

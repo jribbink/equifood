@@ -117,7 +117,6 @@ function SignupScreen({ navigation }: AuthNavigationProps<'signup'>) {
           value={first}
           testID="fistInput"
           autoCapitalize="none"
-          placeholderTextColor={'yellowgreen'}
         />
         {!validFirst && (
           <Text style={styles.error}>Please enter your First name</Text>
@@ -129,7 +128,6 @@ function SignupScreen({ navigation }: AuthNavigationProps<'signup'>) {
           value={last}
           testID="lastInput"
           autoCapitalize="none"
-          placeholderTextColor={'yellowgreen'}
         />
         {!validLast && (
           <Text style={styles.error}>Please enter your Last name</Text>
@@ -141,7 +139,6 @@ function SignupScreen({ navigation }: AuthNavigationProps<'signup'>) {
           value={email}
           testID="emailInput"
           autoCapitalize="none"
-          placeholderTextColor={'yellowgreen'}
         />
         {!validEmail && (
           <Text style={styles.error}>Please enter a valid Email</Text>
@@ -153,7 +150,6 @@ function SignupScreen({ navigation }: AuthNavigationProps<'signup'>) {
           value={phone}
           testID="phoneInput"
           autoCapitalize="none"
-          placeholderTextColor={'yellowgreen'}
         />
         {!validPhone && (
           <Text style={styles.error}>Please enter a valid phone number</Text>
@@ -165,7 +161,6 @@ function SignupScreen({ navigation }: AuthNavigationProps<'signup'>) {
           onChangeText={setPassword}
           value={password}
           testID="pwInput"
-          placeholderTextColor={'yellowgreen'}
         />
         {!validPassword && (
           <Text style={styles.error}>Please enter a password</Text>
