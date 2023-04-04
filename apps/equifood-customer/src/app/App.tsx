@@ -11,7 +11,6 @@ import appConfig from './config/app-config';
 import { EquifoodCoreContext } from '@equifood/ui-shared';
 import { equifoodTheme } from '@equifood/ui-shared';
 import RootLayout from './screens/RootLayout';
-import ScrollingSheet from '../../../../libs/ui-shared/src/components/molecules/ScrollingSheet/ScrollingSheet';
 
 const App = () => {
   const [store, setStore] = useState<Store<RootState>>();
