@@ -11,13 +11,10 @@ import {
   useAxios,
   useOrder,
 } from '@equifood/ui-shared';
-import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import { ORDER_STATUS } from '@equifood/api-interfaces';
+import { CoreNavigationProps } from '../CoreLayout';
 
-function OrderScreen({
-  navigation,
-  route,
-}: StackScreenProps<CoreStackParams, 'order'>) {
+function OrderScreen({ navigation, route }: CoreNavigationProps<'order'>) {
   const { order } = useOrder(route.params.order.id);
   const user = useProfile().user;
   const axios = useAxios();
@@ -72,7 +69,7 @@ function OrderScreen({
             currentIndex={
               (steps.findIndex((s) => s.key === order.status) ?? -2) + 1
             }
-            cancelled={true}
+            cancelled={order.status === ORDER_STATUS.cancelled}
             my="3"
           ></ProgressSteps>
 

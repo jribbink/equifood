@@ -1,21 +1,15 @@
-import { StackScreenProps } from '@react-navigation/stack';
 import { Button, ScrollView, Text } from 'native-base';
 import { OrderConfirmView, useAxios } from '@equifood/ui-shared';
-import { CoreStackParams } from '../../layouts/CoreLayout/CoreNavigatorParams';
 import { Order } from '@equifood/api-interfaces';
 import { equifoodTheme } from '@equifood/ui-shared';
+import { CoreNavigationProps } from '../CoreLayout';
 
-function OrderConfirm({
+function OrderConfirmScreen({
   navigation,
   route,
-}: StackScreenProps<CoreStackParams, 'orderConfirm'>) {
+}: CoreNavigationProps<'orderConfirm'>) {
   const axios = useAxios();
   const params = route.params; //merchant, items, quantities
-  const merchant = params.merchant; //need this for onBackPress because react is stupid
-
-  function onBackPress() {
-    navigation.navigate('merchant', { merchant });
-  }
 
   return (
     <ScrollView>
@@ -41,7 +35,7 @@ function OrderConfirm({
               quantity,
             })),
           });
-          navigation.navigate('core', { screen: 'orders' });
+          navigation.navigate('tabs', { screen: 'orders' });
           navigation.navigate('order', { order: data });
         }}
       >
@@ -49,8 +43,13 @@ function OrderConfirm({
           Confirm & Place Order
         </Text>
       </Button>
+      <Text fontSize="20" color="black" fontWeight="bold">
+        NOTE: You will not be asked for a payment method. Payment is processed
+        by the merchant when you pick up the order. On pressing this button, the
+        order will be set to the merchant. You may cancel the order at any time.
+      </Text>
     </ScrollView>
   );
 }
 
-export default OrderConfirm;
+export default OrderConfirmScreen;

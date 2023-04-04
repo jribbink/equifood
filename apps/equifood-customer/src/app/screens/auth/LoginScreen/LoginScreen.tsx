@@ -6,8 +6,9 @@ import { LoginView, useAuth, useAxios } from '@equifood/ui-shared';
 import { authConfig, AuthProviderConfig } from '@equifood/ui-shared';
 import { IconButton } from '@equifood/ui-shared';
 import { equifoodTheme } from '@equifood/ui-shared';
+import { AuthNavigationProps } from '../AuthLayout';
 
-const Login = ({ navigation }) => {
+function LoginScreen({ navigation }: AuthNavigationProps<'login'>) {
   const axios = useAxios();
   const { setJwt } = useAuth();
 
@@ -21,9 +22,23 @@ const Login = ({ navigation }) => {
 
   return (
     <Box flex={1} testID="login-screen">
-      <Text style={{ fontSize: 36, color: equifoodTheme.colors.primary[500] }}>
-        EquiFood Customer
-      </Text>
+      <HStack>
+        <Text
+          style={{ fontSize: 36, color: equifoodTheme.colors.primary[500] }}
+        >
+          Equi
+        </Text>
+        <Text
+          style={{ fontSize: 36, color: equifoodTheme.colors.primary[800] }}
+        >
+          Food
+        </Text>
+        <Text
+          style={{ fontSize: 36, color: equifoodTheme.colors.primary[500] }}
+        >
+          Customer
+        </Text>
+      </HStack>
       <LoginView allowedRoles={['customer']}></LoginView>
 
       <VStack flexDirection="column" p="3" space="3">
@@ -61,6 +76,6 @@ const Login = ({ navigation }) => {
       </VStack>
     </Box>
   );
-};
+}
 
-export default Login;
+export default LoginScreen;

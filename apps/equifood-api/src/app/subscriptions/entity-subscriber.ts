@@ -1,4 +1,3 @@
-import { RealtimeUpdateMessage } from '@equifood/api-interfaces';
 import {
   EntityMetadata,
   EntitySubscriberInterface,
@@ -148,10 +147,10 @@ export class EntitySubscriber implements EntitySubscriberInterface {
       curr = curr[prop];
     }
     curr[path.at(-1)] = entity;
-    this.processEvent(obj);
+    this.processEvent(obj, true);
   }
 
-  private async processEvent(eventEntity: ObjectLiteral) {
+  private async processEvent(eventEntity: ObjectLiteral, skipDeps = false) {
     const entities = await this.repository.find({
       where: this.pk_list.reduce((a, pk) => {
         a[pk] = eventEntity[pk];
@@ -163,9 +162,10 @@ export class EntitySubscriber implements EntitySubscriberInterface {
     const targetListeners = new Set<string>();
 
     entities.forEach((entity) => {
-      this.relationDependents.forEach(([dependent, path]) => {
-        dependent.processDependencyEvent(entity, path);
-      });
+      if (!skipDeps)
+        this.relationDependents.forEach(([dependent, path]) => {
+          dependent.processDependencyEvent(entity, path);
+        });
 
       this.trie.lookup(entity).forEach((x) => {
         targetListeners.add(x);
@@ -173,13 +173,9 @@ export class EntitySubscriber implements EntitySubscriberInterface {
     });
 
     targetListeners.forEach((listenerKey) => {
-      const data: RealtimeUpdateMessage = {
-        key: listenerKey,
-      };
-
       this.subscriptionService.dispatch(
         this.listeners.get(listenerKey),
-        JSON.stringify(data)
+        listenerKey
       );
     });
   }
