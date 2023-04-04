@@ -1,14 +1,16 @@
 import React, {
   ReactNode,
+  RefObject,
   useCallback,
   useEffect,
   useRef,
   useState,
 } from 'react';
-import { Box, ScrollView, View, VStack } from 'native-base';
+import { Box, VStack } from 'native-base';
 import { Merchant } from '@equifood/api-interfaces';
 import { MerchantCard, SearchBar } from '@equifood/ui-shared';
-import { Appearance } from 'react-native';
+import { Appearance, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import {
   useLocation,
   MerchantMap,
@@ -28,6 +30,27 @@ import {
 } from '@react-navigation/elements';
 import { StackHeaderProps } from '@react-navigation/stack';
 import { TabNavigationProps } from '../TabLayout';
+import ScrollingSheet from './ScrollingSheet';
+
+interface PageLayout {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+function getPageLayout(ref: RefObject<View>): Promise<PageLayout> {
+  return new Promise((resolve) =>
+    ref.current?.measure((_x, _y, w, h, x, y) => {
+      resolve({
+        x,
+        y,
+        w,
+        h,
+      });
+    })
+  );
+}
 
 const Header: ((props: BottomTabHeaderProps) => ReactNode) &
   ((props: StackHeaderProps) => ReactNode) = ({
@@ -90,11 +113,17 @@ function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
 
   const mapBottom = useRef(new Animated.Value(0)).current;
 
+  const scrollView = React.createRef<ScrollView & View>();
+  const actionSheet = React.createRef<View>();
+
+  const actionSheetLayout = useRef<PageLayout | null>();
+  const scrollViewLayout = useRef<PageLayout | null>();
+
   useEffect(() => {
     navigation.setOptions({
       header: Header,
     });
-  }, []);
+  }, [navigation]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -192,71 +221,24 @@ function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
           }
         ></MerchantMap>
       ) : null}
-      {layout?.height ? (
-        <Box
-          position="absolute"
-          top="0"
-          right="0"
-          left="0"
-          bottom="0"
-          flexDirection="column"
-          justifyContent="flex-end"
-          pointerEvents="box-none"
-          overflow="visible"
-        >
-          <ActionSheet
-            point={point}
-            points={[
-              0,
-              headerHeight,
-              headerHeight +
-                (layout.height - headerHeight - tabBarHeight) * 0.35,
-              layout.height - 100,
-            ]}
-            onPointChange={setPoint}
-            onTranslateYChange={(translateY) => {
-              Animated.event([mapBottom], { useNativeDriver: false })(
-                layout.height - translateY
-              );
-            }}
-            enabled={actionSheetEnabled}
-            h="full"
-            offset={100}
-            padding="0"
-            paddingTop="30"
-          >
-            <ScrollView
-              height={layout?.height}
-              testID="home-screen"
-              bounces={false}
-            >
-              {/*
-                  <ScrollingMenu
-                    items={MerchantFilters}
-                    selectedKey={selectedItemKey}
-                    onChange={onChangeFilter}
-                  ></ScrollingMenu>
-              */}
-              <VStack space="4" px={4}>
-                <SearchBar
-                  value={searchFilter}
-                  onChangeText={setSearchFilter}
-                  onFocus={handleSearchFocus}
-                  onBlur={handleSearchBlur}
-                ></SearchBar>
-                {(merchants || []).map((m) => (
-                  <Box key={m.id} shadow="2">
-                    <MerchantCard
-                      merchant={m}
-                      onPress={() => onMerchantPress(m)}
-                    ></MerchantCard>
-                  </Box>
-                ))}
-              </VStack>
-            </ScrollView>
-          </ActionSheet>
-        </Box>
-      ) : null}
+      <ScrollingSheet>
+        <VStack space="4" px={4} height={10000}>
+          <SearchBar
+            value={searchFilter}
+            onChangeText={setSearchFilter}
+            onFocus={handleSearchFocus}
+            onBlur={handleSearchBlur}
+          ></SearchBar>
+          {(merchants || []).map((m) => (
+            <Box key={m.id} shadow="2">
+              <MerchantCard
+                merchant={m}
+                onPress={() => onMerchantPress(m)}
+              ></MerchantCard>
+            </Box>
+          ))}
+        </VStack>
+      </ScrollingSheet>
     </View>
   );
 }
