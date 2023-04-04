@@ -63,14 +63,12 @@ export function OrderConfirmView({
           paddingRight={3}
           flex={1}
         >
-          By 
+          By
         </Text>
         <Text fontSize="20" marginTop="3" fontWeight={'bold'} flex={2}>
           Time remaining: 15 minutes
         </Text>
       </HStack>
-
-        
 
       <VStack paddingTop={5}>
         {(items || [])
