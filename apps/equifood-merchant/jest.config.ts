@@ -10,5 +10,5 @@ module.exports = {
   moduleNameMapper: {
     '.svg': '@nrwl/expo/plugins/jest/svg-mock',
   },
-  preset: 'react-native',
+  preset: 'jest-expo',
 };

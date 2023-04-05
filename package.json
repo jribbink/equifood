@@ -62,6 +62,7 @@
     "express-session": "^1.17.3",
     "graphql": "^16.6.0",
     "intl": "^1.2.5",
+    "jest-expo": "^48.0.2",
     "jsonwebtoken": "^8.5.1",
     "jwks-rsa": "^3.0.0",
     "lodash": "^4.17.21",

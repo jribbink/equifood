@@ -9,5 +9,5 @@ export default {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/libs/ui-shared',
   setupFilesAfterEnv: ['<rootDir>/src/test-utils/test-setup.ts'],
-  preset: 'react-native',
+  preset: 'jest-expo',
 };
