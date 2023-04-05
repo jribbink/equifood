@@ -60,6 +60,9 @@ function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
     },
   }));
 
+  const [mapSelectedMerchant, setMapSelectedMerchant] =
+    useState<Merchant | null>(null);
+
   return (
     <View
       style={{
@@ -101,6 +104,8 @@ function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
                 onMerchantPress={(merchant) =>
                   navigation.navigate('merchant', { merchant })
                 }
+                selectedMerchant={mapSelectedMerchant}
+                onMerchantChange={setMapSelectedMerchant}
                 onTouchStart={() => {
                   setPoint(0);
                   searchBarRef.current?.blur();
