@@ -38,7 +38,9 @@ const RootLayout = () => {
 
   return (
     <NavigationContainer ref={navigation}>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator
+        screenOptions={{ headerShown: false, gestureEnabled: false }}
+      >
         <Stack.Screen name="auth" component={AuthLayout}></Stack.Screen>
         <Stack.Screen name="core" component={CoreLayout}></Stack.Screen>
       </Stack.Navigator>
