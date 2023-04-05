@@ -1,8 +1,8 @@
 import { useAuth, useAxios, useMerchant } from '@equifood/ui-shared';
 import { Button, VStack, Text, Box } from 'native-base';
 import { useEffect, useState } from 'react';
-import { StyleSheet, TextInput } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { StyleSheet, TextInput, Image } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
 function AccountScreen() {
   const { setJwt } = useAuth();
@@ -13,6 +13,8 @@ function AccountScreen() {
   const [description, setDescription] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
+
+  const [logo, setLogo] = useState<string>();
 
   const styles = StyleSheet.create({
     input: {
@@ -34,6 +36,33 @@ function AccountScreen() {
     setAddress('' + merchant?.location.address);
   }, [merchant]);
 
+  const pickLogo = async () => {
+    // No permissions request is necessary for launching the image library
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      const bodyFormData = new FormData();
+      const response = await fetch(result.uri);
+
+      const blob = await response.blob();
+      bodyFormData.append('image', blob);
+      setLogo(result.uri);
+      const id = await axios({
+        method: "post",
+        url: "/uploads",
+        data: bodyFormData,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      console.log(id);
+    }
+  };
+
   async function updateMerchant() {
     await axios.post('/merchants/$' + merchant?.id + '/update', {
       id: merchant?.id,
@@ -53,6 +82,9 @@ function AccountScreen() {
   return (
     <VStack>
       <Box padding={5}>
+
+      {logo && <Image source={{ uri: logo }} style={{ width: 200, height: 200 }} />}
+      <Button onPress={pickLogo}>Pick an image from camera roll</Button>
         <Text paddingLeft={5}>Name:</Text>
         <TextInput
           style={styles.input}

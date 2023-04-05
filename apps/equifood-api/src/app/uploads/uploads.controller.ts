@@ -42,33 +42,7 @@ export class UploadsController {
   })
   @UseInterceptors(NonceFileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File, @Req() req: any) {
-    return await this.uploadsService.uploadFile(file, req.upload_nonce);
-  }
-
-  @Post(':id/:name/update')
-  @ApiConsumes('multipart/form-data')
-  @ApiBody({
-    schema: {
-      type: 'object',
-      properties: {
-        file: {
-          type: 'string',
-          format: 'binary',
-        },
-      },
-    },
-  })
-  @ApiHeader({
-    name: '',
-  })
-  @UseInterceptors(NonceFileInterceptor('file'))
-  async updateFile(
-    @UploadedFile() file: Express.Multer.File,
-    @Req() req: any,
-    @Param('id') id: string,
-    @Param('name') name: string
-  ) {
-    await this.uploadsService.deleteFile(id);
+    console.log("test");
     return await this.uploadsService.uploadFile(file, req.upload_nonce);
   }
 
