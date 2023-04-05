@@ -51,7 +51,10 @@ function OrderScreen({ navigation, route }: CoreNavigationProps<'order'>) {
       backgroundColor="white"
       onLayout={(e) => setViewHeight(e.nativeEvent.layout.height)}
     >
-      <ScrollView scrollEventThrottle={0.1}>
+      <ScrollView
+        scrollEventThrottle={0.1}
+        scrollIndicatorInsets={{ right: 1 }}
+      >
         <Box
           position="relative"
           top="-10"
