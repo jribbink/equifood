@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 import { View } from 'native-base';
 import { StyleSheet } from 'react-native';
 import {
@@ -30,14 +30,23 @@ interface ScrollingSheetProps {
     header: React.ReactNode;
   };
   paddingBottom: SharedValue<number>;
+  point: 0 | 1;
+  onPointChange: (val: 0 | 1) => void;
+  width: number;
+  height: number;
+  disabled: boolean;
 }
 
-function BaseScrollingSheet({ children, paddingBottom }: ScrollingSheetProps) {
+function BaseScrollingSheet({
+  children,
+  paddingBottom,
+  point,
+  onPointChange,
+  width,
+  height,
+  disabled,
+}: ScrollingSheetProps) {
   const theme = useTheme();
-  const [{ width, height }, setDimensions] = useState<{
-    width: number;
-    height: number;
-  }>({ width: 0, height: 0 });
   const open = height * 0.1;
   const closed = height * 0.6;
   const scrollRef = useAnimatedRef<ScrollView>();
@@ -72,13 +81,37 @@ function BaseScrollingSheet({ children, paddingBottom }: ScrollingSheetProps) {
     scrollY.value = Math.round(contentOffset.y);
   });
 
+  const openSheet = useCallback(() => {
+    onPointChange(1);
+  }, [onPointChange]);
+
+  const closeSheet = useCallback(() => {
+    onPointChange(0);
+  }, [onPointChange]);
+
+  useEffect(() => {
+    if (point === 0) {
+      if (transY.value !== closed)
+        transY.value = withTiming(closed, { duration: 200 });
+      prevY.value = closed;
+    } else {
+      if (transY.value !== open)
+        transY.value = withTiming(open, { duration: 200 });
+      prevY.value = open;
+    }
+  }, [point, transY, closed, open, prevY]);
+
+  const enabled = useSharedValue(0);
+
   // pan handler for sheet
   const gesture = Gesture.Pan()
     .onBegin((e) => {
+      if (!enabled.value) return;
       // touching screen
       moving.value = true;
     })
     .onUpdate((e) => {
+      if (!enabled.value) return;
       // move sheet if top or scrollview or is closed state
       if (scrollY.value === 0 || prevY.value === closed) {
         transY.value = prevY.value + e.translationY - movedY.value;
@@ -97,14 +130,17 @@ function BaseScrollingSheet({ children, paddingBottom }: ScrollingSheetProps) {
       }
     })
     .onEnd((e) => {
+      if (!enabled.value) return;
       // close sheet if velocity or travel is good
       if ((e.velocityY > 500 || e.translationY > 100) && scrollY.value < 1) {
         transY.value = withTiming(closed, { duration: 200 });
+        runOnJS(closeSheet)();
         prevY.value = closed;
 
         // else open sheet on reverse
       } else if (e.velocityY < -500 || e.translationY < -100) {
         transY.value = withTiming(open, { duration: 200 });
+        runOnJS(openSheet)();
         prevY.value = open;
 
         // don't do anything
@@ -113,11 +149,16 @@ function BaseScrollingSheet({ children, paddingBottom }: ScrollingSheetProps) {
       }
     })
     .onFinalize((e) => {
+      if (!enabled.value) return;
       // stopped touching screen
       moving.value = false;
       movedY.value = 0;
     })
     .simultaneousWithExternalGesture(scrollRef);
+
+  useEffect(() => {
+    enabled.value = Number(!disabled);
+  }, [disabled, enabled]);
 
   const styles = {
     screen: {
@@ -141,6 +182,8 @@ function BaseScrollingSheet({ children, paddingBottom }: ScrollingSheetProps) {
       borderTopRightRadius: 15,
       borderTopLeftRadius: 15,
       paddingTop: 10,
+      height: height * 0.9,
+      display: 'flex',
     })),
     blur: {
       padding: 1,
@@ -148,9 +191,6 @@ function BaseScrollingSheet({ children, paddingBottom }: ScrollingSheetProps) {
       borderTopLeftRadius: 20,
       borderTopRightRadius: 20,
       backgroundColor: 'rgba(255,255,255,.65)',
-    },
-    scrollViewContainer: {
-      paddingBottom: height * 0.3,
     },
     scrollViewProps: useAnimatedProps(() => ({
       // only scroll if sheet is open
@@ -193,21 +233,13 @@ function BaseScrollingSheet({ children, paddingBottom }: ScrollingSheetProps) {
   };
 
   return (
-    <View
-      style={styles.screen}
-      onLayout={(e) =>
-        setDimensions({
-          width: e.nativeEvent.layout.width,
-          height: e.nativeEvent.layout.height,
-        })
-      }
-    >
+    <View style={styles.screen}>
       <View position="absolute" top="0" left="0" right="0" bottom="0">
         {children.background}
       </View>
       <Animated.View style={styles.sheet}>
         <GestureDetector gesture={gesture}>
-          <View>
+          <View flexDirection="column" flex={1}>
             <View style={styles.bar} />
             <View style={styles.header}>{children.header}</View>
             <AScrollView
@@ -215,9 +247,9 @@ function BaseScrollingSheet({ children, paddingBottom }: ScrollingSheetProps) {
               scrollEventThrottle={1}
               onScroll={scrollHandler}
               animatedProps={styles.scrollViewProps}
-              contentContainerStyle={styles.scrollViewContainer}
+              style={{ flexGrow: 1 }}
             >
-              {children.foreground}
+              <View paddingBottom="4">{children.foreground}</View>
             </AScrollView>
           </View>
         </GestureDetector>
