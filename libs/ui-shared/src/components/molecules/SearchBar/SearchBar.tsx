@@ -1,16 +1,7 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
-import {
-  Box,
-  Button,
-  HStack,
-  Icon,
-  Input,
-  Spacer,
-  Text,
-  VStack,
-} from 'native-base';
+import { HStack, Icon, Input, Text } from 'native-base';
 import { useRef } from 'react';
-import { StyleSheet, TextInput, TouchableWithoutFeedback } from 'react-native';
+import { TextInput } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 interface SearchBarProps {
@@ -26,17 +17,6 @@ export function SearchBar({
   onChangeText,
   value,
 }: SearchBarProps) {
-  const styles = StyleSheet.create({
-    input: {
-      height: 40,
-      margin: 12,
-      borderWidth: 1,
-      padding: 10,
-      borderRadius: 50,
-      flexGrow: 1,
-    },
-  });
-
   function handleBlur() {
     inputRef.current?.blur();
     onBlur?.();
@@ -45,7 +25,7 @@ export function SearchBar({
   const inputRef = useRef<TextInput | null>(null);
 
   return (
-    <HStack space={2} pt="10">
+    <HStack space={2}>
       <Input
         flexGrow={1}
         variant="outline"

@@ -3,7 +3,6 @@ import { Merchant } from '@equifood/api-interfaces';
 import { GestureResponderEvent, TouchableHighlight } from 'react-native';
 import { useLocation, useMerchant } from '../../../../hooks';
 import { getDistanceFromLatLonInKm } from '../../../../util/distance-calculator';
-import { equifoodTheme } from '../../../atoms';
 interface Props {
   merchant: Merchant;
   onPress?: (e: GestureResponderEvent) => void;
