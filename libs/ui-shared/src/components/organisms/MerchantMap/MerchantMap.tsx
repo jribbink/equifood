@@ -10,6 +10,7 @@ interface MerchantMapProps extends React.ComponentProps<typeof Animated.View> {
   merchants: Merchant[] | undefined;
   initialRegion: Region | undefined;
   mapViewProps?: React.ComponentProps<typeof AMapView>;
+  selectedMerchant: Merchant | null;
   onMerchantChange?: (merchant: Merchant | null) => void;
   onMerchantPress?: (merchant: Merchant) => void;
   darkMode: boolean;
@@ -19,6 +20,7 @@ interface MerchantMapProps extends React.ComponentProps<typeof Animated.View> {
 export function MerchantMap({
   merchants,
   initialRegion,
+  selectedMerchant,
   onMerchantChange,
   onMerchantPress,
   mapViewProps,
@@ -52,7 +54,9 @@ export function MerchantMap({
             image={darkMode ? RestaurantIconDark : RestaurantIcon}
             onPress={(e) => {
               e.stopPropagation();
-              onMerchantChange?.(merchant);
+              if (merchant.id === selectedMerchant?.id) {
+                onMerchantPress?.(merchant);
+              } else onMerchantChange?.(merchant);
             }}
             onCalloutPress={() => onMerchantPress?.(merchant)}
             tracksViewChanges={false}
