@@ -1,6 +1,5 @@
 import { Item, Merchant, Order } from '@equifood/api-interfaces';
 import { equifoodTheme } from '@equifood/ui-shared';
-import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import {
   CompositeScreenProps,
   NavigatorScreenParams,

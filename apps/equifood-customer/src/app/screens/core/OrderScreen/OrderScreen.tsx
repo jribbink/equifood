@@ -22,6 +22,7 @@ function OrderScreen({ navigation, route }: CoreNavigationProps<'order'>) {
   useEffect(() => {
     navigation.setOptions({
       headerTitle: `Order #${order?.id}`,
+      headerBackTitle: 'Order List',
     });
   }, [navigation, order]);
 
