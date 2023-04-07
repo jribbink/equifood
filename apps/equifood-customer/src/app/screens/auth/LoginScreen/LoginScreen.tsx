@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, HStack, VStack } from 'native-base';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, SafeAreaView } from 'react-native';
 import { LoginView, useAuth, useAxios } from '@equifood/ui-shared';
 import { authConfig, AuthProviderConfig } from '@equifood/ui-shared';
 import { IconButton } from '@equifood/ui-shared';
@@ -21,60 +21,62 @@ function LoginScreen({ navigation }: AuthNavigationProps<'login'>) {
   }
 
   return (
-    <Box flex={1} testID="login-screen">
-      <HStack>
-        <Text
-          style={{ fontSize: 36, color: equifoodTheme.colors.primary[500] }}
-        >
-          Equi
-        </Text>
-        <Text
-          style={{ fontSize: 36, color: equifoodTheme.colors.primary[800] }}
-        >
-          Food
-        </Text>
-        <Text
-          style={{ fontSize: 36, color: equifoodTheme.colors.primary[500] }}
-        >
-          Customer
-        </Text>
-      </HStack>
-      <LoginView allowedRoles={['customer']}></LoginView>
+    <SafeAreaView style={{ flex: 1 }}>
+      <Box flex={1} testID="login-screen">
+        <HStack justifyContent="center" style={{ marginTop: 30 }}>
+          <Text
+            style={{ fontSize: 36, color: equifoodTheme.colors.primary[500] }}
+          >
+            Equi
+          </Text>
+          <Text
+            style={{ fontSize: 36, color: equifoodTheme.colors.primary[800] }}
+          >
+            Food
+          </Text>
+          <Text
+            style={{ fontSize: 36, color: equifoodTheme.colors.primary[500] }}
+          >
+            Customer
+          </Text>
+        </HStack>
+        <LoginView allowedRoles={['customer']}></LoginView>
 
-      <VStack flexDirection="column" p="3" space="3">
-        {authConfig.providers.map((provider) => (
-          <IconButton
-            key={provider.type}
-            onPress={() => loginWithProvider(provider)}
-            icon="md-logo-google"
-            title={`Continue with ${provider.type
-              .charAt(0)
-              ?.toUpperCase()}${provider.type.substring(1)}`}
-            backgroundColor={provider.color}
-            textColor={provider.textColor}
-            padding="2"
-            size={8}
-            fontSize={18}
-            imageSource={provider.logo}
-            imageAlt={provider.type}
-            shadow="lg"
-            iconProps={{
-              style: { fontWeight: '800', fontSize: 30 },
-            }}
-          ></IconButton>
-        ))}
-        <Box style={{ padding: 30 }}>
-          <HStack>
-            <Text style={{ fontSize: 15 }}>Don't have an account? </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('signup')}>
-              <Text style={{ color: equifoodTheme.colors.primary[500] }}>
-                Sign up
-              </Text>
-            </TouchableOpacity>
-          </HStack>
-        </Box>
-      </VStack>
-    </Box>
+        <VStack flexDirection="column" p="3" space="3">
+          {authConfig.providers.map((provider) => (
+            <IconButton
+              key={provider.type}
+              onPress={() => loginWithProvider(provider)}
+              icon="md-logo-google"
+              title={`Continue with ${provider.type
+                .charAt(0)
+                ?.toUpperCase()}${provider.type.substring(1)}`}
+              backgroundColor={provider.color}
+              textColor={provider.textColor}
+              padding="2"
+              size={8}
+              fontSize={18}
+              imageSource={provider.logo}
+              imageAlt={provider.type}
+              shadow="lg"
+              iconProps={{
+                style: { fontWeight: '800', fontSize: 30 },
+              }}
+            ></IconButton>
+          ))}
+          <Box style={{ padding: 30 }}>
+            <HStack>
+              <Text style={{ fontSize: 15 }}>Don't have an account? </Text>
+              <TouchableOpacity onPress={() => navigation.navigate('signup')}>
+                <Text style={{ color: equifoodTheme.colors.primary[500] }}>
+                  Sign up
+                </Text>
+              </TouchableOpacity>
+            </HStack>
+          </Box>
+        </VStack>
+      </Box>
+    </SafeAreaView>
   );
 }
 
