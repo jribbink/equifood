@@ -9,7 +9,7 @@ const LoginScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Box justifyContent="center" flex={1} testID="login-screen">
-        <HStack>
+        <HStack justifyContent="center" style={{ marginTop: 60 }}>
           <Text
             style={{ fontSize: 36, color: equifoodTheme.colors.primary[500] }}
           >

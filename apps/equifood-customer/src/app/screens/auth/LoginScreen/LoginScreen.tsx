@@ -23,7 +23,7 @@ function LoginScreen({ navigation }: AuthNavigationProps<'login'>) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Box flex={1} testID="login-screen">
-        <HStack justifyContent="center" style={{ marginTop: 30 }}>
+        <HStack justifyContent="center" style={{ marginTop: 60 }}>
           <Text
             style={{ fontSize: 36, color: equifoodTheme.colors.primary[500] }}
           >

@@ -25,7 +25,8 @@ export function LoginView({ allowedRoles }: LoginViewProps) {
 
   return (
     <Box flex={1} style={{ padding: 30 }}>
-      <Text
+      {/*
+        <Text
         style={{
           textAlign: 'center',
           padding: 20,
@@ -38,6 +39,7 @@ export function LoginView({ allowedRoles }: LoginViewProps) {
       >
         Sign In
       </Text>
+      */}
       <Box flex={1}>
         <Text
           testID="login"
