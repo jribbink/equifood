@@ -31,17 +31,18 @@ function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
 
   const colorScheme = Appearance.getColorScheme();
 
-  function handleSearchFocus() {
-    setOldPoint(point);
-    setPoint(1);
-    setSheetDisabled(true);
-  }
-
-  function handleSearchBlur() {
-    if (oldPoint === null) return;
-    setPoint(oldPoint);
-    setOldPoint(null);
-    setSheetDisabled(false);
+  function onSearchActiveChange(state: boolean) {
+    console.log(state);
+    if (state) {
+      setOldPoint(point);
+      setPoint(1);
+      setSheetDisabled(true);
+    } else {
+      if (oldPoint === null) return;
+      setPoint(oldPoint);
+      setOldPoint(null);
+      setSheetDisabled(false);
+    }
   }
 
   const paddingBottom = useSharedValue(0);
@@ -128,8 +129,7 @@ function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
               <SearchBar
                 value={searchFilter}
                 onChangeText={setSearchFilter}
-                onFocus={handleSearchFocus}
-                onBlur={handleSearchBlur}
+                onActiveChange={onSearchActiveChange}
                 ref={searchBarRef}
               ></SearchBar>
             ),
