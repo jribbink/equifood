@@ -8,7 +8,7 @@ import { equifoodTheme } from '@equifood/ui-shared';
 const LoginScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Box flex={1} testID="login-screen">
+      <Box justifyContent="center" flex={1} testID="login-screen">
         <HStack>
           <Text
             style={{ fontSize: 36, color: equifoodTheme.colors.primary[500] }}

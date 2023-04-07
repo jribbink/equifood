@@ -27,6 +27,7 @@ export function LoginView({ allowedRoles }: LoginViewProps) {
     <Box flex={1} style={{ padding: 30 }}>
       <Text
         style={{
+          textAlign: 'center',
           padding: 20,
           marginLeft: -20,
           marginTop: 20,
@@ -41,6 +42,7 @@ export function LoginView({ allowedRoles }: LoginViewProps) {
         <Text
           testID="login"
           style={{
+            textAlign: 'center',
             fontSize: 18,
             marginBottom: 20,
             marginTop: 5,
@@ -69,11 +71,12 @@ export function LoginView({ allowedRoles }: LoginViewProps) {
           style={{
             marginTop: 15,
             marginRight: 15,
-            alignSelf: 'flex-end',
+            alignSelf: 'stretch',
           }}
         >
           <Button
             style={{
+              alignSelf: 'stretch',
               borderRadius: 30,
               backgroundColor: equifoodTheme.colors.primary[500],
             }}
