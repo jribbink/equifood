@@ -14,25 +14,23 @@ import { LayoutRectangle } from 'react-native';
 import { TabNavigationProps } from '../TabLayout';
 import { useAnimatedProps, useSharedValue } from 'react-native-reanimated';
 import { TextInput } from 'react-native-gesture-handler';
+import { EventArg } from '@react-navigation/native';
 
 function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
   const userLocation = useLocation();
   const [searchFilter, setSearchFilter] = useState('');
   const { merchants, isLoading: areMerchantsLoading } =
     useMerchants(searchFilter);
-
-  function onMerchantPress(merchant: Merchant) {
-    if (_oldPoint.current) {
-      setPoint(_oldPoint.current);
-      setSearchFilter('');
-    }
-    navigation.navigate('merchant', { merchant });
-  }
+  const [mapSelectedMerchant, setMapSelectedMerchant] =
+    useState<Merchant | null>(null);
 
   const [point, setPoint] = useState<0 | 1>(1);
   const [layout, setLayout] = useState<LayoutRectangle>();
   const [sheetDisabled, setSheetDisabled] = useState(false);
   const searchBarRef = createRef<TextInput>();
+
+  const paddingBottom = useSharedValue(0);
+  const layoutHeight = useSharedValue(0);
 
   const colorScheme = Appearance.getColorScheme();
 
@@ -59,8 +57,16 @@ function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
     [setPoint, setSheetDisabled, _oldPoint, _point]
   );
 
-  const paddingBottom = useSharedValue(0);
-  const layoutHeight = useSharedValue(0);
+  const onMerchantPress = useCallback(
+    function (merchant: Merchant) {
+      if (_oldPoint.current) {
+        setPoint(_oldPoint.current);
+        setSearchFilter('');
+      }
+      navigation.navigate('merchant', { merchant });
+    },
+    [_oldPoint, setPoint, setSearchFilter, navigation]
+  );
 
   useEffect(() => {
     layoutHeight.value = layout?.height ?? 0;
@@ -74,9 +80,6 @@ function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
       top: 0,
     },
   }));
-
-  const [mapSelectedMerchant, setMapSelectedMerchant] =
-    useState<Merchant | null>(null);
 
   return (
     <View
