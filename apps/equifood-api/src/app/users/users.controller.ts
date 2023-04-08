@@ -6,7 +6,6 @@ import { TargetUserGuard } from './guards/target-user.guard';
 import { TargetUser } from './decorators/target-user.decorator';
 import { RealtimeRoute } from '../subscriptions/decorators/realtime-route.decorator';
 import { Order } from '../orders/entities/order.entity';
-import { Merchant } from '../merchant/entities/merchant.entity';
 
 @Controller('users')
 export class UsersController {
@@ -26,7 +25,7 @@ export class UsersController {
 
   @RealtimeRoute<Order>(
     Order,
-    (user: User, orders: Order[]) => {
+    (user: User) => {
       return {
         user: {
           id: user.id,

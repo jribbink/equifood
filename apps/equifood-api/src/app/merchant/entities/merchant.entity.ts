@@ -1,14 +1,15 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import {
+  BaseEntity,
   Column,
   Entity,
   JoinColumn,
   OneToMany,
   OneToOne,
+  PrimaryGeneratedColumn,
   Relation,
 } from 'typeorm';
 import { UploadColumn } from '../../common/decorators/upload-column';
-import { UuidEntity } from '../../database/models/uuid-entity';
 import { RealtimeEntity } from '../../subscriptions/decorators/realtime-entity.decorator';
 import { Upload } from '../../uploads/entities/upload.entity';
 import { User } from '../../users/entities/user.entity';
@@ -22,9 +23,10 @@ import type { Item } from '../items/entities/item.entity';
 )
 @Entity()
 @ObjectType()
-export class Merchant extends UuidEntity {
+export class Merchant extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid')
   @Field()
-  public id: string;
+  id: string;
 
   @Field()
   @Column()

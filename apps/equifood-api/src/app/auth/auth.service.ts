@@ -49,7 +49,6 @@ export class AuthService {
     };
 
     const jwt = this.jwtService.sign(payload, { audience: JwtAudience.auth });
-
     return jwt;
   }
 
