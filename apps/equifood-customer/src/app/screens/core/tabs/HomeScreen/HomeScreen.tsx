@@ -1,5 +1,11 @@
-import React, { createRef, useEffect, useState } from 'react';
-import { Box, VStack } from 'native-base';
+import React, {
+  createRef,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+import { Box, Heading, HStack, Spinner, VStack } from 'native-base';
 import { Merchant } from '@equifood/api-interfaces';
 import { MerchantCard, SearchBar, ScrollingSheet } from '@equifood/ui-shared';
 import { Appearance, View } from 'react-native';
@@ -8,44 +14,59 @@ import { LayoutRectangle } from 'react-native';
 import { TabNavigationProps } from '../TabLayout';
 import { useAnimatedProps, useSharedValue } from 'react-native-reanimated';
 import { TextInput } from 'react-native-gesture-handler';
+import { EventArg } from '@react-navigation/native';
 
 function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
   const userLocation = useLocation();
   const [searchFilter, setSearchFilter] = useState('');
-  const { merchants } = useMerchants(searchFilter);
-
-  function onMerchantPress(merchant: Merchant) {
-    if (oldPoint) {
-      setPoint(oldPoint);
-      setSearchFilter('');
-    }
-    navigation.navigate('merchant', { merchant });
-  }
-
-  const [oldPoint, setOldPoint] = useState<0 | 1 | null>(null);
+  const { merchants, isLoading: areMerchantsLoading } =
+    useMerchants(searchFilter);
+  const [mapSelectedMerchant, setMapSelectedMerchant] =
+    useState<Merchant | null>(null);
 
   const [point, setPoint] = useState<0 | 1>(1);
   const [layout, setLayout] = useState<LayoutRectangle>();
   const [sheetDisabled, setSheetDisabled] = useState(false);
   const searchBarRef = createRef<TextInput>();
 
-  const colorScheme = Appearance.getColorScheme();
-
-  function handleSearchFocus() {
-    setOldPoint(point);
-    setPoint(1);
-    setSheetDisabled(true);
-  }
-
-  function handleSearchBlur() {
-    if (oldPoint === null) return;
-    setPoint(oldPoint);
-    setOldPoint(null);
-    setSheetDisabled(false);
-  }
-
   const paddingBottom = useSharedValue(0);
   const layoutHeight = useSharedValue(0);
+
+  const colorScheme = Appearance.getColorScheme();
+
+  const _point = useRef<0 | 1>(1);
+  const _oldPoint = useRef<0 | 1 | null>(null);
+
+  useEffect(() => {
+    _point.current = point;
+  }, [point]);
+
+  const onSearchActiveChange = useCallback(
+    function (state: boolean) {
+      if (state) {
+        _oldPoint.current = _point.current;
+        setPoint(1);
+        setSheetDisabled(true);
+      } else {
+        if (_oldPoint.current === null) return;
+        setPoint(_oldPoint.current);
+        _oldPoint.current = null;
+        setSheetDisabled(false);
+      }
+    },
+    [setPoint, setSheetDisabled, _oldPoint, _point]
+  );
+
+  const onMerchantPress = useCallback(
+    function (merchant: Merchant) {
+      if (_oldPoint.current) {
+        setPoint(_oldPoint.current);
+        setSearchFilter('');
+      }
+      navigation.navigate('merchant', { merchant });
+    },
+    [_oldPoint, setPoint, setSearchFilter, navigation]
+  );
 
   useEffect(() => {
     layoutHeight.value = layout?.height ?? 0;
@@ -59,9 +80,6 @@ function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
       top: 0,
     },
   }));
-
-  const [mapSelectedMerchant, setMapSelectedMerchant] =
-    useState<Merchant | null>(null);
 
   return (
     <View
@@ -79,9 +97,7 @@ function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
         <ScrollingSheet
           paddingBottom={paddingBottom}
           point={point}
-          onPointChange={(point) => {
-            setPoint(point);
-          }}
+          onPointChange={setPoint}
           width={layout?.width}
           height={layout?.height}
           disabled={sheetDisabled}
@@ -106,30 +122,44 @@ function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
                 }
                 selectedMerchant={mapSelectedMerchant}
                 onMerchantChange={setMapSelectedMerchant}
-                onTouchStart={() => {
-                  setPoint(0);
-                  searchBarRef.current?.blur();
-                }}
+                onTouchStart={() => searchBarRef.current?.blur()}
               ></MerchantMap>
             ) : null,
             foreground: (
               <VStack space="4" px={4}>
-                {(merchants || []).map((m) => (
-                  <Box key={m.id} shadow="2">
-                    <MerchantCard
-                      merchant={m}
-                      onPress={() => onMerchantPress(m)}
-                    ></MerchantCard>
-                  </Box>
-                ))}
+                {merchants && !areMerchantsLoading ? (
+                  merchants.map((m) => (
+                    <Box key={m.id} shadow="2">
+                      <MerchantCard
+                        merchant={m}
+                        onPress={() => onMerchantPress(m)}
+                      ></MerchantCard>
+                    </Box>
+                  ))
+                ) : (
+                  <HStack
+                    paddingTop="4"
+                    space={2}
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Spinner
+                      size="lg"
+                      accessibilityLabel="Loading merchants"
+                      color="black"
+                    />
+                    <Heading color="black" fontSize="lg">
+                      Searching...
+                    </Heading>
+                  </HStack>
+                )}
               </VStack>
             ),
             header: (
               <SearchBar
                 value={searchFilter}
                 onChangeText={setSearchFilter}
-                onFocus={handleSearchFocus}
-                onBlur={handleSearchBlur}
+                onActiveChange={onSearchActiveChange}
                 ref={searchBarRef}
               ></SearchBar>
             ),
