@@ -1,6 +1,11 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { UuidEntity } from '../../../database/models/uuid-entity';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import type { Merchant } from '../../../merchant/entities/merchant.entity';
 
 // this entity should not be deleted to maintain order history
@@ -8,7 +13,11 @@ import type { Merchant } from '../../../merchant/entities/merchant.entity';
 // only should be deleted if no orders exist referencing this item
 @ObjectType()
 @Entity()
-export class Item extends UuidEntity {
+export class Item extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid')
+  @Field()
+  id: string;
+
   @ManyToOne<Merchant>('Merchant', (merchant) => merchant.items)
   merchant: Merchant;
 

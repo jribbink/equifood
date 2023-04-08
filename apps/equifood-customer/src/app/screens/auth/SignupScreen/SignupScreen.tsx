@@ -1,4 +1,4 @@
-import { VStack, HStack, Text, Box, Button } from 'native-base';
+import { VStack, HStack, Text, Box, Button, useTheme } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useState } from 'react';
 import { StyleSheet, TextInput, SafeAreaView } from 'react-native';
@@ -7,6 +7,9 @@ import { equifoodTheme } from '@equifood/ui-shared';
 import { AuthNavigationProps } from '../AuthLayout';
 
 function SignupScreen({ navigation }: AuthNavigationProps<'signup'>) {
+  const auth = useAuth();
+  const theme = useTheme();
+
   const [first, setFirst] = useState('');
   const [last, setLast] = useState('');
   const [email, setEmail] = useState('');
@@ -59,8 +62,7 @@ function SignupScreen({ navigation }: AuthNavigationProps<'signup'>) {
       valid = false;
     }
     if (valid) {
-      console.log(valid);
-      const { data: jwt } = await axios.post('/auth/create', {
+      const { data: jwt } = await axios.post<string>('/auth/create', {
         first_name: first,
         last_name: last,
         email: email,
@@ -68,7 +70,7 @@ function SignupScreen({ navigation }: AuthNavigationProps<'signup'>) {
         password: password,
         roles: ['customer'],
       });
-      navigation.navigate('login');
+      auth.setJwt(jwt);
     }
   }
 
@@ -90,25 +92,21 @@ function SignupScreen({ navigation }: AuthNavigationProps<'signup'>) {
       <Box flex={1} testID="login-screen">
         <Box flex={1} style={{ padding: 30 }}>
           <Text
-            style={{
-              padding: 20,
-              marginLeft: -20,
-              marginTop: 20,
-              fontSize: 40,
-              fontWeight: 'bold',
-              color: 'darkgreen',
-            }}
+            fontSize="5xl"
+            fontWeight="bold"
+            fontFamily="heading"
+            color="primary.600"
+            pb="2"
           >
             Sign up
           </Text>
           <Text
             testID="login"
-            style={{
-              fontSize: 18,
-              marginBottom: 20,
-              marginTop: 5,
-              color: 'forestgreen',
-            }}
+            fontSize="lg"
+            color="primary.600"
+            fontWeight="semibold"
+            fontFamily="heading"
+            pb="4"
           >
             Please sign up to create an account.
           </Text>
@@ -167,31 +165,29 @@ function SignupScreen({ navigation }: AuthNavigationProps<'signup'>) {
           {!validPassword && (
             <Text style={styles.error}>Please enter a password</Text>
           )}
-          <Box
-            style={{
-              marginTop: 15,
-              marginRight: 15,
-              alignSelf: 'flex-end',
+          <Button
+            mt="4"
+            mx="3"
+            borderRadius="full"
+            backgroundColor="primary.600"
+            testID="signUpButton"
+            onPress={onSubmit}
+            _text={{
+              fontSize: 'xl',
+              fontFamily: 'heading',
+              fontWeight: 'bold',
             }}
+            shadow="2"
           >
-            <Button
-              style={{
-                borderRadius: 30,
-                backgroundColor: 'yellowgreen',
-              }}
-              testID="signUpButton"
-              onPress={onSubmit}
-            >
-              Sign up
-            </Button>
-          </Box>
+            Sign up
+          </Button>
         </Box>
         <VStack flexDirection="column" p="3" space="3">
           <Box style={{ padding: 30 }}>
             <HStack>
               <Text style={{ fontSize: 15 }}>Already have an account? </Text>
               <TouchableOpacity onPress={() => navigation.navigate('login')}>
-                <Text style={{ color: equifoodTheme.colors.primary[500] }}>
+                <Text color="primary.600" fontWeight="bold">
                   Login
                 </Text>
               </TouchableOpacity>

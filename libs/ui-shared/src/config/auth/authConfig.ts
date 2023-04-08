@@ -24,14 +24,14 @@ export const authConfig = {
       type: 'google',
       strategy: googleStrategy,
       logo: GoogleLogo,
-      color: 'lightgrey',
+      color: '#EEEEEE',
       textColor: 'black',
     },
     {
       type: 'facebook',
       strategy: facebookStrategy,
       logo: FacebookLogo,
-      color: 'lightgrey',
+      color: '#EEEEEE',
       textColor: 'black',
     },
     ...(Platform.OS === 'ios'
@@ -40,7 +40,7 @@ export const authConfig = {
             type: 'apple',
             strategy: appleStrategy,
             logo: AppleLogo,
-            color: 'lightgrey',
+            color: '#EEEEEE',
             textColor: 'black',
           },
         ]

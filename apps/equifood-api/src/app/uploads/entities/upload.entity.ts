@@ -1,9 +1,11 @@
 import { Exclude } from 'class-transformer';
-import { Column, Entity } from 'typeorm';
-import { UuidEntity } from '../../database/models/uuid-entity';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Upload extends UuidEntity {
+export class Upload extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
   @Column({ nullable: true })
   name: string;
 
