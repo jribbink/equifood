@@ -263,7 +263,7 @@ function MerchantScreen({
             e.nativeEvent.layout.height;
         }}
         padding="15px"
-        paddingBottom={`${insets.bottom + 15}px`}
+        paddingBottom={`${Math.max(insets.bottom, 15)}px`}
         _text={{
           fontSize: 'xl',
           fontWeight: 'bold',
