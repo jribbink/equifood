@@ -1,7 +1,13 @@
-import { useAuth, useAxios, useMerchant } from '@equifood/ui-shared';
+import {
+  LocationInput,
+  useAuth,
+  useAxios,
+  useMerchant,
+} from '@equifood/ui-shared';
 import { Button, VStack, Text, Box } from 'native-base';
 import { useEffect, useState } from 'react';
 import { StyleSheet, TextInput, Image } from 'react-native';
+import Autocomplete from 'react-native-autocomplete-input';
 import * as ImagePicker from 'expo-image-picker';
 
 function AccountScreen() {
@@ -110,9 +116,7 @@ function AccountScreen() {
         />
 
         <Text paddingLeft={5}>Address:</Text>
-        <Text paddingLeft={5} fontWeight="bold">
-          {merchant?.location.address}
-        </Text>
+        <LocationInput></LocationInput>
       </Box>
       <Button
         backgroundColor={'green.900'}
