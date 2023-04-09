@@ -1,10 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import crypto, { randomUUID } from 'crypto';
-import { ConfigService } from '@nestjs/config';
+import { ConfigService, ConfigType } from '@nestjs/config';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import {
+  BaseEntity,
   DataSource,
+  EntityMetadata,
+  FindOptionsWhere,
   ObjectLiteral,
+  ObjectType,
   Repository,
   UpdateQueryBuilder,
 } from 'typeorm';
@@ -12,41 +16,72 @@ import jsonwebtoken from 'jsonwebtoken';
 import { UploadNonce } from './models/upload-nonce';
 import { Upload } from './entities/upload.entity';
 import { extname } from 'path';
+import _uploadsConfig from '../config/uploads.config';
+import _authConfig from '../config/auth.config';
+
+export type Newable<T> = { new (...args: any[]): T };
 
 @Injectable()
 export class UploadsService {
   private cipherKey = crypto
     .createHash('sha256')
-    .update(this.configService.get('auth.secret'))
+    .update(this.authConfig.secret)
     .digest();
 
-  private uploadsPath = this.configService.get('uploads.path');
+  private uploadsPath = this.uploadsConfig.path;
+
+  private metadataTargetMap = new Map<ObjectType<unknown>, EntityMetadata>();
+  private metadataNameMap = new Map<string, EntityMetadata>();
 
   constructor(
-    private configService: ConfigService,
+    @Inject(_uploadsConfig.KEY)
+    private uploadsConfig: ConfigType<typeof _uploadsConfig>,
+    @Inject(_authConfig.KEY) private authConfig: ConfigType<typeof _authConfig>,
     @InjectDataSource() private dataSource: DataSource,
     @InjectRepository(Upload) private uploadRepository: Repository<Upload>
-  ) {}
+  ) {
+    this.dataSource.entityMetadatas.forEach((metadata) => {
+      this.metadataTargetMap.set(metadata.target as any, metadata);
+      this.metadataNameMap.set(metadata.tableName, metadata);
+    });
+  }
 
-  createNonce(
+  async createNonce<Entity>(
     maxSizeBytes: number,
-    expiresInMs: number,
-    targetTable?: string,
-    targetColumn?: string,
-    targetWhere?: object
+    targetTable: ObjectType<Entity>,
+    targetColumn?: keyof Entity,
+    targetWhere?: FindOptionsWhere<Entity>
   ) {
     const expires = new Date();
-    expires.setTime(expires.getTime() + expiresInMs);
+    expires.setTime(
+      expires.getTime() + this.uploadsConfig.defaultUploadTimeout
+    );
+    const entityMetadata = this.metadataTargetMap.get(targetTable);
+    const repository = this.dataSource.getRepository(entityMetadata.name);
+    const entity = await repository.findOneBy(targetWhere);
     const nonce: UploadNonce = {
-      id: randomUUID(),
+      previous_uuid: entity[targetColumn as string].id,
       expires,
       maxSizeBytes,
-      targetTable,
-      targetColumn,
+      targetTable: this.metadataTargetMap.get(targetTable).tableName,
+      targetColumn: targetColumn as string,
       targetWhere,
     };
 
     return jsonwebtoken.sign(nonce, this.cipherKey);
+  }
+
+  createImageNonce<Entity>(
+    targetTable: ObjectType<Entity>,
+    targetColumn?: keyof Entity,
+    targetWhere?: FindOptionsWhere<Entity>
+  ) {
+    return this.createNonce(
+      this.uploadsConfig.maxImageSize,
+      targetTable,
+      targetColumn,
+      targetWhere
+    );
   }
 
   decodeNonce(token: string): UploadNonce {
@@ -61,7 +96,6 @@ export class UploadsService {
 
   async uploadFile(file: Express.Multer.File, uploadInfo: UploadNonce) {
     const fileRow = await this.uploadRepository.save({
-      id: uploadInfo.id,
       filename: file.originalname,
       ext: extname(file.originalname),
       mime_type: file.mimetype,
@@ -75,42 +109,13 @@ export class UploadsService {
       uploadInfo.targetColumn &&
       uploadInfo.targetWhere
     ) {
-      this.dataSource.getRepository('');
-      const entityMetadata = this.dataSource.entityMetadatas.find(
-        (metadata) => metadata.tableName === uploadInfo.targetTable
-      );
-
-      // eslint-disable-next-line no-inner-declarations
-      function pipeWhere(
-        qb: UpdateQueryBuilder<ObjectLiteral>,
-        whereConditions: object,
-        first = true
-      ): UpdateQueryBuilder<ObjectLiteral> {
-        if (Object.keys(whereConditions).length == 0) return qb;
-        const keys = [...Object.keys(whereConditions)];
-        const currentKey = keys.pop();
-        return pipeWhere(
-          qb[first ? 'where' : 'andWhere'](`entity.${currentKey} = :value`, {
-            value: whereConditions[currentKey],
-          }),
-          keys.reduce((acc, v) => {
-            return {
-              ...acc,
-              v: whereConditions[v],
-            };
-          }, {})
-        );
-      }
-
-      await pipeWhere(
-        this.dataSource
-          .getRepository(entityMetadata.name)
-          .createQueryBuilder('entity')
-          .update(entityMetadata.name, {
-            [uploadInfo.targetColumn]: uploadInfo.id,
-          }),
-        []
-      ).execute();
+      const entityMetadata = this.metadataNameMap.get(uploadInfo.targetTable);
+      const repository = this.dataSource.getRepository(entityMetadata.name);
+      const entity = await repository.findOneBy(uploadInfo.targetWhere);
+      await repository.save({
+        ...entity,
+        [uploadInfo.targetColumn]: fileRow,
+      });
     }
 
     return fileRow;

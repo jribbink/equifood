@@ -24,21 +24,14 @@ export class MerchantsService {
     return this.merchantRepository.find();
   }
 
-  async update(updateMerchantDto: UpdateMerchantDto) {
-    const merchant = await this.merchantRepository.findOneBy({
-      id: updateMerchantDto.id,
-    });
-    if (!merchant) {
-      throw new BadRequestException(
-        `No merchant with the id ${updateMerchantDto.id} exists`
-      );
-    }
-
-    return this.merchantRepository.update({ id: merchant.id }, <unknown>{
-      name: updateMerchantDto.name,
-      description: updateMerchantDto.description,
-      phone_number: updateMerchantDto.phone_number,
-      location: updateMerchantDto.location,
+  async update(
+    { id }: Pick<Merchant, 'id'>,
+    updateMerchantDto: UpdateMerchantDto
+  ) {
+    console.log(updateMerchantDto);
+    return this.merchantRepository.save({
+      id,
+      ...updateMerchantDto,
     });
   }
 

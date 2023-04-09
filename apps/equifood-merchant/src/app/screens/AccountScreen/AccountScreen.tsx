@@ -39,62 +39,53 @@ function AccountScreen() {
   const pickLogo = async () => {
     // No permissions request is necessary for launching the image library
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
+      allowsMultipleSelection: false,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       const bodyFormData = new FormData();
-      const response = await fetch(result.uri);
+      bodyFormData.append('file', {
+        uri: result.assets[0].uri,
+        name: result.assets[0].fileName ?? 'logo.png',
+        type: 'image',
+      } as any);
+      setLogo(result.assets[0].uri);
 
-      const blob = await response.blob();
-      bodyFormData.append('image', blob);
-      setLogo(result.uri);
-      const id = await axios({
-        method: "post",
-        url: "/uploads",
-        data: bodyFormData,
-        headers: { "Content-Type": "multipart/form-data" },
+      const { data: uploadToken } = await axios.get<string>(
+        '/merchants/self/logo/nonce'
+      );
+
+      await axios.post('/uploads', bodyFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'upload-token': uploadToken,
+        },
       });
-
-      console.log(id);
     }
   };
 
   async function updateMerchant() {
-    await axios.post('/merchants/$' + merchant?.id + '/update', {
-      id: merchant?.id,
-      name: name,
-      banner: merchant?.banner_url,
-      logo: merchant?.logo_url,
+    await axios.patch(`/merchants/self`, {
       description: description,
       phone_number: phone,
-      location: {
-        address: address,
-        latitude: merchant?.location.latitude,
-        longitude: merchant?.location.longitude,
-      },
     });
   }
 
   return (
     <VStack>
       <Box padding={5}>
-
-      {logo && <Image source={{ uri: logo }} style={{ width: 200, height: 200 }} />}
-      <Button onPress={pickLogo}>Pick an image from camera roll</Button>
+        {logo && (
+          <Image source={{ uri: logo }} style={{ width: 200, height: 200 }} />
+        )}
+        <Button onPress={pickLogo}>Pick an image from camera roll</Button>
         <Text paddingLeft={5}>Name:</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setName}
-          placeholder="Change merchant name?"
-          value={name}
-          testID="nameInput"
-          autoCapitalize="none"
-          placeholderTextColor={'yellowgreen'}
-        />
+        <Text paddingLeft={5} fontWeight="bold">
+          {merchant?.name}
+        </Text>
 
         <Text paddingLeft={5}>Description:</Text>
         <TextInput
@@ -119,15 +110,9 @@ function AccountScreen() {
         />
 
         <Text paddingLeft={5}>Address:</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setAddress}
-          placeholder="Change address?"
-          value={address}
-          testID="addressInput"
-          autoCapitalize="none"
-          placeholderTextColor={'yellowgreen'}
-        />
+        <Text paddingLeft={5} fontWeight="bold">
+          {merchant?.location.address}
+        </Text>
       </Box>
       <Button
         backgroundColor={'green.900'}

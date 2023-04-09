@@ -1,5 +1,5 @@
 export interface UploadNonce {
-  id: string;
+  previous_uuid: string;
   expires: Date;
   maxSizeBytes: number;
   targetTable?: string;

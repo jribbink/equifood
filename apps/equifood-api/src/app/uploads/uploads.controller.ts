@@ -42,7 +42,6 @@ export class UploadsController {
   })
   @UseInterceptors(NonceFileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File, @Req() req: any) {
-    console.log("test");
     return await this.uploadsService.uploadFile(file, req.upload_nonce);
   }
 

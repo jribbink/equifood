@@ -8,6 +8,7 @@ import { MerchantsController } from './merchants.controller';
 import { MerchantsService } from './merchants.service';
 import { UsersModule } from '../users/users.module';
 import { ItemsModule } from './items/items.module';
+import { UploadsModule } from '../uploads/uploads.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { ItemsModule } from './items/items.module';
     OrdersModule,
     UsersModule,
     ItemsModule,
+    UploadsModule,
   ],
   exports: [MerchantsService],
   controllers: [MerchantsController],

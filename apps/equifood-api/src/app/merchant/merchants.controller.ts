@@ -2,7 +2,8 @@ import {
   Body,
   Controller,
   Get,
-  Post,
+  Patch,
+  Put,
   Query,
   UseGuards,
   UsePipes,
@@ -11,6 +12,7 @@ import {
 import { Order } from '../orders/entities/order.entity';
 import { OrdersService } from '../orders/orders.service';
 import { RealtimeRoute } from '../subscriptions/decorators/realtime-route.decorator';
+import { UploadsService } from '../uploads/uploads.service';
 import { User } from '../users/entities/user.entity';
 import { TargetMerchant } from './decorators/target-merchant.decorator';
 import { Merchant } from './entities/merchant.entity';
@@ -22,18 +24,43 @@ import { UpdateMerchantDto } from './models/update-merchant.dto';
 export class MerchantsController {
   constructor(
     private merchantService: MerchantsService,
-    private ordersService: OrdersService
+    private ordersService: OrdersService,
+    private uploadsService: UploadsService
   ) {}
 
-  @Post(':merchantId/update')
-  @UsePipes(new ValidationPipe({ transform: true }))
-  async update(@Body() updateMerchantDto: UpdateMerchantDto) {
-    this.merchantService.update(updateMerchantDto);
-    return null;
+  @UseGuards(TargetMerchantGuard('restricted'))
+  @Patch(':merchantId')
+  @UsePipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+    })
+  )
+  async update(
+    @Body() updateMerchantDto: UpdateMerchantDto,
+    @TargetMerchant() merchant: Merchant
+  ) {
+    return this.merchantService.update(merchant, updateMerchantDto);
   }
 
-  @RealtimeRoute(Merchant, () => ({}), { isArray: true })
+  @UseGuards(TargetMerchantGuard('restricted'))
+  @Get(':merchantId/banner/nonce')
+  async setBanner(@TargetMerchant() merchant: Merchant) {
+    return this.uploadsService.createImageNonce(Merchant, 'banner', {
+      id: merchant.id,
+    });
+  }
+
+  @UseGuards(TargetMerchantGuard('restricted'))
+  @Get(':merchantId/logo/nonce')
+  async setLogo(@TargetMerchant() merchant: Merchant) {
+    return this.uploadsService.createImageNonce(Merchant, 'logo', {
+      id: merchant.id,
+    });
+  }
+
   @Get()
+  @RealtimeRoute(Merchant, () => ({}), { isArray: true })
   getMerchants(@Query('q') searchQuery?: string) {
     if (searchQuery) {
       return this.merchantService.search(searchQuery);

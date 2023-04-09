@@ -1,30 +1,11 @@
-import { IsString, IsNotEmpty, IsEmail } from 'class-validator';
-import { Role } from '../../common/types/role.enum';
-import { Upload } from '../../uploads/entities/upload.entity';
+import { IsString, IsOptional } from 'class-validator';
 
 export class UpdateMerchantDto {
   @IsString()
-  @IsNotEmpty()
-  id: string;
-
-  @IsString()
-  @IsNotEmpty()
-  name: string;
-
-  @IsNotEmpty()
-  banner: Upload;
-
-  @IsNotEmpty()
-  logo: Upload;
-
-  @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   description: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   phone_number: string;
-
-  @IsNotEmpty()
-  location: Location;
 }

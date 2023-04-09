@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   CallHandler,
   ExecutionContext,
   Inject,
@@ -9,17 +8,19 @@ import {
   Type,
   UnauthorizedException,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { ConfigType } from '@nestjs/config';
 import { MulterModuleOptions } from '@nestjs/platform-express';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import multer, { diskStorage } from 'multer';
 import { Observable } from 'rxjs';
 import { Repository } from 'typeorm';
+import _uploadsConfig from '../../config/uploads.config';
 import { Upload } from '../entities/upload.entity';
 import { UploadNonce } from '../models/upload-nonce';
 import { transformException } from '../multer/multer.utils';
 import { UploadsService } from '../uploads.service';
+import { randomUUID } from 'crypto';
 
 const MULTER_MODULE_OPTIONS = 'MULTER_MODULE_OPTIONS';
 
@@ -54,8 +55,8 @@ export function NonceFileInterceptor(
       @Optional()
       @Inject(MULTER_MODULE_OPTIONS)
       globalOptions: EnhancedMulterOptions = {},
-      @Inject(ConfigService)
-      private configService: ConfigService,
+      @Inject(_uploadsConfig.KEY)
+      private uploadsConfig: ConfigType<typeof _uploadsConfig>,
       @Inject(UploadsService)
       private uploadsService: UploadsService,
       @InjectRepository(Upload)
@@ -100,8 +101,6 @@ export function NonceFileInterceptor(
       } catch (e) {
         throw new UnauthorizedException();
       }
-      if (await this.uploadRepository.findOneBy({ id: req.upload_nonce.id }))
-        throw new BadRequestException('File already exists');
 
       return req.upload_nonce;
     }
@@ -115,11 +114,10 @@ export function NonceFileInterceptor(
     }
 
     resolveStorage(req: any): multer.StorageEngine {
-      const nonce = (req as any).upload_nonce;
       return diskStorage({
-        destination: this.configService.get('uploads.path'),
+        destination: this.uploadsConfig.path,
         filename: (req, file, callback) => {
-          callback(null, nonce.id);
+          callback(null, randomUUID());
         },
       });
     }
