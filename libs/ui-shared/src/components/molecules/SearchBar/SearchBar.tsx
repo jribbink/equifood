@@ -98,6 +98,7 @@ export const SearchBar = forwardRef<TextInput, SearchBarProps>(
               value={value}
               testID="searchInput"
               autoCapitalize="none"
+              autoCorrect={false}
               ref={(_ref) => {
                 if (typeof parentInputRef === 'function') parentInputRef(_ref);
                 else if (parentInputRef) parentInputRef.current = _ref;

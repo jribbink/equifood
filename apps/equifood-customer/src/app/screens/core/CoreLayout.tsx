@@ -61,6 +61,9 @@ function CoreLayout() {
       ></Stack.Screen>
       <Stack.Screen
         name="orderConfirm"
+        options={{
+          headerTitle: 'Confirm Order',
+        }}
         component={OrderConfirmScreen}
       ></Stack.Screen>
       <Stack.Screen name="order" component={OrderScreen}></Stack.Screen>
