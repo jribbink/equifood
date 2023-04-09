@@ -1,23 +1,28 @@
-import { StackScreenProps } from '@react-navigation/stack';
-import {
-  Box,
-  Button,
-  Text,
-  ScrollView,
-  VStack,
-  Image,
-  HStack,
-  NativeBaseProvider,
-} from 'native-base';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Box, Text, VStack, Image, HStack, Button } from 'native-base';
 import { Alert } from 'react-native';
 import { Merchant } from '@equifood/api-interfaces';
-import React, { useRef, useState, useCallback } from 'react';
+import React, {
+  useRef,
+  useState,
+  useCallback,
+  useMemo,
+  useEffect,
+} from 'react';
 import { useMerchant } from '@equifood/ui-shared';
 import { ItemCard } from '@equifood/ui-shared';
 import { useFocusEffect } from '@react-navigation/native';
-import { equifoodTheme } from '@equifood/ui-shared';
 import { CoreNavigationProps } from '../CoreLayout';
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from 'react-native-reanimated';
+import { ScrollView } from 'react-native-gesture-handler';
 
+const AButton = Animated.createAnimatedComponent(Button);
+const AScrollView = Animated.createAnimatedComponent(ScrollView);
 export interface MerchantScreenParams {
   merchant: Merchant;
 }
@@ -26,10 +31,26 @@ function MerchantScreen({
   navigation,
   route,
 }: CoreNavigationProps<'merchant'>) {
+  const insets = useSafeAreaInsets();
   const { merchant } = useMerchant(route.params.merchant.id);
+  const items = merchant?.items || [];
   const [quantityMap, setQuantityMap] = useState<{ [itemId: string]: number }>(
     {}
   );
+
+  const itemMap = useMemo(() => {
+    return new Map(merchant?.items.map((item) => [item.id, item]));
+  }, [merchant]);
+
+  const _lastPrice = useRef<number>();
+  const totalPrice = useMemo(() => {
+    const total = Object.keys(quantityMap).reduce(
+      (t, k) => t + quantityMap[k] * (itemMap.get(k)?.price ?? 0),
+      0
+    );
+    if (total !== 0) _lastPrice.current = total;
+    return total;
+  }, [itemMap, quantityMap]);
 
   // State reference for beforeRemove callback
   const quantityMapRef = useRef<{ [itemId: string]: number }>({});
@@ -72,12 +93,51 @@ function MerchantScreen({
     }, [navigation, backConfirmFunc])
   );
 
+  const bottomInset = useSharedValue(0);
+  const checkoutButtonHeight = useSharedValue(0);
+  const checkoutTransY = useSharedValue(0);
+
+  useEffect(() => {
+    bottomInset.value = insets.bottom;
+  }, [insets, bottomInset]);
+
+  useEffect(() => {
+    if (totalPrice > 0) {
+      checkoutTransY.value = withTiming(0, { duration: 500 });
+    } else {
+      checkoutTransY.value = withTiming(checkoutButtonHeight.value, {
+        duration: 500,
+      });
+    }
+  }, [totalPrice, checkoutTransY, checkoutButtonHeight]);
+
+  const styles = {
+    checkoutButton: useAnimatedStyle(() => ({
+      transform: [{ translateY: checkoutTransY.value }],
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+    })),
+    scrollView: useAnimatedStyle(() => ({
+      marginBottom: interpolate(
+        checkoutTransY.value,
+        [0, checkoutButtonHeight.value],
+        [checkoutButtonHeight.value, 0]
+      ),
+      paddingBottom: interpolate(
+        checkoutTransY.value,
+        [0, checkoutButtonHeight.value],
+        [bottomInset.value, 0]
+      ),
+    })),
+  };
+
   if (!merchant) return null;
-  const items = merchant.items;
 
   return (
     <Box height="full">
-      <ScrollView testID="view" flex={1}>
+      <AScrollView testID="view" style={styles.scrollView}>
         <Box h="200">
           <Image
             width="100%"
@@ -157,7 +217,7 @@ function MerchantScreen({
         </Box>
 
         <VStack space="4" m="4">
-          {(items || []).map((item) => (
+          {items.map((item) => (
             <ItemCard
               key={item.id}
               item={item}
@@ -184,24 +244,33 @@ function MerchantScreen({
             </HStack>
           </Box>
         </VStack>
-      </ScrollView>
-      <Button
-        style={{ backgroundColor: equifoodTheme.colors.primary[700] }}
+      </AScrollView>
+      <AButton
+        style={styles.checkoutButton}
+        backgroundColor="primary.700"
         onPress={async () => {
-          // check if all values are 0
-          if (Object.entries(quantityMap).every((item) => item[1] === 0)) {
-            alert('Please choose at least one item before continuing.');
-          } else {
-            navigation.navigate('orderConfirm', {
-              merchant: merchant,
-              items: items,
-              quantities: quantityMap,
-            });
-          }
+          // Don't checkout with no items
+          if (totalPrice === 0) return;
+
+          navigation.navigate('orderConfirm', {
+            merchant: merchant,
+            items: items,
+            quantities: quantityMap,
+          });
+        }}
+        onLayout={(e) => {
+          checkoutButtonHeight.value = checkoutTransY.value =
+            e.nativeEvent.layout.height;
+        }}
+        padding="15px"
+        paddingBottom={`${insets.bottom + 15}px`}
+        _text={{
+          fontSize: 'xl',
+          fontWeight: 'bold',
         }}
       >
-        Checkout
-      </Button>
+        {`Checkout ($${_lastPrice.current?.toFixed(2)})`}
+      </AButton>
     </Box>
   );
 }
