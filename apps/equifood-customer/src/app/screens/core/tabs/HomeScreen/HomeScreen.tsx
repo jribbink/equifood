@@ -129,12 +129,12 @@ function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
               <VStack space="4" px={4}>
                 {merchants && !areMerchantsLoading ? (
                   merchants.map((m) => (
-                    <Box key={m.id} shadow="2">
-                      <MerchantCard
-                        merchant={m}
-                        onPress={() => onMerchantPress(m)}
-                      ></MerchantCard>
-                    </Box>
+                    <MerchantCard
+                      key={m.id}
+                      merchant={m}
+                      onPress={() => onMerchantPress(m)}
+                      shadow="2"
+                    ></MerchantCard>
                   ))
                 ) : (
                   <HStack
