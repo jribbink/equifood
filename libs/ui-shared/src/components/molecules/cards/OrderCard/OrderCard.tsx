@@ -45,7 +45,7 @@ export function OrderCard({ order, onPress }: OrderCardProps) {
       setSeconds(remainingSeconds);
     }, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [order]);
 
   return (
     <TouchableHighlight
