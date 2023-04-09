@@ -10,13 +10,6 @@
         "port": 8081
       }
     },
-    "web": {
-      "executor": "@nrwl/expo:start",
-      "options": {
-        "port": 8081,
-        "webpack": true
-      }
-    },
     "serve": {
       "executor": "nx:run-commands",
       "options": {
@@ -86,8 +79,10 @@
       "options": {}
     },
     "eject": {
-      "executor": "@nrwl/expo:eject",
-      "options": {}
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nx prebuild equifood-merchant"
+      }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
@@ -102,6 +97,31 @@
       "options": {
         "jestConfig": "apps/equifood-merchant/jest.config.ts",
         "passWithNoTests": true
+      }
+    },
+    "prebuild": {
+      "executor": "@nrwl/expo:prebuild",
+      "options": {}
+    },
+    "install": {
+      "executor": "@nrwl/expo:install",
+      "options": {}
+    },
+    "update": {
+      "executor": "@nrwl/expo:update",
+      "options": {}
+    },
+    "export": {
+      "executor": "@nrwl/expo:export",
+      "options": {
+        "platform": "all",
+        "outputDir": "../../dist/apps/equifood-merchant"
+      }
+    },
+    "export-web": {
+      "executor": "@nrwl/expo:export",
+      "options": {
+        "bundler": "metro"
       }
     }
   },

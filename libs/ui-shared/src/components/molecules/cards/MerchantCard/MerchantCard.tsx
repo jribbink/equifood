@@ -3,13 +3,17 @@ import { Merchant } from '@equifood/api-interfaces';
 import { GestureResponderEvent, TouchableHighlight } from 'react-native';
 import { useLocation, useMerchant } from '../../../../hooks';
 import { getDistanceFromLatLonInKm } from '../../../../util/distance-calculator';
-import { equifoodTheme } from '../../../atoms';
-interface Props {
+import React from 'react';
+interface MerchantCardProps extends React.ComponentProps<typeof Box> {
   merchant: Merchant;
   onPress?: (e: GestureResponderEvent) => void;
 }
 
-export const MerchantCard = ({ merchant, onPress }: Props) => {
+export const MerchantCard = ({
+  merchant,
+  onPress,
+  ...props
+}: MerchantCardProps) => {
   const userLocation = useLocation();
 
   let distance = 0;
@@ -34,9 +38,11 @@ export const MerchantCard = ({ merchant, onPress }: Props) => {
     <TouchableHighlight
       onPress={onPress}
       testID="merchant-card"
-      style={{ borderRadius: 5 }}
+      style={{
+        borderRadius: 5,
+      }}
     >
-      <Box borderRadius="5">
+      <Box borderRadius="5" {...props}>
         <Box h="32">
           <Image
             source={{
@@ -89,7 +95,7 @@ export const MerchantCard = ({ merchant, onPress }: Props) => {
         </Box>
 
         <HStack
-          bgColor="primary.300"
+          backgroundColor="primary.300"
           borderBottomRadius={5}
           shadow="5"
           p="1.5"

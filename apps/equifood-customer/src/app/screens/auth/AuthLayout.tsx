@@ -25,7 +25,12 @@ const Stack = createStackNavigator<AuthNavigationParams>();
 
 function AuthLayout() {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+        cardStyle: { backgroundColor: '#FFFFFF' },
+      }}
+    >
       <Stack.Screen component={LoginScreen} name="login"></Stack.Screen>
       <Stack.Screen component={SignupScreen} name="signup"></Stack.Screen>
     </Stack.Navigator>

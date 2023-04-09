@@ -1,30 +1,36 @@
 import { Merchant } from '@equifood/api-interfaces';
-import { Animated } from 'react-native';
-import MapView, { Region, Marker, MapViewProps } from 'react-native-maps';
+import Animated, { SharedValue } from 'react-native-reanimated';
+import MapView, { Region, Marker } from 'react-native-maps';
 import RestaurantIcon from '../../../../assets/restaurant-icon.png';
 import RestaurantIconDark from '../../../../assets/restaurant-icon-dark.png';
+
+const AMapView = Animated.createAnimatedComponent(MapView);
 
 interface MerchantMapProps extends React.ComponentProps<typeof Animated.View> {
   merchants: Merchant[] | undefined;
   initialRegion: Region | undefined;
-  mapViewProps?: MapViewProps;
+  mapViewProps?: React.ComponentProps<typeof AMapView>;
+  selectedMerchant: Merchant | null;
   onMerchantChange?: (merchant: Merchant | null) => void;
   onMerchantPress?: (merchant: Merchant) => void;
   darkMode: boolean;
+  paddingBottom: SharedValue<number>;
 }
 
 export function MerchantMap({
   merchants,
   initialRegion,
+  selectedMerchant,
   onMerchantChange,
   onMerchantPress,
   mapViewProps,
   darkMode,
+  paddingBottom,
   ...props
 }: MerchantMapProps) {
   return (
     <Animated.View {...props}>
-      <MapView
+      <AMapView
         style={{
           height: '100%',
           width: '100%',
@@ -48,12 +54,15 @@ export function MerchantMap({
             image={darkMode ? RestaurantIconDark : RestaurantIcon}
             onPress={(e) => {
               e.stopPropagation();
-              onMerchantChange?.(merchant);
+              if (merchant.id === selectedMerchant?.id) {
+                onMerchantPress?.(merchant);
+              } else onMerchantChange?.(merchant);
             }}
             onCalloutPress={() => onMerchantPress?.(merchant)}
+            tracksViewChanges={false}
           />
         ))}
-      </MapView>
+      </AMapView>
     </Animated.View>
   );
 }

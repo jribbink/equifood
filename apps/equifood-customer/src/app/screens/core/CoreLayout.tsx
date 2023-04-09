@@ -1,6 +1,5 @@
 import { Item, Merchant, Order } from '@equifood/api-interfaces';
 import { equifoodTheme } from '@equifood/ui-shared';
-import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
 import {
   CompositeScreenProps,
   NavigatorScreenParams,
@@ -62,6 +61,9 @@ function CoreLayout() {
       ></Stack.Screen>
       <Stack.Screen
         name="orderConfirm"
+        options={{
+          headerTitle: 'Confirm Order',
+        }}
         component={OrderConfirmScreen}
       ></Stack.Screen>
       <Stack.Screen name="order" component={OrderScreen}></Stack.Screen>

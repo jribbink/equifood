@@ -4,6 +4,7 @@ import { AppState, AppStateStatus } from 'react-native';
 import RootLayout from './layouts/RootLayout';
 import { SWRConfig } from 'swr';
 import { EquifoodCoreContext } from '@equifood/ui-shared';
+import { equifoodTheme } from '@equifood/ui-shared';
 import { appConfig } from '@equifood/ui-shared';
 
 const App = () => {
@@ -39,7 +40,7 @@ const App = () => {
   };
 
   return (
-    <NativeBaseProvider>
+    <NativeBaseProvider theme={equifoodTheme}>
       <EquifoodCoreContext
         config={{
           apiUrl: appConfig?.apiUrl,

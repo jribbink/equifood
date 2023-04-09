@@ -1,168 +1,91 @@
 import React, {
-  ReactNode,
+  createRef,
   useCallback,
   useEffect,
   useRef,
   useState,
 } from 'react';
-import { Box, ScrollView, View, VStack } from 'native-base';
+import { Box, Heading, HStack, Spinner, VStack } from 'native-base';
 import { Merchant } from '@equifood/api-interfaces';
-import { MerchantCard, SearchBar } from '@equifood/ui-shared';
-import { Appearance } from 'react-native';
-import {
-  useLocation,
-  MerchantMap,
-  useMerchants,
-  ActionSheet,
-  MenuItem,
-} from '@equifood/ui-shared';
-import { Animated, LayoutRectangle } from 'react-native';
-import {
-  BottomTabHeaderProps,
-  useBottomTabBarHeight,
-} from '@react-navigation/bottom-tabs';
-import { useHeaderHeight } from '@react-navigation/elements';
-import {
-  Header as BaseHeader,
-  getHeaderTitle,
-} from '@react-navigation/elements';
-import { StackHeaderProps } from '@react-navigation/stack';
+import { MerchantCard, SearchBar, ScrollingSheet } from '@equifood/ui-shared';
+import { Appearance, View } from 'react-native';
+import { useLocation, MerchantMap, useMerchants } from '@equifood/ui-shared';
+import { LayoutRectangle } from 'react-native';
 import { TabNavigationProps } from '../TabLayout';
-
-const Header: ((props: BottomTabHeaderProps) => ReactNode) &
-  ((props: StackHeaderProps) => ReactNode) = ({
-  layout,
-  options,
-  route,
-}: BottomTabHeaderProps & StackHeaderProps) => {
-  return (
-    <View>
-      <BaseHeader
-        {...options}
-        layout={layout}
-        title={getHeaderTitle(options, route.name)}
-      />
-    </View>
-  );
-};
-
-const MerchantFilters: { [key: string]: MenuItem } = {
-  burgers: {
-    name: 'Burgers',
-  },
-  pizza: {
-    name: 'Pizza',
-  },
-  chicken: {
-    name: 'Chicken',
-  },
-};
+import { useAnimatedProps, useSharedValue } from 'react-native-reanimated';
+import { TextInput } from 'react-native-gesture-handler';
+import { EventArg } from '@react-navigation/native';
 
 function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
-  const [searchFilter, setSearchFilter] = useState('');
-  const [selectedItemKey, setSelectedItemKey] = useState<string | null>(null);
-  const { merchants } = useMerchants(searchFilter);
-
-  function onChangeFilter(filter: keyof typeof MerchantFilters) {
-    setSelectedItemKey(filter ? String(filter) : null);
-  }
-
-  function onMerchantPress(merchant: Merchant) {
-    if (oldPoint) {
-      setPoint(oldPoint);
-      setSearchFilter('');
-    }
-    navigation.navigate('merchant', { merchant });
-  }
-
-  const [oldPoint, setOldPoint] = useState<number | null>(null);
-
   const userLocation = useLocation();
+  const [searchFilter, setSearchFilter] = useState('');
+  const { merchants, isLoading: areMerchantsLoading } =
+    useMerchants(searchFilter);
+  const [mapSelectedMerchant, setMapSelectedMerchant] =
+    useState<Merchant | null>(null);
 
-  const [actionSheetEnabled, setActionSheetEnabled] = useState(true);
-  const [point, setPoint] = useState(2);
+  const [point, setPoint] = useState<0 | 1>(1);
   const [layout, setLayout] = useState<LayoutRectangle>();
+  const [sheetDisabled, setSheetDisabled] = useState(false);
+  const searchBarRef = createRef<TextInput>();
 
-  const tabBarOffset = useState(new Animated.Value(0))[0];
-  const tabBarHeight = useBottomTabBarHeight();
-  const headerOffset = useState(new Animated.Value(0))[0];
-  const headerHeight = useHeaderHeight();
-
-  const mapBottom = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    navigation.setOptions({
-      header: Header,
-    });
-  }, []);
-
-  useEffect(() => {
-    navigation.setOptions({
-      tabBarStyle: {
-        position: 'absolute',
-        transform: [{ translateY: tabBarOffset }],
-      },
-      headerStyle: {
-        transform: [{ translateY: headerOffset }],
-      },
-    });
-  }, [navigation, headerOffset, tabBarOffset]);
-
-  const toggleTabBar = useCallback(
-    (state: boolean) => {
-      Animated.timing(tabBarOffset, {
-        toValue: state ? 0 : tabBarHeight,
-        useNativeDriver: true,
-        duration: 500,
-      }).start();
-    },
-    [tabBarOffset, tabBarHeight]
-  );
-
-  const toggleHeader = useCallback(
-    (state: boolean) => {
-      Animated.timing(headerOffset, {
-        toValue: state ? 0 : -headerHeight,
-        useNativeDriver: false,
-        duration: 500,
-      }).start();
-    },
-    [headerHeight, headerOffset]
-  );
-
-  useEffect(() => {
-    toggleTabBar(point !== 3);
-  }, [point, toggleTabBar]);
-
-  useEffect(() => {
-    toggleHeader(point !== 3 && point !== 0);
-  }, [point, toggleHeader]);
-
-  useEffect(() => {
-    setActionSheetEnabled(point !== 0);
-    if (point === 0 && !oldPoint) {
-      setPoint(1);
-    }
-  }, [point, oldPoint]);
+  const paddingBottom = useSharedValue(0);
+  const layoutHeight = useSharedValue(0);
 
   const colorScheme = Appearance.getColorScheme();
 
-  function handleSearchFocus() {
-    setOldPoint(point);
-    setPoint(0);
-  }
+  const _point = useRef<0 | 1>(1);
+  const _oldPoint = useRef<0 | 1 | null>(null);
 
-  function handleSearchBlur() {
-    if (!oldPoint) return;
-    setPoint(oldPoint);
-    setOldPoint(null);
-  }
+  useEffect(() => {
+    _point.current = point;
+  }, [point]);
+
+  const onSearchActiveChange = useCallback(
+    function (state: boolean) {
+      if (state) {
+        _oldPoint.current = _point.current;
+        setPoint(1);
+        setSheetDisabled(true);
+      } else {
+        if (_oldPoint.current === null) return;
+        setPoint(_oldPoint.current);
+        _oldPoint.current = null;
+        setSheetDisabled(false);
+      }
+    },
+    [setPoint, setSheetDisabled, _oldPoint, _point]
+  );
+
+  const onMerchantPress = useCallback(
+    function (merchant: Merchant) {
+      if (_oldPoint.current) {
+        setPoint(_oldPoint.current);
+        setSearchFilter('');
+      }
+      navigation.navigate('merchant', { merchant });
+    },
+    [_oldPoint, setPoint, setSearchFilter, navigation]
+  );
+
+  useEffect(() => {
+    layoutHeight.value = layout?.height ?? 0;
+  }, [layout, layoutHeight]);
+
+  const mapViewProps = useAnimatedProps(() => ({
+    mapPadding: {
+      bottom: layoutHeight.value - paddingBottom.value,
+      left: 0,
+      right: 0,
+      top: 0,
+    },
+  }));
 
   return (
     <View
       style={{
         position: 'absolute',
-        top: -headerHeight,
+        top: 0,
         bottom: 0,
         left: 0,
         right: 0,
@@ -170,92 +93,78 @@ function HomeScreen({ navigation }: TabNavigationProps<'home'>) {
       onLayout={(e) => setLayout(e.nativeEvent.layout)}
       testID="home-screen"
     >
-      {userLocation ? (
-        <MerchantMap
-          merchants={merchants}
-          darkMode={colorScheme === 'dark'}
-          initialRegion={{
-            latitude: userLocation.latitude,
-            longitude: userLocation.longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-          style={{
-            position: 'absolute',
-            top: headerOffset,
-            bottom: mapBottom,
-            left: 0,
-            right: 0,
-          }}
-          onMerchantPress={(merchant) =>
-            navigation.navigate('merchant', { merchant })
-          }
-        ></MerchantMap>
-      ) : null}
-      {layout?.height ? (
-        <Box
-          position="absolute"
-          top="0"
-          right="0"
-          left="0"
-          bottom="0"
-          flexDirection="column"
-          justifyContent="flex-end"
-          pointerEvents="box-none"
-          overflow="visible"
+      {layout ? (
+        <ScrollingSheet
+          paddingBottom={paddingBottom}
+          point={point}
+          onPointChange={setPoint}
+          width={layout?.width}
+          height={layout?.height}
+          disabled={sheetDisabled}
         >
-          <ActionSheet
-            point={point}
-            points={[
-              0,
-              headerHeight,
-              headerHeight +
-                (layout.height - headerHeight - tabBarHeight) * 0.35,
-              layout.height - 100,
-            ]}
-            onPointChange={setPoint}
-            onTranslateYChange={(translateY) => {
-              Animated.event([mapBottom], { useNativeDriver: false })(
-                layout.height - translateY
-              );
-            }}
-            enabled={actionSheetEnabled}
-            h="full"
-            offset={100}
-            padding="0"
-            paddingTop="30"
-          >
-            <ScrollView
-              height={layout?.height}
-              testID="home-screen"
-              bounces={false}
-            >
-              {/*
-                  <ScrollingMenu
-                    items={MerchantFilters}
-                    selectedKey={selectedItemKey}
-                    onChange={onChangeFilter}
-                  ></ScrollingMenu>
-              */}
+          {{
+            background: userLocation ? (
+              <MerchantMap
+                paddingBottom={paddingBottom}
+                merchants={merchants}
+                darkMode={colorScheme === 'dark'}
+                initialRegion={{
+                  latitude: userLocation.latitude,
+                  longitude: userLocation.longitude,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421,
+                }}
+                mapViewProps={{
+                  animatedProps: mapViewProps,
+                }}
+                onMerchantPress={(merchant) =>
+                  navigation.navigate('merchant', { merchant })
+                }
+                selectedMerchant={mapSelectedMerchant}
+                onMerchantChange={setMapSelectedMerchant}
+                onTouchStart={() => searchBarRef.current?.blur()}
+              ></MerchantMap>
+            ) : null,
+            foreground: (
               <VStack space="4" px={4}>
-                <SearchBar
-                  value={searchFilter}
-                  onChangeText={setSearchFilter}
-                  onFocus={handleSearchFocus}
-                  onBlur={handleSearchBlur}
-                ></SearchBar>
-                {(merchants || []).map((m) => (
-                  <Box key={m.id} shadow="2">
+                {merchants && !areMerchantsLoading ? (
+                  merchants.map((m) => (
                     <MerchantCard
+                      key={m.id}
                       merchant={m}
                       onPress={() => onMerchantPress(m)}
+                      shadow="2"
                     ></MerchantCard>
-                  </Box>
-                ))}
+                  ))
+                ) : (
+                  <HStack
+                    paddingTop="4"
+                    space={2}
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Spinner
+                      size="lg"
+                      accessibilityLabel="Loading merchants"
+                      color="black"
+                    />
+                    <Heading color="black" fontSize="lg">
+                      Searching...
+                    </Heading>
+                  </HStack>
+                )}
               </VStack>
-            </ScrollView>
-          </ActionSheet>
-        </Box>
+            ),
+            header: (
+              <SearchBar
+                value={searchFilter}
+                onChangeText={setSearchFilter}
+                onActiveChange={onSearchActiveChange}
+                ref={searchBarRef}
+              ></SearchBar>
+            ),
+          }}
+        </ScrollingSheet>
       ) : null}
     </View>
   );

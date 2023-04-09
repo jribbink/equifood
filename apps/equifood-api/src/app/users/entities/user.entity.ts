@@ -1,15 +1,21 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Exclude } from 'class-transformer';
-import { Entity, Column, OneToMany, BaseEntity } from 'typeorm';
+import {
+  Entity,
+  Column,
+  OneToMany,
+  BaseEntity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { AuthProvider } from '../../auth/entities/auth-provider';
 import { Role } from '../../common/types/role.enum';
-import { UuidEntity } from '../../database/models/uuid-entity';
 
 @ObjectType()
 @Entity({ name: 'users' })
-export class User extends UuidEntity {
+export class User extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid')
   @Field()
-  public id: string;
+  id: string;
 
   @Field()
   @Column()
@@ -42,9 +48,4 @@ export class User extends UuidEntity {
   @Field((type) => AuthProvider)
   @OneToMany('AuthProvider', (provider: AuthProvider) => provider.user)
   authProviders: AuthProvider;
-
-  constructor(data: Partial<User>) {
-    super(data?.id);
-    Object.assign(this, data);
-  }
 }

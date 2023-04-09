@@ -16,78 +16,64 @@ export function LoginView({ allowedRoles }: LoginViewProps) {
   const styles = StyleSheet.create({
     input: {
       height: 40,
-      margin: 12,
+      marginTop: 12,
+      marginBottom: 12,
       borderWidth: 1,
       padding: 10,
       borderRadius: 50,
+      maxWidth: 400,
     },
   });
 
   return (
-    <Box flex={1} style={{ padding: 30 }}>
+    <Box>
       <Text
+        testID="login"
         style={{
-          padding: 20,
-          marginLeft: -20,
-          marginTop: 20,
-          fontSize: 40,
-          fontWeight: 'bold',
-          color: equifoodTheme.colors.primary[800],
+          textAlign: 'center',
+          fontSize: 18,
+          marginBottom: 20,
+          marginTop: 5,
+          color: equifoodTheme.colors.primary[600],
         }}
+        fontWeight="bold"
+        fontFamily="heading"
+      >
+        Please sign in to continue.
+      </Text>
+      <TextInput
+        style={styles.input}
+        onChangeText={setEmail}
+        placeholder="Email"
+        value={email}
+        testID="emailInput"
+        autoCapitalize="none"
+      />
+      <TextInput
+        secureTextEntry={true}
+        style={styles.input}
+        placeholder="Password"
+        onChangeText={setPassword}
+        value={password}
+        testID="pwInput"
+      />
+      <Button
+        marginTop="4"
+        borderRadius="full"
+        backgroundColor="primary.600"
+        _text={{
+          fontSize: 'xl',
+          fontWeight: 'bold',
+          fontFamily: 'heading',
+        }}
+        onPress={() => {
+          authenticate({ email, password });
+        }}
+        testID="loginButton"
+        shadow="3"
       >
         Sign In
-      </Text>
-      <Box flex={1}>
-        <Text
-          testID="login"
-          style={{
-            fontSize: 18,
-            marginBottom: 20,
-            marginTop: 5,
-            color: equifoodTheme.colors.primary[800],
-          }}
-        >
-          Please sign in to continue.
-        </Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={setEmail}
-          placeholder="Email"
-          value={email}
-          testID="emailInput"
-          autoCapitalize="none"
-          placeholderTextColor={'primary.500'}
-        />
-        <TextInput
-          secureTextEntry={true}
-          style={styles.input}
-          placeholder="Password"
-          onChangeText={setPassword}
-          value={password}
-          testID="pwInput"
-          placeholderTextColor={'primary.500'}
-        />
-        <Box
-          style={{
-            marginTop: 15,
-            marginRight: 15,
-            alignSelf: 'flex-end',
-          }}
-        >
-          <Button
-            style={{
-              borderRadius: 30,
-              backgroundColor: equifoodTheme.colors.primary[500],
-            }}
-            onPress={() => {
-              authenticate({ email, password });
-            }}
-            testID="loginButton"
-          >
-            Sign In
-          </Button>
-        </Box>
-      </Box>
+      </Button>
     </Box>
   );
 }

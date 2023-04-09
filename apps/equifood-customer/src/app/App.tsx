@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NativeBaseProvider } from 'native-base';
+import { NativeBaseProvider, Text } from 'native-base';
 import { Provider as ReduxProvider } from 'react-redux';
 import { RootState } from './redux/store';
 import { AppState, AppStateStatus } from 'react-native';

@@ -1,14 +1,20 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, ManyToOne } from 'typeorm';
-import { UuidEntity } from '../../database/models/uuid-entity';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Item } from '../../merchant/items/entities/item.entity';
 import { Order } from './order.entity';
 
 @ObjectType()
 @Entity()
-export class OrderedItem extends UuidEntity {
+export class OrderedItem extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid')
   @Field()
-  public id: string;
+  id: string;
 
   @Field((type) => Order)
   @ManyToOne<Order>('Order', (order) => order.items)

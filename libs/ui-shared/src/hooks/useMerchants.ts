@@ -3,15 +3,15 @@ import { useFetcher } from './useFetcher';
 import { useDebounce } from './useDebounce';
 
 export function useMerchants(searchQuery?: string) {
-  const debouncedSearch = useDebounce(searchQuery, 1000);
-  const endpoint = debouncedSearch
-    ? `/merchants?q=${encodeURIComponent(debouncedSearch)}`
+  const { debouncedValue, hasChanged } = useDebounce(searchQuery, 1000);
+  const endpoint = debouncedValue
+    ? `/merchants?q=${encodeURIComponent(debouncedValue)}`
     : '/merchants';
   const { data, error } = useFetcher<Merchant[]>(endpoint);
 
   return {
     merchants: data,
-    isLoading: !error && !data,
+    isLoading: (!error && !data) || hasChanged,
     isError: error,
   };
 }

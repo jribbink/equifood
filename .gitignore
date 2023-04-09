@@ -61,3 +61,4 @@ apps/equifood-merchant-e2e/artifacts
 
 # .env configs
 .env
+apps/my-app-e2e/artifacts
