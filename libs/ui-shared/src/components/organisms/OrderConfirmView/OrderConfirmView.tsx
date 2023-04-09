@@ -1,6 +1,7 @@
 import { Text, HStack, VStack, Box } from 'native-base';
 import { Item, Merchant } from '@equifood/api-interfaces';
 import { CheckoutItemCard } from '../../molecules/cards/CheckoutItemCard/CheckoutItemCard';
+import React, { useState, useEffect } from 'react';
 
 interface OrderViewProps {
   items: Item[];
@@ -21,6 +22,7 @@ export function OrderConfirmView({
       totalPrice += qt * item.price;
     }
   }
+
   return (
     <VStack>
       <HStack>
@@ -64,7 +66,7 @@ export function OrderConfirmView({
           By
         </Text>
         <Text fontSize="20" marginTop="3" fontWeight={'bold'} flex={2}>
-          Now - 15 min
+          Time remaining: 15 minutes
         </Text>
       </HStack>
 
