@@ -10,6 +10,7 @@ export enum ORDER_STATUS {
 }
 export interface Order {
   id: string;
+  reference_code: string;
   completed_date?: Date;
   deadline: Date;
   order_date: Date;
