@@ -1,5 +1,6 @@
 import { ORDER_STATUS } from '@equifood/api-interfaces';
 import { Field, ObjectType } from '@nestjs/graphql';
+import { xor, lshift, rshift, and } from '../../../utils/bitwise53';
 import { Type } from 'class-transformer';
 import {
   AfterLoad,
@@ -14,7 +15,14 @@ import { RealtimeEntity } from '../../subscriptions/decorators/realtime-entity.d
 import { User } from '../../users/entities/user.entity';
 import { OrderedItem } from './ordered-item.entity';
 
-const ORDER_CODEWORD = parseInt('EQUIFOOD', 36) >>> 0;
+const ORDER_CODEWORD = 'EQUIFOOD';
+const CIPHER = and(
+  xor(
+    xor(lshift(parseInt(ORDER_CODEWORD, 36), 1), parseInt(ORDER_CODEWORD, 36)),
+    rshift(parseInt(ORDER_CODEWORD, 36), 1)
+  ),
+  lshift(1, 31) - 1
+);
 @ObjectType()
 @Entity()
 @RealtimeEntity<Order>({ user: true, merchant: { user: true } }, {})
@@ -26,7 +34,7 @@ export class Order {
   reference_code: string;
   @AfterLoad()
   private setReferenceCode() {
-    this.reference_code = (this.id ^ ORDER_CODEWORD).toString(36).toUpperCase();
+    this.reference_code = xor(CIPHER, this.id).toString(36).toUpperCase();
   }
 
   @Field()
