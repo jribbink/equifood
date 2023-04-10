@@ -27,9 +27,7 @@ function OrderScreen({ navigation, route }: RootNavigationProps<'order'>) {
   useEffect(() => {
     if (!order) return;
     navigation.setOptions({
-      headerTitle: `Order #${order?.id} (${ORDER_STATUS[
-        order?.status
-      ].toUpperCase()})`,
+      headerTitle: `Order Info (${ORDER_STATUS[order?.status].toUpperCase()})`,
     });
   }, [navigation, order]);
 

@@ -21,7 +21,7 @@ function OrderScreen({ navigation, route }: CoreNavigationProps<'order'>) {
 
   useEffect(() => {
     navigation.setOptions({
-      headerTitle: `Order #${order?.id}`,
+      headerTitle: `Order Info`,
       headerBackTitle: 'Order List',
     });
   }, [navigation, order]);
@@ -65,7 +65,7 @@ function OrderScreen({ navigation, route }: CoreNavigationProps<'order'>) {
         >
           <Box flexDirection="row" mx="4" my="2" alignItems="center">
             <Heading>{order.merchant.name}</Heading>
-            <Text ml="auto">Order #{order.id}</Text>
+            <Text ml="auto">Reference No. {order?.reference_code}</Text>
           </Box>
 
           <ProgressSteps

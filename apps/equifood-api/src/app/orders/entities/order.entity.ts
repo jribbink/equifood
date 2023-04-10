@@ -2,6 +2,7 @@ import { ORDER_STATUS } from '@equifood/api-interfaces';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import {
+  AfterLoad,
   Column,
   Entity,
   ManyToOne,
@@ -12,6 +13,8 @@ import { Merchant } from '../../merchant/entities/merchant.entity';
 import { RealtimeEntity } from '../../subscriptions/decorators/realtime-entity.decorator';
 import { User } from '../../users/entities/user.entity';
 import { OrderedItem } from './ordered-item.entity';
+
+const ORDER_CODEWORD = parseInt('EQUIFOOD', 36) >>> 0;
 @ObjectType()
 @Entity()
 @RealtimeEntity<Order>({ user: true, merchant: { user: true } }, {})
@@ -19,6 +22,12 @@ export class Order {
   @PrimaryGeneratedColumn()
   @Field()
   id: number;
+
+  reference_code: string;
+  @AfterLoad()
+  private setReferenceCode() {
+    this.reference_code = (this.id ^ ORDER_CODEWORD).toString(36).toUpperCase();
+  }
 
   @Field()
   @Column()
