@@ -1,5 +1,6 @@
 import { useDebounce } from '../../../hooks/useDebounce';
 import { useEffect, useMemo, useState } from 'react';
+import { StyleSheet } from 'react-native';
 import Autocomplete from 'react-native-autocomplete-input';
 import {
   geocodeAsync,
@@ -44,7 +45,25 @@ export function LocationInput() {
     );
   }, [suggestedLocations]);
 
+  const styles = StyleSheet.create({
+    input: {
+      height: 40,
+      margin: 12,
+      borderWidth: 1,
+      padding: 10,
+      borderRadius: 50,
+      backgroundColor: 'rgba(100, 100, 100, 0)',
+    },
+    error: {
+      color: 'red',
+    },
+  });
+
   return (
-    <Autocomplete data={suggestions} onChangeText={setText}></Autocomplete>
+    <Autocomplete
+      style={styles.input}
+      data={suggestions}
+      onChangeText={setText}
+    ></Autocomplete>
   );
 }

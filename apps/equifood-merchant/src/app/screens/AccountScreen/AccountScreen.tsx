@@ -6,9 +6,9 @@ import {
 } from '@equifood/ui-shared';
 import { Button, VStack, Text, Box } from 'native-base';
 import { useEffect, useState } from 'react';
-import { StyleSheet, TextInput, Image } from 'react-native';
-import Autocomplete from 'react-native-autocomplete-input';
+import { StyleSheet, TextInput, Image, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { background } from 'native-base/lib/typescript/theme/styled-system';
 
 function AccountScreen() {
   const { setJwt } = useAuth();
@@ -21,6 +21,7 @@ function AccountScreen() {
   const [address, setAddress] = useState('');
 
   const [logo, setLogo] = useState<string>();
+  const [banner, setBanner] = useState<string>();
 
   const styles = StyleSheet.create({
     input: {
@@ -42,6 +43,11 @@ function AccountScreen() {
     setAddress('' + merchant?.location.address);
   }, [merchant]);
 
+  const pickBanner = async () => {
+    // No permissions request is necessary for launching the image library
+    return null;
+  };
+
   const pickLogo = async () => {
     // No permissions request is necessary for launching the image library
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -54,11 +60,13 @@ function AccountScreen() {
 
     if (!result.canceled) {
       const bodyFormData = new FormData();
+
       bodyFormData.append('file', {
         uri: result.assets[0].uri,
         name: result.assets[0].fileName ?? 'logo.png',
         type: 'image',
       } as any);
+
       setLogo(result.assets[0].uri);
 
       const { data: uploadToken } = await axios.get<string>(
@@ -84,11 +92,24 @@ function AccountScreen() {
   return (
     <VStack>
       <Box padding={5}>
-        {logo && (
-          <Image source={{ uri: logo }} style={{ width: 200, height: 200 }} />
-        )}
-        <Button onPress={pickLogo}>Pick an image from camera roll</Button>
-        <Text paddingLeft={5}>Name:</Text>
+        <Box>
+          {logo && (
+            <Image source={{ uri: logo }} style={{ width: 100, height: 100 }} />
+          )}
+          <Button onPress={pickLogo}>Change Logo?</Button>
+        </Box>
+        <Box marginTop={50}>
+          {banner && (
+            <Image
+              source={{ uri: banner }}
+              style={{ width: 300, height: 150 }}
+            />
+          )}
+          <Button onPress={pickBanner}>Change Banner?</Button>
+        </Box>
+        <Text marginTop={50} paddingLeft={5}>
+          Name:
+        </Text>
         <Text paddingLeft={5} fontWeight="bold">
           {merchant?.name}
         </Text>
