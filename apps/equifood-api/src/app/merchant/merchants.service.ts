@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../users/entities/user.entity';
@@ -6,6 +10,7 @@ import { Item } from './items/entities/item.entity';
 import { Merchant } from './entities/merchant.entity';
 import { Like } from 'typeorm';
 import { Upload } from '../uploads/entities/upload.entity';
+import { UpdateMerchantDto } from './models/update-merchant.dto';
 
 @Injectable()
 export class MerchantsService {
@@ -17,6 +22,17 @@ export class MerchantsService {
 
   getAll() {
     return this.merchantRepository.find();
+  }
+
+  async update(
+    { id }: Pick<Merchant, 'id'>,
+    updateMerchantDto: UpdateMerchantDto
+  ) {
+    console.log(updateMerchantDto);
+    return this.merchantRepository.save({
+      id,
+      ...updateMerchantDto,
+    });
   }
 
   search(searchQuery: string) {

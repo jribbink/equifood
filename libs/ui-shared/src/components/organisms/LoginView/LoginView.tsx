@@ -2,7 +2,7 @@ import { Box, Button, Text } from 'native-base';
 import { useState } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import { useAuth } from '../../../hooks';
-import { equifoodTheme } from '../../atoms';
+import { equifoodTheme } from '../../../config';
 
 interface LoginViewProps {
   allowedRoles: string[];
