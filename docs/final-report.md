@@ -27,6 +27,18 @@ It is NOT compatible with Github-flavoured markdown.
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
+- [Equifood](#equifood)
+  - [Context](#context)
+  - [Description](#description)
+  - [Users](#users)
+    - [Customer](#customer)
+    - [Merchant](#merchant)
+    - [Admin](#admin)
+  - [Data flow diagrams](#data-flow-diagrams)
+    - [Lengend](#lengend)
+    - [DFD level 0](#dfd-level-0)
+    - [DFD level 1](#dfd-level-1)
+  - [Functional Requirements](#functional-requirements)
 - [Handoff guide](#handoff-guide)
   - [Overview](#overview)
     - [Frontend](#frontend)
@@ -48,6 +60,101 @@ It is NOT compatible with Github-flavoured markdown.
 - [Relevant Resources](#relevant-resources)
 
 \newpage
+
+# Equifood
+
+## Context
+Project Equifood tries to reduce food wastage and promotes sustainable food systems in Kelowna. The designed app helps to reduce food wastage by donating leftovers from restaurants.
+
+## Description
+Equifood is mobile app that connects restaurants with individuals in order to allow the individuals to obtain the restaurants' food leftovers for free or at a significantly reduced price.
+
+The app also streamlines Equifood's donations tracking process, as it automatically keeps track of the amount of money worth of food that Equifood has contributed to donating via its restaurant partners.
+
+## Users
+Equifood has 3 diffrent user groups.
+  - Customers
+  - Merchants
+  - Admin
+
+### Customer
+The Customer user group is comprised of people who would like to help reduce overall food waste by taking home restaurant leftovers at a discounted price.
+
+Customers are able to
+  - Create accounts
+  - Browse availble merchants and their items
+  - Add items to their order
+  - Place orders
+  - Cancel orders
+
+Examples:
+  - University students that are food insecure.
+  - Low-income households, who often use discounted offers.
+  - General public who want to save money.
+### Merchant
+The Merchant user group is comprised of restaurants who want to help reduce overall food waste by selling their leftover food at a discounted price.
+
+Merchants are able to
+  - Add items to their available menu
+  - Accept incoming orders
+  - Cancel orders
+  - Mark orders as completed
+  - Edit their restaurant information
+
+Examples:
+  - Restaurants where pre-prepared dishes often thrown out.
+  - University food vendors where lots of food goes to waste.
+
+### Admin
+The Admin are members of the equifood team who manage what restaurants will be allowed to have an account on the app.
+
+Admin are able to
+  - Add merchants via admin portal
+  - View all database records manually
+  - Modify arbitary database records
+
+
+## Data flow diagrams
+Below are our two data flow diagrams. These diagrams show a high level representation of how the app works.
+
+### Lengend
+Our data flow diagrams are color coded to better show what kind of information is being interacted with.
+<br>
+![Alt text](data_flow_diagrams/Legend.png "lengend")
+
+### DFD level 0
+This is our level 0 data flow diagram and as you can see this is the highest level representation of how our app works.
+![Alt text](data_flow_diagrams/Equifoods_DFD_0.png "Data Flow Diagram 0")
+
+### DFD level 1
+This is our level 1 data flow diagram witch is a much more detailed representation of how our works.
+![Alt text](data_flow_diagrams/Equifoods_DFD_1.png "Data Flow Diagram 1")
+
+## Functional Requirements
+There are several things important to include in an app like Equifood that we have implemented. 
+
+Equifood was designed so that everything is easily accessible and is within the fewest amount of clicks possible. With an overal easier app to use, Customers and Merchants are much more likely to consistently use the app.
+
+There are a couple things that are necessary for each user group witch we have implemented.
+
+Customers must be able to
+  - Create accounts
+  - Browse availble merchants and their items
+  - Add items to their order
+  - Place orders
+  - Cancel orders
+
+Merchants must be able to
+  - Add items to their available menu
+  - Accept incoming orders
+  - Cancel orders
+  - Mark orders as completed
+  - Edit their restaurant information
+
+Admin admin must be able to
+  - Add merchants via admin portal
+  - View all database records manually
+  - Modify arbitary database records
 
 # Handoff guide
 
