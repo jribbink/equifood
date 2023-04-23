@@ -141,6 +141,40 @@ Within this folder all technical specifications for the software, IP agreements,
 
 These are mostly written in markdown, however some exists in the form of PDF files.
 
+## Testing Report
+
+The final round of testing before handoff consisted of eight testing sessions by eight different testers. These testers raised a number of issues and improvements for the app. Some of these issues have been handled, but others are issues worth considering. Many of these are listed under the [issues](https://github.com/jribbink/equifood/issues) page on the GitHub page, but some are not listed. More general issues can be found [below](#further-work).
+
+**Note: The issues presented in this report are NOT comprehensive. The app may have undocumented issues not listed here. We highly recommend testing further as described in the [Testing section above](#testing).** It is also worth noting that some issues may arise due to the testing environment; issues regarding the map in particular were strongly suspected of being tied to Android Studio's emulation settings, for which we couldn't find a fix.
+
+In our testing, users were first asked to take the role of an EquiFood customer, looking to order food through the app from a particular restaurant. Second, they were asked to take the role of a merchant with an EquiFood account, who wanted to manage their restauranta's orders and their menu.
+
+Notable issues discovered include, but are not limited to:
+
+### High-Priority Issues
+
+1. The map loads inconsistently -- speed varies, if it loads at all -- and sometimes gives an UnhandledPromiseRejection. Unclear if this is an Android Studio issue.
+2. "Back" buttons for user navigation do not appear on all screens. This violates good design principles. (Back buttons have been implemented on some screens and may be copied.)
+3. If a user fails to log in, no error message is displayed in their view. Should differentiate between invalid credentials and a failed connection to the server.
+4. Similarly, if a user attempts to create an account but encounters an issue (e.g. their password is invalid), there is no error message.
+5. Image upload was attempted but not implemented confidently. May be a mix of faulty implementation and Android Studio issues.
+6. Order deadline time currently defaults to 15 minutes from the time the order is placed. This should be changed to a specification by the merchant.
+7. Orders on the merchant side do not currently have an identifier of who placed the order. This makes it impossible for the merchant to know who the order is for.
+
+### Medium-Priority Issues
+
+1. All EquiFood signposting and branding is currently extremely basic, and should be replaced with an official logo and branding when able.
+2. Merchants on the main page (and food items on individual merchants' pages) are not paginated or limited to a certain number at first. This may cause issues with load times or visual overload for users.
+3. The order deadline time should be shown on the OrderList page as well as on an individual order's page.
+
+### Low-Priority Issues
+
+1. Some parts of the merchant app are unnecessary due to being copied from the customer app. Example: the merchant does not need thanks on an individual order's page, nor a map pointing to their own location.
+2. Hyphenated phone numbers should be accepted (e.g. 111-111-1111) rather than only strings of ten digits; or, at least, it should be automatically formatted into a phone number format for ease of viewing.
+3. Some relevant (but arguably superfluous) information is missing; our testers identified an instruction to "ask for an EquiFood order for \[name\]" on the order page to be helpful, though this may not be necessary.
+
+Testers identified the app's greatest strengths as its aesthetic, the visibility of the system, its internal consistency, and how familiar the setup is compared to other food delivery apps. The greatest pitfall of the app is the lack of documentation and assistance with errors, which admittedly was a lower priority with our limited development time.
+
 ## Further Work
 
 While this is a reasonably functional app, there exists some components which might make it a poor candidate for the App Store or Google Play in the current state (or just features that still need further implementation).
