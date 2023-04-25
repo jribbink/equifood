@@ -39,6 +39,13 @@ It is NOT compatible with Github-flavoured markdown.
     - [DFD level 0](#dfd-level-0)
     - [DFD level 1](#dfd-level-1)
   - [Functional Requirements](#functional-requirements)
+  - [Technical Specifications](#technical-specifications)
+- [Testing Report](#testing-report)
+  - [Heuristics](#heuristics)
+  - [Issues](#issues)
+    - [High-Priority Issues](#high-priority-issues)
+    - [Medium-Priority Issues](#medium-priority-issues)
+    - [Low-Priority Issues](#low-priority-issues)
 - [Handoff guide](#handoff-guide)
   - [Overview](#overview)
     - [Frontend](#frontend)
@@ -64,97 +71,171 @@ It is NOT compatible with Github-flavoured markdown.
 # Equifood
 
 ## Context
+
 Project Equifood tries to reduce food wastage and promotes sustainable food systems in Kelowna. The designed app helps to reduce food wastage by donating leftovers from restaurants.
 
 ## Description
+
 Equifood is mobile app that connects restaurants with individuals in order to allow the individuals to obtain the restaurants' food leftovers for free or at a significantly reduced price.
 
 The app also streamlines Equifood's donations tracking process, as it automatically keeps track of the amount of money worth of food that Equifood has contributed to donating via its restaurant partners.
 
 ## Users
+
 Equifood has 3 diffrent user groups.
-  - Customers
-  - Merchants
-  - Admin
+
+- Customers
+- Merchants
+- Admin
 
 ### Customer
+
 The Customer user group is comprised of people who would like to help reduce overall food waste by taking home restaurant leftovers at a discounted price.
 
 Customers are able to
-  - Create accounts
-  - Browse availble merchants and their items
-  - Add items to their order
-  - Place orders
-  - Cancel orders
+
+- Create accounts
+- Browse availble merchants and their items
+- Add items to their order
+- Place orders
+- Cancel orders
 
 Examples:
-  - University students that are food insecure.
-  - Low-income households, who often use discounted offers.
-  - General public who want to save money.
+
+- University students that are food insecure.
+- Low-income households, who often use discounted offers.
+- General public who want to save money.
+
 ### Merchant
+
 The Merchant user group is comprised of restaurants who want to help reduce overall food waste by selling their leftover food at a discounted price.
 
 Merchants are able to
-  - Add items to their available menu
-  - Accept incoming orders
-  - Cancel orders
-  - Mark orders as completed
-  - Edit their restaurant information
+
+- Add items to their available menu
+- Accept incoming orders
+- Cancel orders
+- Mark orders as completed
+- Edit their restaurant information
 
 Examples:
-  - Restaurants where pre-prepared dishes often thrown out.
-  - University food vendors where lots of food goes to waste.
+
+- Restaurants where pre-prepared dishes often thrown out.
+- University food vendors where lots of food goes to waste.
 
 ### Admin
-The Admin are members of the equifood team who manage what restaurants will be allowed to have an account on the app.
+
+The Admin are members of the Equifood team who manage what restaurants will be allowed to have an account on the app.
 
 Admin are able to
-  - Add merchants via admin portal
-  - View all database records manually
-  - Modify arbitary database records
 
+- Add merchants via admin portal
+- View all database records manually
+- Modify arbitary database records
 
 ## Data flow diagrams
+
 Below are our two data flow diagrams. These diagrams show a high level representation of how the app works.
 
 ### Lengend
+
 Our data flow diagrams are color coded to better show what kind of information is being interacted with.
-<br>
-![Alt text](data_flow_diagrams/Legend.png "lengend")
+![Legend](data_flow_diagrams/Legend.png 'lengend')
 
 ### DFD level 0
+
 This is our level 0 data flow diagram and as you can see this is the highest level representation of how our app works.
-![Alt text](data_flow_diagrams/Equifoods_DFD_0.png "Data Flow Diagram 0")
+![DFD level 0](data_flow_diagrams/equifoods_DFD_0.png 'Data Flow Diagram 0')
 
 ### DFD level 1
+
 This is our level 1 data flow diagram witch is a much more detailed representation of how our works.
-![Alt text](data_flow_diagrams/Equifoods_DFD_1.png "Data Flow Diagram 1")
+![DFD level 1](data_flow_diagrams/equifoods_DFD_1.png 'Data Flow Diagram 1')
 
 ## Functional Requirements
-There are several things important to include in an app like Equifood that we have implemented. 
+
+There are several things important to include in an app like Equifood that we have implemented.
 
 Equifood was designed so that everything is easily accessible and is within the fewest amount of clicks possible. With an overal easier app to use, Customers and Merchants are much more likely to consistently use the app.
 
 There are a couple things that are necessary for each user group witch we have implemented.
 
 Customers must be able to
-  - Create accounts
-  - Browse availble merchants and their items
-  - Add items to their order
-  - Place orders
-  - Cancel orders
+
+- Create accounts
+- Browse availble merchants and their items
+- Add items to their order
+- Place orders
+- Cancel orders
 
 Merchants must be able to
-  - Add items to their available menu
-  - Accept incoming orders
-  - Cancel orders
-  - Mark orders as completed
-  - Edit their restaurant information
+
+- Add items to their available menu
+- Accept incoming orders
+- Cancel orders
+- Mark orders as completed
+- Edit their restaurant information
 
 Admin admin must be able to
-  - Add merchants via admin portal
-  - View all database records manually
-  - Modify arbitary database records
+
+- Add merchants via admin portal
+- View all database records manually
+- Modify arbitary database records
+
+## Technical Specifications
+
+This repository is a monorepo supported by NX. The Equifood App (existing in the `apps` folder) is created using 3 seprate components: the customer app, the merchant app, and the API. These 3 parts can be found in their respective locations as outlined within the [handoff guide](#overview). Regarding technologies, the following libraries/frameworks have been deployed for these apps:
+
+- **Customer App** The customer app uses React Native for creating a multi-platform IOS/Androind application written in JavaScript. Specifically, it uses the expo framework for seamless development, testing, and linking of native code. For UI, the app utilizes Native Base and all other libraries are a part of the expo SDK. All code is written in TypeScript.
+- **Merchant App**: The merchant app uses React Native for creating a multi-platform IOS/Androind application written in JavaScript. Specifically, it uses the expo framework for seamless development, testing, and linking of native code. For UI, the app utilizes Native Base and all other libraries are a part of the expo SDK. All code is written in TypeScript.
+- **Equifood API** The Equifood API uses NestJS as the backend framework of choice. This is a platform powered by Express and offers solutions for modularity, scalability, and a much more organized development experience than using Express independently. The ORM used by this app is TypeORM, an extremely popular ORM with support for the majority of commonly used relational databases. All code is written in TypeScript.
+- **Database**: The database choice is flexible for the Equifood App. You may choose to use a temporary database for development purposes (specified within the .env file) or you may choose to use another TypeORM supported relational database. For temporary databases we recommend BetterSQLite, which is installed in the `node_modules`, and for production we recommend MariaDB. The database will be seeded each time the API starts with sample data if you choose to use a temporary database.
+
+\newpage
+
+# Testing Report
+
+The final round of testing before handoff consisted of eight testing sessions by eight different testers. These testers raised a number of issues and improvements for the app. Some of these issues have been handled, but others are issues worth considering. Many of these are listed under the [issues](https://github.com/jribbink/equifood/issues) page on the GitHub page, but some are not listed. More general issues can be found [below](#further-work).
+
+**Note: The issues presented in this report are NOT comprehensive. The app may have undocumented issues not listed here. We highly recommend testing further as described in the [testing section within the handoff guide](#testing).** It is also worth noting that some issues may arise due to the testing environment; issues regarding the map in particular were strongly suspected of being tied to Android Studio's emulation settings, for which we couldn't find a fix.
+
+In our testing, users were first asked to take the role of an Equifood customer, looking to order food through the app from a particular restaurant. Second, they were asked to take the role of a merchant with an Equifood account, who wanted to manage their restauranta's orders and their menu.
+
+## Heuristics
+
+The average of the heuristics is as follows. One heuristic was missing from the example survey we were given, though the ninth question (“When I get stuck, the system has help and documentation to help me figure out what I need to do.”) combines the last two heuristics (“Help uses recognize, diagnose and recover from errors” and “Help and documentation”). Seven users participated in the survey.
+
+![Heuristics](./testing_report_2/heuristics.png 'Heuristics Chart')
+
+## Issues
+
+Notable issues discovered include, but are not limited to:
+
+### High-Priority Issues
+
+1. The map loads inconsistently -- speed varies, if it loads at all -- and sometimes gives an UnhandledPromiseRejection. Unclear if this is an Android Studio issue.
+2. "Back" buttons for user navigation do not appear on all screens. This violates good design principles. (Back buttons have been implemented on some screens and may be copied.)
+3. If a user fails to log in, no error message is displayed in their view. Should differentiate between invalid credentials and a failed connection to the server.
+4. Similarly, if a user attempts to create an account but encounters an issue (e.g. their password is invalid), there is no error message.
+5. Image upload was attempted but not implemented confidently. May be a mix of faulty implementation and Android Studio issues.
+6. Order deadline time currently defaults to 15 minutes from the time the order is placed. This should be changed to a specification by the merchant.
+7. Orders on the merchant side do not currently have an identifier of who placed the order. This makes it impossible for the merchant to know who the order is for.
+
+### Medium-Priority Issues
+
+1. All Equifood signposting and branding is currently extremely basic, and should be replaced with an official logo and branding when able.
+2. Merchants on the main page (and food items on individual merchants' pages) are not paginated or limited to a certain number at first. This may cause issues with load times or visual overload for users.
+3. The order deadline time should be shown on the OrderList page as well as on an individual order's page.
+
+### Low-Priority Issues
+
+1. Some parts of the merchant app are unnecessary due to being copied from the customer app. Example: the merchant does not need thanks on an individual order's page, nor a map pointing to their own location.
+2. Hyphenated phone numbers should be accepted (e.g. 111-111-1111) rather than only strings of ten digits; or, at least, it should be automatically formatted into a phone number format for ease of viewing.
+3. Some relevant (but arguably superfluous) information is missing; our testers identified an instruction to "ask for an Equifood order for NAME on the order page to be helpful, though this may not be necessary.
+
+Testers identified the app's greatest strengths as its aesthetic, the visibility of the system, its internal consistency, and how familiar the setup is compared to other food delivery apps. The greatest pitfall of the app is the lack of documentation and assistance with errors, which admittedly was a lower priority with our limited development time.
+
+\newpage
 
 # Handoff guide
 
@@ -220,15 +301,15 @@ Additionally, UI components, auth flows, and various other hooks/providers are s
 
 ### Development
 
-Apps can be served using `nx serve APP_NAME` command. Currently available apps are `equifood-api`, `equifood-customer`, and `equifood-merchant`.
+Apps can be served using `nx serve APP_NAME` command. Currently available apps are `Equifood-api`, `Equifood-customer`, and `Equifood-merchant`.
 
 Remember, for either the customer or merchant application to functional, the backend must be running and properly configured in the respective `.env` file.
 
 Currently, there are 3 apps that can be launched:
 
-1. Equifood Customer: `npx nx run equifood-customer`
-2. Equifood Merchant: `npx nx run equifood-merchant`
-3. Equifood API: `npx nx run equifood-api`
+1. Equifood Customer: `npx nx run Equifood-customer`
+2. Equifood Merchant: `npx nx run Equifood-merchant`
+3. Equifood API: `npx nx run Equifood-api`
 
 ### Testing
 
@@ -247,40 +328,6 @@ Relevant documentation for this project exists in the `documentation` folder
 Within this folder all technical specifications for the software, IP agreements, configuration instructions, and any other pertinent information can be found.
 
 These are mostly written in markdown, however some exists in the form of PDF files.
-
-## Testing Report
-
-The final round of testing before handoff consisted of eight testing sessions by eight different testers. These testers raised a number of issues and improvements for the app. Some of these issues have been handled, but others are issues worth considering. Many of these are listed under the [issues](https://github.com/jribbink/equifood/issues) page on the GitHub page, but some are not listed. More general issues can be found [below](#further-work).
-
-**Note: The issues presented in this report are NOT comprehensive. The app may have undocumented issues not listed here. We highly recommend testing further as described in the [Testing section above](#testing).** It is also worth noting that some issues may arise due to the testing environment; issues regarding the map in particular were strongly suspected of being tied to Android Studio's emulation settings, for which we couldn't find a fix.
-
-In our testing, users were first asked to take the role of an EquiFood customer, looking to order food through the app from a particular restaurant. Second, they were asked to take the role of a merchant with an EquiFood account, who wanted to manage their restauranta's orders and their menu.
-
-Notable issues discovered include, but are not limited to:
-
-### High-Priority Issues
-
-1. The map loads inconsistently -- speed varies, if it loads at all -- and sometimes gives an UnhandledPromiseRejection. Unclear if this is an Android Studio issue.
-2. "Back" buttons for user navigation do not appear on all screens. This violates good design principles. (Back buttons have been implemented on some screens and may be copied.)
-3. If a user fails to log in, no error message is displayed in their view. Should differentiate between invalid credentials and a failed connection to the server.
-4. Similarly, if a user attempts to create an account but encounters an issue (e.g. their password is invalid), there is no error message.
-5. Image upload was attempted but not implemented confidently. May be a mix of faulty implementation and Android Studio issues.
-6. Order deadline time currently defaults to 15 minutes from the time the order is placed. This should be changed to a specification by the merchant.
-7. Orders on the merchant side do not currently have an identifier of who placed the order. This makes it impossible for the merchant to know who the order is for.
-
-### Medium-Priority Issues
-
-1. All EquiFood signposting and branding is currently extremely basic, and should be replaced with an official logo and branding when able.
-2. Merchants on the main page (and food items on individual merchants' pages) are not paginated or limited to a certain number at first. This may cause issues with load times or visual overload for users.
-3. The order deadline time should be shown on the OrderList page as well as on an individual order's page.
-
-### Low-Priority Issues
-
-1. Some parts of the merchant app are unnecessary due to being copied from the customer app. Example: the merchant does not need thanks on an individual order's page, nor a map pointing to their own location.
-2. Hyphenated phone numbers should be accepted (e.g. 111-111-1111) rather than only strings of ten digits; or, at least, it should be automatically formatted into a phone number format for ease of viewing.
-3. Some relevant (but arguably superfluous) information is missing; our testers identified an instruction to "ask for an EquiFood order for \[name\]" on the order page to be helpful, though this may not be necessary.
-
-Testers identified the app's greatest strengths as its aesthetic, the visibility of the system, its internal consistency, and how familiar the setup is compared to other food delivery apps. The greatest pitfall of the app is the lack of documentation and assistance with errors, which admittedly was a lower priority with our limited development time.
 
 ## Further Work
 
